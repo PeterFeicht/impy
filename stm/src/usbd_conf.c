@@ -15,7 +15,7 @@ PCD_HandleTypeDef hpcd_FS;
 // Functions ------------------------------------------------------------------
 
 /*****************************************************************************
- *                              PCD BSP Routines                             *
+ *                              PCD MSP Routines                             *
  *****************************************************************************/
 
 /**
@@ -30,7 +30,11 @@ void HAL_PCD_MspInit(PCD_HandleTypeDef *hpcd)
     {
         __GPIOA_CLK_ENABLE();
         
-        // Configure Data Pins
+        /*
+         * Data Pins (in|out):
+         *  PA11: DM
+         *  PA12: DP
+         */
         GPIO_InitStruct.Pin = GPIO_PIN_11 | GPIO_PIN_12;
         GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
         GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -38,7 +42,9 @@ void HAL_PCD_MspInit(PCD_HandleTypeDef *hpcd)
         GPIO_InitStruct.Alternate = GPIO_AF10_OTG_FS;
         HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
         
-        // Configure VBUS Pin
+        /*
+         * VBUS Pin (in): PA9
+         */
         GPIO_InitStruct.Pin = GPIO_PIN_9;
         GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
         GPIO_InitStruct.Pull = GPIO_PULLDOWN;
@@ -117,7 +123,6 @@ void HAL_PCD_ResetCallback(PCD_HandleTypeDef *hpcd)
 {
     USBD_SpeedTypeDef speed = USBD_SPEED_FULL;
     
-    /* Set USB Current Speed */
     switch(hpcd->Init.speed)
     {
         case PCD_SPEED_HIGH:
