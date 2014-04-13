@@ -207,3 +207,5 @@ uint8_t *USBD_VCP_InterfaceStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *leng
 }
 
 #pragma GCC diagnostic pop
+
+// ----------------------------------------------------------------------------

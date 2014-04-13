@@ -19,4 +19,6 @@
 #define LED_RED         GPIO_PIN_14
 #define LED_BLUE        GPIO_PIN_15
 
+// ----------------------------------------------------------------------------
+
 #endif /* MAIN_H_ */

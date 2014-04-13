@@ -41,3 +41,5 @@ void OTG_FS_IRQHandler(void)
     HAL_NVIC_ClearPendingIRQ(OTG_FS_IRQn);
     HAL_PCD_IRQHandler(&hpcd_FS);
 }
+
+// ----------------------------------------------------------------------------
