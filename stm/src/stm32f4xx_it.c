@@ -11,6 +11,7 @@
 #include "stm32f4xx_hal.h"
 
 // External variables ---------------------------------------------------------
+extern PCD_HandleTypeDef hpcd_FS;
 
 // Interrupt Handlers ---------------------------------------------------------
 
@@ -20,4 +21,13 @@
 void SysTick_Handler(void)
 {
     HAL_IncTick();
+}
+
+/**
+ * @brief This function handles USB On The Go FS global interrupt.
+ */
+void OTG_FS_IRQHandler(void)
+{
+    HAL_NVIC_ClearPendingIRQ(OTG_FS_IRQn);
+    HAL_PCD_IRQHandler(&hpcd_FS);
 }
