@@ -1,6 +1,6 @@
 /**
  * @file    mx_init.h
- * @author  Peter
+ * @author  Peter Feichtinger
  * @date    14.04.2014
  * @brief   
  * 
