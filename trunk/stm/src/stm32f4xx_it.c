@@ -12,6 +12,7 @@
 
 // External variables ---------------------------------------------------------
 extern PCD_HandleTypeDef hpcd_FS;
+extern I2C_HandleTypeDef hi2c1;
 
 // Interrupt Handlers ---------------------------------------------------------
 
@@ -21,6 +22,15 @@ extern PCD_HandleTypeDef hpcd_FS;
 void SysTick_Handler(void)
 {
     HAL_IncTick();
+}
+
+/**
+ * @brief This function handles I2C1 event interrupt.
+ */
+void I2C1_EV_IRQHandler(void)
+{
+    HAL_NVIC_ClearPendingIRQ(I2C1_EV_IRQn);
+    HAL_I2C_EV_IRQHandler(&hi2c1);
 }
 
 /**
