@@ -52,3 +52,5 @@ void HAL_I2C_MspDeInit(I2C_HandleTypeDef* hi2c)
         HAL_NVIC_DisableIRQ(I2C1_EV_IRQn);
     }
 }
+
+// ----------------------------------------------------------------------------
