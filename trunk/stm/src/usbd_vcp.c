@@ -398,7 +398,7 @@ static uint8_t USBD_VCP_DataIn(USBD_HandleTypeDef *pdev, uint8_t epnum)
 {
     USBD_VCP_HandleTypeDef *hcdc = pdev->pClassData;
     
-    if(pdev->pClassData != NULL)
+    if(hcdc != NULL)
     {
         hcdc->TxState = 0;
         
@@ -420,13 +420,13 @@ static uint8_t USBD_VCP_DataOut(USBD_HandleTypeDef *pdev, uint8_t epnum)
 {
     USBD_VCP_HandleTypeDef *hcdc = pdev->pClassData;
     
-    // Get the received data length
-    hcdc->RxLength = USBD_LL_GetRxDataSize(pdev, epnum);
-    
     // USB data will be immediately processed, this allow next USB traffic being NAKed till
     // the end of the application Xfer
-    if(pdev->pClassData != NULL)
+    if(hcdc != NULL)
     {
+        // Get the received data length
+        hcdc->RxLength = USBD_LL_GetRxDataSize(pdev, epnum);
+        
         ((USBD_VCP_ItfTypeDef *)pdev->pUserData)->Receive(hcdc->RxBuffer, &hcdc->RxLength);
         
         return USBD_OK;
@@ -548,7 +548,7 @@ uint8_t USBD_VCP_TransmitPacket(USBD_HandleTypeDef *pdev)
 {
     USBD_VCP_HandleTypeDef *hcdc = pdev->pClassData;
     
-    if(pdev->pClassData != NULL)
+    if(hcdc == NULL)
     {
         return USBD_FAIL;
     }
@@ -577,7 +577,7 @@ uint8_t USBD_VCP_ReceivePacket(USBD_HandleTypeDef *pdev)
 {
     USBD_VCP_HandleTypeDef *hcdc = pdev->pClassData;
     
-    if(pdev->pClassData != NULL)
+    if(hcdc == NULL)
     {
         return USBD_FAIL;
     }
