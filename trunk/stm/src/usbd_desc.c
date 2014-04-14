@@ -95,7 +95,8 @@ __ALIGN_BEGIN uint8_t USBD_StrDesc[USBD_MAX_STR_DESC_SIZ] __ALIGN_END;
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 /**
- * @brief  Returns the device descriptor. 
+ * Returns the device descriptor.
+ * 
  * @param  speed: Current device speed
  * @param  length: Pointer to data length variable
  * @retval Pointer to descriptor buffer
@@ -107,7 +108,8 @@ uint8_t *USBD_VCP_DeviceDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
 }
 
 /**
- * @brief  Returns the LangID string descriptor.        
+ * Returns the LangID string descriptor.
+ * 
  * @param  speed: Current device speed
  * @param  length: Pointer to data length variable
  * @retval Pointer to descriptor buffer
@@ -119,7 +121,8 @@ uint8_t *USBD_VCP_LangIDStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
 }
 
 /**
- * @brief  Returns the product string descriptor. 
+ * Returns the product string descriptor.
+ * 
  * @param  speed: Current device speed
  * @param  length: Pointer to data length variable
  * @retval Pointer to descriptor buffer
@@ -138,7 +141,8 @@ uint8_t *USBD_VCP_ProductStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length
 }
 
 /**
- * @brief  Returns the manufacturer string descriptor. 
+ * Returns the manufacturer string descriptor.
+ * 
  * @param  speed: Current device speed
  * @param  length: Pointer to data length variable
  * @retval Pointer to descriptor buffer
@@ -150,7 +154,8 @@ uint8_t *USBD_VCP_ManufacturerStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *l
 }
 
 /**
- * @brief  Returns the serial number string descriptor.        
+ * Returns the serial number string descriptor.
+ * 
  * @param  speed: Current device speed
  * @param  length: Pointer to data length variable
  * @retval Pointer to descriptor buffer
@@ -169,7 +174,8 @@ uint8_t *USBD_VCP_SerialStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
 }
 
 /**
- * @brief  Returns the configuration string descriptor.    
+ * Returns the configuration string descriptor.
+ * 
  * @param  speed: Current device speed
  * @param  length: Pointer to data length variable
  * @retval Pointer to descriptor buffer
@@ -188,7 +194,8 @@ uint8_t *USBD_VCP_ConfigStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
 }
 
 /**
- * @brief  Returns the interface string descriptor.        
+ * Returns the interface string descriptor.
+ * 
  * @param  speed: Current device speed
  * @param  length: Pointer to data length variable
  * @retval Pointer to descriptor buffer

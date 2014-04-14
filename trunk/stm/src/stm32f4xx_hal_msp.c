@@ -12,6 +12,7 @@
 
 /**
  * Initializes the I2C MSP.
+ * 
  * @param hi2c I2C handle
  */
 void HAL_I2C_MspInit(I2C_HandleTypeDef* hi2c)
@@ -41,6 +42,7 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* hi2c)
 
 /**
  * De-initializes the I2C MSP.
+ * 
  * @param hi2c I2C handle
  */
 void HAL_I2C_MspDeInit(I2C_HandleTypeDef* hi2c)

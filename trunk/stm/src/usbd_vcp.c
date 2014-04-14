@@ -278,9 +278,10 @@ __ALIGN_BEGIN uint8_t USBD_VCP_CfgFSDesc[USB_VCP_CONFIG_DESC_SIZ] __ALIGN_END =
 // Private functions ----------------------------------------------------------
 
 /**
- * @brief  Initializes the VCP interface
+ * Initialize the VCP interface.
+ * 
  * @param  pdev device instance
- * @param  cfgidx Configuration index
+ * @param  cfgidx Configuration index (unused, VCP only has one configuration)
  * @retval {@code USBD_Status} code
  */
 static uint8_t USBD_VCP_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx __attribute__((unused)))
@@ -332,9 +333,10 @@ static uint8_t USBD_VCP_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx __attribut
 }
 
 /**
- * @brief  DeInitialize the VCP layer
+ * DeInitialize the VCP interface.
+ * 
  * @param  pdev device instance
- * @param  cfgidx Configuration index
+ * @param  cfgidx Configuration index (unused, VCP only has one configuration)
  * @retval {@code USBD_Status} code
  */
 static uint8_t USBD_VCP_DeInit(USBD_HandleTypeDef *pdev, uint8_t cfgidx __attribute__((unused)))
@@ -356,9 +358,10 @@ static uint8_t USBD_VCP_DeInit(USBD_HandleTypeDef *pdev, uint8_t cfgidx __attrib
 }
 
 /**
- * @brief  Handle the VCP specific requests
+ * Handle the VCP specific requests.
+ * 
  * @param  pdev instance
- * @param  req usb requests
+ * @param  req USB requests
  * @retval {@code USBD_Status} code
  */
 static uint8_t USBD_VCP_Setup(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req)
@@ -391,7 +394,8 @@ static uint8_t USBD_VCP_Setup(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *re
 }
 
 /**
- * @brief  Data sent on non-control IN endpoint
+ * Data sent on non-control IN endpoint.
+ * 
  * @param  pdev device instance
  * @param  epnum endpoint number
  * @retval {@code USBD_Status} code
@@ -416,7 +420,8 @@ static uint8_t USBD_VCP_DataIn(USBD_HandleTypeDef *pdev, uint8_t epnum __attribu
 }
 
 /**
- * @brief  Data received on non-control Out endpoint
+ * Data received on non-control OUT endpoint.
+ * 
  * @param  pdev device instance
  * @param  epnum endpoint number
  * @retval {@code USBD_Status} code
@@ -443,9 +448,9 @@ static uint8_t USBD_VCP_DataOut(USBD_HandleTypeDef *pdev, uint8_t epnum)
 }
 
 /**
- * @brief  Data received on non-control Out endpoint
+ * Endpoint 0 ready for control data.
+ * 
  * @param  pdev device instance
- * @param  epnum endpoint number
  * @retval {@code USBD_Status} code
  */
 static uint8_t USBD_VCP_EP0_RxReady(USBD_HandleTypeDef *pdev)
@@ -461,8 +466,8 @@ static uint8_t USBD_VCP_EP0_RxReady(USBD_HandleTypeDef *pdev)
 }
 
 /**
- * @brief  Return configuration descriptor
- * @param  speed current device speed
+ * Return FS Configuration Descriptor.
+ * 
  * @param  length pointer data length
  * @retval pointer to descriptor buffer
  */
@@ -473,8 +478,8 @@ static uint8_t *USBD_VCP_GetFSCfgDesc(uint16_t *length)
 }
 
 /**
- * @brief  Return configuration descriptor
- * @param  speed current device speed
+ * Return HS Configuration Descriptor.
+ * 
  * @param  length pointer data length
  * @retval pointer to descriptor buffer
  */
@@ -485,7 +490,8 @@ static uint8_t *USBD_VCP_GetHSCfgDesc(uint16_t *length)
 }
 
 /**
- * @brief  return Device Qualifier descriptor
+ * Return Device Qualifier descriptor.
+ * 
  * @param  length pointer data length
  * @retval pointer to descriptor buffer
  */
@@ -496,7 +502,8 @@ uint8_t *USBD_VCP_GetDeviceQualifierDescriptor(uint16_t *length)
 }
 
 /**
- * @brief  USBD_VCP_RegisterInterface
+ * USBD_VCP_RegisterInterface
+ * 
  * @param  pdev device instance
  * @param  fops CD  Interface callback
  * @retval {@code USBD_Status} code
@@ -513,9 +520,11 @@ uint8_t USBD_VCP_RegisterInterface(USBD_HandleTypeDef *pdev, USBD_VCP_ItfTypeDef
 }
 
 /**
- * @brief  USBD_VCP_SetTxBuffer
+ * USBD_VCP_SetTxBuffer
+ * 
  * @param  pdev device instance
- * @param  pbuff Tx Buffer
+ * @param  pbuff Pointer to Tx buffer
+ * @param  length Tx buffer length
  * @retval {@code USBD_Status} code
  */
 uint8_t USBD_VCP_SetTxBuffer(USBD_HandleTypeDef *pdev, uint8_t *pbuff, uint16_t length)
@@ -529,7 +538,8 @@ uint8_t USBD_VCP_SetTxBuffer(USBD_HandleTypeDef *pdev, uint8_t *pbuff, uint16_t 
 }
 
 /**
- * @brief  USBD_VCP_SetRxBuffer
+ * USBD_VCP_SetRxBuffer
+ * 
  * @param  pdev device instance
  * @param  pbuff Rx Buffer
  * @retval {@code USBD_Status} code
@@ -544,9 +554,9 @@ uint8_t USBD_VCP_SetRxBuffer(USBD_HandleTypeDef *pdev, uint8_t *pbuff)
 }
 
 /**
- * @brief  Data received on non-control Out endpoint
+ * Prepare IN endpoint for transmission.
+ * 
  * @param  pdev device instance
- * @param  epnum endpoint number
  * @retval {@code USBD_Status} code
  */
 uint8_t USBD_VCP_TransmitPacket(USBD_HandleTypeDef *pdev)
@@ -574,7 +584,8 @@ uint8_t USBD_VCP_TransmitPacket(USBD_HandleTypeDef *pdev)
 }
 
 /**
- * @brief  prepare OUT Endpoint for reception
+ * Prepare OUT endpoint for reception.
+ * 
  * @param  pdev device instance
  * @retval {@code USBD_Status} code
  */

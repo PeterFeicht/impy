@@ -25,7 +25,7 @@ void SysTick_Handler(void)
 }
 
 /**
- * @brief This function handles I2C1 event interrupt.
+ * This function handles I2C1 event interrupt.
  */
 void I2C1_EV_IRQHandler(void)
 {
@@ -34,7 +34,7 @@ void I2C1_EV_IRQHandler(void)
 }
 
 /**
- * @brief This function handles USB On The Go FS global interrupt.
+ * This function handles USB On The Go FS global interrupt.
  */
 void OTG_FS_IRQHandler(void)
 {
