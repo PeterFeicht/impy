@@ -21,6 +21,9 @@
 #define USBD_SUPPORT_USER_STRING              0
 #define USBD_SELF_POWERED                     1
 #define USBD_DEBUG_LEVEL                      0
+// Define full or high speed identification
+#define DEVICE_HS       0
+#define DEVICE_FS       1
 
 // Macros ---------------------------------------------------------------------
 /* Memory management macros */
