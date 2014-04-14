@@ -285,25 +285,19 @@ static uint8_t USBD_VCP_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx)
 {
     USBD_VCP_HandleTypeDef *hcdc;
     
+    // Open IN and OUT endpoints
     if(pdev->dev_speed == USBD_SPEED_HIGH)
     {
-        /* Open EP IN */
         USBD_LL_OpenEP(pdev, VCP_IN_EP, USBD_EP_TYPE_BULK, VCP_DATA_HS_IN_PACKET_SIZE);
-        
-        /* Open EP OUT */
         USBD_LL_OpenEP(pdev, VCP_OUT_EP, USBD_EP_TYPE_BULK, VCP_DATA_HS_OUT_PACKET_SIZE);
-        
     }
     else
     {
-        /* Open EP IN */
         USBD_LL_OpenEP(pdev, VCP_IN_EP, USBD_EP_TYPE_BULK, VCP_DATA_FS_IN_PACKET_SIZE);
-        
-        /* Open EP OUT */
         USBD_LL_OpenEP(pdev, VCP_OUT_EP, USBD_EP_TYPE_BULK, VCP_DATA_FS_OUT_PACKET_SIZE);
     }
     
-    /* Open Command IN EP */
+    // Open Command IN EP
     USBD_LL_OpenEP(pdev, VCP_CMD_EP, USBD_EP_TYPE_INTR, VCP_CMD_PACKET_SIZE);
     
     pdev->pClassData = USBD_malloc(sizeof(USBD_VCP_HandleTypeDef));
@@ -315,21 +309,20 @@ static uint8_t USBD_VCP_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx)
     
     hcdc = pdev->pClassData;
     
-    /* Init  physical Interface components */
+    // Init physical interface components
     ((USBD_VCP_ItfTypeDef *)pdev->pUserData)->Init();
     
-    /* Init Xfer states */
+    // Init Xfer states
     hcdc->TxState = 0;
     hcdc->RxState = 0;
-    
+
+    // Prepare OUT endpoint to receive next packet
     if(pdev->dev_speed == USBD_SPEED_HIGH)
     {
-        /* Prepare Out endpoint to receive next packet */
         USBD_LL_PrepareReceive(pdev, VCP_OUT_EP, hcdc->RxBuffer, VCP_DATA_HS_OUT_PACKET_SIZE);
     }
     else
     {
-        /* Prepare Out endpoint to receive next packet */
         USBD_LL_PrepareReceive(pdev, VCP_OUT_EP, hcdc->RxBuffer, VCP_DATA_FS_OUT_PACKET_SIZE);
     }
     
@@ -344,16 +337,12 @@ static uint8_t USBD_VCP_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx)
  */
 static uint8_t USBD_VCP_DeInit(USBD_HandleTypeDef *pdev, uint8_t cfgidx)
 {
-    /* Open EP IN */
+    // Close endpoints
     USBD_LL_CloseEP(pdev, VCP_IN_EP);
-    
-    /* Open EP OUT */
     USBD_LL_CloseEP(pdev, VCP_OUT_EP);
-    
-    /* Open Command IN EP */
     USBD_LL_CloseEP(pdev, VCP_CMD_EP);
     
-    /* DeInit  physical Interface components */
+    // DeInit physical interface components
     if(pdev->pClassData != NULL)
     {
         ((USBD_VCP_ItfTypeDef *)pdev->pUserData)->DeInit();
@@ -431,7 +420,7 @@ static uint8_t USBD_VCP_DataOut(USBD_HandleTypeDef *pdev, uint8_t epnum)
 {
     USBD_VCP_HandleTypeDef *hcdc = pdev->pClassData;
     
-    /* Get the received data length */
+    // Get the received data length
     hcdc->RxLength = USBD_LL_GetRxDataSize(pdev, epnum);
     
     // USB data will be immediately processed, this allow next USB traffic being NAKed till
@@ -566,10 +555,10 @@ uint8_t USBD_VCP_TransmitPacket(USBD_HandleTypeDef *pdev)
     
     if(hcdc->TxState == 0)
     {
-        /* Transmit next packet */
+        // Transmit next packet
         USBD_LL_Transmit(pdev, VCP_IN_EP, hcdc->TxBuffer, hcdc->TxLength);
         
-        /* Tx Transfer in progress */
+        // Tx Transfer in progress
         hcdc->TxState = 1;
         return USBD_OK;
     }
@@ -593,15 +582,13 @@ uint8_t USBD_VCP_ReceivePacket(USBD_HandleTypeDef *pdev)
         return USBD_FAIL;
     }
 
-    /* Suspend or Resume USB Out process */
+    // Prepare OUT endpoint to receive next packet
     if(pdev->dev_speed == USBD_SPEED_HIGH)
     {
-        /* Prepare Out endpoint to receive next packet */
         USBD_LL_PrepareReceive(pdev, VCP_OUT_EP, hcdc->RxBuffer, VCP_DATA_HS_OUT_PACKET_SIZE);
     }
     else
     {
-        /* Prepare Out endpoint to receive next packet */
         USBD_LL_PrepareReceive(pdev, VCP_OUT_EP, hcdc->RxBuffer, VCP_DATA_FS_OUT_PACKET_SIZE);
     }
     
