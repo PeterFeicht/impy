@@ -164,3 +164,5 @@ static int8_t VCP_Transmit(uint8_t* Buf, uint32_t Len)
 {
     return USBD_OK;
 }
+
+// ----------------------------------------------------------------------------
