@@ -89,7 +89,7 @@ static int8_t VCP_DeInit(void)
  * @param  length Number of bytes to be sent
  * @retval {@code USBD_Status} code
  */
-static int8_t VCP_Control(uint8_t cmd, uint8_t* pbuf, uint16_t length)
+static int8_t VCP_Control(uint8_t cmd, uint8_t* pbuf, uint16_t length __attribute__((unused)))
 {
     switch(cmd)
     {
