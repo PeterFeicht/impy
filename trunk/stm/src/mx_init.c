@@ -13,9 +13,6 @@ static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_USB_DEVICE_Init(void);
 
-// Variables ------------------------------------------------------------------
-I2C_HandleTypeDef hi2c1;
-
 // Exported functions ---------------------------------------------------------
 
 /**
