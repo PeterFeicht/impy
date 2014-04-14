@@ -402,6 +402,9 @@ static uint8_t USBD_VCP_DataIn(USBD_HandleTypeDef *pdev, uint8_t epnum)
     {
         hcdc->TxState = 0;
         
+        // Call interface callback
+        ((USBD_VCP_ItfTypeDef *)pdev->pUserData)->Transmit(hcdc->TxBuffer, hcdc->TxLength);
+        
         return USBD_OK;
     }
     else
@@ -424,10 +427,10 @@ static uint8_t USBD_VCP_DataOut(USBD_HandleTypeDef *pdev, uint8_t epnum)
     // the end of the application Xfer
     if(hcdc != NULL)
     {
-        // Get the received data length
         hcdc->RxLength = USBD_LL_GetRxDataSize(pdev, epnum);
         
-        ((USBD_VCP_ItfTypeDef *)pdev->pUserData)->Receive(hcdc->RxBuffer, &hcdc->RxLength);
+        // Call interface callback
+        ((USBD_VCP_ItfTypeDef *)pdev->pUserData)->Receive(hcdc->RxBuffer, hcdc->RxLength);
         
         return USBD_OK;
     }
