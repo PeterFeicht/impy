@@ -1,6 +1,6 @@
 /**
  * @file    usbd_desc.h
- * @author  Peter
+ * @author  Peter Feichtinger
  * @date    14.04.2014
  * @brief   Header for usbd_desc.c file.
  */
