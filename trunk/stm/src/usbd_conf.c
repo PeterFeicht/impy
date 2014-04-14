@@ -73,9 +73,9 @@ void HAL_PCD_MspDeInit(PCD_HandleTypeDef *hpcd)
     }
 }
 
-/*******************************************************************************
- LL Driver Callbacks (PCD -> USB Device Library)
- *******************************************************************************/
+/*****************************************************************************
+ *              LL Driver Callbacks (PCD -> USB Device Library)              *
+ *****************************************************************************/
 
 /**
  * @brief  Setup stage callback.
@@ -199,7 +199,7 @@ void HAL_PCD_DisconnectCallback(PCD_HandleTypeDef *hpcd)
 }
 
 /*****************************************************************************
- *              LL Driver Interface (USB Device Library --> PCD)             *
+ *              LL Driver Interface (USB Device Library -> PCD)              *
  *****************************************************************************/
 
 /**
