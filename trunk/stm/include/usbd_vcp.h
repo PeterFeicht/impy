@@ -69,8 +69,8 @@ typedef struct
     uint32_t RxLength;
     uint32_t TxLength;    
     
-    __IO uint32_t TxState;     
-    __IO uint32_t RxState;    
+    volatile uint32_t TxState;     
+    volatile uint32_t RxState;    
 } USBD_VCP_HandleTypeDef; 
 
 // Exported variables ---------------------------------------------------------
