@@ -18,6 +18,7 @@
 
 // External variables ---------------------------------------------------------
 extern USBD_HandleTypeDef hUsbDevice;
+extern I2C_HandleTypeDef hi2c1;
 
 // Exported functions ---------------------------------------------------------
 void MX_Init(void);
