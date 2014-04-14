@@ -2,17 +2,19 @@
  * @file    usbd_vcp.c
  * @author  Peter Feichtinger
  * @date    14.04.2014
- * @brief   This file provides the high layer firmware functions to manage the following functionalities of the
- *          USB VCP Class
- *           - Initialization and configuration of high and low layer
- *           - Enumeration as CDC Device (and enumeration for each implemented memory interface)
- *           - OUT/IN data transfer
- *           - Command IN transfer (class requests management)
- *           - Error management
+ * @brief   This file provides the high layer firmware functions to manage the USB VCP Class.
  * 
- * This driver manages the "Universal Serial Bus Class Definitions for Communications Devices
- * Revision 1.2 November 16, 2007" and the sub-protocol specification of "Universal Serial Bus Communications
- * Class Subclass Specification for PSTN Devices Revision 1.2 February 9, 2007"
+ * This file provides functions to manage the following functionalities: 
+ *  - Initialization and configuration of high and low layer
+ *  - Enumeration as CDC Device (and enumeration for each implemented memory interface)
+ *  - OUT/IN data transfer
+ *  - Command IN transfer (class requests management)
+ *  - Error management
+ * 
+ * This driver manages the
+ *  "Universal Serial Bus Class Definitions for Communications Devices Revision 1.2 November 16, 2007"
+ * and the sub-protocol specification of
+ *  "Universal Serial Bus Communications Class Subclass Specification for PSTN Devices Revision 1.2 February 9, 2007".
  * 
  * This driver implements the following aspects of the specification:
  *  - Device descriptor management
@@ -24,7 +26,7 @@
  *  - Data interface class
  *  
  *  @note For the Abstract Control Model, this core allows only transmitting the requests to lower layer
- *  dispatcher (eg. USBD_CDC_vcp.c/.h) which should manage each request and perform relative actions.
+ *  dispatcher (e.g. USBD_CDC_vcp.c/.h) which should manage each request and perform relative actions.
  *  These aspects may be enriched or modified for a specific user application.
  *  This driver doesn't implement the following aspects of the specification
  *  (but it is possible to manage these features with some modifications on this driver):
