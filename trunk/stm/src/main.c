@@ -9,6 +9,7 @@
 #include "main.h"
 
 // Variables ------------------------------------------------------------------
+USBD_HandleTypeDef hUsbDevice;
 
 // ----- main() ---------------------------------------------------------------
 
@@ -26,6 +27,8 @@ int main(int argc, char* argv[])
     while(1)
     {
         // Do stuff.
+        HAL_GPIO_TogglePin(LED_PORT, LED_BLUE);
+        HAL_Delay(600);
     }
 }
 
