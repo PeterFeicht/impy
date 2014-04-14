@@ -43,12 +43,12 @@
 static uint8_t USBD_VCP_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx);
 static uint8_t USBD_VCP_DeInit(USBD_HandleTypeDef *pdev, uint8_t cfgidx);
 static uint8_t USBD_VCP_Setup(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req);
+static uint8_t USBD_VCP_EP0_RxReady(USBD_HandleTypeDef *pdev);
 static uint8_t USBD_VCP_DataIn(USBD_HandleTypeDef *pdev, uint8_t epnum);
 static uint8_t USBD_VCP_DataOut(USBD_HandleTypeDef *pdev, uint8_t epnum);
-static uint8_t USBD_VCP_EP0_RxReady(USBD_HandleTypeDef *pdev);
-static uint8_t *USBD_VCP_GetFSCfgDesc(uint16_t *length);
 static uint8_t *USBD_VCP_GetHSCfgDesc(uint16_t *length);
-uint8_t *USBD_VCP_GetDeviceQualifierDescriptor(uint16_t *length);
+static uint8_t *USBD_VCP_GetFSCfgDesc(uint16_t *length);
+static uint8_t *USBD_VCP_GetDeviceQualifierDescriptor(uint16_t *length);
 
 // Private variables ----------------------------------------------------------
 // USB Standard Device Descriptor
@@ -72,16 +72,16 @@ USBD_ClassTypeDef  USBD_VCP =
     USBD_VCP_Init,
     USBD_VCP_DeInit,
     USBD_VCP_Setup,
-    NULL,                 /* EP0_TxSent, */
+    NULL,   /* EP0_TxSent */
     USBD_VCP_EP0_RxReady,
     USBD_VCP_DataIn,
     USBD_VCP_DataOut,
-    NULL,
-    NULL,
-    NULL,
+    NULL,   /* SOF */ // TODO maybe add SOF callback for faster bulk transfer to host
+    NULL,   /* IsoINIncomplete */
+    NULL,   /* IsoOUTIncomplete */
     USBD_VCP_GetHSCfgDesc,
     USBD_VCP_GetFSCfgDesc,
-    NULL,
+    NULL,   /* GetOtherSpeedConfigDescriptor */
     USBD_VCP_GetDeviceQualifierDescriptor,
 };
 
