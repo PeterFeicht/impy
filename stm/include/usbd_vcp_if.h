@@ -14,6 +14,9 @@
 // Exported variables ---------------------------------------------------------
 extern USBD_VCP_ItfTypeDef USBD_VCP_fops;
 
+// Exported functions ---------------------------------------------------------
+void VCP_SetEcho(uint8_t enable);
+
 // ----------------------------------------------------------------------------
 
 #endif /* USBD_VCP_IF_H_ */

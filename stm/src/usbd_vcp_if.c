@@ -32,6 +32,8 @@ uint8_t VCPTxBuffer[APP_TX_BUFFER_SIZE];
 uint32_t VCPTxBufIn = 0;
 // Start index of fresh data to be transmitted (out index)
 uint32_t VCPTxBufOut = 0;
+// Whether to echo characters received from the host, enabled by default
+uint8_t echo_enabled = 1;
 
 // USB device handle in main.c
 extern USBD_HandleTypeDef hUsbDevice;
@@ -42,6 +44,8 @@ static int8_t VCP_DeInit   (void);
 static int8_t VCP_Control  (uint8_t cmd, uint8_t* pbuf, uint16_t length);
 static int8_t VCP_Receive  (uint8_t* pbuf, uint32_t Len);
 static int8_t VCP_Transmit (uint8_t* pbuf, uint32_t Len);
+
+static int8_t SendBuffer(void);
 
 USBD_VCP_ItfTypeDef USBD_VCP_fops =
 {
@@ -148,6 +152,34 @@ static int8_t VCP_Control(uint8_t cmd, uint8_t* pbuf, uint16_t length)
  */
 static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
 {
+    uint8_t *rxbuf = Buf;
+    uint8_t *const rxend = Buf + Len;
+    uint8_t *txbuf = VCPTxBuffer + VCPTxBufIn;
+    
+    if(echo_enabled)
+    {
+        // Copy received data into transmit buffer (echo)
+        while(rxbuf < rxend)
+        {
+            // Avoid buffer overflow
+            if(txbuf == (VCPTxBuffer + APP_TX_BUFFER_SIZE))
+            {
+                txbuf = VCPTxBuffer;
+            }
+            *txbuf = *rxbuf++;
+            txbuf++;
+        }
+        
+        // Set buffer pointer
+        VCPTxBufIn += Len;
+        if(VCPTxBufIn >= APP_TX_BUFFER_SIZE)
+        {
+            VCPTxBufIn -= APP_TX_BUFFER_SIZE;
+        }
+        
+        SendBuffer();
+    }
+    
     USBD_VCP_ReceivePacket(&hUsbDevice);
     return USBD_OK;
 }
@@ -161,7 +193,58 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
  */
 static int8_t VCP_Transmit(uint8_t* Buf, uint32_t Len)
 {
+    // Send new data if present
+    SendBuffer();
     return USBD_OK;
+}
+
+/**
+ * Send the current buffer contents via USB. If the buffer is empty, does nothing.
+ * 
+ * @return {@code USBD_Status} code
+ */
+static int8_t SendBuffer(void)
+{
+    uint32_t buffsize;
+    int8_t status;
+    
+    if(VCPTxBufOut == VCPTxBufIn)
+        return USBD_OK;
+    
+    if(VCPTxBufOut > VCPTxBufIn) /* rollback */
+    {
+        buffsize = APP_RX_BUFFER_SIZE - VCPTxBufOut;
+    }
+    else
+    {
+        buffsize = VCPTxBufIn - VCPTxBufOut;
+    }
+    
+    USBD_VCP_SetTxBuffer(&hUsbDevice, VCPTxBuffer + VCPTxBufOut, buffsize);
+    status = USBD_VCP_TransmitPacket(&hUsbDevice);
+    
+    if(status == USBD_OK)
+    {
+        VCPTxBufOut += buffsize;
+        if(VCPTxBufOut == APP_RX_BUFFER_SIZE)
+        {
+            VCPTxBufOut = 0;
+        }
+    }
+    
+    return status;
+}
+
+// Exported functions ---------------------------------------------------------
+
+/**
+ * Sets whether characters received from the host should be echoed back.
+ * 
+ * @param enable {@code 0} to disable echo, nonzero value otherwise
+ */
+void VCP_SetEcho(uint8_t enable)
+{
+    echo_enabled = enable;
 }
 
 // ----------------------------------------------------------------------------
