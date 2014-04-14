@@ -283,7 +283,7 @@ __ALIGN_BEGIN uint8_t USBD_VCP_CfgFSDesc[USB_VCP_CONFIG_DESC_SIZ] __ALIGN_END =
  * @param  cfgidx Configuration index
  * @retval {@code USBD_Status} code
  */
-static uint8_t USBD_VCP_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx)
+static uint8_t USBD_VCP_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx __attribute__((unused)))
 {
     USBD_VCP_HandleTypeDef *hcdc;
     
@@ -337,7 +337,7 @@ static uint8_t USBD_VCP_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx)
  * @param  cfgidx Configuration index
  * @retval {@code USBD_Status} code
  */
-static uint8_t USBD_VCP_DeInit(USBD_HandleTypeDef *pdev, uint8_t cfgidx)
+static uint8_t USBD_VCP_DeInit(USBD_HandleTypeDef *pdev, uint8_t cfgidx __attribute__((unused)))
 {
     // Close endpoints
     USBD_LL_CloseEP(pdev, VCP_IN_EP);
@@ -396,7 +396,7 @@ static uint8_t USBD_VCP_Setup(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *re
  * @param  epnum endpoint number
  * @retval {@code USBD_Status} code
  */
-static uint8_t USBD_VCP_DataIn(USBD_HandleTypeDef *pdev, uint8_t epnum)
+static uint8_t USBD_VCP_DataIn(USBD_HandleTypeDef *pdev, uint8_t epnum __attribute__((unused)))
 {
     USBD_VCP_HandleTypeDef *hcdc = pdev->pClassData;
     
