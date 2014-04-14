@@ -12,9 +12,12 @@
 
 // Includes -------------------------------------------------------------------
 #include "stm32f4xx_hal.h"
+#include "usbd_core.h"
+#include "usbd_desc.h"
+#include "usbd_vcp_if.h"
 
 // External variables ---------------------------------------------------------
-
+extern USBD_HandleTypeDef hUsbDevice;
 
 // Exported functions ---------------------------------------------------------
 void MX_Init(void);
