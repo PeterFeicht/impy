@@ -33,7 +33,6 @@ uint32_t VCPTxBufIn = 0;
 // Start index of fresh data to be transmitted (out index)
 uint32_t VCPTxBufOut = 0;
 
-TIM_HandleTypeDef TimHandle;
 // USB device handle in main.c
 extern USBD_HandleTypeDef hUsbDevice;
 
