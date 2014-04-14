@@ -7,7 +7,6 @@
  * This file is mostly adapted from usbd_cdc.h from the STM32CubeF4 firmware package by ST.
  */
 
-
 #ifndef USBD_VCP_H_
 #define USBD_VCP_H_
 
@@ -30,16 +29,16 @@
 #define VCP_DATA_FS_IN_PACKET_SIZE          VCP_DATA_FS_MAX_PACKET_SIZE
 #define VCP_DATA_FS_OUT_PACKET_SIZE         VCP_DATA_FS_MAX_PACKET_SIZE
 
-// VCP Definitions
-#define VCP_SEND_ENCAPSULATED_COMMAND       0x00
-#define VCP_GET_ENCAPSULATED_RESPONSE       0x01
-#define VCP_SET_COMM_FEATURE                0x02
-#define VCP_GET_COMM_FEATURE                0x03
-#define VCP_CLEAR_COMM_FEATURE              0x04
-#define VCP_SET_LINE_CODING                 0x20
-#define VCP_GET_LINE_CODING                 0x21
-#define VCP_SET_CONTROL_LINE_STATE          0x22
-#define VCP_SEND_BREAK                      0x23
+// CDC Definitions
+#define CDC_SEND_ENCAPSULATED_COMMAND       0x00
+#define CDC_GET_ENCAPSULATED_RESPONSE       0x01
+#define CDC_SET_COMM_FEATURE                0x02
+#define CDC_GET_COMM_FEATURE                0x03
+#define CDC_CLEAR_COMM_FEATURE              0x04
+#define CDC_SET_LINE_CODING                 0x20
+#define CDC_GET_LINE_CODING                 0x21
+#define CDC_SET_CONTROL_LINE_STATE          0x22
+#define CDC_SEND_BREAK                      0x23
 
 // Exported type definitions --------------------------------------------------
 typedef struct
