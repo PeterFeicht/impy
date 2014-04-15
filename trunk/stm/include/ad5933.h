@@ -73,9 +73,19 @@ typedef struct
 // Constants ------------------------------------------------------------------
 
 /**
- * I2C Address of the AD5933, cannot be changed.
+ * I2C Address of the AD5933, cannot be changed
  */
 #define AD5933_ADDR                         0x0D
+
+/**
+ * Timeout in ms for I2C communication
+ */
+#define AD5933_I2C_TIMEOUT                  0x200
+
+/**
+ * Internal clock frequency of the AD5933 (16.776MHz)
+ */
+#define AD5933_CLK_FREQ                     0xFFFB40
 
 /*****************************************************************************
  *                              REGISTER MAPPING                             *
@@ -328,6 +338,30 @@ typedef struct
 #define AD5933_STATUS_VALID_IMPEDANCE       ((uint8_t)0x02)     //!< Valid real/imaginary data status bit
 #define AD5933_STATUS_SWEEP_COMPLETE        ((uint8_t)0x04)     //!< Frequency sweep complete status bit
 /** @} */
+
+/*****************************************************************************
+ *                           REGISTER VALUE RANGES                           *
+ *****************************************************************************/
+
+/**
+ * Maximum number of settling time cycles (Settling time register D8:D0)
+ */
+#define AD5933_MAX_SETTL                    ((uint16_t)0x1FF)
+
+/**
+ * Maximum number of frequency increments (Number of increments register D8:D0)
+ */
+#define AD5933_MAX_NUM_INCREMENTS           ((uint16_t)0x1FF)
+
+/**
+ * Minimum value of the frequency (Start frequency register) with internal clock
+ */
+#define AD5933_MIN_FREQ                     ((uint32_t)0xFA04)
+
+/**
+ * Maximum value of the frequency (Start frequency register + steps) with internal clock
+ */
+#define AD5933_MAX_FREQ                     ((uint32_t)0x30D4E7)
 
 // Exported functions ---------------------------------------------------------
 
