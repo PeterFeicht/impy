@@ -8,6 +8,9 @@
 #ifndef AD5933_H_
 #define AD5933_H_
 
+// Includes -------------------------------------------------------------------
+#include <stdint.h>
+
 // Exported type definitions --------------------------------------------------
 typedef struct
 {
@@ -298,7 +301,7 @@ typedef struct
 
 // Exported functions ---------------------------------------------------------
 
-
+void AD5933_CalculateGainFactor(AD5933_GainFactorDataTypeDef *data, AD5933_GainFactorTypeDef *gf);
 
 // ----------------------------------------------------------------------------
 
