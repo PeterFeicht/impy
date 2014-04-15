@@ -47,16 +47,16 @@ typedef struct
 
 typedef struct
 {
-    uint32_t Frequency;     //!< Frequency of the data point
-    int16_t  Real;          //!< Scaled real part of the impedance
-    int16_t  Imag;          //!< Scaled imaginary part of the impedance
+    uint32_t Frequency;     //!< Frequency of the data point in Hz
+    int16_t  Real;          //!< Raw real data of the impedance
+    int16_t  Imag;          //!< Raw imaginary data of the impedance
 } AD5933_ImpedanceData;
 
 typedef struct
 {
-    uint32_t Frequency;     //!< Frequency of the data point
-    float    Magnitude;     //!< Magnitude of the polar representation
-    float    Angle;         //!< Angle of the polar representation
+    uint32_t Frequency;     //!< Frequency of the data point in Hz
+    float    Magnitude;     //!< Magnitude of the polar representation in Ohms
+    float    Angle;         //!< Angle of the polar representation in rad
 } AD5933_ImpedancePolar;
 
 typedef struct
