@@ -12,7 +12,14 @@
 // Exported functions ---------------------------------------------------------
 
 /**
- * Calculates gain factor values from measurement data. The data can be one or two point calibration measurements.
+ * Calculates gain factor values from calibration measurement data.
+ * 
+ * The data can be one or two point calibration measurements.
+ * The gain factor should be calibrated if any of the following parameters change:
+ *  + Current-to-voltage gain setting resistor RFB
+ *  + Output voltage range
+ *  + PGA gain setting
+ *  + Temperature (gain varies up to 1% over temperature, probably not relevant for a lab environment)
  * 
  * @param data The measurement data to calculate the gain factor from
  * @param gf Pointer to a gain factor structure to be populated
