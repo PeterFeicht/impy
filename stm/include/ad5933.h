@@ -322,10 +322,11 @@ typedef struct
 /** @} */
 
 /**
- * @defgroup AD5933_CTRL Control Register Flags
+ * @defgroup AD5933_FLAGS Register Flags
  * @{
  */
 #define AD5933_CTRL_RESET                   ((uint16_t)0x01 << 4)   //!< Reset bit (Control register D4)
+#define AD5933_TEMP_SIGN_BIT                ((uint16_t)0x01 << 13)  //!< Temperature sign bit (D13)
 /** @} */
 
 /**
