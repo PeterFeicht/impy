@@ -25,7 +25,7 @@ typedef struct
     uint32_t Frequency;     //!< Frequency of the data point
     int16_t  Real;          //!< Scaled real part of the impedance
     int16_t  Imag;          //!< Scaled imaginary part of the impedance
-} AD5933_Impedance;
+} AD5933_ImpedanceData;
 
 typedef struct
 {
@@ -302,7 +302,7 @@ typedef struct
 // Exported functions ---------------------------------------------------------
 
 void AD5933_CalculateGainFactor(AD5933_GainFactorData *data, AD5933_GainFactor *gf);
-float AD5933_GetMagnitude(AD5933_Impedance *data, AD5933_GainFactor *gain);
+float AD5933_GetMagnitude(AD5933_ImpedanceData *data, AD5933_GainFactor *gain);
 
 // ----------------------------------------------------------------------------
 
