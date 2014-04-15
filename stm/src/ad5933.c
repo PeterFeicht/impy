@@ -19,7 +19,7 @@
  *  + Current-to-voltage gain setting resistor RFB
  *  + Output voltage range
  *  + PGA gain setting
- *  + Temperature (gain varies up to 1% over temperature, probably not relevant for a lab environment)
+ *  + Temperature (gain varies up to 1% over 150°C temperature, probably not relevant in a lab environment)
  * 
  * @param data The measurement data to calculate the gain factor from
  * @param gf Pointer to a gain factor structure to be populated
@@ -33,7 +33,8 @@ void AD5933_CalculateGainFactor(AD5933_GainFactorData *data, AD5933_GainFactor *
     gf->is_2point = data->is_2point;
     gf->freq1 = data->freq1;
     gf->offset = 1.0f / (magnitude * (float)data->impedance);
-    
+
+    // TODO add phase calibration
     if(data->is_2point)
     {
         magnitude = hypotf(data->real2, data->imag2);
