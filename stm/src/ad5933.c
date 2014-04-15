@@ -13,11 +13,16 @@
 static HAL_StatusTypeDef AD5933_WriteReg(uint16_t MemAddress, uint8_t *pData, uint16_t Size);
 static HAL_StatusTypeDef AD5933_ReadReg(uint16_t MemAddress, uint8_t *pData, uint16_t Size);
 static uint8_t AD5933_ReadStatus();
+static uint32_t AD5933_CalcFrequencyReg(uint32_t freq);
 
 // Private variables ----------------------------------------------------------
 static AD5933_Status status = AD_UNINIT;
 static I2C_HandleTypeDef *i2cHandle = NULL;
 static float *pTemperature = NULL;
+static AD5933_ImpedanceData *pBuffer;
+static AD5933_Sweep sweep_spec;
+static AD5933_RangeSettings range_spec;
+static uint16_t sweep_count;
 
 // Private functions ----------------------------------------------------------
 
@@ -55,6 +60,18 @@ static uint8_t AD5933_ReadStatus()
     
     AD5933_ReadReg(AD5933_STATUS_ADDR, &data, 1);
     return data;
+}
+
+/**
+ * Calculates the frequency register value corresponding to the specified frequency at internal clock frequency.
+ * 
+ * @param freq The frequency to calculate the register value for
+ * @return The value that can be written to the device register
+ */
+static uint32_t AD5933_CalcFrequencyReg(uint32_t freq)
+{
+    uint64_t tmp = (1 << 27) * 4 * freq;
+    return (uint32_t)(tmp / AD5933_CLK_FREQ);
 }
 
 // Exported functions ---------------------------------------------------------
@@ -111,6 +128,72 @@ AD5933_Error AD5933_Reset(void)
 }
 
 /**
+ * Initiates a frequency sweep over the specified range with the specified output buffer.
+ * 
+ * @param sweep The specifications to use for the sweep
+ * @param range The specifications for PGA gain and voltage range
+ * @param buffer Pointer to a buffer where measurement data is written (needs to be large enough for the specified
+ *               number of samples)
+ * @return {@link AD5933_Error} code
+ */
+AD5933_Error AD5933_MeasureImpedance(AD5933_Sweep *sweep, AD5933_RangeSettings *range, AD5933_ImpedanceData *buffer)
+{
+    uint32_t freq_start;
+    uint32_t freq_step;
+    uint16_t data;
+    
+    if(status == AD_UNINIT || sweep == NULL || buffer == NULL || range == NULL)
+    {
+        return AD_ERROR;
+    }
+    if(status != AD_IDLE && status != AD_FINISH)
+    {
+        return AD_BUSY;
+    }
+    
+    // Check for out of range values
+    if(sweep->Freq_Increment == 0 || sweep->Num_Increments > AD5933_MAX_NUM_INCREMENTS || sweep->Num_Increments == 0)
+    {
+        return AD_ERROR;
+    }
+    
+    pBuffer = buffer;
+    sweep_spec = *sweep;
+    range_spec = *range;
+    sweep_count = 0;
+    
+    freq_start = AD5933_CalcFrequencyReg(sweep->Start_Freq);
+    freq_step = AD5933_CalcFrequencyReg(sweep->Freq_Increment);
+    
+    // Check sweep range
+    if(freq_start < AD5933_MIN_FREQ || (freq_start + freq_step * sweep->Num_Increments) > AD5933_MAX_FREQ)
+    {
+        return AD_ERROR;
+    }
+    
+    // Put device in standby and send range settings
+    data = AD5933_FUNCTION_STANDBY | range->PGA_Gain | range->Voltage_Range;
+    AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
+    
+    // Send sweep parameters
+    AD5933_WriteReg(AD5933_START_FREQ_H_ADDR, ((uint8_t *)&freq_start) + 1, 3);
+    AD5933_WriteReg(AD5933_FREQ_INCR_H_ADDR, ((uint8_t *)&freq_step) + 1, 3);
+    AD5933_WriteReg(AD5933_NUM_INCR_H_ADDR, (uint8_t *)&sweep->Num_Increments, 2);
+    data = sweep->Settling_Cycles | sweep->Settling_Mult;
+    AD5933_WriteReg(AD5933_SETTL_H_ADDR, (uint8_t *)&data, 2);
+    
+    // Switch output on and start sweep after some settling time
+    data = AD5933_FUNCTION_INIT_FREQ | range->PGA_Gain | range->Voltage_Range;
+    AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
+    HAL_Delay(5);
+    data = AD5933_FUNCTION_START_SWEEP | range->PGA_Gain | range->Voltage_Range;
+    AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
+    
+    status = AD_MEASURE_IMPEDANCE;
+    return AD_OK;
+}
+
+/**
  * Initiates a device temperature measurement on the AD5933 with the specified destination address.
  * 
  * @param destination The address where the temperature is written to
@@ -144,6 +227,8 @@ AD5933_Error AD5933_MeasureTemperature(float *destination)
 void AD5933_TIM_PeriodElapsedCallback(void)
 {
     uint16_t data;
+    uint8_t  dev_status;
+    AD5933_ImpedanceData *buf;
     
     switch(status)
     {
@@ -151,6 +236,7 @@ void AD5933_TIM_PeriodElapsedCallback(void)
         case AD_IDLE:
         case AD_FINISH:
             return;
+            
         case AD_MEASURE_TEMP:
             if(AD5933_ReadStatus() & AD5933_STATUS_VALID_TEMP)
             {
@@ -167,9 +253,32 @@ void AD5933_TIM_PeriodElapsedCallback(void)
                 status = AD_FINISH;
             }
             break;
+            
         case AD_MEASURE_IMPEDANCE:
-            // TODO handle impedance measurement update
+            dev_status = AD5933_ReadStatus();
+            if(dev_status & AD5933_STATUS_VALID_IMPEDANCE)
+            {
+                buf = pBuffer + sweep_count;
+                
+                // Read data and save it
+                AD5933_ReadReg(AD5933_REAL_H_ADDR, (uint8_t *)&buf->Real, 2);
+                AD5933_ReadReg(AD5933_IMAG_H_ADDR, (uint8_t *)&buf->Imag, 2);
+                buf->Frequency = sweep_spec.Start_Freq + sweep_count * sweep_spec.Freq_Increment;
+                sweep_count++;
+                
+                // Finish or measure next step
+                if(dev_status & AD5933_STATUS_SWEEP_COMPLETE)
+                {
+                    status = AD_FINISH;
+                }
+                else
+                {
+                    data = AD5933_FUNCTION_INCREMENT_FREQ | range_spec.PGA_Gain | range_spec.Voltage_Range;
+                    AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t)&data, 1);
+                }
+            }
             break;
+            
         case AD_CALIBRATE:
             // TODO handle calibration update
             break;
@@ -194,11 +303,11 @@ void AD5933_CalculateGainFactor(AD5933_GainFactorData *data, AD5933_GainFactor *
     // Gain factor is calculated by 1/(Magnitude * Impedance), with Magnitude being sqrt(Real^2 + Imag^2)
     float magnitude = hypotf(data->real1, data->imag1);
     float gain2;
-
+    
     gf->is_2point = data->is_2point;
     gf->freq1 = data->freq1;
     gf->offset = 1.0f / (magnitude * (float)data->impedance);
-
+    
     // TODO add phase calibration
     if(data->is_2point)
     {
