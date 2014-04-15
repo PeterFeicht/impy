@@ -22,8 +22,9 @@ typedef struct
 
 typedef struct
 {
-    int16_t Real;   //!< Scaled real part of the impedance
-    int16_t Imag;   //!< Scaled imaginary part of the impedance
+    uint32_t Frequency;     //!< Frequency of the data point
+    int16_t  Real;          //!< Scaled real part of the impedance
+    int16_t  Imag;          //!< Scaled imaginary part of the impedance
 } AD5933_Impedance;
 
 typedef struct
