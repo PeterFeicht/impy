@@ -495,7 +495,7 @@ static uint8_t *USBD_VCP_GetHSCfgDesc(uint16_t *length)
  * @param  length pointer data length
  * @retval pointer to descriptor buffer
  */
-uint8_t *USBD_VCP_GetDeviceQualifierDescriptor(uint16_t *length)
+static uint8_t *USBD_VCP_GetDeviceQualifierDescriptor(uint16_t *length)
 {
     *length = sizeof(USBD_VCP_DeviceQualifierDesc);
     return USBD_VCP_DeviceQualifierDesc;
