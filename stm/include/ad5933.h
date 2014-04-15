@@ -37,19 +37,19 @@ typedef struct
 
 typedef struct
 {
-    float freq1;            //!< Frequency of the first calibration point
-    float freq_diff;        //!< Frequency difference between first and second calibration point
-    float offset;           //!< Calculated gain factor at first frequency
-    float slope;            //!< Calculated gain factor slope for a two point calibration
-    uint8_t  is_2point;     //!< Whether this is single or two point gain factor data
+    float   freq1;          //!< Frequency of the first calibration point
+    float   freq_diff;      //!< Frequency difference between first and second calibration point
+    float   offset;         //!< Calculated gain factor at first frequency
+    float   slope;          //!< Calculated gain factor slope for a two point calibration
+    uint8_t is_2point;      //!< Whether this is single or two point gain factor data
 } AD5933_GainFactorTypeDef;
 
 // Constants ------------------------------------------------------------------
 
 /**
- * I2C Address of the AD9533, cannot be changed.
+ * I2C Address of the AD5933, cannot be changed.
  */
-#define AD9533_ADDR                         0x0D
+#define AD5933_ADDR                         0x0D
 
 /*****************************************************************************
  *                              REGISTER MAPPING                             *
@@ -60,10 +60,10 @@ typedef struct
  * Read/Write
  * Default value: 0xA0 (Power down)
  * 
- *  + D15:D12   Control function, see {@link AD9533_FUNCTION}
+ *  + D15:D12   Control function, see {@link AD5933_FUNCTION}
  *  + D11       Not used
  *  + D10:D9    Output voltage range setting, see {@link AD5933_VOLTAGE}
- *  + D8        PGA gain setting, see {@link AD9533_GAIN}
+ *  + D8        PGA gain setting, see {@link AD5933_GAIN}
  */
 #define AD5933_CTRL_H_ADDR                  0x80
 
@@ -74,7 +74,7 @@ typedef struct
  * 
  *  + D7:D5     Reserved, set to 0
  *  + D4        Reset
- *  + D3        Clock source setting, see {@link AD9533_CLOCK}
+ *  + D3        Clock source setting, see {@link AD5933_CLOCK}
  *  + D2:D0     Reserved, set to 0
  */
 #define AD5933_CTRL_L_ADDR                  0x81
@@ -84,42 +84,42 @@ typedef struct
  * Read/Write
  * Default value: none
  */
-#define AD9533_START_FREQ_H_ADDR            0x82
+#define AD5933_START_FREQ_H_ADDR            0x82
 
 /**
  * Start Frequency Register Mid Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
  */
-#define AD9533_START_FREQ_M_ADDR            0x83
+#define AD5933_START_FREQ_M_ADDR            0x83
 
 /**
  * Start Frequency Register Low Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
  */
-#define AD9533_START_FREQ_L_ADDR            0x84
+#define AD5933_START_FREQ_L_ADDR            0x84
 
 /**
  * Frequency Increment Register High Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
  */
-#define AD9533_FREQ_INCR_H_ADDR             0x85
+#define AD5933_FREQ_INCR_H_ADDR             0x85
 
 /**
  * Frequency Increment Register Mid Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
  */
-#define AD9533_FREQ_INCR_M_ADDR             0x86
+#define AD5933_FREQ_INCR_M_ADDR             0x86
 
 /**
  * Frequency Increment Register Low Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
  */
-#define AD9533_FREQ_INCR_L_ADDR             0x87
+#define AD5933_FREQ_INCR_L_ADDR             0x87
 
 /**
  * Number of Increments Register High Byte (9-bit unsigned)
@@ -129,7 +129,7 @@ typedef struct
  *  + D16:D9    Don't care
  *  + D8        MSB of value
  */
-#define AD9533_NUM_INCR_H_ADDR              0x88
+#define AD5933_NUM_INCR_H_ADDR              0x88
 
 /**
  * Number of Increments Register Low Byte (9-bit unsigned)
@@ -138,7 +138,7 @@ typedef struct
  * 
  *  + D7:D0     LSB of value
  */
-#define AD9533_NUM_INCR_L_ADDR              0x89
+#define AD5933_NUM_INCR_L_ADDR              0x89
 
 /**
  * Number of Settling Time Cycles Register High Byte (2+9-bit unsigned)
@@ -146,10 +146,10 @@ typedef struct
  * Default value: none
  * 
  *  + D15:D11   Don't care
- *  + D10:D9    Settling time multiplier, see {@link AD9533_SETTL_MULT}
+ *  + D10:D9    Settling time multiplier, see {@link AD5933_SETTL_MULT}
  *  + D8        MSB of settling time cycles
  */
-#define AD9533_SETTL_H_ADDR                 0x8A
+#define AD5933_SETTL_H_ADDR                 0x8A
 
 /**
  * Number of Settling Time Cycles Register Low Byte (2+9-bit unsigned)
@@ -158,7 +158,7 @@ typedef struct
  * 
  *  + D7:D0     LSB of settling time cycles
  */
-#define AD9533_SETTL_L_ADDR                 0x8B
+#define AD5933_SETTL_L_ADDR                 0x8B
 
 /**
  * Status Register
@@ -170,7 +170,7 @@ typedef struct
  *  + D1        Valid real/imaginary data
  *  + D0        Valid temperature measurement
  * 
- * See also {@link AD9533_STATUS}
+ * See also {@link AD5933_STATUS}
  */
 #define AD5933_STATUS_ADDR                  0x8F
 
@@ -192,54 +192,54 @@ typedef struct
  * 
  *  + D7:D0     LSB of temperature value
  */
-#define AD9533_TEMP_L_ADDR                  0x93
+#define AD5933_TEMP_L_ADDR                  0x93
 
 /**
  * Real Data Register High Byte (16-bit signed)
  * Read only
  * Default value: none
  */
-#define AD9533_REAL_H_ADDR                  0x94
+#define AD5933_REAL_H_ADDR                  0x94
 
 /**
  * Real Data Register Low Byte (16-bit signed)
  * Read only
  * Default value: none
  */
-#define AD9533_REAL_L_ADDR                  0x95
+#define AD5933_REAL_L_ADDR                  0x95
 
 /**
  * Imaginary Data Register High Byte (16-bit signed)
  * Read only
  * Default value: none
  */
-#define AD9533_IMAG_H_ADDR                  0x96
+#define AD5933_IMAG_H_ADDR                  0x96
 
 /**
  * Imaginary Data Register Low Byte (16-bit signed)
  * Read only
  * Default value: none
  */
-#define AD9533_IMAG_L_ADDR                  0x97
+#define AD5933_IMAG_L_ADDR                  0x97
 
 /*****************************************************************************
  *                              REGISTER VALUES                              *
  *****************************************************************************/
 
 /**
- * @defgroup AD9533_FUNCTION Control Register Function Values
+ * @defgroup AD5933_FUNCTION Control Register Function Values
  * 
  * Control functions (Control register D15:D12)
  * @{
  */
 // 
-#define AD9533_FUNCTION_INIT_FREQ           ((uint16_t)0x01)    //!< Initialize with start frequency
-#define AD9533_FUNCTION_START_SWEEP         ((uint16_t)0x02)    //!< Start frequency sweep
-#define AD9533_FUNCTION_INCREMENT_FREQ      ((uint16_t)0x03)    //!< Increment frequency
-#define AD9533_FUNCTION_REPEAT_FREQ         ((uint16_t)0x04)    //!< Repeat frequency
-#define AD9533_FUNCTION_MEASURE_TEMP        ((uint16_t)0x09)    //!< Measure temperature
-#define AD9533_FUNCTION_POWER_DOWN          ((uint16_t)0x0A)    //!< Power-down mode
-#define AD9533_FUNCTION_STANDBY             ((uint16_t)0x0B)    //!< Standby mode
+#define AD5933_FUNCTION_INIT_FREQ           ((uint16_t)0x01)    //!< Initialize with start frequency
+#define AD5933_FUNCTION_START_SWEEP         ((uint16_t)0x02)    //!< Start frequency sweep
+#define AD5933_FUNCTION_INCREMENT_FREQ      ((uint16_t)0x03)    //!< Increment frequency
+#define AD5933_FUNCTION_REPEAT_FREQ         ((uint16_t)0x04)    //!< Repeat frequency
+#define AD5933_FUNCTION_MEASURE_TEMP        ((uint16_t)0x09)    //!< Measure temperature
+#define AD5933_FUNCTION_POWER_DOWN          ((uint16_t)0x0A)    //!< Power-down mode
+#define AD5933_FUNCTION_STANDBY             ((uint16_t)0x0B)    //!< Standby mode
 /** @} */
 
 /**
@@ -255,45 +255,45 @@ typedef struct
 /** @} */
 
 /**
- * @defgroup AD9533_GAIN Control Register PGA Gain Settings
+ * @defgroup AD5933_GAIN Control Register PGA Gain Settings
  * 
  * PGA gain setting (Control register D8)
  * @{
  */
-#define AD9533_GAIN_1                       ((uint16_t)0x01)    //!< PGA gain x1
-#define AD9533_GAIN_5                       ((uint16_t)0x00)    //!< PGA gain x5
+#define AD5933_GAIN_1                       ((uint16_t)0x01)    //!< PGA gain x1
+#define AD5933_GAIN_5                       ((uint16_t)0x00)    //!< PGA gain x5
 /** @} */
 
 /**
- * @defgroup AD9533_CLOCK Control Register Clock Source Settings
+ * @defgroup AD5933_CLOCK Control Register Clock Source Settings
  * 
  * Clock source (Control register D3)
  * @{
  */
-#define AD9533_CLOCK_INTERNAL               ((uint16_t)0x00)    //!< Internal system clock (~16.667MHz)
-#define AD9533_CLOCK_EXTERNAL               ((uint16_t)0x01)    //!< External system clock
+#define AD5933_CLOCK_INTERNAL               ((uint16_t)0x00)    //!< Internal system clock (~16.667MHz)
+#define AD5933_CLOCK_EXTERNAL               ((uint16_t)0x01)    //!< External system clock
 /** @} */
 
 /**
- * @defgroup AD9533_SETTL_MULT Settling Time Register Multiplier Values
+ * @defgroup AD5933_SETTL_MULT Settling Time Register Multiplier Values
  * 
  * Settling time multiplier (Settling time register D10:D9)
  * @{
  */
-#define AD9533_SETTL_MULT_1                 ((uint16_t)0x00)    //!< Settling time multiplier of 1
-#define AD9533_SETTL_MULT_2                 ((uint16_t)0x01)    //!< Settling time multiplier of 2
-#define AD9533_SETTL_MULT_4                 ((uint16_t)0x03)    //!< Settling time multiplier of 4
+#define AD5933_SETTL_MULT_1                 ((uint16_t)0x00)    //!< Settling time multiplier of 1
+#define AD5933_SETTL_MULT_2                 ((uint16_t)0x01)    //!< Settling time multiplier of 2
+#define AD5933_SETTL_MULT_4                 ((uint16_t)0x03)    //!< Settling time multiplier of 4
 /** @} */
 
 /**
- * @defgroup AD9533_STATUS Status Register Bits
+ * @defgroup AD5933_STATUS Status Register Bits
  * 
  * Status register bitmasks
  * @{
  */
-#define AD9533_STATUS_VALID_TEMP            ((uint8_t)0x01)     //!< Valid temperature measurement status bit
-#define AD9533_STATUS_VALID_IMPEDANCE       ((uint8_t)0x02)     //!< Valid real/imaginary data status bit
-#define AD9533_STATUS_SWEEP_COMPLETE        ((uint8_t)0x04)     //!< Frequency sweep complete status bit
+#define AD5933_STATUS_VALID_TEMP            ((uint8_t)0x01)     //!< Valid temperature measurement status bit
+#define AD5933_STATUS_VALID_IMPEDANCE       ((uint8_t)0x02)     //!< Valid real/imaginary data status bit
+#define AD5933_STATUS_SWEEP_COMPLETE        ((uint8_t)0x04)     //!< Frequency sweep complete status bit
 /** @} */
 
 // Exported functions ---------------------------------------------------------
