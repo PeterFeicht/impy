@@ -17,6 +17,7 @@ static uint8_t AD5933_ReadStatus();
 // Private variables ----------------------------------------------------------
 static AD5933_Status status = AD_UNINIT;
 static I2C_HandleTypeDef *i2cHandle = NULL;
+static float *pTemperature = NULL;
 
 // Private functions ----------------------------------------------------------
 
@@ -50,7 +51,7 @@ static HAL_StatusTypeDef AD5933_ReadReg(uint16_t MemAddress, uint8_t *pData, uin
  */
 static uint8_t AD5933_ReadStatus()
 {
-    uint8_t data;
+    uint8_t data = 0;
     
     AD5933_ReadReg(AD5933_STATUS_ADDR, &data, 1);
     return data;
@@ -110,10 +111,40 @@ AD5933_Error AD5933_Reset(void)
 }
 
 /**
+ * Initiates a device temperature measurement on the AD5933 with the specified destination address.
+ * 
+ * @param destination The address where the temperature is written to
+ * @return {@link AD5933_Error} code
+ */
+AD5933_Error AD5933_MeasureTemperature(float *destination)
+{
+    uint8_t data;
+    
+    if(status == AD_UNINIT || destination == NULL)
+    {
+        return AD_ERROR;
+    }
+    if(status != AD_IDLE && status != AD_FINISH)
+    {
+        return AD_BUSY;
+    }
+    
+    pTemperature = destination;
+    *pTemperature = NAN;
+    data = HIBYTE(AD5933_FUNCTION_MEASURE_TEMP);
+    AD5933_WriteReg(AD5933_CTRL_H_ADDR, &data, 1);
+    status = AD_MEASURE_TEMP;
+    
+    return AD_OK;
+}
+
+/**
  * This function should be called periodically to update measurement data and driver status.
  */
 void AD5933_TIM_PeriodElapsedCallback(void)
 {
+    uint16_t data;
+    
     switch(status)
     {
         case AD_UNINIT:
@@ -121,7 +152,20 @@ void AD5933_TIM_PeriodElapsedCallback(void)
         case AD_FINISH:
             return;
         case AD_MEASURE_TEMP:
-            // TODO handle temperature measurement update
+            if(AD5933_ReadStatus() & AD5933_STATUS_VALID_TEMP)
+            {
+                AD5933_ReadReg(AD5933_TEMP_H_ADDR, (uint8_t *)&data, 2);
+                // Convert data to temperature value
+                if(data & AD5933_TEMP_SIGN_BIT)
+                {
+                    *pTemperature = ((int16_t)data - (1 << 14)) / 32.0f;
+                }
+                else
+                {
+                    *pTemperature = data / 32.0f;
+                }
+                status = AD_FINISH;
+            }
             break;
         case AD_MEASURE_IMPEDANCE:
             // TODO handle impedance measurement update
