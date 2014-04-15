@@ -70,6 +70,29 @@ AD5933_Error AD5933_Reset(void)
 }
 
 /**
+ * This function should be called periodically to update measurement data and driver status.
+ */
+void AD5933_TIM_PeriodElapsedCallback(void)
+{
+    switch(status)
+    {
+        case AD_UNINIT:
+        case AD_IDLE:
+        case AD_FINISH:
+            return;
+        case AD_MEASURE_TEMP:
+            // TODO handle temperature measurement update
+            break;
+        case AD_MEASURE_IMPEDANCE:
+            // TODO handle impedance measurement update
+            break;
+        case AD_CALIBRATE:
+            // TODO handle calibration update
+            break;
+    }
+}
+
+/**
  * Calculates gain factor values from calibration measurement data.
  * 
  * The data can be one or two point calibration measurements.
