@@ -59,49 +59,49 @@ typedef struct
 #define AD5933_CTRL_L_ADDR                  0x81
 
 /**
- * Start Frequency Register High Byte (24-bit)
+ * Start Frequency Register High Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
  */
 #define AD9533_START_FREQ_H_ADDR            0x82
 
 /**
- * Start Frequency Register Mid Byte (24-bit)
+ * Start Frequency Register Mid Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
  */
 #define AD9533_START_FREQ_M_ADDR            0x83
 
 /**
- * Start Frequency Register Low Byte (24-bit)
+ * Start Frequency Register Low Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
  */
 #define AD9533_START_FREQ_L_ADDR            0x84
 
 /**
- * Frequency Increment Register High Byte (24-bit)
+ * Frequency Increment Register High Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
  */
 #define AD9533_FREQ_INCR_H_ADDR             0x85
 
 /**
- * Frequency Increment Register Mid Byte (24-bit)
+ * Frequency Increment Register Mid Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
  */
 #define AD9533_FREQ_INCR_M_ADDR             0x86
 
 /**
- * Frequency Increment Register Low Byte (24-bit)
+ * Frequency Increment Register Low Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
  */
 #define AD9533_FREQ_INCR_L_ADDR             0x87
 
 /**
- * Number of Increments Register High Byte (9-bit)
+ * Number of Increments Register High Byte (9-bit unsigned)
  * Read/Write
  * Default value: none
  * 
@@ -111,7 +111,7 @@ typedef struct
 #define AD9533_NUM_INCR_H_ADDR              0x88
 
 /**
- * Number of Increments Register Low Byte (9-bit)
+ * Number of Increments Register Low Byte (9-bit unsigned)
  * Read/Write
  * Default value: none
  * 
@@ -120,7 +120,7 @@ typedef struct
 #define AD9533_NUM_INCR_L_ADDR              0x89
 
 /**
- * Number of Settling Time Cycles Register High Byte (2+9-bit)
+ * Number of Settling Time Cycles Register High Byte (2+9-bit unsigned)
  * Read/Write
  * Default value: none
  * 
@@ -131,7 +131,7 @@ typedef struct
 #define AD9533_SETTL_H_ADDR                 0x8A
 
 /**
- * Number of Settling Time Cycles Register Low Byte (2+9-bit)
+ * Number of Settling Time Cycles Register Low Byte (2+9-bit unsigned)
  * Read/Write
  * Default value: none
  * 
@@ -154,7 +154,7 @@ typedef struct
 #define AD5933_STATUS_ADDR                  0x8F
 
 /**
- * Temperature Data Register High Byte (14-bit)
+ * Temperature Data Register High Byte (14-bit signed)
  * Read only
  * Default value: none
  * 
@@ -165,7 +165,7 @@ typedef struct
 #define AD5933_TEMP_H_ADDR                  0x92
 
 /**
- * Temperature Data Register Low Byte (14-bit)
+ * Temperature Data Register Low Byte (14-bit signed)
  * Read only
  * Default value: none
  * 
@@ -174,28 +174,28 @@ typedef struct
 #define AD9533_TEMP_L_ADDR                  0x93
 
 /**
- * Real Data Register High Byte (16-bit)
+ * Real Data Register High Byte (16-bit signed)
  * Read only
  * Default value: none
  */
 #define AD9533_REAL_H_ADDR                  0x94
 
 /**
- * Real Data Register Low Byte (16-bit)
+ * Real Data Register Low Byte (16-bit signed)
  * Read only
  * Default value: none
  */
 #define AD9533_REAL_L_ADDR                  0x95
 
 /**
- * Imaginary Data Register High Byte (16-bit)
+ * Imaginary Data Register High Byte (16-bit signed)
  * Read only
  * Default value: none
  */
 #define AD9533_IMAG_H_ADDR                  0x96
 
 /**
- * Imaginary Data Register Low Byte (16-bit)
+ * Imaginary Data Register Low Byte (16-bit signed)
  * Read only
  * Default value: none
  */
