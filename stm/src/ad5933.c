@@ -50,7 +50,7 @@ void AD5933_CalculateGainFactor(AD5933_GainFactorData *data, AD5933_GainFactor *
  * @param gain Gain factor structure to use
  * @return
  */
-float AD5933_GetMagnitude(AD5933_Impedance *data, AD5933_GainFactor *gain)
+float AD5933_GetMagnitude(AD5933_ImpedanceData *data, AD5933_GainFactor *gain)
 {
     // Actual impedance is calculated by 1/(Magnitude * Gain Factor), with Magnitude being sqrt(Real^2 + Imag^2)
     float magnitude = hypotf(data->Real, data->Imag);
