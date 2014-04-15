@@ -15,13 +15,19 @@
 typedef enum
 {
     AD_UNINIT = 0,          //!< Driver has not been initialized
-    AD_RESET,               //!< Driver has been initialized but no parameters have been set
-    AD_IDLE,                //!< Driver is ready to start a measurement
+    AD_IDLE,                //!< Driver has been initialized and is ready to start a measurement
     AD_FINISH,              //!< Driver has finished with a measurement
     AD_CALIBRATE,           //!< Driver is doing a calibration measurement
     AD_MEASURE_TEMP,        //!< Driver is doing a temperature measurement
     AD_MEASURE_IMPEDANCE    //!< Driver is doing an impedance measurement
 } AD5933_Status;
+
+typedef enum
+{
+    AD_OK = 0,      //!< Indicates success
+    AD_BUSY,        //!< Indicates that the driver is currently busy doing a measurement
+    AD_ERROR        //!< Indicates an error condition
+} AD5933_Error;
 
 typedef struct
 {
