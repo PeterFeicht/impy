@@ -259,13 +259,13 @@ typedef struct
  * @{
  */
 // 
-#define AD5933_FUNCTION_INIT_FREQ           ((uint16_t)0x01)    //!< Initialize with start frequency
-#define AD5933_FUNCTION_START_SWEEP         ((uint16_t)0x02)    //!< Start frequency sweep
-#define AD5933_FUNCTION_INCREMENT_FREQ      ((uint16_t)0x03)    //!< Increment frequency
-#define AD5933_FUNCTION_REPEAT_FREQ         ((uint16_t)0x04)    //!< Repeat frequency
-#define AD5933_FUNCTION_MEASURE_TEMP        ((uint16_t)0x09)    //!< Measure temperature
-#define AD5933_FUNCTION_POWER_DOWN          ((uint16_t)0x0A)    //!< Power-down mode
-#define AD5933_FUNCTION_STANDBY             ((uint16_t)0x0B)    //!< Standby mode
+#define AD5933_FUNCTION_INIT_FREQ           ((uint16_t)0x01 << 12)  //!< Initialize with start frequency
+#define AD5933_FUNCTION_START_SWEEP         ((uint16_t)0x02 << 12)  //!< Start frequency sweep
+#define AD5933_FUNCTION_INCREMENT_FREQ      ((uint16_t)0x03 << 12)  //!< Increment frequency
+#define AD5933_FUNCTION_REPEAT_FREQ         ((uint16_t)0x04 << 12)  //!< Repeat frequency
+#define AD5933_FUNCTION_MEASURE_TEMP        ((uint16_t)0x09 << 12)  //!< Measure temperature
+#define AD5933_FUNCTION_POWER_DOWN          ((uint16_t)0x0A << 12)  //!< Power-down mode
+#define AD5933_FUNCTION_STANDBY             ((uint16_t)0x0B << 12)  //!< Standby mode
 /** @} */
 
 /**
@@ -274,10 +274,10 @@ typedef struct
  * Output voltage range (Control register D10:D9)
  * @{
  */
-#define AD5933_VOLTAGE_2                    ((uint16_t)0x00)    //!< Range 1: 2V p-p
-#define AD5933_VOLTAGE_1                    ((uint16_t)0x03)    //!< Range 2: 1V p-p
-#define AD5933_VOLTAGE_0_4                  ((uint16_t)0x02)    //!< Range 3: 400mV p-p
-#define AD5933_VOLTAGE_0_2                  ((uint16_t)0x01)    //!< Range 4: 200mV p-p
+#define AD5933_VOLTAGE_2                    ((uint16_t)0x00 << 9)   //!< Range 1: 2V p-p
+#define AD5933_VOLTAGE_1                    ((uint16_t)0x03 << 9)   //!< Range 2: 1V p-p
+#define AD5933_VOLTAGE_0_4                  ((uint16_t)0x02 << 9)   //!< Range 3: 400mV p-p
+#define AD5933_VOLTAGE_0_2                  ((uint16_t)0x01 << 9)   //!< Range 4: 200mV p-p
 /** @} */
 
 /**
@@ -286,8 +286,8 @@ typedef struct
  * PGA gain setting (Control register D8)
  * @{
  */
-#define AD5933_GAIN_1                       ((uint16_t)0x01)    //!< PGA gain x1
-#define AD5933_GAIN_5                       ((uint16_t)0x00)    //!< PGA gain x5
+#define AD5933_GAIN_1                       ((uint16_t)0x01 << 8)   //!< PGA gain x1
+#define AD5933_GAIN_5                       ((uint16_t)0x00 << 8)   //!< PGA gain x5
 /** @} */
 
 /**
@@ -296,8 +296,8 @@ typedef struct
  * Clock source (Control register D3)
  * @{
  */
-#define AD5933_CLOCK_INTERNAL               ((uint16_t)0x00)    //!< Internal system clock (~16.667MHz)
-#define AD5933_CLOCK_EXTERNAL               ((uint16_t)0x01)    //!< External system clock
+#define AD5933_CLOCK_INTERNAL               ((uint16_t)0x00 << 3)   //!< Internal system clock (~16.667MHz)
+#define AD5933_CLOCK_EXTERNAL               ((uint16_t)0x01 << 3)   //!< External system clock
 /** @} */
 
 /**
@@ -306,9 +306,16 @@ typedef struct
  * Settling time multiplier (Settling time register D10:D9)
  * @{
  */
-#define AD5933_SETTL_MULT_1                 ((uint16_t)0x00)    //!< Settling time multiplier of 1
-#define AD5933_SETTL_MULT_2                 ((uint16_t)0x01)    //!< Settling time multiplier of 2
-#define AD5933_SETTL_MULT_4                 ((uint16_t)0x03)    //!< Settling time multiplier of 4
+#define AD5933_SETTL_MULT_1                 ((uint16_t)0x00 << 9)   //!< Settling time multiplier of 1
+#define AD5933_SETTL_MULT_2                 ((uint16_t)0x01 << 9)   //!< Settling time multiplier of 2
+#define AD5933_SETTL_MULT_4                 ((uint16_t)0x03 << 9)   //!< Settling time multiplier of 4
+/** @} */
+
+/**
+ * @defgroup AD5933_CTRL Control Register Flags
+ * @{
+ */
+#define AD5933_CTRL_RESET                   ((uint16_t)0x01 << 4)   //!< Reset bit (Control register D4)
 /** @} */
 
 /**
