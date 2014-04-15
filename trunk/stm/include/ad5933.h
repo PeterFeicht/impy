@@ -10,6 +10,7 @@
 
 // Includes -------------------------------------------------------------------
 #include <stdint.h>
+#include "stm32f4xx_hal.h"
 
 // Exported type definitions --------------------------------------------------
 typedef enum
@@ -317,6 +318,13 @@ typedef struct
 /** @} */
 
 // Exported functions ---------------------------------------------------------
+
+AD5933_Status AD5933_GetStatus(void);
+AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c);
+AD5933_Error AD5933_MeasureImpedance(AD5933_Sweep *sweep);
+AD5933_Error AD5933_MeasureTemperature(void);
+AD5933_Error AD5933_Calibrate(AD5933_GainFactorData *data);
+void AD5933_TIM_PeriodElapsedCallback(void);
 
 void AD5933_CalculateGainFactor(AD5933_GainFactorData *data, AD5933_GainFactor *gf);
 float AD5933_GetMagnitude(AD5933_ImpedanceData *data, AD5933_GainFactor *gain);
