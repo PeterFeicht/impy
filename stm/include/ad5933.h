@@ -23,6 +23,27 @@ typedef struct
     int16_t Imag;   //!< Scaled imaginary part of the impedance
 } AD5933_ImpedanceTypeDef;
 
+typedef struct
+{
+    uint32_t impedance;     //!< Impedance used for the gain factor calibration
+    uint32_t freq1;         //!< Frequency of the first calibration point
+    int16_t  real1;         //!< Real part for the first calibration point
+    int16_t  imag1;         //!< Imaginary part for the first calibration point
+    uint32_t freq2;         //!< Frequency of the second calibration point
+    int16_t  real2;         //!< Real part for the second calibration point
+    int16_t  imag2;         //!< Imaginary part for the second calibration point
+    uint8_t  is_2point;     //!< Whether this is single or two point calibration data
+} AD5933_GainFactorDataTypeDef;
+
+typedef struct
+{
+    float freq1;            //!< Frequency of the first calibration point
+    float freq_diff;        //!< Frequency difference between first and second calibration point
+    float offset;           //!< Calculated gain factor at first frequency
+    float slope;            //!< Calculated gain factor slope for a two point calibration
+    uint8_t  is_2point;     //!< Whether this is single or two point gain factor data
+} AD5933_GainFactorTypeDef;
+
 // Constants ------------------------------------------------------------------
 
 /**
