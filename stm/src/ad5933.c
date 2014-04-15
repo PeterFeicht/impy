@@ -9,7 +9,65 @@
 #include <math.h>
 #include "ad5933.h"
 
+// Private function prototypes ------------------------------------------------
+
+
+// Private variables ----------------------------------------------------------
+static AD5933_Status status = AD_UNINIT;
+static I2C_HandleTypeDef *i2cHandle = NULL;
+
 // Exported functions ---------------------------------------------------------
+
+/**
+ * Gets the current driver status.
+ */
+AD5933_Status AD5933_GetStatus(void)
+{
+    return status;
+}
+
+/**
+ * Initializes the driver with the specified I2C handle for communication.
+ * 
+ * @param i2c Pointer to an I2C handle structure that is to be used for communication with the AD5933
+ * @return {@link AD5933_Error} code
+ */
+AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c)
+{
+    if(i2c == NULL)
+    {
+        return AD_ERROR;
+    }
+    
+    i2cHandle = i2c;
+    HAL_Delay(5);
+    AD5933_Reset();
+    
+    return AD_OK;
+}
+
+/**
+ * Resets the AD5933 and the driver to initialization state.
+ * 
+ * @return {@code AD_ERROR} if the driver has not been initialized, {@code AD_OK} otherwise
+ */
+AD5933_Error AD5933_Reset(void)
+{
+    uint16_t data = AD5933_FUNCTION_POWER_DOWN | AD5933_CTRL_RESET;
+    
+    if(status == AD_UNINIT)
+    {
+        return AD_ERROR;
+    }
+    
+    // Reset first (low byte) and then power down (high byte)
+    // The pointer fu done here is the same as used by the SWAPBYTE macro in usbd_def.h, so I assume this has to work
+    HAL_I2C_Mem_Write(i2cHandle, AD5933_ADDR, AD5933_CTRL_L_ADDR, 1, ((uint8_t *)&data) + 1, 1, AD5933_I2C_TIMEOUT);
+    HAL_I2C_Mem_Write(i2cHandle, AD5933_ADDR, AD5933_CTRL_H_ADDR, 1, ((uint8_t *)&data), 1, AD5933_I2C_TIMEOUT);
+    status = AD_IDLE;
+    
+    return AD_OK;
+}
 
 /**
  * Calculates gain factor values from calibration measurement data.
@@ -49,7 +107,7 @@ void AD5933_CalculateGainFactor(AD5933_GainFactorData *data, AD5933_GainFactor *
  * 
  * @param data The measurement point to calculate the magnitude from
  * @param gain Gain factor structure to use
- * @return
+ * @return The magnitude of the impedance in Ohms
  */
 float AD5933_GetMagnitude(AD5933_ImpedanceData *data, AD5933_GainFactor *gain)
 {
