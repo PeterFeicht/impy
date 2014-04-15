@@ -126,6 +126,9 @@ typedef struct
  * Start Frequency Register High Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
+ * 
+ * The value for this register is calculated by <i>2^27 * (4 * freq / clk)</i> where <i>clk</i> is the system clock
+ * frequency and <i>freq</i> the desired frequency value.
  */
 #define AD5933_START_FREQ_H_ADDR            0x82
 
@@ -133,6 +136,9 @@ typedef struct
  * Start Frequency Register Mid Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
+ * 
+ * The value for this register is calculated by <i>2^27 * (4 * freq / clk)</i> where <i>clk</i> is the system clock
+ * frequency and <i>freq</i> the desired frequency value.
  */
 #define AD5933_START_FREQ_M_ADDR            0x83
 
@@ -140,6 +146,9 @@ typedef struct
  * Start Frequency Register Low Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
+ * 
+ * The value for this register is calculated by <i>2^27 * (4 * freq / clk)</i> where <i>clk</i> is the system clock
+ * frequency and <i>freq</i> the desired frequency value.
  */
 #define AD5933_START_FREQ_L_ADDR            0x84
 
@@ -147,6 +156,9 @@ typedef struct
  * Frequency Increment Register High Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
+ * 
+ * The value for this register is calculated by <i>2^27 * (4 * freq / clk)</i> where <i>clk</i> is the system clock
+ * frequency and <i>freq</i> the desired frequency value.
  */
 #define AD5933_FREQ_INCR_H_ADDR             0x85
 
@@ -154,6 +166,9 @@ typedef struct
  * Frequency Increment Register Mid Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
+ * 
+ * The value for this register is calculated by <i>2^27 * (4 * freq / clk)</i> where <i>clk</i> is the system clock
+ * frequency and <i>freq</i> the desired frequency value.
  */
 #define AD5933_FREQ_INCR_M_ADDR             0x86
 
@@ -161,6 +176,9 @@ typedef struct
  * Frequency Increment Register Low Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
+ * 
+ * The value for this register is calculated by <i>2^27 * (4 * freq / clk)</i> where <i>clk</i> is the system clock
+ * frequency and <i>freq</i> the desired frequency value.
  */
 #define AD5933_FREQ_INCR_L_ADDR             0x87
 
@@ -363,13 +381,17 @@ typedef struct
 
 /**
  * Minimum value of the frequency (Start frequency register) with internal clock
+ * 
+ * The value is <i>1kHz</i>
  */
 #define AD5933_MIN_FREQ                     ((uint32_t)0xFA04)
 
 /**
  * Maximum value of the frequency (Start frequency register + steps) with internal clock
+ * 
+ * The value is <i>100kHz</i>
  */
-#define AD5933_MAX_FREQ                     ((uint32_t)0x30D4E7)
+#define AD5933_MAX_FREQ                     ((uint32_t)0x61A9CF) 
 
 // Exported functions ---------------------------------------------------------
 
