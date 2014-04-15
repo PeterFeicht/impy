@@ -303,6 +303,7 @@ typedef struct
 // Exported functions ---------------------------------------------------------
 
 void AD5933_CalculateGainFactor(AD5933_GainFactorData *data, AD5933_GainFactor *gf);
+float AD5933_GetMagnitude(AD5933_Impedance *data, AD5933_GainFactor *gain);
 
 // ----------------------------------------------------------------------------
 

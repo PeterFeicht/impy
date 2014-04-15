@@ -37,4 +37,25 @@ void AD5933_CalculateGainFactor(AD5933_GainFactorData *data, AD5933_GainFactor *
     }
 }
 
+/**
+ * Calculates the actual impedance magnitude from a measurement data point.
+ * 
+ * @param data The measurement point to calculate the magnitude from
+ * @param gain Gain factor structure to use
+ * @return
+ */
+float AD5933_GetMagnitude(AD5933_Impedance *data, AD5933_GainFactor *gain)
+{
+    // Actual impedance is calculated by 1/(Magnitude * Gain Factor), with Magnitude being sqrt(Real^2 + Imag^2)
+    float magnitude = hypotf(data->Real, data->Imag);
+    float gain_2point = gain->offset;
+    
+    if(gain->is_2point)
+    {
+        gain_2point += gain->slope * (data->Frequency - gain->freq1);
+    }
+    
+    return 1.0f / (gain_2point * magnitude);
+}
+
 // ----------------------------------------------------------------------------
