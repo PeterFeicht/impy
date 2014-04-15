@@ -10,11 +10,51 @@
 #include "ad5933.h"
 
 // Private function prototypes ------------------------------------------------
-
+static HAL_StatusTypeDef AD5933_WriteReg(uint16_t MemAddress, uint8_t *pData, uint16_t Size);
+static HAL_StatusTypeDef AD5933_ReadReg(uint16_t MemAddress, uint8_t *pData, uint16_t Size);
+static uint8_t AD5933_ReadStatus();
 
 // Private variables ----------------------------------------------------------
 static AD5933_Status status = AD_UNINIT;
 static I2C_HandleTypeDef *i2cHandle = NULL;
+
+// Private functions ----------------------------------------------------------
+
+/**
+ * Writes data to a AD5933 device register. 
+ * @param MemAddress Register address to write to
+ * @param pData Pointer to data
+ * @param Size Number of bytes to write
+ * @return HAL status code
+ */
+static HAL_StatusTypeDef AD5933_WriteReg(uint16_t MemAddress, uint8_t *pData, uint16_t Size)
+{
+    return HAL_I2C_Mem_Write(i2cHandle, AD5933_ADDR, MemAddress, 1, pData, Size, AD5933_I2C_TIMEOUT);
+}
+
+/**
+ * Reads data from a AD5933 device register. 
+ * @param MemAddress Register address to read from
+ * @param pData Pointer to buffer
+ * @param Size Number of bytes to read
+ * @return HAL status code
+ */
+static HAL_StatusTypeDef AD5933_ReadReg(uint16_t MemAddress, uint8_t *pData, uint16_t Size)
+{
+    return HAL_I2C_Mem_Read(i2cHandle, AD5933_ADDR, MemAddress, 1, pData, Size, AD5933_I2C_TIMEOUT);
+}
+
+/**
+ * Reads the status register from the AD5933 device.
+ * @return Contents of the status register
+ */
+static uint8_t AD5933_ReadStatus()
+{
+    uint8_t data;
+    
+    AD5933_ReadReg(AD5933_STATUS_ADDR, &data, 1);
+    return data;
+}
 
 // Exported functions ---------------------------------------------------------
 
