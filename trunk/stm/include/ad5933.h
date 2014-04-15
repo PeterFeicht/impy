@@ -18,13 +18,13 @@ typedef struct
     uint32_t Freq_Increment;    //!< Frequency increment for the sweep in Hz
     uint16_t Num_Increments;    //!< Number of frequency points for the sweep
     uint16_t Settling_Cycles;   //!< Number of settling cycles before a measurement
-} AD5933_SweepTypeDef;
+} AD5933_Sweep;
 
 typedef struct
 {
     int16_t Real;   //!< Scaled real part of the impedance
     int16_t Imag;   //!< Scaled imaginary part of the impedance
-} AD5933_ImpedanceTypeDef;
+} AD5933_Impedance;
 
 typedef struct
 {
@@ -36,7 +36,7 @@ typedef struct
     int16_t  real2;         //!< Real part for the second calibration point
     int16_t  imag2;         //!< Imaginary part for the second calibration point
     uint8_t  is_2point;     //!< Whether this is single or two point calibration data
-} AD5933_GainFactorDataTypeDef;
+} AD5933_GainFactorData;
 
 typedef struct
 {
@@ -45,7 +45,7 @@ typedef struct
     float   offset;         //!< Calculated gain factor at first frequency
     float   slope;          //!< Calculated gain factor slope for a two point calibration
     uint8_t is_2point;      //!< Whether this is single or two point gain factor data
-} AD5933_GainFactorTypeDef;
+} AD5933_GainFactor;
 
 // Constants ------------------------------------------------------------------
 
@@ -301,7 +301,7 @@ typedef struct
 
 // Exported functions ---------------------------------------------------------
 
-void AD5933_CalculateGainFactor(AD5933_GainFactorDataTypeDef *data, AD5933_GainFactorTypeDef *gf);
+void AD5933_CalculateGainFactor(AD5933_GainFactorData *data, AD5933_GainFactor *gf);
 
 // ----------------------------------------------------------------------------
 
