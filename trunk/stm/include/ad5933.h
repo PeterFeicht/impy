@@ -65,6 +65,11 @@ typedef struct
     uint8_t is_2point;      //!< Whether this is single or two point gain factor data
 } AD5933_GainFactor;
 
+// Macros ---------------------------------------------------------------------
+
+#define LOBYTE(x)  ((uint8_t)(x & 0x00FF))
+#define HIBYTE(x)  ((uint8_t)((x & 0xFF00) >> 8))
+
 // Constants ------------------------------------------------------------------
 
 /**
