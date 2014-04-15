@@ -102,8 +102,8 @@ AD5933_Error AD5933_Reset(void)
     
     // Reset first (low byte) and then power down (high byte)
     // The pointer fu done here is the same as used by the SWAPBYTE macro in usbd_def.h, so I assume this has to work
-    HAL_I2C_Mem_Write(i2cHandle, AD5933_ADDR, AD5933_CTRL_L_ADDR, 1, ((uint8_t *)&data) + 1, 1, AD5933_I2C_TIMEOUT);
-    HAL_I2C_Mem_Write(i2cHandle, AD5933_ADDR, AD5933_CTRL_H_ADDR, 1, ((uint8_t *)&data), 1, AD5933_I2C_TIMEOUT);
+    AD5933_WriteReg(AD5933_CTRL_L_ADDR, ((uint8_t *)&data) + 1, 1);
+    AD5933_WriteReg(AD5933_CTRL_H_ADDR, ((uint8_t *)&data), 1);
     status = AD_IDLE;
     
     return AD_OK;
