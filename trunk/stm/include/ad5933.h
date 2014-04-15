@@ -47,6 +47,13 @@ typedef struct
 
 typedef struct
 {
+    uint32_t Frequency;     //!< Frequency of the data point
+    float    Magnitude;     //!< Magnitude of the polar representation
+    float    Angle;         //!< Angle of the polar representation
+} AD5933_ImpedancePolar;
+
+typedef struct
+{
     uint32_t impedance;     //!< Impedance used for the gain factor calibration
     uint32_t freq1;         //!< Frequency of the first calibration point
     int16_t  real1;         //!< Real part for the first calibration point
