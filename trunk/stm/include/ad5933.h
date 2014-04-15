@@ -42,7 +42,6 @@ typedef struct
 typedef struct
 {
     float   freq1;          //!< Frequency of the first calibration point
-    float   freq_diff;      //!< Frequency difference between first and second calibration point
     float   offset;         //!< Calculated gain factor at first frequency
     float   slope;          //!< Calculated gain factor slope for a two point calibration
     uint8_t is_2point;      //!< Whether this is single or two point gain factor data

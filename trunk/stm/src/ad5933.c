@@ -32,8 +32,7 @@ void AD5933_CalculateGainFactor(AD5933_GainFactorData *data, AD5933_GainFactor *
         magnitude = hypotf(data->real2, data->imag2);
         gain2 = 1.0f / (magnitude * (float)data->impedance);
         
-        gf->freq_diff = data->freq2 - data->freq1;
-        gf->slope = (gain2 - gf->offset) / (float)gf->freq_diff;
+        gf->slope = (gain2 - gf->offset) / (float)(data->freq2 - data->freq1);
     }
 }
 
