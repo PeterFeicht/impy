@@ -12,6 +12,17 @@
 #include <stdint.h>
 
 // Exported type definitions --------------------------------------------------
+typedef enum
+{
+    AD_UNINIT = 0,          //!< Driver has not been initialized
+    AD_RESET,               //!< Driver has been initialized but no parameters have been set
+    AD_IDLE,                //!< Driver is ready to start a measurement
+    AD_FINISH,              //!< Driver has finished with a measurement
+    AD_CALIBRATE,           //!< Driver is doing a calibration measurement
+    AD_MEASURE_TEMP,        //!< Driver is doing a temperature measurement
+    AD_MEASURE_IMPEDANCE    //!< Driver is doing an impedance measurement
+} AD5933_Status;
+
 typedef struct
 {
     uint32_t Start_Freq;        //!< Start frequency for the sweep in Hz
