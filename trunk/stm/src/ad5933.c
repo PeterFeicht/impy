@@ -15,7 +15,7 @@ static HAL_StatusTypeDef AD5933_ReadReg(uint16_t MemAddress, uint8_t *pData, uin
 static uint8_t AD5933_ReadStatus();
 static uint32_t AD5933_CalcFrequencyReg(uint32_t freq);
 static void AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_t *freq_start, uint32_t *freq_step,
-        uint16_t *num_incr, uint16_t *settl);
+        uint16_t num_incr, uint16_t settl);
 
 // Private variables ----------------------------------------------------------
 static AD5933_Status status = AD_UNINIT;
