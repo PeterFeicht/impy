@@ -274,7 +274,7 @@ void AD5933_TIM_PeriodElapsedCallback(void)
                 else
                 {
                     data = AD5933_FUNCTION_INCREMENT_FREQ | range_spec.PGA_Gain | range_spec.Voltage_Range;
-                    AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t)&data, 1);
+                    AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
                 }
             }
             break;
