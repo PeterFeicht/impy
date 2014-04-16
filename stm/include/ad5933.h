@@ -391,14 +391,14 @@ typedef struct
  * 
  * The value is <i>1kHz</i>
  */
-#define AD5933_MIN_FREQ                     ((uint32_t)0xFA04)
+#define AD5933_MIN_FREQ                     ((uint32_t)0x7D02)
 
 /**
  * Maximum value of the frequency (Start frequency register + steps) with internal clock
  * 
  * The value is <i>100kHz</i>
  */
-#define AD5933_MAX_FREQ                     ((uint32_t)0x61A9CF) 
+#define AD5933_MAX_FREQ                     ((uint32_t)0x30D4E7) 
 
 // Exported functions ---------------------------------------------------------
 
