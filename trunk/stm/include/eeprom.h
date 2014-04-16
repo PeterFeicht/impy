@@ -42,7 +42,30 @@ typedef struct
 
 // Constants ------------------------------------------------------------------
 
+/**
+ * @defgroup EEPROM_M24C08_ADDRESS M24C08 Address definitions
+ * 
+ * The address byte that is sent to an M24C08 consists of 4 parts:
+ *  + The device identifier {@link EEPROM_M24C08_ADDR} (4 bits)
+ *  + An address bit {@link EEPROM_M24C08_ADDR_E2} that is either set or not, depending on the value of the {@code E2}
+ *    pin on the M24C08 device
+ *  + The two most significant bits of the memory address to be read/written {@link EEPROM_M24C08_BYTE_ADDR_H}
+ *  + The standard I2C read/write bit
+ * @{
+ */
+#define EEPROM_M24C08_ADDR                  0xA0        //!< M24C08 device identifier
+#define EEPROM_M24C08_ADDR_E2               0x08        //!< M24C08 E2 address bit
+/**
+ * Bitmask for the M24C08 I2C Address bits that are used for the memory address. The value needs to be shifted left by
+ * one from the actual address, since the I2C read/write bit is between these two address bits and the low byte.
+ */
+#define EEPROM_M24C08_BYTE_ADDR_H           0x06
+/** @} */
 
+/**
+ * Timeout in ms for I2C communication
+ */
+#define EEPROM_I2C_TIMEOUT                  0x200
 
 // Exported functions ---------------------------------------------------------
 
