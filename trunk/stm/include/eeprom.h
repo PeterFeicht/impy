@@ -71,7 +71,7 @@ typedef struct
 // Exported functions ---------------------------------------------------------
 
 EEPROM_Status GetStatus(void);
-EEPROM_Error EEPROM_Init(I2C_HandleTypeDef *i2c);
+EEPROM_Error EEPROM_Init(I2C_HandleTypeDef *i2c, uint8_t e2_set);
 EEPROM_Error EEPROM_Reset(void);
 EEPROM_Error EEPROM_ReadByte(uint16_t address, uint8_t *destination);
 EEPROM_Error EEPROM_ReadPage(uint16_t address, uint8_t *buffer, uint8_t size);
