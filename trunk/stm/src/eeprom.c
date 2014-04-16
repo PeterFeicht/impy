@@ -50,4 +50,20 @@ EEPROM_Error EEPROM_Init(I2C_HandleTypeDef *i2c, uint8_t e2_set)
     return EE_OK;
 }
 
+/**
+ * Resets the driver to initialization state.
+ * 
+ * @return {@code AD_ERROR} if the driver has not been initialized, {@code AD_OK} otherwise
+ */
+EEPROM_Error EEPROM_Reset(void)
+{
+    if(status == EE_UNINIT)
+    {
+        return EE_ERROR;
+    }
+    
+    status = EE_IDLE;
+    return EE_OK;
+}
+
 // ----------------------------------------------------------------------------
