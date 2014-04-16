@@ -25,6 +25,7 @@ static AD5933_ImpedanceData *pBuffer;
 static AD5933_Sweep sweep_spec;
 static AD5933_RangeSettings range_spec;
 static uint16_t sweep_count;
+static AD5933_GainFactorData *pGainData;
 
 // Private functions ----------------------------------------------------------
 
@@ -205,7 +206,7 @@ AD5933_Error AD5933_MeasureImpedance(AD5933_Sweep *sweep, AD5933_RangeSettings *
     {
         return AD_ERROR;
     }
-
+    
     data = sweep->Settling_Cycles | sweep->Settling_Mult;
     AD5933_StartMeasurement(range, &freq_start, &freq_step, sweep->Num_Increments, data);
     
@@ -237,6 +238,49 @@ AD5933_Error AD5933_MeasureTemperature(float *destination)
     data = HIBYTE(AD5933_FUNCTION_MEASURE_TEMP);
     AD5933_WriteReg(AD5933_CTRL_H_ADDR, &data, 1);
     status = AD_MEASURE_TEMP;
+    
+    return AD_OK;
+}
+
+/**
+ * Initiates a frequency measurement of one or two points and saves the data to the specified structure.
+ * Note that the specified structure needs the frequencies, and whether or not a two point calibration should be
+ * performed, to already be set. The structure should not be changed during the measurement.
+ * 
+ * @param data Structure where measurements are written to
+ * @return {@link AD5933_Error} code
+ */
+AD5933_Error AD5933_Calibrate(AD5933_GainFactorData *data, AD5933_RangeSettings *range)
+{
+    uint32_t freq_start;
+    uint32_t freq_step = 0x10;
+    
+    if(status == AD_UNINIT || data == NULL || range == NULL)
+    {
+        return AD_ERROR;
+    }
+    if(status != AD_IDLE && status != AD_FINISH)
+    {
+        return AD_BUSY;
+    }
+    
+    pGainData = data;
+    range_spec = *range;
+    sweep_count = 0;
+    
+    freq_start = AD5933_CalcFrequencyReg(data->freq1);
+    if(data->is_2point)
+    {
+        if(data->freq2 <= data->freq1)
+        {
+            return AD_ERROR;
+        }
+        
+        freq_step = AD5933_CalcFrequencyReg(data->freq2 - data->freq1);
+    }
+    
+    // Number of increments doesn't really matter, we check sweep_count in the callback anyway
+    AD5933_StartMeasurement(range, &freq_start, &freq_step, 2, 100);
     
     return AD_OK;
 }
@@ -300,7 +344,33 @@ void AD5933_TIM_PeriodElapsedCallback(void)
             break;
             
         case AD_CALIBRATE:
-            // TODO handle calibration update
+            if(AD5933_GetStatus() & AD5933_STATUS_VALID_IMPEDANCE)
+            {
+                if(sweep_count == 0)
+                {
+                    // First point, read data and do second point if necessary
+                    AD5933_ReadReg(AD5933_REAL_H_ADDR, (uint8_t *)&pGainData->real1, 2);
+                    AD5933_ReadReg(AD5933_IMAG_H_ADDR, (uint8_t *)&pGainData->imag1, 2);
+                    
+                    if(pGainData->is_2point)
+                    {
+                        data = AD5933_FUNCTION_INCREMENT_FREQ | range_spec.PGA_Gain | range_spec.Voltage_Range;
+                        AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
+                        sweep_count++;
+                    }
+                    else
+                    {
+                        status = AD_FINISH;
+                    }
+                }
+                else
+                {
+                    // Second point, read data and finish
+                    AD5933_ReadReg(AD5933_REAL_H_ADDR, (uint8_t *)&pGainData->real2, 2);
+                    AD5933_ReadReg(AD5933_IMAG_H_ADDR, (uint8_t *)&pGainData->imag2, 2);
+                    status = AD_FINISH;
+                }
+            }
             break;
     }
 }
