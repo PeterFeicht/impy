@@ -14,6 +14,8 @@ static HAL_StatusTypeDef AD5933_WriteReg(uint16_t MemAddress, uint8_t *pData, ui
 static HAL_StatusTypeDef AD5933_ReadReg(uint16_t MemAddress, uint8_t *pData, uint16_t Size);
 static uint8_t AD5933_ReadStatus();
 static uint32_t AD5933_CalcFrequencyReg(uint32_t freq);
+static void AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_t *freq_start, uint32_t *freq_step,
+        uint16_t *num_incr, uint16_t *settl);
 
 // Private variables ----------------------------------------------------------
 static AD5933_Status status = AD_UNINIT;
@@ -72,6 +74,38 @@ static uint32_t AD5933_CalcFrequencyReg(uint32_t freq)
 {
     uint64_t tmp = (1 << 27) * 4 * freq;
     return (uint32_t)(tmp / AD5933_CLK_FREQ);
+}
+
+/**
+ * Sends the necessary commands to the AD5933 to initiate a frequency sweep.
+ * 
+ * @param range Pointer to voltage and gain settings
+ * @param freq_start Pointer to start frequency register value
+ * @param freq_step Pointer to frequency step register value
+ * @param num_incr Number of increments
+ * @param settl Settling time register value
+ */
+static void AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_t *freq_start, uint32_t *freq_step,
+        uint16_t num_incr, uint16_t settl)
+{
+    uint16_t data;
+    
+    // Put device in standby and send range settings
+    data = AD5933_FUNCTION_STANDBY | range->PGA_Gain | range->Voltage_Range;
+    AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
+    
+    // Send sweep parameters
+    AD5933_WriteReg(AD5933_START_FREQ_H_ADDR, ((uint8_t *)freq_start) + 1, 3);
+    AD5933_WriteReg(AD5933_FREQ_INCR_H_ADDR, ((uint8_t *)freq_step) + 1, 3);
+    AD5933_WriteReg(AD5933_NUM_INCR_H_ADDR, (uint8_t *)&num_incr, 2);
+    AD5933_WriteReg(AD5933_SETTL_H_ADDR, (uint8_t *)&settl, 2);
+    
+    // Switch output on and start sweep after some settling time
+    data = AD5933_FUNCTION_INIT_FREQ | range->PGA_Gain | range->Voltage_Range;
+    AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
+    HAL_Delay(5);
+    data = AD5933_FUNCTION_START_SWEEP | range->PGA_Gain | range->Voltage_Range;
+    AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
 }
 
 // Exported functions ---------------------------------------------------------
@@ -152,6 +186,7 @@ AD5933_Error AD5933_MeasureImpedance(AD5933_Sweep *sweep, AD5933_RangeSettings *
     }
     
     // Check for out of range values
+    // TODO maybe allow 0 increments to measure a single frequency (depends on AD5933 interpretation of the value)
     if(sweep->Freq_Increment == 0 || sweep->Num_Increments > AD5933_MAX_NUM_INCREMENTS || sweep->Num_Increments == 0)
     {
         return AD_ERROR;
@@ -170,24 +205,9 @@ AD5933_Error AD5933_MeasureImpedance(AD5933_Sweep *sweep, AD5933_RangeSettings *
     {
         return AD_ERROR;
     }
-    
-    // Put device in standby and send range settings
-    data = AD5933_FUNCTION_STANDBY | range->PGA_Gain | range->Voltage_Range;
-    AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
-    
-    // Send sweep parameters
-    AD5933_WriteReg(AD5933_START_FREQ_H_ADDR, ((uint8_t *)&freq_start) + 1, 3);
-    AD5933_WriteReg(AD5933_FREQ_INCR_H_ADDR, ((uint8_t *)&freq_step) + 1, 3);
-    AD5933_WriteReg(AD5933_NUM_INCR_H_ADDR, (uint8_t *)&sweep->Num_Increments, 2);
+
     data = sweep->Settling_Cycles | sweep->Settling_Mult;
-    AD5933_WriteReg(AD5933_SETTL_H_ADDR, (uint8_t *)&data, 2);
-    
-    // Switch output on and start sweep after some settling time
-    data = AD5933_FUNCTION_INIT_FREQ | range->PGA_Gain | range->Voltage_Range;
-    AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
-    HAL_Delay(5);
-    data = AD5933_FUNCTION_START_SWEEP | range->PGA_Gain | range->Voltage_Range;
-    AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
+    AD5933_StartMeasurement(range, &freq_start, &freq_step, sweep->Num_Increments, data);
     
     status = AD_MEASURE_IMPEDANCE;
     return AD_OK;
