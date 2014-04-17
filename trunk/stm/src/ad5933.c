@@ -157,20 +157,20 @@ static void AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_t freq_s
     uint16_t data;
     
     // Put device in standby and send range settings
-    data = AD5933_FUNCTION_STANDBY | range->PGA_Gain | range->Voltage_Range;
+    data = __REV16(AD5933_FUNCTION_STANDBY | range->PGA_Gain | range->Voltage_Range);
     AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
     
     // Send sweep parameters
-    AD5933_WriteReg(AD5933_START_FREQ_H_ADDR, ((uint8_t *)&freq_start) + 1, 3);
-    AD5933_WriteReg(AD5933_FREQ_INCR_H_ADDR, ((uint8_t *)&freq_step) + 1, 3);
-    AD5933_WriteReg(AD5933_NUM_INCR_H_ADDR, (uint8_t *)&num_incr, 2);
-    AD5933_WriteReg(AD5933_SETTL_H_ADDR, (uint8_t *)&settl, 2);
+    AD5933_Write24(AD5933_START_FREQ_H_ADDR, freq_start);
+    AD5933_Write24(AD5933_FREQ_INCR_H_ADDR, freq_step);
+    AD5933_Write16(AD5933_NUM_INCR_H_ADDR, num_incr);
+    AD5933_Write16(AD5933_SETTL_H_ADDR, settl);
     
     // Switch output on and start sweep after some settling time
-    data = AD5933_FUNCTION_INIT_FREQ | range->PGA_Gain | range->Voltage_Range;
+    data = __REV16(AD5933_FUNCTION_INIT_FREQ | range->PGA_Gain | range->Voltage_Range);
     AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
     HAL_Delay(5);
-    data = AD5933_FUNCTION_START_SWEEP | range->PGA_Gain | range->Voltage_Range;
+    data = __REV16(AD5933_FUNCTION_START_SWEEP | range->PGA_Gain | range->Voltage_Range);
     AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
 }
 
@@ -211,7 +211,7 @@ AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c)
  */
 AD5933_Error AD5933_Reset(void)
 {
-    uint16_t data = AD5933_FUNCTION_POWER_DOWN | AD5933_CTRL_RESET;
+    uint16_t data = __REV16(AD5933_FUNCTION_POWER_DOWN | AD5933_CTRL_RESET);
     
     if(status == AD_UNINIT)
     {
@@ -370,7 +370,7 @@ void AD5933_TIM_PeriodElapsedCallback(void)
         case AD_MEASURE_TEMP:
             if(AD5933_ReadStatus() & AD5933_STATUS_VALID_TEMP)
             {
-                AD5933_ReadReg(AD5933_TEMP_H_ADDR, (uint8_t *)&data, 2);
+                AD5933_Read16(AD5933_TEMP_H_ADDR, &data);
                 // Convert data to temperature value
                 if(data & AD5933_TEMP_SIGN_BIT)
                 {
@@ -391,8 +391,8 @@ void AD5933_TIM_PeriodElapsedCallback(void)
                 buf = pBuffer + sweep_count;
                 
                 // Read data and save it
-                AD5933_ReadReg(AD5933_REAL_H_ADDR, (uint8_t *)&buf->Real, 2);
-                AD5933_ReadReg(AD5933_IMAG_H_ADDR, (uint8_t *)&buf->Imag, 2);
+                AD5933_Read16(AD5933_REAL_H_ADDR, (uint16_t *)&buf->Real);
+                AD5933_Read16(AD5933_IMAG_H_ADDR, (uint16_t *)&buf->Imag);
                 buf->Frequency = sweep_spec.Start_Freq + sweep_count * sweep_spec.Freq_Increment;
                 sweep_count++;
                 
@@ -403,7 +403,7 @@ void AD5933_TIM_PeriodElapsedCallback(void)
                 }
                 else
                 {
-                    data = AD5933_FUNCTION_INCREMENT_FREQ | range_spec.PGA_Gain | range_spec.Voltage_Range;
+                    data = __REV16(AD5933_FUNCTION_INCREMENT_FREQ | range_spec.PGA_Gain | range_spec.Voltage_Range);
                     AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
                 }
             }
@@ -415,12 +415,12 @@ void AD5933_TIM_PeriodElapsedCallback(void)
                 if(sweep_count == 0)
                 {
                     // First point, read data and do second point if necessary
-                    AD5933_ReadReg(AD5933_REAL_H_ADDR, (uint8_t *)&pGainData->real1, 2);
-                    AD5933_ReadReg(AD5933_IMAG_H_ADDR, (uint8_t *)&pGainData->imag1, 2);
+                    AD5933_Read16(AD5933_REAL_H_ADDR, (uint16_t *)&pGainData->real1);
+                    AD5933_Read16(AD5933_IMAG_H_ADDR, (uint16_t *)&pGainData->imag1);
                     
                     if(pGainData->is_2point)
                     {
-                        data = AD5933_FUNCTION_INCREMENT_FREQ | range_spec.PGA_Gain | range_spec.Voltage_Range;
+                        data = __REV16(AD5933_FUNCTION_INCREMENT_FREQ | range_spec.PGA_Gain | range_spec.Voltage_Range);
                         AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
                         sweep_count++;
                     }
@@ -432,8 +432,8 @@ void AD5933_TIM_PeriodElapsedCallback(void)
                 else
                 {
                     // Second point, read data and finish
-                    AD5933_ReadReg(AD5933_REAL_H_ADDR, (uint8_t *)&pGainData->real2, 2);
-                    AD5933_ReadReg(AD5933_IMAG_H_ADDR, (uint8_t *)&pGainData->imag2, 2);
+                    AD5933_Read16(AD5933_REAL_H_ADDR, (uint16_t *)&pGainData->real2);
+                    AD5933_Read16(AD5933_IMAG_H_ADDR, (uint16_t *)&pGainData->imag2);
                     status = AD_FINISH;
                 }
             }
