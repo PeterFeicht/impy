@@ -111,7 +111,7 @@
 This library contains parts used for the Impedance Spectrometer project that are not part of the standard EAGLE libraries:
 
 &lt;ul&gt;
-    &lt;li&gt;&lt;b&gt;AD5933&lt;/b&gt; - Impedance Converter chip&lt;/li&gt;
+    &lt;li&gt;&lt;b&gt;AD5933&lt;/b&gt; - Impedance Converter chip (from &lt;a href="https://github.com/kblomqvist/kblom-eagle-lbr"&gt;kblomqvist on GitHub&lt;/a&gt;)&lt;/li&gt;
 &lt;/ul&gt;</description>
 <packages>
 <package name="SSOP16">
