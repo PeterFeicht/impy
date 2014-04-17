@@ -13,7 +13,6 @@
 static HAL_StatusTypeDef AD5933_Write8(uint16_t MemAddress, uint8_t value);
 static HAL_StatusTypeDef AD5933_Write16(uint16_t MemAddress, uint16_t value);
 static HAL_StatusTypeDef AD5933_Write24(uint16_t MemAddress, uint32_t value);
-static HAL_StatusTypeDef AD5933_ReadReg(uint16_t MemAddress, uint8_t *pData, uint16_t Size);
 static HAL_StatusTypeDef AD5933_Read16(uint16_t MemAddress, uint16_t *destination);
 static uint8_t AD5933_ReadStatus();
 static uint32_t AD5933_CalcFrequencyReg(uint32_t freq);
@@ -71,19 +70,6 @@ static HAL_StatusTypeDef AD5933_Write24(uint16_t MemAddress, uint32_t value)
 }
 
 /**
- * Reads data from a AD5933 device register.
- * 
- * @param MemAddress Register address to read from
- * @param pData Pointer to buffer
- * @param Size Number of bytes to read
- * @return HAL status code
- */
-static HAL_StatusTypeDef AD5933_ReadReg(uint16_t MemAddress, uint8_t *pData, uint16_t Size)
-{
-    return HAL_I2C_Mem_Read(i2cHandle, AD5933_ADDR, MemAddress, 1, pData, Size, AD5933_I2C_TIMEOUT);
-}
-
-/**
  * Reads a 16-bit value from a AD5933 device register with the correct endianness.
  * 
  * @param MemAddress Register address to read from
@@ -108,7 +94,7 @@ static uint8_t AD5933_ReadStatus()
 {
     uint8_t data = 0;
     
-    AD5933_ReadReg(AD5933_STATUS_ADDR, &data, 1);
+    return HAL_I2C_Mem_Read(i2cHandle, AD5933_ADDR, AD5933_STATUS_ADDR, 1, &data, 1, AD5933_I2C_TIMEOUT);
     return data;
 }
 
