@@ -30,7 +30,8 @@ static AD5933_GainFactorData *pGainData;
 // Private functions ----------------------------------------------------------
 
 /**
- * Writes data to a AD5933 device register. 
+ * Writes data to a AD5933 device register.
+ * 
  * @param MemAddress Register address to write to
  * @param pData Pointer to data
  * @param Size Number of bytes to write
@@ -42,7 +43,8 @@ static HAL_StatusTypeDef AD5933_WriteReg(uint16_t MemAddress, uint8_t *pData, ui
 }
 
 /**
- * Reads data from a AD5933 device register. 
+ * Reads data from a AD5933 device register.
+ * 
  * @param MemAddress Register address to read from
  * @param pData Pointer to buffer
  * @param Size Number of bytes to read
@@ -55,6 +57,7 @@ static HAL_StatusTypeDef AD5933_ReadReg(uint16_t MemAddress, uint8_t *pData, uin
 
 /**
  * Reads the status register from the AD5933 device.
+ * 
  * @return Contents of the status register
  */
 static uint8_t AD5933_ReadStatus()
@@ -244,6 +247,7 @@ AD5933_Error AD5933_MeasureTemperature(float *destination)
 
 /**
  * Initiates a frequency measurement of one or two points and saves the data to the specified structure.
+ * 
  * Note that the specified structure needs the frequencies, and whether or not a two point calibration should be
  * performed, to already be set. The structure should not be changed during the measurement.
  * 
