@@ -933,6 +933,17 @@
 </net>
 </nets>
 </sheet>
+<sheet>
+<description>AD5933</description>
+<plain>
+</plain>
+<instances>
+</instances>
+<busses>
+</busses>
+<nets>
+</nets>
+</sheet>
 </sheets>
 </schematic>
 </drawing>
