@@ -557,6 +557,18 @@
 <text x="-2.54" y="-2.54" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
 <pin name="VDD" x="0" y="-2.54" visible="off" length="short" direction="sup" rot="R90"/>
 </symbol>
+<symbol name="VCC">
+<wire x1="1.27" y1="-1.905" x2="0" y2="0" width="0.254" layer="94"/>
+<wire x1="0" y1="0" x2="-1.27" y2="-1.905" width="0.254" layer="94"/>
+<text x="-2.54" y="-2.54" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
+<pin name="VCC" x="0" y="-2.54" visible="off" length="short" direction="sup" rot="R90"/>
+</symbol>
+<symbol name="AGND">
+<wire x1="-1.905" y1="0" x2="1.905" y2="0" width="0.254" layer="94"/>
+<wire x1="-1.0922" y1="-0.508" x2="1.0922" y2="-0.508" width="0.254" layer="94"/>
+<text x="-2.54" y="-5.08" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
+<pin name="AGND" x="0" y="2.54" visible="off" length="short" direction="sup" rot="R270"/>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="+5V" prefix="P+">
@@ -602,6 +614,32 @@
 <description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
 <gates>
 <gate name="G$1" symbol="VDD" x="0" y="0"/>
+</gates>
+<devices>
+<device name="">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="VCC" prefix="P+">
+<description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
+<gates>
+<gate name="VCC" symbol="VCC" x="0" y="0"/>
+</gates>
+<devices>
+<device name="">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="AGND" prefix="AGND">
+<description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
+<gates>
+<gate name="VR1" symbol="AGND" x="0" y="0"/>
 </gates>
 <devices>
 <device name="">
@@ -721,6 +759,70 @@ Fuel/battery cell condition monitoring
 </deviceset>
 </devicesets>
 </library>
+<library name="jumper">
+<description>&lt;b&gt;Jumpers&lt;/b&gt;&lt;p&gt;
+&lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
+<packages>
+<package name="JP1">
+<description>&lt;b&gt;JUMPER&lt;/b&gt;</description>
+<wire x1="-1.016" y1="0" x2="-1.27" y2="0.254" width="0.1524" layer="21"/>
+<wire x1="-1.016" y1="0" x2="-1.27" y2="-0.254" width="0.1524" layer="21"/>
+<wire x1="1.016" y1="0" x2="1.27" y2="0.254" width="0.1524" layer="21"/>
+<wire x1="1.016" y1="0" x2="1.27" y2="-0.254" width="0.1524" layer="21"/>
+<wire x1="1.27" y1="-0.254" x2="1.27" y2="-2.286" width="0.1524" layer="21"/>
+<wire x1="1.016" y1="-2.54" x2="1.27" y2="-2.286" width="0.1524" layer="21"/>
+<wire x1="1.27" y1="2.286" x2="1.016" y2="2.54" width="0.1524" layer="21"/>
+<wire x1="1.27" y1="2.286" x2="1.27" y2="0.254" width="0.1524" layer="21"/>
+<wire x1="1.016" y1="2.54" x2="-1.016" y2="2.54" width="0.1524" layer="21"/>
+<wire x1="-1.27" y1="2.286" x2="-1.016" y2="2.54" width="0.1524" layer="21"/>
+<wire x1="-1.27" y1="2.286" x2="-1.27" y2="0.254" width="0.1524" layer="21"/>
+<wire x1="-1.27" y1="-0.254" x2="-1.27" y2="-2.286" width="0.1524" layer="21"/>
+<wire x1="-1.016" y1="-2.54" x2="-1.27" y2="-2.286" width="0.1524" layer="21"/>
+<wire x1="-1.016" y1="-2.54" x2="1.016" y2="-2.54" width="0.1524" layer="21"/>
+<pad name="1" x="0" y="-1.27" drill="0.9144" shape="long"/>
+<pad name="2" x="0" y="1.27" drill="0.9144" shape="long"/>
+<text x="-1.651" y="-2.54" size="1.27" layer="25" ratio="10" rot="R90">&gt;NAME</text>
+<text x="2.921" y="-2.54" size="1.27" layer="27" ratio="10" rot="R90">&gt;VALUE</text>
+<rectangle x1="-0.3048" y1="0.9652" x2="0.3048" y2="1.5748" layer="51"/>
+<rectangle x1="-0.3048" y1="-1.5748" x2="0.3048" y2="-0.9652" layer="51"/>
+</package>
+</packages>
+<symbols>
+<symbol name="JP2E">
+<wire x1="0" y1="0" x2="0" y2="1.27" width="0.1524" layer="94"/>
+<wire x1="0" y1="2.54" x2="0" y2="1.27" width="0.4064" layer="94"/>
+<wire x1="2.54" y1="0" x2="2.54" y2="1.27" width="0.1524" layer="94"/>
+<wire x1="2.54" y1="2.54" x2="2.54" y2="1.27" width="0.4064" layer="94"/>
+<wire x1="-0.635" y1="0" x2="3.175" y2="0" width="0.4064" layer="94"/>
+<wire x1="3.175" y1="0" x2="3.175" y2="0.635" width="0.4064" layer="94"/>
+<wire x1="3.175" y1="0.635" x2="-0.635" y2="0.635" width="0.4064" layer="94"/>
+<wire x1="-0.635" y1="0.635" x2="-0.635" y2="0" width="0.4064" layer="94"/>
+<text x="-1.27" y="0" size="1.778" layer="95" rot="R90">&gt;NAME</text>
+<text x="5.715" y="0" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
+<pin name="1" x="0" y="-2.54" visible="pad" length="short" direction="pas" rot="R90"/>
+<pin name="2" x="2.54" y="-2.54" visible="pad" length="short" direction="pas" rot="R90"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="JP1E" prefix="JP" uservalue="yes">
+<description>&lt;b&gt;JUMPER&lt;/b&gt;</description>
+<gates>
+<gate name="A" symbol="JP2E" x="2.54" y="0"/>
+</gates>
+<devices>
+<device name="" package="JP1">
+<connects>
+<connect gate="A" pin="1" pad="1"/>
+<connect gate="A" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -750,11 +852,27 @@ Fuel/battery cell condition monitoring
 <part name="VDD3" library="supply1" deviceset="VDD" device=""/>
 <part name="GND9" library="supply1" deviceset="GND" device=""/>
 <part name="U1" library="parts" deviceset="AD5933" device=""/>
+<part name="P+3" library="supply1" deviceset="VCC" device=""/>
+<part name="P+4" library="supply1" deviceset="VCC" device=""/>
+<part name="AGND1" library="supply1" deviceset="AGND" device=""/>
+<part name="GND10" library="supply1" deviceset="GND" device=""/>
+<part name="JP3" library="jumper" deviceset="JP1E" device=""/>
+<part name="JP4" library="jumper" deviceset="JP1E" device=""/>
+<part name="P+5" library="supply1" deviceset="VCC" device=""/>
+<part name="+3V3" library="supply1" deviceset="+3V3" device=""/>
+<part name="VDD4" library="supply1" deviceset="VDD" device=""/>
 </parts>
 <sheets>
 <sheet>
 <description>Supply</description>
 <plain>
+<text x="50.8" y="40.64" size="1.778" layer="97">+5V - 5V input from USB
++3V3 - 3.3V output from Regulator
+VDD - STM32 3.3V supply
+VCC - Shield 3.3V supply
+
+GND - Digital common ground
+AGND - Analog ground</text>
 </plain>
 <instances>
 <instance part="JP1" gate="A" x="22.86" y="50.8"/>
@@ -789,6 +907,11 @@ Fuel/battery cell condition monitoring
 <attribute name="VALUE" x="132.08" y="55.88" size="1.778" layer="96"/>
 </instance>
 <instance part="GND9" gate="1" x="101.6" y="81.28" rot="R270"/>
+<instance part="JP3" gate="A" x="58.42" y="71.12" rot="R180"/>
+<instance part="JP4" gate="A" x="76.2" y="71.12" rot="R180"/>
+<instance part="P+5" gate="VCC" x="55.88" y="81.28"/>
+<instance part="+3V3" gate="G$1" x="66.04" y="81.28"/>
+<instance part="VDD4" gate="G$1" x="76.2" y="81.28"/>
 </instances>
 <busses>
 </busses>
@@ -808,6 +931,11 @@ Fuel/battery cell condition monitoring
 <pinref part="VDD3" gate="G$1" pin="VDD"/>
 <pinref part="JP2" gate="A" pin="22"/>
 <wire x1="127" y1="55.88" x2="119.38" y2="55.88" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="VDD4" gate="G$1" pin="VDD"/>
+<pinref part="JP4" gate="A" pin="1"/>
+<wire x1="76.2" y1="78.74" x2="76.2" y2="73.66" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="GND" class="0">
@@ -879,6 +1007,17 @@ Fuel/battery cell condition monitoring
 <pinref part="JP2" gate="A" pin="6"/>
 <pinref part="+3V1" gate="G$1" pin="+3V3"/>
 <wire x1="119.38" y1="76.2" x2="127" y2="76.2" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="JP3" gate="A" pin="1"/>
+<wire x1="58.42" y1="73.66" x2="58.42" y2="76.2" width="0.1524" layer="91"/>
+<pinref part="+3V3" gate="G$1" pin="+3V3"/>
+<wire x1="58.42" y1="76.2" x2="66.04" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="66.04" y1="76.2" x2="66.04" y2="78.74" width="0.1524" layer="91"/>
+<pinref part="JP4" gate="A" pin="2"/>
+<wire x1="66.04" y1="76.2" x2="73.66" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="73.66" y1="76.2" x2="73.66" y2="73.66" width="0.1524" layer="91"/>
+<junction x="66.04" y="76.2"/>
 </segment>
 </net>
 <net name="!RST" class="0">
@@ -1091,6 +1230,13 @@ Fuel/battery cell condition monitoring
 <label x="12.7" y="43.18" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
+<net name="VCC" class="0">
+<segment>
+<pinref part="P+5" gate="VCC" pin="VCC"/>
+<pinref part="JP3" gate="A" pin="2"/>
+<wire x1="55.88" y1="78.74" x2="55.88" y2="73.66" width="0.1524" layer="91"/>
+</segment>
+</net>
 </nets>
 </sheet>
 <sheet>
@@ -1099,13 +1245,59 @@ Fuel/battery cell condition monitoring
 </plain>
 <instances>
 <instance part="U1" gate="A" x="48.26" y="45.72"/>
+<instance part="P+3" gate="VCC" x="22.86" y="53.34" rot="R90"/>
+<instance part="P+4" gate="VCC" x="76.2" y="38.1" rot="R270"/>
+<instance part="AGND1" gate="VR1" x="50.8" y="22.86"/>
+<instance part="GND10" gate="1" x="43.18" y="25.4"/>
 </instances>
 <busses>
 </busses>
 <nets>
+<net name="VCC" class="0">
+<segment>
+<pinref part="P+4" gate="VCC" pin="VCC"/>
+<pinref part="U1" gate="A" pin="AVDD2"/>
+<wire x1="73.66" y1="38.1" x2="71.12" y2="38.1" width="0.1524" layer="91"/>
+<pinref part="U1" gate="A" pin="AVDD1"/>
+<wire x1="71.12" y1="38.1" x2="68.58" y2="38.1" width="0.1524" layer="91"/>
+<wire x1="68.58" y1="40.64" x2="71.12" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="71.12" y1="40.64" x2="71.12" y2="38.1" width="0.1524" layer="91"/>
+<junction x="71.12" y="38.1"/>
+</segment>
+<segment>
+<pinref part="U1" gate="A" pin="DVDD"/>
+<pinref part="P+3" gate="VCC" pin="VCC"/>
+<wire x1="27.94" y1="53.34" x2="25.4" y2="53.34" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="GND" class="0">
+<segment>
+<pinref part="GND10" gate="1" pin="GND"/>
+<pinref part="U1" gate="A" pin="DGND"/>
+<wire x1="43.18" y1="27.94" x2="43.18" y2="30.48" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="AGND" class="0">
+<segment>
+<pinref part="AGND1" gate="VR1" pin="AGND"/>
+<pinref part="U1" gate="A" pin="AGND2"/>
+<wire x1="50.8" y1="25.4" x2="50.8" y2="27.94" width="0.1524" layer="91"/>
+<pinref part="U1" gate="A" pin="AGND1"/>
+<wire x1="50.8" y1="27.94" x2="50.8" y2="30.48" width="0.1524" layer="91"/>
+<wire x1="48.26" y1="30.48" x2="48.26" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="48.26" y1="27.94" x2="50.8" y2="27.94" width="0.1524" layer="91"/>
+<junction x="50.8" y="27.94"/>
+</segment>
+</net>
 </nets>
 </sheet>
 </sheets>
 </schematic>
 </drawing>
+<compatibility>
+<note version="6.3" minversion="6.2.2" severity="warning">
+Since Version 6.2.2 text objects can contain more than one line,
+which will not be processed correctly with this version.
+</note>
+</compatibility>
 </eagle>
