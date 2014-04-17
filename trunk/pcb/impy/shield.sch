@@ -57,8 +57,12 @@
 <layer number="47" name="Measures" color="7" fill="1" visible="no" active="no"/>
 <layer number="48" name="Document" color="7" fill="1" visible="no" active="no"/>
 <layer number="49" name="Reference" color="7" fill="1" visible="no" active="no"/>
+<layer number="50" name="dxf" color="7" fill="1" visible="no" active="no"/>
 <layer number="51" name="tDocu" color="7" fill="1" visible="no" active="no"/>
 <layer number="52" name="bDocu" color="7" fill="1" visible="no" active="no"/>
+<layer number="53" name="tGND_GNDA" color="7" fill="9" visible="no" active="no"/>
+<layer number="54" name="bGND_GNDA" color="1" fill="9" visible="no" active="no"/>
+<layer number="56" name="wert" color="7" fill="1" visible="no" active="no"/>
 <layer number="91" name="Nets" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="92" name="Busses" color="1" fill="1" visible="yes" active="yes"/>
 <layer number="93" name="Pins" color="2" fill="1" visible="no" active="yes"/>
@@ -67,6 +71,39 @@
 <layer number="96" name="Values" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="97" name="Info" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="98" name="Guide" color="6" fill="1" visible="yes" active="yes"/>
+<layer number="100" name="Muster" color="7" fill="1" visible="no" active="no"/>
+<layer number="101" name="Patch_Top" color="12" fill="4" visible="yes" active="yes"/>
+<layer number="102" name="Vscore" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="103" name="tMap" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="104" name="Name" color="16" fill="1" visible="yes" active="yes"/>
+<layer number="105" name="tPlate" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="106" name="bPlate" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="107" name="Crop" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="116" name="Patch_BOT" color="9" fill="4" visible="yes" active="yes"/>
+<layer number="121" name="_tsilk" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="122" name="_bsilk" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="144" name="Drill_legend" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="151" name="HeatSink" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="200" name="200bmp" color="1" fill="10" visible="yes" active="yes"/>
+<layer number="201" name="201bmp" color="2" fill="10" visible="yes" active="yes"/>
+<layer number="202" name="202bmp" color="3" fill="10" visible="yes" active="yes"/>
+<layer number="203" name="203bmp" color="4" fill="10" visible="yes" active="yes"/>
+<layer number="204" name="204bmp" color="5" fill="10" visible="yes" active="yes"/>
+<layer number="205" name="205bmp" color="6" fill="10" visible="yes" active="yes"/>
+<layer number="206" name="206bmp" color="7" fill="10" visible="yes" active="yes"/>
+<layer number="207" name="207bmp" color="8" fill="10" visible="yes" active="yes"/>
+<layer number="208" name="208bmp" color="9" fill="10" visible="yes" active="yes"/>
+<layer number="209" name="209bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="210" name="210bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="211" name="211bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="212" name="212bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="213" name="213bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="214" name="214bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="215" name="215bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="216" name="216bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="250" name="Descript" color="3" fill="1" visible="no" active="no"/>
+<layer number="251" name="SMDround" color="12" fill="11" visible="no" active="no"/>
+<layer number="254" name="cooling" color="7" fill="1" visible="yes" active="yes"/>
 </layers>
 <schematic xreflabel="%F%N/%S.%C%R" xrefpart="/%S.%C%R">
 <libraries>
@@ -576,6 +613,114 @@
 </deviceset>
 </devicesets>
 </library>
+<library name="parts">
+<description>&lt;h1&gt;Impedance Spectrometer Parts&lt;/h1&gt;
+
+This library contains parts used for the Impedance Spectrometer project that are not part of the standard EAGLE libraries:
+
+&lt;ul&gt;
+    &lt;li&gt;&lt;b&gt;AD5933&lt;/b&gt; - Impedance Converter chip (from &lt;a href="https://github.com/kblomqvist/kblom-eagle-lbr"&gt;kblomqvist on GitHub&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;</description>
+<packages>
+<package name="SSOP16">
+<description>&lt;b&gt;16-Lead Shrink Small Outline Package (SSOP)&lt;/b&gt;
+
+&lt;p&gt;&lt;a href="http://www.analog.com/en/technical-library/packages/sop-small-outline-package/ssop-shrink-so/index.html"&gt;source&lt;/a&gt;</description>
+<wire x1="-3.1496" y1="-2.5368" x2="3.1496" y2="-2.5368" width="0.1524" layer="21"/>
+<wire x1="3.1496" y1="2.5368" x2="3.1496" y2="-2.5368" width="0.1524" layer="21"/>
+<wire x1="3.1496" y1="2.5368" x2="-3.1496" y2="2.5368" width="0.1524" layer="21"/>
+<wire x1="-3.1496" y1="-2.5368" x2="-3.1496" y2="2.5368" width="0.1524" layer="21"/>
+<wire x1="-2.921" y1="-2.3082" x2="2.921" y2="-2.3082" width="0.0508" layer="21"/>
+<wire x1="2.921" y1="2.3082" x2="2.921" y2="-2.3082" width="0.0508" layer="21"/>
+<wire x1="2.921" y1="2.3082" x2="-2.921" y2="2.3082" width="0.0508" layer="21"/>
+<wire x1="-2.921" y1="-2.3082" x2="-2.921" y2="2.3082" width="0.0508" layer="21"/>
+<circle x="-2.2606" y="-1.6002" radius="0.4572" width="0.1524" layer="21"/>
+<smd name="4" x="-0.32" y="-3.7" dx="1.34" dy="0.44" layer="1" rot="R90"/>
+<smd name="5" x="0.32" y="-3.7" dx="1.34" dy="0.44" layer="1" rot="R90"/>
+<smd name="3" x="-0.96" y="-3.7" dx="1.34" dy="0.44" layer="1" rot="R90"/>
+<smd name="2" x="-1.6" y="-3.7" dx="1.34" dy="0.44" layer="1" rot="R90"/>
+<smd name="1" x="-2.24" y="-3.7" dx="1.34" dy="0.44" layer="1" rot="R90"/>
+<smd name="6" x="0.96" y="-3.7" dx="1.34" dy="0.44" layer="1" rot="R90"/>
+<smd name="7" x="1.6" y="-3.7" dx="1.34" dy="0.44" layer="1" rot="R90"/>
+<smd name="8" x="2.24" y="-3.7" dx="1.34" dy="0.44" layer="1" rot="R90"/>
+<smd name="13" x="-0.32" y="3.7" dx="1.34" dy="0.44" layer="1" rot="R90"/>
+<smd name="14" x="-0.96" y="3.7" dx="1.34" dy="0.44" layer="1" rot="R90"/>
+<smd name="15" x="-1.6" y="3.7" dx="1.34" dy="0.44" layer="1" rot="R90"/>
+<smd name="16" x="-2.24" y="3.7" dx="1.34" dy="0.44" layer="1" rot="R90"/>
+<smd name="12" x="0.32" y="3.7" dx="1.34" dy="0.44" layer="1" rot="R90"/>
+<smd name="11" x="0.96" y="3.7" dx="1.34" dy="0.44" layer="1" rot="R90"/>
+<smd name="10" x="1.6" y="3.7" dx="1.34" dy="0.44" layer="1" rot="R90"/>
+<smd name="9" x="2.24" y="3.7" dx="1.34" dy="0.44" layer="1" rot="R90"/>
+<text x="-4" y="-3" size="1" layer="25" font="vector" ratio="13" rot="R90">&gt;NAME</text>
+<text x="5" y="-3" size="1" layer="27" font="vector" ratio="13" rot="R90">&gt;VALUE</text>
+</package>
+</packages>
+<symbols>
+<symbol name="AD5933">
+<wire x1="15.24" y1="10.16" x2="-15.24" y2="10.16" width="0.254" layer="94"/>
+<wire x1="-15.24" y1="10.16" x2="-15.24" y2="-10.16" width="0.254" layer="94"/>
+<wire x1="-15.24" y1="-10.16" x2="15.24" y2="-10.16" width="0.254" layer="94"/>
+<wire x1="15.24" y1="-10.16" x2="15.24" y2="10.16" width="0.254" layer="94"/>
+<text x="-15.24" y="10.922" size="1.27" layer="95">&gt;NAME</text>
+<text x="-15.24" y="-12.7" size="1.27" layer="96">&gt;VALUE</text>
+<pin name="SCL" x="-20.32" y="0" length="middle"/>
+<pin name="SDA" x="-20.32" y="-2.54" length="middle"/>
+<pin name="MCLK" x="-20.32" y="-5.08" length="middle"/>
+<pin name="AGND1" x="0" y="-15.24" length="middle" rot="R90"/>
+<pin name="DGND" x="-5.08" y="-15.24" length="middle" rot="R90"/>
+<pin name="AVDD1" x="20.32" y="-5.08" length="middle" rot="R180"/>
+<pin name="DVDD" x="-20.32" y="7.62" length="middle"/>
+<pin name="VOUT" x="20.32" y="7.62" length="middle" rot="R180"/>
+<pin name="RFB" x="20.32" y="2.54" length="middle" rot="R180"/>
+<pin name="VIN" x="20.32" y="0" length="middle" rot="R180"/>
+<pin name="AVDD2" x="20.32" y="-7.62" length="middle" rot="R180"/>
+<pin name="AGND2" x="2.54" y="-15.24" length="middle" rot="R90"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="AD5933" prefix="U">
+<description>&lt;b&gt;1 MSPS, 12-Bit Impedance Converter, Network Analyzer&lt;/b&gt;
+
+&lt;p&gt;&lt;b&gt;Applications:&lt;/b&gt;&lt;br&gt;
+Electrochemical analysis  &lt;br&gt;
+Bioelectrical impedance analysis &lt;br&gt;
+Impedance spectroscopy &lt;br&gt;
+Complex impedance measurement &lt;br&gt;
+Corrosion monitoring and protection equipment &lt;br&gt;
+Biomedical and automotive sensors &lt;br&gt;
+Proximity sensing &lt;br&gt;
+Nondestructive testing &lt;br&gt;
+Material property analysis &lt;br&gt;
+Fuel/battery cell condition monitoring 
+
+&lt;p&gt;&lt;a href="http://www.analog.com/static/imported-files/data_sheets/AD5933.pdf"&gt;source&lt;/a&gt;</description>
+<gates>
+<gate name="A" symbol="AD5933" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="SSOP16">
+<connects>
+<connect gate="A" pin="AGND1" pad="13"/>
+<connect gate="A" pin="AGND2" pad="14"/>
+<connect gate="A" pin="AVDD1" pad="10"/>
+<connect gate="A" pin="AVDD2" pad="11"/>
+<connect gate="A" pin="DGND" pad="12"/>
+<connect gate="A" pin="DVDD" pad="9"/>
+<connect gate="A" pin="MCLK" pad="8"/>
+<connect gate="A" pin="RFB" pad="4"/>
+<connect gate="A" pin="SCL" pad="16"/>
+<connect gate="A" pin="SDA" pad="15"/>
+<connect gate="A" pin="VIN" pad="5"/>
+<connect gate="A" pin="VOUT" pad="6"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -604,6 +749,7 @@
 <part name="VDD2" library="supply1" deviceset="VDD" device=""/>
 <part name="VDD3" library="supply1" deviceset="VDD" device=""/>
 <part name="GND9" library="supply1" deviceset="GND" device=""/>
+<part name="U1" library="parts" deviceset="AD5933" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -931,6 +1077,20 @@
 <label x="12.7" y="45.72" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
+<net name="PE12" class="0">
+<segment>
+<pinref part="JP1" gate="A" pin="30"/>
+<wire x1="27.94" y1="45.72" x2="35.56" y2="45.72" width="0.1524" layer="91"/>
+<label x="35.56" y="45.72" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="PE13" class="0">
+<segment>
+<pinref part="JP1" gate="A" pin="31"/>
+<wire x1="12.7" y1="43.18" x2="20.32" y2="43.18" width="0.1524" layer="91"/>
+<label x="12.7" y="43.18" size="1.778" layer="95" rot="R180"/>
+</segment>
+</net>
 </nets>
 </sheet>
 <sheet>
@@ -938,6 +1098,7 @@
 <plain>
 </plain>
 <instances>
+<instance part="U1" gate="A" x="48.26" y="45.72"/>
 </instances>
 <busses>
 </busses>

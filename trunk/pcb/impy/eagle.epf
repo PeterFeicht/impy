@@ -25,6 +25,7 @@ UsedLibrary="C:/Program Files (x86)/EAGLE-6.5.0/lbr/transistor-pnp.lbr"
 UsedLibrary="C:/Program Files (x86)/EAGLE-6.5.0/lbr/transistor.lbr"
 UsedLibrary="C:/Program Files (x86)/EAGLE-6.5.0/lbr/v-reg.lbr"
 UsedLibrary="C:/Program Files (x86)/EAGLE-6.5.0/lbr/wirepad.lbr"
+UsedLibrary="parts.lbr"
 
 [Win_1]
 Type="Schematic Editor"
@@ -71,7 +72,7 @@ ArcDirection=0
 AddLevel=2
 PadsSameType=0
 Layer=91
-Views=" 1: -16.256 -14.986 168.656 103.886"
+Views=" 1: -16.256 -14.986 168.656 103.886 2: -11.87 -6.99377 115.649 76.2661"
 Sheet=1
 
 [Win_2]
