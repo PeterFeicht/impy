@@ -10,7 +10,7 @@
 #include "ad5933.h"
 
 // Private function prototypes ------------------------------------------------
-static HAL_StatusTypeDef AD5933_WriteReg(uint16_t MemAddress, uint8_t *pData, uint16_t Size);
+static HAL_StatusTypeDef AD5933_Write8(uint16_t MemAddress, uint8_t value);
 static HAL_StatusTypeDef AD5933_Write16(uint16_t MemAddress, uint16_t value);
 static HAL_StatusTypeDef AD5933_Write24(uint16_t MemAddress, uint32_t value);
 static HAL_StatusTypeDef AD5933_ReadReg(uint16_t MemAddress, uint8_t *pData, uint16_t Size);
@@ -33,16 +33,15 @@ static AD5933_GainFactorData *pGainData;
 // Private functions ----------------------------------------------------------
 
 /**
- * Writes data to a AD5933 device register.
+ * Writes an 8-bit value to a AD5933 device register.
  * 
  * @param MemAddress Register address to write to
- * @param pData Pointer to data
- * @param Size Number of bytes to write
- * @return HAL status code
+ * @param value Value to write
+ * @returnHAL status code
  */
-static HAL_StatusTypeDef AD5933_WriteReg(uint16_t MemAddress, uint8_t *pData, uint16_t Size)
+static HAL_StatusTypeDef AD5933_Write8(uint16_t MemAddress, uint8_t value)
 {
-    return HAL_I2C_Mem_Write(i2cHandle, AD5933_ADDR, MemAddress, 1, pData, Size, AD5933_I2C_TIMEOUT);
+    return HAL_I2C_Mem_Write(i2cHandle, AD5933_ADDR, MemAddress, 1, (uint8_t *)&value, 1, AD5933_I2C_TIMEOUT);
 }
 
 /**
@@ -140,8 +139,8 @@ static void AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_t freq_s
     uint16_t data;
     
     // Put device in standby and send range settings
-    data = __REV16(AD5933_FUNCTION_STANDBY | range->PGA_Gain | range->Voltage_Range);
-    AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
+    data = AD5933_FUNCTION_STANDBY | range->PGA_Gain | range->Voltage_Range;
+    AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
     
     // Send sweep parameters
     AD5933_Write24(AD5933_START_FREQ_H_ADDR, freq_start);
@@ -150,11 +149,11 @@ static void AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_t freq_s
     AD5933_Write16(AD5933_SETTL_H_ADDR, settl);
     
     // Switch output on and start sweep after some settling time
-    data = __REV16(AD5933_FUNCTION_INIT_FREQ | range->PGA_Gain | range->Voltage_Range);
-    AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
+    data = AD5933_FUNCTION_INIT_FREQ | range->PGA_Gain | range->Voltage_Range;
+    AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
     HAL_Delay(5);
-    data = __REV16(AD5933_FUNCTION_START_SWEEP | range->PGA_Gain | range->Voltage_Range);
-    AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
+    data = AD5933_FUNCTION_START_SWEEP | range->PGA_Gain | range->Voltage_Range;
+    AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
 }
 
 // Exported functions ---------------------------------------------------------
@@ -194,7 +193,7 @@ AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c)
  */
 AD5933_Error AD5933_Reset(void)
 {
-    uint16_t data = __REV16(AD5933_FUNCTION_POWER_DOWN | AD5933_CTRL_RESET);
+    uint16_t data = AD5933_FUNCTION_POWER_DOWN | AD5933_CTRL_RESET;
     
     if(status == AD_UNINIT)
     {
@@ -203,8 +202,8 @@ AD5933_Error AD5933_Reset(void)
     
     // Reset first (low byte) and then power down (high byte)
     // The pointer fu done here is the same as used by the SWAPBYTE macro in usbd_def.h, so I assume this has to work
-    AD5933_WriteReg(AD5933_CTRL_L_ADDR, ((uint8_t *)&data) + 1, 1);
-    AD5933_WriteReg(AD5933_CTRL_H_ADDR, ((uint8_t *)&data), 1);
+    AD5933_Write8(AD5933_CTRL_L_ADDR, LOBYTE(data));
+    AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
     status = AD_IDLE;
     
     return AD_OK;
@@ -270,8 +269,6 @@ AD5933_Error AD5933_MeasureImpedance(AD5933_Sweep *sweep, AD5933_RangeSettings *
  */
 AD5933_Error AD5933_MeasureTemperature(float *destination)
 {
-    uint8_t data;
-    
     if(status == AD_UNINIT || destination == NULL)
     {
         return AD_ERROR;
@@ -283,8 +280,7 @@ AD5933_Error AD5933_MeasureTemperature(float *destination)
     
     pTemperature = destination;
     *pTemperature = NAN;
-    data = HIBYTE(AD5933_FUNCTION_MEASURE_TEMP);
-    AD5933_WriteReg(AD5933_CTRL_H_ADDR, &data, 1);
+    AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(AD5933_FUNCTION_MEASURE_TEMP));
     status = AD_MEASURE_TEMP;
     
     return AD_OK;
@@ -386,8 +382,8 @@ void AD5933_TIM_PeriodElapsedCallback(void)
                 }
                 else
                 {
-                    data = __REV16(AD5933_FUNCTION_INCREMENT_FREQ | range_spec.PGA_Gain | range_spec.Voltage_Range);
-                    AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
+                    data = AD5933_FUNCTION_INCREMENT_FREQ | range_spec.PGA_Gain | range_spec.Voltage_Range;
+                    AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
                 }
             }
             break;
@@ -403,8 +399,8 @@ void AD5933_TIM_PeriodElapsedCallback(void)
                     
                     if(pGainData->is_2point)
                     {
-                        data = __REV16(AD5933_FUNCTION_INCREMENT_FREQ | range_spec.PGA_Gain | range_spec.Voltage_Range);
-                        AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
+                        data = AD5933_FUNCTION_INCREMENT_FREQ | range_spec.PGA_Gain | range_spec.Voltage_Range;
+                        AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
                         sweep_count++;
                     }
                     else
