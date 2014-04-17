@@ -14,7 +14,7 @@ static HAL_StatusTypeDef AD5933_WriteReg(uint16_t MemAddress, uint8_t *pData, ui
 static HAL_StatusTypeDef AD5933_ReadReg(uint16_t MemAddress, uint8_t *pData, uint16_t Size);
 static uint8_t AD5933_ReadStatus();
 static uint32_t AD5933_CalcFrequencyReg(uint32_t freq);
-static void AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_t *freq_start, uint32_t *freq_step,
+static void AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_t freq_start, uint32_t freq_step,
         uint16_t num_incr, uint16_t settl);
 
 // Private variables ----------------------------------------------------------
@@ -81,12 +81,12 @@ static uint32_t AD5933_CalcFrequencyReg(uint32_t freq)
  * Sends the necessary commands to the AD5933 to initiate a frequency sweep.
  * 
  * @param range Pointer to voltage and gain settings
- * @param freq_start Pointer to start frequency register value
- * @param freq_step Pointer to frequency step register value
+ * @param freq_start Start frequency register value
+ * @param freq_step Frequency step register value
  * @param num_incr Number of increments
  * @param settl Settling time register value
  */
-static void AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_t *freq_start, uint32_t *freq_step,
+static void AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_t freq_start, uint32_t freq_step,
         uint16_t num_incr, uint16_t settl)
 {
     uint16_t data;
@@ -96,8 +96,8 @@ static void AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_t *freq_
     AD5933_WriteReg(AD5933_CTRL_H_ADDR, (uint8_t *)&data, 1);
     
     // Send sweep parameters
-    AD5933_WriteReg(AD5933_START_FREQ_H_ADDR, ((uint8_t *)freq_start) + 1, 3);
-    AD5933_WriteReg(AD5933_FREQ_INCR_H_ADDR, ((uint8_t *)freq_step) + 1, 3);
+    AD5933_WriteReg(AD5933_START_FREQ_H_ADDR, ((uint8_t *)&freq_start) + 1, 3);
+    AD5933_WriteReg(AD5933_FREQ_INCR_H_ADDR, ((uint8_t *)&freq_step) + 1, 3);
     AD5933_WriteReg(AD5933_NUM_INCR_H_ADDR, (uint8_t *)&num_incr, 2);
     AD5933_WriteReg(AD5933_SETTL_H_ADDR, (uint8_t *)&settl, 2);
     
@@ -208,7 +208,7 @@ AD5933_Error AD5933_MeasureImpedance(AD5933_Sweep *sweep, AD5933_RangeSettings *
     }
     
     data = sweep->Settling_Cycles | sweep->Settling_Mult;
-    AD5933_StartMeasurement(range, &freq_start, &freq_step, sweep->Num_Increments, data);
+    AD5933_StartMeasurement(range, freq_start, freq_step, sweep->Num_Increments, data);
     
     status = AD_MEASURE_IMPEDANCE;
     return AD_OK;
@@ -280,7 +280,7 @@ AD5933_Error AD5933_Calibrate(AD5933_GainFactorData *data, AD5933_RangeSettings 
     }
     
     // Number of increments doesn't really matter, we check sweep_count in the callback anyway
-    AD5933_StartMeasurement(range, &freq_start, &freq_step, 2, 100);
+    AD5933_StartMeasurement(range, freq_start, freq_step, 2, 100);
     
     return AD_OK;
 }
