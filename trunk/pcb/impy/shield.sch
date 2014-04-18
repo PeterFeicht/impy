@@ -1104,9 +1104,9 @@ RU-28</description>
 <rectangle x1="-3.725" y1="2.2" x2="-3.425" y2="3.25" layer="51"/>
 <rectangle x1="-4.375" y1="2.2" x2="-4.075" y2="3.25" layer="51"/>
 </package>
-<package name="SO08">
-<description>&lt;b&gt;Small Outline Package 8&lt;/b&gt;&lt;br&gt;
-NS Package M08A</description>
+<package name="SO8">
+<description>&lt;b&gt;8-Lead Small Outline IC&lt;/b&gt; (SO-8)&lt;p&gt;
+Source: http://www.analog.com/UploadedFiles/Data_Sheets/703465986AD8611_2_0.pdf</description>
 <wire x1="2.4" y1="1.9" x2="2.4" y2="-1.4" width="0.2032" layer="51"/>
 <wire x1="2.4" y1="-1.4" x2="2.4" y2="-1.9" width="0.2032" layer="51"/>
 <wire x1="2.4" y1="-1.9" x2="-2.4" y2="-1.9" width="0.2032" layer="51"/>
@@ -1122,16 +1122,16 @@ NS Package M08A</description>
 <smd name="8" x="-1.905" y="2.6" dx="0.6" dy="2.2" layer="1"/>
 <smd name="6" x="0.635" y="2.6" dx="0.6" dy="2.2" layer="1"/>
 <smd name="5" x="1.905" y="2.6" dx="0.6" dy="2.2" layer="1"/>
-<text x="-2.667" y="-1.905" size="1.27" layer="25" rot="R90">&gt;NAME</text>
-<text x="3.937" y="-1.905" size="1.27" layer="27" rot="R90">&gt;VALUE</text>
-<rectangle x1="-2.15" y1="-3.1" x2="-1.66" y2="-2" layer="51"/>
-<rectangle x1="-0.88" y1="-3.1" x2="-0.39" y2="-2" layer="51"/>
-<rectangle x1="0.39" y1="-3.1" x2="0.88" y2="-2" layer="51"/>
-<rectangle x1="1.66" y1="-3.1" x2="2.15" y2="-2" layer="51"/>
-<rectangle x1="1.66" y1="2" x2="2.15" y2="3.1" layer="51"/>
-<rectangle x1="0.39" y1="2" x2="0.88" y2="3.1" layer="51"/>
-<rectangle x1="-0.88" y1="2" x2="-0.39" y2="3.1" layer="51"/>
-<rectangle x1="-2.15" y1="2" x2="-1.66" y2="3.1" layer="51"/>
+<text x="-3.175" y="-1.905" size="1.27" layer="25" rot="R90">&gt;NAME</text>
+<text x="4.445" y="-1.905" size="1.27" layer="27" rot="R90">&gt;VALUE</text>
+<rectangle x1="-2.1501" y1="-3.1001" x2="-1.6599" y2="-2" layer="51"/>
+<rectangle x1="-0.8801" y1="-3.1001" x2="-0.3899" y2="-2" layer="51"/>
+<rectangle x1="0.3899" y1="-3.1001" x2="0.8801" y2="-2" layer="51"/>
+<rectangle x1="1.6599" y1="-3.1001" x2="2.1501" y2="-2" layer="51"/>
+<rectangle x1="1.6599" y1="2" x2="2.1501" y2="3.1001" layer="51"/>
+<rectangle x1="0.3899" y1="2" x2="0.8801" y2="3.1001" layer="51"/>
+<rectangle x1="-0.8801" y1="2" x2="-0.3899" y2="3.1001" layer="51"/>
+<rectangle x1="-2.1501" y1="2" x2="-1.6599" y2="3.1001" layer="51"/>
 </package>
 </packages>
 <symbols>
@@ -1242,7 +1242,7 @@ Fuel/battery cell condition monitoring
 <gate name="A" symbol="AD5933" x="0" y="0"/>
 </gates>
 <devices>
-<device name="" package="SSOP16">
+<device name="RS" package="SSOP16">
 <connects>
 <connect gate="A" pin="AGND1" pad="13"/>
 <connect gate="A" pin="AGND2" pad="14"/>
@@ -1258,7 +1258,9 @@ Fuel/battery cell condition monitoring
 <connect gate="A" pin="VOUT" pad="6"/>
 </connects>
 <technologies>
-<technology name=""/>
+<technology name="Y">
+<attribute name="RS" value="709-4816" constant="no"/>
+</technology>
 </technologies>
 </device>
 </devices>
@@ -1270,7 +1272,7 @@ Source: ADG704.pdf</description>
 <gate name="G$1" symbol="ADG704" x="0" y="0"/>
 </gates>
 <devices>
-<device name="" package="MSOP10">
+<device name="RM" package="MSOP10">
 <connects>
 <connect gate="G$1" pin="A0" pad="1"/>
 <connect gate="G$1" pin="A1" pad="10"/>
@@ -1284,7 +1286,9 @@ Source: ADG704.pdf</description>
 <connect gate="G$1" pin="VDD" pad="6"/>
 </connects>
 <technologies>
-<technology name=""/>
+<technology name="B">
+<attribute name="RS" value="523-8761" constant="no"/>
+</technology>
 </technologies>
 </device>
 </devices>
@@ -1296,7 +1300,7 @@ Source: ADG706.pdf</description>
 <gate name="G$1" symbol="ADG706" x="0" y="0"/>
 </gates>
 <devices>
-<device name="" package="TSSOP28">
+<device name="RU" package="TSSOP28">
 <connects>
 <connect gate="G$1" pin="A0" pad="17"/>
 <connect gate="G$1" pin="A1" pad="16"/>
@@ -1325,8 +1329,8 @@ Source: ADG706.pdf</description>
 <connect gate="G$1" pin="VSS" pad="27"/>
 </connects>
 <technologies>
-<technology name="BRUZ">
-<attribute name="RS" value="523-6478"/>
+<technology name="B">
+<attribute name="RS" value="523-6478" constant="no"/>
 </technology>
 </technologies>
 </device>
@@ -1338,7 +1342,7 @@ Source: ADG706.pdf</description>
 <gate name="G$1" symbol="M24C08" x="0" y="0"/>
 </gates>
 <devices>
-<device name="" package="SO08">
+<device name="MN" package="SO8">
 <connects>
 <connect gate="G$1" pin="!WC" pad="7"/>
 <connect gate="G$1" pin="E2" pad="3"/>
@@ -1348,7 +1352,18 @@ Source: ADG706.pdf</description>
 <connect gate="G$1" pin="VSS" pad="4"/>
 </connects>
 <technologies>
-<technology name=""/>
+<technology name="F">
+<attribute name="RS" value="" constant="no"/>
+<attribute name="VCC" value="1.7V - 5.5V" constant="no"/>
+</technology>
+<technology name="R">
+<attribute name="RS" value="" constant="no"/>
+<attribute name="VCC" value="1.8V - 5.5V" constant="no"/>
+</technology>
+<technology name="W">
+<attribute name="RS" value="415-1180" constant="no"/>
+<attribute name="VCC" value="2.5V - 5.5V" constant="no"/>
+</technology>
 </technologies>
 </device>
 </devices>
@@ -2764,7 +2779,7 @@ wave soldering</description>
 <part name="VDD2" library="supply1" deviceset="VDD" device=""/>
 <part name="VDD3" library="supply1" deviceset="VDD" device=""/>
 <part name="GND9" library="supply1" deviceset="GND" device=""/>
-<part name="U1" library="parts" deviceset="AD5933" device=""/>
+<part name="U1" library="parts" deviceset="AD5933" device="RS" technology="Y"/>
 <part name="P+3" library="supply1" deviceset="VCC" device=""/>
 <part name="P+4" library="supply1" deviceset="VCC" device=""/>
 <part name="AGND1" library="supply1" deviceset="AGND" device=""/>
@@ -2774,7 +2789,7 @@ wave soldering</description>
 <part name="P+5" library="supply1" deviceset="VCC" device=""/>
 <part name="+3V3" library="supply1" deviceset="+3V3" device=""/>
 <part name="VDD4" library="supply1" deviceset="VDD" device=""/>
-<part name="U2" library="parts" deviceset="ADG704" device=""/>
+<part name="U2" library="parts" deviceset="ADG704" device="RM" technology="B"/>
 <part name="P+6" library="supply1" deviceset="VCC" device=""/>
 <part name="P+7" library="supply1" deviceset="VCC" device=""/>
 <part name="AGND2" library="supply1" deviceset="AGND" device=""/>
@@ -2785,7 +2800,7 @@ wave soldering</description>
 <part name="SJ1" library="jumper" deviceset="SJ" device=""/>
 <part name="AGND3" library="supply1" deviceset="AGND" device=""/>
 <part name="GND11" library="supply1" deviceset="GND" device=""/>
-<part name="U3" library="parts" deviceset="ADG706" device="" technology="BRUZ"/>
+<part name="U3" library="parts" deviceset="ADG706" device="RU" technology="B"/>
 <part name="AGND4" library="supply1" deviceset="AGND" device=""/>
 <part name="P+8" library="supply1" deviceset="VCC" device=""/>
 <part name="P+9" library="supply1" deviceset="VCC" device=""/>
@@ -2796,7 +2811,7 @@ wave soldering</description>
 <part name="JP5" library="pinhead" deviceset="PINHD-1X10" device=""/>
 <part name="JP6" library="pinhead" deviceset="PINHD-1X2" device=""/>
 <part name="AGND5" library="supply1" deviceset="AGND" device=""/>
-<part name="U4" library="parts" deviceset="M24C08" device=""/>
+<part name="U4" library="parts" deviceset="M24C08" device="MN" technology="W"/>
 <part name="P+10" library="supply1" deviceset="VCC" device=""/>
 <part name="GND12" library="supply1" deviceset="GND" device=""/>
 <part name="GND13" library="supply1" deviceset="GND" device=""/>
