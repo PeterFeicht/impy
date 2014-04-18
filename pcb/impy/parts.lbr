@@ -114,7 +114,7 @@ This library contains parts used for the Impedance Spectrometer project that are
     &lt;li&gt;&lt;b&gt;AD5933&lt;/b&gt; - Impedance Converter chip (from &lt;a href="https://github.com/kblomqvist/kblom-eagle-lbr"&gt;kblomqvist on GitHub&lt;/a&gt;)&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;ADG704&lt;/b&gt; - CMOS Low Voltage 4 &amp;Omega;, 4-Channel Multiplexer&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;ADG706&lt;/b&gt; - CMOS, +1.8 V to +5.5 V/&amp;plusmn;2.5 V, 2.5 &amp;Omega; Low-Voltage, 8-/16-Channel Multiplexers&lt;/li&gt;
-    &lt;li&gt;&lt;b&gt;DP83848&lt;/b&gt; - PHYTER - Industrial Temperature Single Port 10/100 Mb/s Ethernet Physical Layer Transceiver (adapted from &lt;code&gt;national-semiconductor.lbr&lt;/code&gt;)&lt;/li&gt;
+    &lt;li&gt;&lt;b&gt;DP83848&lt;/b&gt; - PHYTER Industrial Temperature Single Port 10/100 Mb/s Ethernet Physical Layer Transceiver (adapted from &lt;code&gt;national-semiconductor.lbr&lt;/code&gt;)&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;M24C08&lt;/b&gt; - 8-Kbit serial I²C bus EEPROM&lt;/li&gt;
 &lt;/ul&gt;</description>
 <packages>
@@ -415,8 +415,8 @@ NS Package M08A</description>
 <wire x1="10.16" y1="27.94" x2="10.16" y2="-27.94" width="0.254" layer="94"/>
 <wire x1="10.16" y1="-27.94" x2="-10.16" y2="-27.94" width="0.254" layer="94"/>
 <wire x1="-10.16" y1="-27.94" x2="-10.16" y2="27.94" width="0.254" layer="94"/>
-<text x="-10.16" y="29.21" size="1.778" layer="95">&gt;NAME</text>
-<text x="-10.16" y="-30.48" size="1.778" layer="96">&gt;VALUE</text>
+<text x="-10.16" y="29.21" size="1.27" layer="95">&gt;NAME</text>
+<text x="-10.16" y="-30.48" size="1.27" layer="96">&gt;VALUE</text>
 <pin name="S1" x="-12.7" y="25.4" length="short"/>
 <pin name="S2" x="-12.7" y="22.86" length="short"/>
 <pin name="S3" x="-12.7" y="20.32" length="short"/>
@@ -448,8 +448,8 @@ NS Package M08A</description>
 <wire x1="10.16" y1="12.7" x2="10.16" y2="-12.7" width="0.254" layer="94"/>
 <wire x1="10.16" y1="-12.7" x2="-10.16" y2="-12.7" width="0.254" layer="94"/>
 <wire x1="-10.16" y1="-12.7" x2="-10.16" y2="12.7" width="0.254" layer="94"/>
-<text x="-10.16" y="13.97" size="1.778" layer="95">&gt;NAME</text>
-<text x="-10.16" y="-15.24" size="1.778" layer="96">&gt;VALUE</text>
+<text x="-10.16" y="13.97" size="1.27" layer="95">&gt;NAME</text>
+<text x="-10.16" y="-15.24" size="1.27" layer="96">&gt;VALUE</text>
 <pin name="S1" x="-12.7" y="10.16" length="short"/>
 <pin name="S2" x="-12.7" y="7.62" length="short"/>
 <pin name="S3" x="-12.7" y="5.08" length="short"/>
@@ -466,8 +466,8 @@ NS Package M08A</description>
 <wire x1="30.48" y1="-27.94" x2="30.48" y2="25.4" width="0.254" layer="94"/>
 <wire x1="30.48" y1="25.4" x2="-30.48" y2="25.4" width="0.254" layer="94"/>
 <wire x1="-30.48" y1="25.4" x2="-30.48" y2="-27.94" width="0.254" layer="94"/>
-<text x="-30.48" y="26.67" size="1.778" layer="95">&gt;NAME</text>
-<text x="-30.48" y="-30.48" size="1.778" layer="96">&gt;VALUE</text>
+<text x="-30.48" y="26.67" size="1.27" layer="95">&gt;NAME</text>
+<text x="-30.48" y="-30.48" size="1.27" layer="96">&gt;VALUE</text>
 <pin name="CLK2MAC" x="-15.24" y="-30.48" length="short" direction="out" rot="R90"/>
 <pin name="LED_ACTCOL" x="33.02" y="5.08" length="short" direction="out" rot="R180"/>
 <pin name="LED_SPEED" x="33.02" y="7.62" length="short" direction="out" rot="R180"/>
@@ -574,7 +574,7 @@ Fuel/battery cell condition monitoring
 </device>
 </devices>
 </deviceset>
-<deviceset name="ADG706">
+<deviceset name="ADG706" prefix="U">
 <description>&lt;b&gt;CMOS, +1.8 V to +5.5 V/&amp;plusmn;2.5 V, 2.5 &amp;Omega; Low-Voltage, 16-Channel Multiplexer&lt;/b&gt;&lt;p&gt;
 Source: ADG706.pdf</description>
 <gates>
@@ -617,7 +617,7 @@ Source: ADG706.pdf</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="ADG704">
+<deviceset name="ADG704" prefix="U">
 <description>&lt;b&gt;CMOS Low Voltage 4 &amp;Omega;, 4-Channel Multiplexer&lt;/b&gt;&lt;p&gt;
 Source: ADG704.pdf</description>
 <gates>
@@ -643,7 +643,7 @@ Source: ADG704.pdf</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="DP83848" prefix="IC">
+<deviceset name="DP83848" prefix="U">
 <description>&lt;b&gt;PHYTER® - Industrial Temperature Single Port 10/100 Mb/s Ethernet Physical Layer Transceiver&lt;/b&gt;&lt;p&gt;
 http://www.ti.com/product/dp83848i</description>
 <gates>
@@ -718,7 +718,7 @@ http://www.ti.com/product/dp83848i</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="M24C08">
+<deviceset name="M24C08" prefix="U">
 <description>&lt;b&gt;8-Kbit serial I²C bus EEPROM&lt;/b&gt;</description>
 <gates>
 <gate name="G$1" symbol="M24C08" x="0" y="0"/>
