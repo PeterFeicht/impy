@@ -531,6 +531,22 @@ NS Package M08A</description>
 <text x="2.54" y="8.89" size="1.27" layer="95">&gt;NAME</text>
 <text x="-7.62" y="8.89" size="1.27" layer="96">&gt;VALUE</text>
 </symbol>
+<symbol name="SPI-FLASH">
+<wire x1="-7.62" y1="7.62" x2="-7.62" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="-7.62" y1="-7.62" x2="7.62" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="7.62" y1="-7.62" x2="7.62" y2="7.62" width="0.254" layer="94"/>
+<wire x1="7.62" y1="7.62" x2="-7.62" y2="7.62" width="0.254" layer="94"/>
+<pin name="!CS" x="-10.16" y="5.08" length="short" direction="in"/>
+<pin name="!WP" x="-10.16" y="0" length="short" direction="in"/>
+<pin name="SO" x="10.16" y="0" length="short" direction="hiz" rot="R180"/>
+<pin name="SCK" x="-10.16" y="-2.54" length="short" direction="in"/>
+<pin name="VDD" x="10.16" y="5.08" length="short" direction="pwr" rot="R180"/>
+<pin name="GND" x="10.16" y="-5.08" length="short" direction="pwr" rot="R180"/>
+<text x="2.54" y="8.89" size="1.27" layer="95">&gt;NAME</text>
+<text x="-7.62" y="8.89" size="1.27" layer="96">&gt;VALUE</text>
+<pin name="!HOLD" x="-10.16" y="2.54" length="short" direction="in"/>
+<pin name="SI" x="-10.16" y="-5.08" length="short" direction="in"/>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="AD5933" prefix="U">
