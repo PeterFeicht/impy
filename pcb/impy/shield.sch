@@ -1213,10 +1213,10 @@ NS Package M08A</description>
 <wire x1="7.62" y1="7.62" x2="-7.62" y2="7.62" width="0.254" layer="94"/>
 <pin name="E2" x="-10.16" y="5.08" length="short" direction="in"/>
 <pin name="!WC" x="-10.16" y="2.54" length="short" direction="in"/>
-<pin name="SDA" x="10.16" y="5.08" length="short" direction="oc" rot="R180"/>
-<pin name="SCL" x="10.16" y="2.54" length="short" direction="in" rot="R180"/>
-<pin name="VCC" x="-2.54" y="-10.16" length="short" direction="pwr" rot="R90"/>
-<pin name="VSS" x="2.54" y="-10.16" length="short" direction="pwr" rot="R90"/>
+<pin name="SDA" x="10.16" y="0" length="short" direction="oc" rot="R180"/>
+<pin name="SCL" x="-10.16" y="-2.54" length="short" direction="in"/>
+<pin name="VCC" x="10.16" y="5.08" length="short" direction="pwr" rot="R180"/>
+<pin name="VSS" x="10.16" y="-5.08" length="short" direction="pwr" rot="R180"/>
 <text x="2.54" y="8.89" size="1.27" layer="95">&gt;NAME</text>
 <text x="-7.62" y="8.89" size="1.27" layer="96">&gt;VALUE</text>
 </symbol>
@@ -3586,9 +3586,9 @@ AGND - Analog ground</text>
 </plain>
 <instances>
 <instance part="U4" gate="G$1" x="12.7" y="15.24"/>
-<instance part="P+10" gate="VCC" x="10.16" y="0" rot="MR180"/>
-<instance part="GND12" gate="1" x="15.24" y="0" rot="MR0"/>
-<instance part="GND13" gate="1" x="0" y="12.7" rot="MR0"/>
+<instance part="P+10" gate="VCC" x="25.4" y="25.4" rot="MR0"/>
+<instance part="GND12" gate="1" x="25.4" y="5.08" rot="MR0"/>
+<instance part="GND13" gate="1" x="-5.08" y="20.32" rot="MR90"/>
 </instances>
 <busses>
 </busses>
@@ -3596,39 +3596,41 @@ AGND - Analog ground</text>
 <net name="PB9" class="0">
 <segment>
 <pinref part="U4" gate="G$1" pin="SDA"/>
-<wire x1="22.86" y1="20.32" x2="25.4" y2="20.32" width="0.1524" layer="91"/>
-<label x="25.4" y="20.32" size="1.778" layer="95"/>
+<wire x1="22.86" y1="15.24" x2="25.4" y2="15.24" width="0.1524" layer="91"/>
+<label x="25.4" y="15.24" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="PB6" class="0">
 <segment>
 <pinref part="U4" gate="G$1" pin="SCL"/>
-<wire x1="25.4" y1="17.78" x2="22.86" y2="17.78" width="0.1524" layer="91"/>
-<label x="25.4" y="17.78" size="1.778" layer="95"/>
+<wire x1="0" y1="12.7" x2="2.54" y2="12.7" width="0.1524" layer="91"/>
+<label x="0" y="12.7" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
 <net name="GND" class="0">
 <segment>
-<pinref part="GND12" gate="1" pin="GND"/>
 <pinref part="U4" gate="G$1" pin="VSS"/>
-<wire x1="15.24" y1="2.54" x2="15.24" y2="5.08" width="0.1524" layer="91"/>
+<pinref part="GND12" gate="1" pin="GND"/>
+<wire x1="22.86" y1="10.16" x2="25.4" y2="10.16" width="0.1524" layer="91"/>
+<wire x1="25.4" y1="10.16" x2="25.4" y2="7.62" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="U4" gate="G$1" pin="E2"/>
 <pinref part="GND13" gate="1" pin="GND"/>
 <wire x1="2.54" y1="20.32" x2="0" y2="20.32" width="0.1524" layer="91"/>
-<wire x1="0" y1="20.32" x2="0" y2="17.78" width="0.1524" layer="91"/>
 <pinref part="U4" gate="G$1" pin="!WC"/>
-<wire x1="0" y1="17.78" x2="0" y2="15.24" width="0.1524" layer="91"/>
+<wire x1="0" y1="20.32" x2="-2.54" y2="20.32" width="0.1524" layer="91"/>
 <wire x1="2.54" y1="17.78" x2="0" y2="17.78" width="0.1524" layer="91"/>
-<junction x="0" y="17.78"/>
+<wire x1="0" y1="17.78" x2="0" y2="20.32" width="0.1524" layer="91"/>
+<junction x="0" y="20.32"/>
 </segment>
 </net>
 <net name="VCC" class="0">
 <segment>
-<pinref part="P+10" gate="VCC" pin="VCC"/>
 <pinref part="U4" gate="G$1" pin="VCC"/>
-<wire x1="10.16" y1="2.54" x2="10.16" y2="5.08" width="0.1524" layer="91"/>
+<pinref part="P+10" gate="VCC" pin="VCC"/>
+<wire x1="22.86" y1="20.32" x2="25.4" y2="20.32" width="0.1524" layer="91"/>
+<wire x1="25.4" y1="20.32" x2="25.4" y2="22.86" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
