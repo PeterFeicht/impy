@@ -112,10 +112,12 @@ This library contains parts used for the Impedance Spectrometer project that are
 
 &lt;ul&gt;
     &lt;li&gt;&lt;b&gt;AD5933&lt;/b&gt; - Impedance Converter chip (from &lt;a href="https://github.com/kblomqvist/kblom-eagle-lbr"&gt;kblomqvist on GitHub&lt;/a&gt;)&lt;/li&gt;
-    &lt;li&gt;&lt;b&gt;ADG704&lt;/b&gt; - CMOS Low Voltage 4 &amp;Omega;, 4-Channel Multiplexer&lt;/li&gt;
-    &lt;li&gt;&lt;b&gt;ADG706&lt;/b&gt; - CMOS, +1.8 V to +5.5 V/&amp;plusmn;2.5 V, 2.5 &amp;Omega; Low-Voltage, 8-/16-Channel Multiplexers&lt;/li&gt;
+    &lt;li&gt;&lt;b&gt;AD8615&lt;/b&gt; - Precision, 20 MHz, CMOS, Rail-to-Rail Input/Output Operational Amplifier&lt;/li&gt;
+    &lt;li&gt;&lt;b&gt;ADG704&lt;/b&gt; - CMOS Low Voltage 4 Ω, 4-Channel Multiplexer&lt;/li&gt;
+    &lt;li&gt;&lt;b&gt;ADG706&lt;/b&gt; - CMOS, +1.8 V to +5.5 V/±2.5 V, 2.5 Ω Low-Voltage, 8-/16-Channel Multiplexers&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;DP83848&lt;/b&gt; - PHYTER Industrial Temperature Single Port 10/100 Mb/s Ethernet Physical Layer Transceiver (adapted from &lt;code&gt;national-semiconductor.lbr&lt;/code&gt;)&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;M24C08&lt;/b&gt; - 8-Kbit serial I²C bus EEPROM&lt;/li&gt;
+    &lt;li&gt;&lt;b&gt;MAX4781&lt;/b&gt; - High-Speed, Low-Voltage, 0.7 Ω CMOS Analog Switches/Multiplexers&lt;/li&gt;
 &lt;/ul&gt;</description>
 <packages>
 <package name="SSOP16">
