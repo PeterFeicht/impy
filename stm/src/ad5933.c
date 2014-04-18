@@ -38,7 +38,7 @@ static AD5933_GainFactorData *pGainData;
  * @param value Value to write
  * @returnHAL status code
  */
-static HAL_StatusTypeDef AD5933_Write8(uint16_t MemAddress, uint8_t value)
+static __INLINE HAL_StatusTypeDef AD5933_Write8(uint16_t MemAddress, uint8_t value)
 {
     return HAL_I2C_Mem_Write(i2cHandle, AD5933_ADDR, MemAddress, 1, (uint8_t *)&value, 1, AD5933_I2C_TIMEOUT);
 }
@@ -50,9 +50,11 @@ static HAL_StatusTypeDef AD5933_Write8(uint16_t MemAddress, uint8_t value)
  * @param value Value to write
  * @returnHAL status code
  */
-static HAL_StatusTypeDef AD5933_Write16(uint16_t MemAddress, uint16_t value)
+static __INLINE HAL_StatusTypeDef AD5933_Write16(uint16_t MemAddress, uint16_t value)
 {
+#ifndef __ARMEB__
     value = __REV16(value);
+#endif
     return HAL_I2C_Mem_Write(i2cHandle, AD5933_ADDR, MemAddress, 1, (uint8_t *)&value, 2, AD5933_I2C_TIMEOUT);
 }
 
@@ -63,9 +65,11 @@ static HAL_StatusTypeDef AD5933_Write16(uint16_t MemAddress, uint16_t value)
  * @param value Value to write
  * @returnHAL status code
  */
-static HAL_StatusTypeDef AD5933_Write24(uint16_t MemAddress, uint32_t value)
+static __INLINE HAL_StatusTypeDef AD5933_Write24(uint16_t MemAddress, uint32_t value)
 {
+#ifndef __ARMEB__
     value = __REV(value);
+#endif
     return HAL_I2C_Mem_Write(i2cHandle, AD5933_ADDR, MemAddress, 1, (uint8_t *)&value + 1, 3, AD5933_I2C_TIMEOUT);
 }
 
@@ -76,12 +80,14 @@ static HAL_StatusTypeDef AD5933_Write24(uint16_t MemAddress, uint32_t value)
  * @param destination The address where the value is written to
  * @return HAL status code
  */
-static HAL_StatusTypeDef AD5933_Read16(uint16_t MemAddress, uint16_t *destination)
+static __INLINE HAL_StatusTypeDef AD5933_Read16(uint16_t MemAddress, uint16_t *destination)
 {
     uint16_t tmp;
     HAL_StatusTypeDef ret =
             HAL_I2C_Mem_Read(i2cHandle, AD5933_ADDR, MemAddress, 1, (uint8_t *)&tmp, 2, AD5933_I2C_TIMEOUT);
+#ifndef __ARMEB__
     *destination = __REV16(tmp);
+#endif
     return ret;
 }
 
@@ -90,7 +96,7 @@ static HAL_StatusTypeDef AD5933_Read16(uint16_t MemAddress, uint16_t *destinatio
  * 
  * @return Contents of the status register
  */
-static uint8_t AD5933_ReadStatus()
+static __INLINE uint8_t AD5933_ReadStatus()
 {
     uint8_t data = 0;
     
@@ -104,7 +110,7 @@ static uint8_t AD5933_ReadStatus()
  * @param freq The frequency to calculate the register value for
  * @return The value that can be written to the device register
  */
-static uint32_t AD5933_CalcFrequencyReg(uint32_t freq)
+static __INLINE uint32_t AD5933_CalcFrequencyReg(uint32_t freq)
 {
     uint64_t tmp = (1 << 27) * 4 * freq;
     return (uint32_t)(tmp / AD5933_CLK_FREQ);
@@ -187,7 +193,6 @@ AD5933_Error AD5933_Reset(void)
     }
     
     // Reset first (low byte) and then power down (high byte)
-    // The pointer fu done here is the same as used by the SWAPBYTE macro in usbd_def.h, so I assume this has to work
     AD5933_Write8(AD5933_CTRL_L_ADDR, LOBYTE(data));
     AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
     status = AD_IDLE;
