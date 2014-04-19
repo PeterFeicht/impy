@@ -2276,6 +2276,20 @@ Current limit 0.5A, Enable signal active high</description>
 <pin name="2" x="5.08" y="0" visible="pad" length="short" direction="pas" swaplevel="1" rot="R180"/>
 <pin name="1" x="-5.08" y="0" visible="pad" length="short" direction="pas" swaplevel="1"/>
 </symbol>
+<symbol name="J1">
+<wire x1="0" y1="2.54" x2="0" y2="3.81" width="0.4064" layer="94"/>
+<wire x1="0" y1="3.81" x2="0" y2="5.08" width="0.1524" layer="94"/>
+<wire x1="0" y1="-2.54" x2="0" y2="-3.81" width="0.4064" layer="94"/>
+<wire x1="0" y1="-3.81" x2="0" y2="-5.08" width="0.1524" layer="94"/>
+<wire x1="-1.905" y1="5.08" x2="1.905" y2="5.08" width="0.4064" layer="94"/>
+<wire x1="1.905" y1="5.08" x2="1.905" y2="-5.08" width="0.4064" layer="94"/>
+<wire x1="1.905" y1="-5.08" x2="-1.905" y2="-5.08" width="0.4064" layer="94"/>
+<wire x1="-1.905" y1="-5.08" x2="-1.905" y2="5.08" width="0.4064" layer="94"/>
+<text x="-2.54" y="-5.08" size="1.778" layer="95" rot="R90">&gt;NAME</text>
+<text x="4.445" y="-5.08" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
+<pin name="1" x="0" y="-7.62" visible="pad" length="short" direction="pas" rot="R90"/>
+<pin name="2" x="0" y="7.62" visible="pad" length="short" direction="pas" rot="R270"/>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="JP1E" prefix="JP" uservalue="yes">
@@ -2314,6 +2328,23 @@ Current limit 0.5A, Enable signal active high</description>
 <connects>
 <connect gate="1" pin="1" pad="1"/>
 <connect gate="1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="JP1Q" prefix="JP" uservalue="yes">
+<description>&lt;b&gt;JUMPER&lt;/b&gt;</description>
+<gates>
+<gate name="A" symbol="J1" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="JP1">
+<connects>
+<connect gate="A" pin="1" pad="1"/>
+<connect gate="A" pin="2" pad="2"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -8512,6 +8543,8 @@ W = angled&lt;p&gt;
 <part name="R11" library="rcl" deviceset="R-EU_" device="R0805" value="10k"/>
 <part name="P+30" library="supply1" deviceset="VCC" device=""/>
 <part name="SJ2" library="jumper" deviceset="SJ" device="" value="ETH_CLK"/>
+<part name="JP9" library="jumper" deviceset="JP1Q" device="" value="BOOT0"/>
+<part name="VDD5" library="supply1" deviceset="VDD" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -8600,6 +8633,8 @@ AGND - Analog ground</text>
 <instance part="C21" gate="G$1" x="160.02" y="40.64" rot="MR270"/>
 <instance part="C22" gate="G$1" x="63.5" y="5.08"/>
 <instance part="SJ2" gate="1" x="48.26" y="88.9"/>
+<instance part="JP9" gate="A" x="50.8" y="45.72"/>
+<instance part="VDD5" gate="G$1" x="50.8" y="30.48" rot="R180"/>
 </instances>
 <busses>
 </busses>
@@ -8624,6 +8659,11 @@ AGND - Analog ground</text>
 <pinref part="VDD4" gate="G$1" pin="VDD"/>
 <pinref part="JP4" gate="A" pin="1"/>
 <wire x1="132.08" y1="73.66" x2="132.08" y2="68.58" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="JP9" gate="A" pin="1"/>
+<wire x1="50.8" y1="33.02" x2="50.8" y2="38.1" width="0.1524" layer="91"/>
+<pinref part="VDD5" gate="G$1" pin="VDD"/>
 </segment>
 </net>
 <net name="GND" class="0">
@@ -8806,8 +8846,10 @@ AGND - Analog ground</text>
 <net name="BOOT0" class="0">
 <segment>
 <pinref part="JP2" gate="A" pin="21"/>
-<wire x1="63.5" y1="55.88" x2="71.12" y2="55.88" width="0.1524" layer="91"/>
 <label x="63.5" y="55.88" size="1.778" layer="95" rot="R180"/>
+<pinref part="JP9" gate="A" pin="2"/>
+<wire x1="50.8" y1="53.34" x2="50.8" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="50.8" y1="55.88" x2="71.12" y2="55.88" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="PE1" class="0">
