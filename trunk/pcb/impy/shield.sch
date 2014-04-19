@@ -8464,6 +8464,10 @@ W = angled&lt;p&gt;
 <classes>
 <class number="0" name="default" width="0" drill="0">
 </class>
+<class number="1" name="supply" width="1.4732" drill="0">
+</class>
+<class number="2" name="analog" width="0.9144" drill="0">
+</class>
 </classes>
 <parts>
 <part name="JP1" library="parts" deviceset="PINHD-2X25" device="-F" value="P1"/>
@@ -8725,7 +8729,7 @@ AGND - Analog ground</text>
 <busses>
 </busses>
 <nets>
-<net name="VDD" class="0">
+<net name="VDD" class="1">
 <segment>
 <pinref part="VDD1" gate="G$1" pin="VDD"/>
 <pinref part="JP1" gate="A" pin="4"/>
@@ -8762,7 +8766,7 @@ AGND - Analog ground</text>
 <junction x="177.8" y="73.66"/>
 </segment>
 </net>
-<net name="GND" class="0">
+<net name="GND" class="1">
 <segment>
 <pinref part="JP1" gate="A" pin="2"/>
 <pinref part="GND4" gate="1" pin="GND"/>
@@ -8884,7 +8888,7 @@ AGND - Analog ground</text>
 <junction x="177.8" y="55.88"/>
 </segment>
 </net>
-<net name="+5V" class="0">
+<net name="+5V" class="1">
 <segment>
 <pinref part="JP2" gate="A" pin="3"/>
 <pinref part="P+1" gate="1" pin="+5V"/>
@@ -8909,7 +8913,7 @@ AGND - Analog ground</text>
 <junction x="147.32" y="10.16"/>
 </segment>
 </net>
-<net name="+3V3" class="0">
+<net name="+3V3" class="1">
 <segment>
 <pinref part="+3V2" gate="G$1" pin="+3V3"/>
 <pinref part="JP2" gate="A" pin="5"/>
@@ -9170,7 +9174,7 @@ AGND - Analog ground</text>
 <label x="12.7" y="43.18" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
-<net name="VCC" class="0">
+<net name="VCC" class="1">
 <segment>
 <pinref part="P+5" gate="VCC" pin="VCC"/>
 <pinref part="JP3" gate="A" pin="2"/>
@@ -9225,7 +9229,7 @@ AGND - Analog ground</text>
 <junction x="114.3" y="10.16"/>
 </segment>
 </net>
-<net name="AGND" class="0">
+<net name="AGND" class="1">
 <segment>
 <pinref part="SJ1" gate="1" pin="1"/>
 <pinref part="AGND3" gate="VR1" pin="AGND"/>
@@ -9344,7 +9348,7 @@ AGND - Analog ground</text>
 <busses>
 </busses>
 <nets>
-<net name="VCC" class="0">
+<net name="VCC" class="1">
 <segment>
 <pinref part="P+4" gate="VCC" pin="VCC"/>
 <pinref part="U1" gate="A" pin="AVDD2"/>
@@ -9386,14 +9390,14 @@ AGND - Analog ground</text>
 <wire x1="86.36" y1="76.2" x2="86.36" y2="78.74" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="GND" class="0">
+<net name="GND" class="1">
 <segment>
 <pinref part="GND10" gate="1" pin="GND"/>
 <pinref part="U1" gate="A" pin="DGND"/>
 <wire x1="43.18" y1="27.94" x2="43.18" y2="30.48" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="AGND" class="0">
+<net name="AGND" class="1">
 <segment>
 <pinref part="AGND1" gate="VR1" pin="AGND"/>
 <pinref part="U1" gate="A" pin="AGND2"/>
@@ -9440,7 +9444,7 @@ AGND - Analog ground</text>
 <label x="22.86" y="43.18" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
-<net name="RFB" class="0">
+<net name="RFB" class="2">
 <segment>
 <pinref part="U1" gate="A" pin="RFB"/>
 <wire x1="68.58" y1="48.26" x2="71.12" y2="48.26" width="0.1524" layer="91"/>
@@ -9464,7 +9468,7 @@ AGND - Analog ground</text>
 <label x="7.62" y="86.36" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
-<net name="VIN" class="0">
+<net name="VIN" class="2">
 <segment>
 <pinref part="U1" gate="A" pin="VIN"/>
 <wire x1="71.12" y1="45.72" x2="68.58" y2="45.72" width="0.1524" layer="91"/>
@@ -9503,7 +9507,7 @@ AGND - Analog ground</text>
 <label x="165.1" y="43.18" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
-<net name="VOUT" class="0">
+<net name="VOUT" class="2">
 <segment>
 <pinref part="U1" gate="A" pin="VOUT"/>
 <wire x1="71.12" y1="53.34" x2="68.58" y2="53.34" width="0.1524" layer="91"/>
@@ -9527,7 +9531,7 @@ AGND - Analog ground</text>
 <label x="33.02" y="78.74" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
-<net name="N$1" class="0">
+<net name="N$1" class="2">
 <segment>
 <pinref part="RFB1" gate="G$1" pin="2"/>
 <pinref part="U2" gate="G$1" pin="S1"/>
@@ -9535,7 +9539,7 @@ AGND - Analog ground</text>
 <wire x1="35.56" y1="96.52" x2="35.56" y2="91.44" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$2" class="0">
+<net name="N$2" class="2">
 <segment>
 <pinref part="RFB2" gate="G$1" pin="2"/>
 <wire x1="22.86" y1="91.44" x2="33.02" y2="91.44" width="0.1524" layer="91"/>
@@ -9544,14 +9548,14 @@ AGND - Analog ground</text>
 <wire x1="33.02" y1="88.9" x2="35.56" y2="88.9" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$3" class="0">
+<net name="N$3" class="2">
 <segment>
 <pinref part="RFB3" gate="G$1" pin="2"/>
 <pinref part="U2" gate="G$1" pin="S3"/>
 <wire x1="22.86" y1="86.36" x2="35.56" y2="86.36" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$4" class="0">
+<net name="N$4" class="2">
 <segment>
 <pinref part="RFB4" gate="G$1" pin="2"/>
 <wire x1="22.86" y1="81.28" x2="33.02" y2="81.28" width="0.1524" layer="91"/>
@@ -9588,14 +9592,14 @@ AGND - Analog ground</text>
 <label x="132.08" y="43.18" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="N$5" class="0">
+<net name="N$5" class="2">
 <segment>
 <pinref part="U3" gate="G$1" pin="S13"/>
 <pinref part="RCAL1" gate="G$1" pin="1"/>
 <wire x1="129.54" y1="63.5" x2="144.78" y2="63.5" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$8" class="0">
+<net name="N$8" class="2">
 <segment>
 <wire x1="142.24" y1="48.26" x2="134.62" y2="55.88" width="0.1524" layer="91"/>
 <pinref part="U3" gate="G$1" pin="S16"/>
@@ -9604,7 +9608,7 @@ AGND - Analog ground</text>
 <wire x1="144.78" y1="48.26" x2="142.24" y2="48.26" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$7" class="0">
+<net name="N$7" class="2">
 <segment>
 <pinref part="RCAL3" gate="G$1" pin="1"/>
 <wire x1="144.78" y1="53.34" x2="142.24" y2="53.34" width="0.1524" layer="91"/>
@@ -9613,7 +9617,7 @@ AGND - Analog ground</text>
 <wire x1="137.16" y1="58.42" x2="129.54" y2="58.42" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$6" class="0">
+<net name="N$6" class="2">
 <segment>
 <pinref part="RCAL2" gate="G$1" pin="1"/>
 <wire x1="144.78" y1="58.42" x2="142.24" y2="58.42" width="0.1524" layer="91"/>
@@ -9622,77 +9626,77 @@ AGND - Analog ground</text>
 <wire x1="139.7" y1="60.96" x2="129.54" y2="60.96" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$9" class="0">
+<net name="N$9" class="2">
 <segment>
 <pinref part="JP5" gate="1" pin="1"/>
 <pinref part="U3" gate="G$1" pin="S2"/>
 <wire x1="132.08" y1="91.44" x2="129.54" y2="91.44" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$10" class="0">
+<net name="N$10" class="2">
 <segment>
 <pinref part="U3" gate="G$1" pin="S3"/>
 <pinref part="JP5" gate="1" pin="2"/>
 <wire x1="129.54" y1="88.9" x2="132.08" y2="88.9" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$11" class="0">
+<net name="N$11" class="2">
 <segment>
 <pinref part="JP5" gate="1" pin="3"/>
 <pinref part="U3" gate="G$1" pin="S4"/>
 <wire x1="132.08" y1="86.36" x2="129.54" y2="86.36" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$12" class="0">
+<net name="N$12" class="2">
 <segment>
 <pinref part="U3" gate="G$1" pin="S5"/>
 <pinref part="JP5" gate="1" pin="4"/>
 <wire x1="129.54" y1="83.82" x2="132.08" y2="83.82" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$13" class="0">
+<net name="N$13" class="2">
 <segment>
 <pinref part="JP5" gate="1" pin="5"/>
 <pinref part="U3" gate="G$1" pin="S6"/>
 <wire x1="132.08" y1="81.28" x2="129.54" y2="81.28" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$14" class="0">
+<net name="N$14" class="2">
 <segment>
 <pinref part="U3" gate="G$1" pin="S7"/>
 <pinref part="JP5" gate="1" pin="6"/>
 <wire x1="129.54" y1="78.74" x2="132.08" y2="78.74" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$15" class="0">
+<net name="N$15" class="2">
 <segment>
 <pinref part="JP5" gate="1" pin="7"/>
 <pinref part="U3" gate="G$1" pin="S8"/>
 <wire x1="132.08" y1="76.2" x2="129.54" y2="76.2" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$16" class="0">
+<net name="N$16" class="2">
 <segment>
 <pinref part="U3" gate="G$1" pin="S9"/>
 <pinref part="JP5" gate="1" pin="8"/>
 <wire x1="129.54" y1="73.66" x2="132.08" y2="73.66" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$17" class="0">
+<net name="N$17" class="2">
 <segment>
 <pinref part="JP5" gate="1" pin="9"/>
 <pinref part="U3" gate="G$1" pin="S10"/>
 <wire x1="132.08" y1="71.12" x2="129.54" y2="71.12" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$18" class="0">
+<net name="N$18" class="2">
 <segment>
 <pinref part="U3" gate="G$1" pin="S11"/>
 <pinref part="JP5" gate="1" pin="10"/>
 <wire x1="129.54" y1="68.58" x2="132.08" y2="68.58" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$19" class="0">
+<net name="N$19" class="2">
 <segment>
 <pinref part="U5" gate="G$1" pin="OUT"/>
 <pinref part="U3" gate="G$1" pin="D"/>
@@ -9761,7 +9765,7 @@ AGND - Analog ground</text>
 <label x="0" y="12.7" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
-<net name="GND" class="0">
+<net name="GND" class="1">
 <segment>
 <pinref part="U4" gate="G$1" pin="VSS"/>
 <pinref part="GND12" gate="1" pin="GND"/>
@@ -9797,7 +9801,7 @@ AGND - Analog ground</text>
 <wire x1="25.4" y1="48.26" x2="25.4" y2="45.72" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="VCC" class="0">
+<net name="VCC" class="1">
 <segment>
 <pinref part="U4" gate="G$1" pin="VCC"/>
 <pinref part="P+10" gate="VCC" pin="VCC"/>
@@ -10036,7 +10040,7 @@ AGND - Analog ground</text>
 <busses>
 </busses>
 <nets>
-<net name="GND" class="0">
+<net name="GND" class="1">
 <segment>
 <pinref part="J1" gate="G$1" pin="GND"/>
 <pinref part="GND15" gate="1" pin="GND"/>
@@ -10170,7 +10174,7 @@ AGND - Analog ground</text>
 <label x="2.54" y="12.7" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
-<net name="VCC" class="0">
+<net name="VCC" class="1">
 <segment>
 <pinref part="JP7" gate="1" pin="4"/>
 <pinref part="P+15" gate="VCC" pin="VCC"/>
@@ -10567,7 +10571,7 @@ AGND - Analog ground</text>
 <label x="-2.54" y="30.48" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
-<net name="+5V" class="0">
+<net name="+5V" class="1">
 <segment>
 <pinref part="U7" gate="G$1" pin="VIN"/>
 <pinref part="P+14" gate="1" pin="+5V"/>
