@@ -8398,7 +8398,7 @@ W = angled&lt;p&gt;
 <part name="RFB2" library="rcl" deviceset="R-EU_" device="R0805" value="10k 0.1%"/>
 <part name="RFB3" library="rcl" deviceset="R-EU_" device="R0805" value="100k 0.1%"/>
 <part name="RFB4" library="rcl" deviceset="R-EU_" device="R0805" value="1M 0.1%"/>
-<part name="SJ1" library="jumper" deviceset="SJ" device=""/>
+<part name="SJ1" library="jumper" deviceset="SJ" device="" value="GND"/>
 <part name="AGND3" library="supply1" deviceset="AGND" device=""/>
 <part name="GND11" library="supply1" deviceset="GND" device=""/>
 <part name="U3" library="parts" deviceset="ADG706" device="RU" technology="B"/>
@@ -8511,6 +8511,7 @@ W = angled&lt;p&gt;
 <part name="GND37" library="supply1" deviceset="GND" device=""/>
 <part name="R11" library="rcl" deviceset="R-EU_" device="R0805" value="10k"/>
 <part name="P+30" library="supply1" deviceset="VCC" device=""/>
+<part name="SJ2" library="jumper" deviceset="SJ" device="" value="ETH_CLK"/>
 </parts>
 <sheets>
 <sheet>
@@ -8529,7 +8530,6 @@ AGND - Analog ground</text>
 <wire x1="139.7" y1="58.42" x2="104.14" y2="58.42" width="0.1524" layer="97"/>
 <wire x1="104.14" y1="58.42" x2="104.14" y2="81.28" width="0.1524" layer="97"/>
 <text x="105.41" y="82.55" size="1.778" layer="97">Supply Current Measurement</text>
-<text x="12.7" y="68.58" size="1.778" layer="97" rot="R180">PA1</text>
 <text x="86.36" y="25.4" size="1.778" layer="97">PC9</text>
 </plain>
 <instances>
@@ -8599,6 +8599,7 @@ AGND - Analog ground</text>
 <instance part="C20" gate="G$1" x="144.78" y="22.86"/>
 <instance part="C21" gate="G$1" x="160.02" y="40.64" rot="MR270"/>
 <instance part="C22" gate="G$1" x="63.5" y="5.08"/>
+<instance part="SJ2" gate="1" x="48.26" y="88.9"/>
 </instances>
 <busses>
 </busses>
@@ -8931,13 +8932,11 @@ AGND - Analog ground</text>
 <net name="ETH_CLK" class="0">
 <segment>
 <pinref part="JP2" gate="A" pin="46"/>
-<label x="45.72" y="88.9" size="1.778" layer="95"/>
+<label x="60.96" y="88.9" size="1.778" layer="95"/>
 <wire x1="78.74" y1="25.4" x2="99.06" y2="25.4" width="0.1524" layer="91"/>
 <wire x1="99.06" y1="25.4" x2="99.06" y2="88.9" width="0.1524" layer="91"/>
-<wire x1="99.06" y1="88.9" x2="2.54" y2="88.9" width="0.1524" layer="91"/>
-<wire x1="2.54" y1="88.9" x2="2.54" y2="68.58" width="0.1524" layer="91"/>
-<wire x1="2.54" y1="68.58" x2="20.32" y2="68.58" width="0.1524" layer="91"/>
-<pinref part="JP1" gate="A" pin="11"/>
+<wire x1="99.06" y1="88.9" x2="53.34" y2="88.9" width="0.1524" layer="91"/>
+<pinref part="SJ2" gate="1" pin="2"/>
 </segment>
 </net>
 <net name="PC12" class="0">
@@ -9099,6 +9098,16 @@ AGND - Analog ground</text>
 <pinref part="JP1" gate="A" pin="41"/>
 <wire x1="20.32" y1="30.48" x2="12.7" y2="30.48" width="0.1524" layer="91"/>
 <label x="12.7" y="30.48" size="1.778" layer="95" rot="R180"/>
+</segment>
+</net>
+<net name="PA1" class="0">
+<segment>
+<pinref part="JP1" gate="A" pin="11"/>
+<wire x1="43.18" y1="88.9" x2="2.54" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="2.54" y1="88.9" x2="2.54" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="2.54" y1="68.58" x2="20.32" y2="68.58" width="0.1524" layer="91"/>
+<pinref part="SJ2" gate="1" pin="1"/>
+<label x="12.7" y="68.58" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
 </nets>
