@@ -1508,7 +1508,7 @@ EIAJ 200mil body, Source: &lt;code&gt;atmel.lbr&lt;/code&gt;</description>
 <text x="0.635" y="-0.635" size="1.524" layer="95">OUT</text>
 <pin name="IN" x="-7.62" y="0" visible="off" length="short" direction="pwr"/>
 <pin name="GND" x="-2.54" y="-7.62" visible="off" length="short" direction="pwr" swaplevel="1" rot="R90"/>
-<pin name="OUT" x="7.62" y="0" visible="off" length="short" direction="out" rot="R180"/>
+<pin name="OUT" x="7.62" y="0" visible="off" length="short" direction="pwr" rot="R180"/>
 <pin name="GND1" x="0" y="-7.62" visible="off" length="short" direction="pwr" swaplevel="1" rot="R90"/>
 </symbol>
 <symbol name="PINH2X25">
