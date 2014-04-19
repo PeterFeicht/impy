@@ -111,6 +111,7 @@
 This library contains parts used for the Impedance Spectrometer project that are not part of the standard EAGLE libraries:
 
 &lt;ul&gt;
+    &lt;li&gt;&lt;b&gt;23LCV1024&lt;/b&gt; - 1 Mbit SPI Serial SRAM with Battery Backup and SDI Interface&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;AD5933&lt;/b&gt; - Impedance Converter chip (from &lt;a href="https://github.com/kblomqvist/kblom-eagle-lbr"&gt;kblomqvist on GitHub&lt;/a&gt;)&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;AD8615&lt;/b&gt; - Precision, 20 MHz, CMOS, Rail-to-Rail Input/Output Operational Amplifier&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;ADG704&lt;/b&gt; - CMOS Low Voltage 4 Ω, 4-Channel Multiplexer&lt;/li&gt;
@@ -1440,6 +1441,22 @@ EIAJ 200mil body, Source: &lt;code&gt;atmel.lbr&lt;/code&gt;</description>
 <pin name="49" x="-2.54" y="-30.48" visible="pad" length="short" direction="pas" function="dot"/>
 <pin name="50" x="5.08" y="-30.48" visible="pad" length="short" direction="pas" function="dot" rot="R180"/>
 </symbol>
+<symbol name="23LCV1024">
+<description>&lt;b&gt;SPI RAM with battery backup&lt;/b&gt;&lt;p&gt;</description>
+<wire x1="-7.62" y1="7.62" x2="-7.62" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="-7.62" y1="-7.62" x2="7.62" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="7.62" y1="-7.62" x2="7.62" y2="7.62" width="0.254" layer="94"/>
+<wire x1="7.62" y1="7.62" x2="-7.62" y2="7.62" width="0.254" layer="94"/>
+<pin name="!CS" x="-10.16" y="5.08" length="short" direction="in"/>
+<pin name="SO" x="-10.16" y="-5.08" length="short" direction="hiz"/>
+<pin name="SCK" x="-10.16" y="0" length="short" direction="in"/>
+<pin name="VDD" x="10.16" y="5.08" length="short" direction="pwr" rot="R180"/>
+<pin name="GND" x="10.16" y="-5.08" length="short" direction="pwr" rot="R180"/>
+<text x="-7.62" y="8.89" size="1.27" layer="95">&gt;NAME</text>
+<text x="-7.62" y="-10.16" size="1.27" layer="96">&gt;VALUE</text>
+<pin name="SI" x="-10.16" y="-2.54" length="short" direction="in"/>
+<pin name="VBAT" x="10.16" y="0" length="short" direction="pwr" rot="R180"/>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="AD5933" prefix="U">
@@ -2025,6 +2042,30 @@ Current limit 0.5A, Enable signal active high</description>
 </connects>
 <technologies>
 <technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="23LCV1024" prefix="U">
+<description>&lt;b&gt;1 Mbit SPI Serial SRAM with Battery Backup and SDI Interface&lt;/b&gt;&lt;p&gt;</description>
+<gates>
+<gate name="G$1" symbol="23LCV1024" x="0" y="0"/>
+</gates>
+<devices>
+<device name="/SN" package="SO8">
+<connects>
+<connect gate="G$1" pin="!CS" pad="1"/>
+<connect gate="G$1" pin="GND" pad="4"/>
+<connect gate="G$1" pin="SCK" pad="6"/>
+<connect gate="G$1" pin="SI" pad="5"/>
+<connect gate="G$1" pin="SO" pad="2"/>
+<connect gate="G$1" pin="VBAT" pad="7"/>
+<connect gate="G$1" pin="VDD" pad="8"/>
+</connects>
+<technologies>
+<technology name="-I">
+<attribute name="RS" value="792-8738" constant="no"/>
+</technology>
 </technologies>
 </device>
 </devices>
