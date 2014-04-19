@@ -4126,6 +4126,17 @@ AGND - Analog ground</text>
 </net>
 </nets>
 </sheet>
+<sheet>
+<description>Comm</description>
+<plain>
+</plain>
+<instances>
+</instances>
+<busses>
+</busses>
+<nets>
+</nets>
+</sheet>
 </sheets>
 </schematic>
 </drawing>
