@@ -1217,8 +1217,8 @@ Source: http://www.analog.com/UploadedFiles/Data_Sheets/703465986AD8611_2_0.pdf<
 <pin name="SCL" x="-10.16" y="-2.54" length="short" direction="in"/>
 <pin name="VCC" x="10.16" y="5.08" length="short" direction="pwr" rot="R180"/>
 <pin name="VSS" x="10.16" y="-5.08" length="short" direction="pwr" rot="R180"/>
-<text x="2.54" y="8.89" size="1.27" layer="95">&gt;NAME</text>
-<text x="-7.62" y="8.89" size="1.27" layer="96">&gt;VALUE</text>
+<text x="-7.62" y="8.89" size="1.27" layer="95">&gt;NAME</text>
+<text x="-7.62" y="-10.16" size="1.27" layer="96">&gt;VALUE</text>
 </symbol>
 </symbols>
 <devicesets>
@@ -2810,7 +2810,6 @@ wave soldering</description>
 <part name="RCAL1" library="rcl" deviceset="R-EU_" device="R0805" value="1k 0.1%"/>
 <part name="JP5" library="pinhead" deviceset="PINHD-1X10" device=""/>
 <part name="JP6" library="pinhead" deviceset="PINHD-1X2" device=""/>
-<part name="AGND5" library="supply1" deviceset="AGND" device=""/>
 <part name="U4" library="parts" deviceset="M24C08" device="MN" technology="W"/>
 <part name="P+10" library="supply1" deviceset="VCC" device=""/>
 <part name="GND12" library="supply1" deviceset="GND" device=""/>
@@ -3263,8 +3262,7 @@ AGND - Analog ground</text>
 <attribute name="VALUE" x="163.83" y="66.802" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="JP5" gate="A" x="139.7" y="81.28"/>
-<instance part="JP6" gate="G$1" x="121.92" y="27.94"/>
-<instance part="AGND5" gate="VR1" x="111.76" y="22.86"/>
+<instance part="JP6" gate="G$1" x="71.12" y="93.98"/>
 </instances>
 <busses>
 </busses>
@@ -3340,16 +3338,6 @@ AGND - Analog ground</text>
 <wire x1="104.14" y1="45.72" x2="96.52" y2="45.72" width="0.1524" layer="91"/>
 <junction x="96.52" y="45.72"/>
 </segment>
-<segment>
-<pinref part="JP6" gate="G$1" pin="1"/>
-<pinref part="AGND5" gate="VR1" pin="AGND"/>
-<wire x1="119.38" y1="30.48" x2="111.76" y2="30.48" width="0.1524" layer="91"/>
-<wire x1="111.76" y1="30.48" x2="111.76" y2="27.94" width="0.1524" layer="91"/>
-<pinref part="JP6" gate="G$1" pin="2"/>
-<wire x1="111.76" y1="27.94" x2="111.76" y2="25.4" width="0.1524" layer="91"/>
-<wire x1="119.38" y1="27.94" x2="111.76" y2="27.94" width="0.1524" layer="91"/>
-<junction x="111.76" y="27.94"/>
-</segment>
 </net>
 <net name="PB6" class="0">
 <segment>
@@ -3397,8 +3385,17 @@ AGND - Analog ground</text>
 </segment>
 <segment>
 <pinref part="U2" gate="G$1" pin="D"/>
-<wire x1="60.96" y1="86.36" x2="66.04" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="60.96" y1="86.36" x2="63.5" y2="86.36" width="0.1524" layer="91"/>
 <label x="66.04" y="86.36" size="1.778" layer="95"/>
+<pinref part="JP6" gate="G$1" pin="1"/>
+<wire x1="63.5" y1="86.36" x2="66.04" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="68.58" y1="96.52" x2="63.5" y2="96.52" width="0.1524" layer="91"/>
+<wire x1="63.5" y1="96.52" x2="63.5" y2="93.98" width="0.1524" layer="91"/>
+<junction x="63.5" y="86.36"/>
+<pinref part="JP6" gate="G$1" pin="2"/>
+<wire x1="63.5" y1="93.98" x2="63.5" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="68.58" y1="93.98" x2="63.5" y2="93.98" width="0.1524" layer="91"/>
+<junction x="63.5" y="93.98"/>
 </segment>
 <segment>
 <pinref part="RCAL1" gate="G$1" pin="2"/>
