@@ -874,6 +874,7 @@ RU-28</description>
 </package>
 <package name="SO8">
 <description>&lt;b&gt;8-Lead Small Outline IC&lt;/b&gt; (SO-8)&lt;p&gt;
+JEDEC 150mil body,
 Source: http://www.analog.com/UploadedFiles/Data_Sheets/703465986AD8611_2_0.pdf</description>
 <wire x1="2.4" y1="1.9" x2="2.4" y2="-1.4" width="0.2032" layer="51"/>
 <wire x1="2.4" y1="-1.4" x2="2.4" y2="-1.9" width="0.2032" layer="51"/>
@@ -1133,6 +1134,47 @@ Source: SI-60062-F.pdf</description>
 <rectangle x1="0.7" y1="-1.5" x2="1.2" y2="-0.85" layer="51"/>
 <rectangle x1="0.7" y1="0.85" x2="1.2" y2="1.5" layer="51"/>
 <rectangle x1="-1.2" y1="0.85" x2="-0.7" y2="1.5" layer="51"/>
+</package>
+<package name="SOIC8">
+<description>&lt;b&gt;8-Lead Small Outline IC&lt;/b&gt; (SO-8)&lt;p&gt;
+EIAJ 200mil body, Source: &lt;code&gt;atmel.lbr&lt;/code&gt;</description>
+<wire x1="-2.6" y1="2.25" x2="-2.35" y2="2.5" width="0.1524" layer="21" curve="-90"/>
+<wire x1="2.35" y1="2.5" x2="2.6" y2="2.25" width="0.1524" layer="21" curve="-90"/>
+<wire x1="2.35" y1="-2.5" x2="2.6" y2="-2.25" width="0.1524" layer="21" curve="90"/>
+<wire x1="-2.6" y1="-2.25" x2="-2.35" y2="-2.5" width="0.1524" layer="21" curve="90"/>
+<wire x1="2.36" y1="-2.5" x2="-2.34" y2="-2.5" width="0.1524" layer="51"/>
+<wire x1="-2.34" y1="2.5" x2="2.36" y2="2.5" width="0.1524" layer="51"/>
+<wire x1="-2.21" y1="2.5" x2="-2.34" y2="2.5" width="0.1524" layer="21"/>
+<wire x1="-1.59" y1="2.5" x2="-0.95" y2="2.5" width="0.1524" layer="21"/>
+<wire x1="-0.32" y1="2.5" x2="0.32" y2="2.5" width="0.1524" layer="21"/>
+<wire x1="0.95" y1="2.5" x2="1.59" y2="2.5" width="0.1524" layer="21"/>
+<wire x1="2.21" y1="2.5" x2="2.36" y2="2.5" width="0.1524" layer="21"/>
+<wire x1="2.2" y1="-2.5" x2="2.33" y2="-2.5" width="0.1524" layer="21"/>
+<wire x1="1.59" y1="-2.5" x2="0.94" y2="-2.5" width="0.1524" layer="21"/>
+<wire x1="0.32" y1="-2.5" x2="-0.33" y2="-2.5" width="0.1524" layer="21"/>
+<wire x1="-0.95" y1="-2.5" x2="-1.59" y2="-2.5" width="0.1524" layer="21"/>
+<wire x1="-2.21" y1="-2.5" x2="-2.34" y2="-2.5" width="0.1524" layer="21"/>
+<wire x1="-2.6" y1="2.25" x2="-2.6" y2="-2.24" width="0.1524" layer="21"/>
+<wire x1="2.6" y1="-2.25" x2="2.6" y2="2.25" width="0.1524" layer="21"/>
+<circle x="-1.42" y="-1.115" radius="0.5" width="0.0508" layer="21"/>
+<smd name="1" x="-1.905" y="-3.154" dx="0.5" dy="2.2" layer="1"/>
+<smd name="2" x="-0.645" y="-3.154" dx="0.5" dy="2.2" layer="1"/>
+<smd name="3" x="0.625" y="-3.154" dx="0.5" dy="2.2" layer="1"/>
+<smd name="4" x="1.895" y="-3.154" dx="0.5" dy="2.2" layer="1"/>
+<smd name="8" x="-1.905" y="3.154" dx="0.5" dy="2.2" layer="1"/>
+<smd name="7" x="-0.635" y="3.154" dx="0.5" dy="2.2" layer="1"/>
+<smd name="6" x="0.635" y="3.154" dx="0.5" dy="2.2" layer="1"/>
+<smd name="5" x="1.905" y="3.154" dx="0.5" dy="2.2" layer="1"/>
+<text x="-2.8575" y="-2.159" size="1.27" layer="25" ratio="10" rot="R90">&gt;NAME</text>
+<text x="4.064" y="-2.159" size="1.27" layer="27" ratio="10" rot="R90">&gt;VALUE</text>
+<rectangle x1="-2.08" y1="2.5" x2="-1.73" y2="3.4" layer="51"/>
+<rectangle x1="-0.81" y1="2.5" x2="-0.46" y2="3.4" layer="51"/>
+<rectangle x1="0.46" y1="2.5" x2="0.81" y2="3.4" layer="51"/>
+<rectangle x1="1.73" y1="2.5" x2="2.08" y2="3.4" layer="51"/>
+<rectangle x1="1.72" y1="-3.4" x2="2.07" y2="-2.5" layer="51"/>
+<rectangle x1="0.45" y1="-3.4" x2="0.8" y2="-2.5" layer="51"/>
+<rectangle x1="-0.82" y1="-3.4" x2="-0.47" y2="-2.5" layer="51"/>
+<rectangle x1="-2.08" y1="-3.4" x2="-1.73" y2="-2.5" layer="51"/>
 </package>
 </packages>
 <symbols>
@@ -1422,6 +1464,23 @@ Source: SI-60062-F.pdf</description>
 <pin name="EN" x="-10.16" y="-5.08" length="short" direction="in"/>
 <text x="-7.62" y="8.89" size="1.27" layer="95">&gt;NAME</text>
 <text x="-7.62" y="-10.16" size="1.27" layer="96">&gt;VALUE</text>
+</symbol>
+<symbol name="SPI-FLASH">
+<description>Generic symbol for 8-pin SPI memories</description>
+<wire x1="-7.62" y1="7.62" x2="-7.62" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="-7.62" y1="-7.62" x2="7.62" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="7.62" y1="-7.62" x2="7.62" y2="7.62" width="0.254" layer="94"/>
+<wire x1="7.62" y1="7.62" x2="-7.62" y2="7.62" width="0.254" layer="94"/>
+<pin name="!CS" x="-10.16" y="5.08" length="short" direction="in"/>
+<pin name="!WP" x="-10.16" y="0" length="short" direction="in"/>
+<pin name="SO" x="10.16" y="0" length="short" direction="hiz" rot="R180"/>
+<pin name="SCK" x="-10.16" y="-2.54" length="short" direction="in"/>
+<pin name="VDD" x="10.16" y="5.08" length="short" direction="pwr" rot="R180"/>
+<pin name="GND" x="10.16" y="-5.08" length="short" direction="pwr" rot="R180"/>
+<text x="-7.62" y="8.89" size="1.27" layer="95">&gt;NAME</text>
+<text x="-7.62" y="-10.16" size="1.27" layer="96">&gt;VALUE</text>
+<pin name="!HOLD" x="-10.16" y="2.54" length="short" direction="in"/>
+<pin name="SI" x="-10.16" y="-5.08" length="short" direction="in"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -1739,6 +1798,48 @@ Current limit 0.5A, Enable signal active high</description>
 <technologies>
 <technology name="">
 <attribute name="RS" value="727-4731" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="AT25DF081A" prefix="U">
+<description>&lt;b&gt;8-MBit 2.7V Minimum Serial Peripheral Interface Serial Flash Memory&lt;/b&gt;&lt;p&gt;</description>
+<gates>
+<gate name="G$1" symbol="SPI-FLASH" x="0" y="0"/>
+</gates>
+<devices>
+<device name="-SS" package="SO8">
+<connects>
+<connect gate="G$1" pin="!CS" pad="1"/>
+<connect gate="G$1" pin="!HOLD" pad="7"/>
+<connect gate="G$1" pin="!WP" pad="3"/>
+<connect gate="G$1" pin="GND" pad="4"/>
+<connect gate="G$1" pin="SCK" pad="6"/>
+<connect gate="G$1" pin="SI" pad="5"/>
+<connect gate="G$1" pin="SO" pad="2"/>
+<connect gate="G$1" pin="VDD" pad="8"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="RS" value="738-0094" constant="no"/>
+</technology>
+</technologies>
+</device>
+<device name="-S" package="SOIC8">
+<connects>
+<connect gate="G$1" pin="!CS" pad="1"/>
+<connect gate="G$1" pin="!HOLD" pad="7"/>
+<connect gate="G$1" pin="!WP" pad="3"/>
+<connect gate="G$1" pin="GND" pad="4"/>
+<connect gate="G$1" pin="SCK" pad="6"/>
+<connect gate="G$1" pin="SI" pad="5"/>
+<connect gate="G$1" pin="SO" pad="2"/>
+<connect gate="G$1" pin="VDD" pad="8"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="RS" value="738-0085" constant="no"/>
 </technology>
 </technologies>
 </device>
@@ -8066,6 +8167,10 @@ W = angled&lt;p&gt;
 <part name="R10" library="rcl" deviceset="R-EU_" device="R0805" value="150R"/>
 <part name="U7" library="parts" deviceset="MIC2005A-1" device="YM5"/>
 <part name="GND18" library="supply1" deviceset="GND" device=""/>
+<part name="U8" library="parts" deviceset="AT25DF081A" device="-SS"/>
+<part name="P+24" library="supply1" deviceset="VCC" device=""/>
+<part name="GND31" library="supply1" deviceset="GND" device=""/>
+<part name="P+25" library="supply1" deviceset="VCC" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -9020,12 +9125,21 @@ AGND - Analog ground</text>
 <wire x1="33.02" y1="-2.54" x2="-10.16" y2="-2.54" width="0.1524" layer="97"/>
 <wire x1="-10.16" y1="-2.54" x2="-10.16" y2="30.48" width="0.1524" layer="97"/>
 <text x="-8.89" y="31.75" size="1.778" layer="97">EEPROM</text>
+<wire x1="40.64" y1="30.48" x2="88.9" y2="30.48" width="0.1524" layer="97"/>
+<wire x1="88.9" y1="30.48" x2="88.9" y2="-2.54" width="0.1524" layer="97"/>
+<wire x1="88.9" y1="-2.54" x2="40.64" y2="-2.54" width="0.1524" layer="97"/>
+<wire x1="40.64" y1="-2.54" x2="40.64" y2="30.48" width="0.1524" layer="97"/>
+<text x="41.91" y="31.75" size="1.778" layer="97">Flash</text>
 </plain>
 <instances>
 <instance part="U4" gate="G$1" x="12.7" y="15.24"/>
 <instance part="P+10" gate="VCC" x="25.4" y="25.4" rot="MR0"/>
 <instance part="GND12" gate="1" x="25.4" y="5.08" rot="MR0"/>
 <instance part="GND13" gate="1" x="-5.08" y="20.32" rot="MR90"/>
+<instance part="U8" gate="G$1" x="68.58" y="15.24"/>
+<instance part="P+24" gate="VCC" x="81.28" y="25.4" rot="MR0"/>
+<instance part="GND31" gate="1" x="81.28" y="5.08" rot="MR0"/>
+<instance part="P+25" gate="VCC" x="48.26" y="25.4"/>
 </instances>
 <busses>
 </busses>
@@ -9061,6 +9175,12 @@ AGND - Analog ground</text>
 <wire x1="0" y1="17.78" x2="0" y2="20.32" width="0.1524" layer="91"/>
 <junction x="0" y="20.32"/>
 </segment>
+<segment>
+<pinref part="U8" gate="G$1" pin="GND"/>
+<pinref part="GND31" gate="1" pin="GND"/>
+<wire x1="78.74" y1="10.16" x2="81.28" y2="10.16" width="0.1524" layer="91"/>
+<wire x1="81.28" y1="10.16" x2="81.28" y2="7.62" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="VCC" class="0">
 <segment>
@@ -9068,6 +9188,51 @@ AGND - Analog ground</text>
 <pinref part="P+10" gate="VCC" pin="VCC"/>
 <wire x1="22.86" y1="20.32" x2="25.4" y2="20.32" width="0.1524" layer="91"/>
 <wire x1="25.4" y1="20.32" x2="25.4" y2="22.86" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="U8" gate="G$1" pin="VDD"/>
+<pinref part="P+24" gate="VCC" pin="VCC"/>
+<wire x1="78.74" y1="20.32" x2="81.28" y2="20.32" width="0.1524" layer="91"/>
+<wire x1="81.28" y1="20.32" x2="81.28" y2="22.86" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="U8" gate="G$1" pin="!WP"/>
+<pinref part="P+25" gate="VCC" pin="VCC"/>
+<wire x1="58.42" y1="15.24" x2="55.88" y2="15.24" width="0.1524" layer="91"/>
+<wire x1="55.88" y1="15.24" x2="48.26" y2="15.24" width="0.1524" layer="91"/>
+<wire x1="48.26" y1="15.24" x2="48.26" y2="22.86" width="0.1524" layer="91"/>
+<pinref part="U8" gate="G$1" pin="!HOLD"/>
+<wire x1="58.42" y1="17.78" x2="55.88" y2="17.78" width="0.1524" layer="91"/>
+<wire x1="55.88" y1="17.78" x2="55.88" y2="15.24" width="0.1524" layer="91"/>
+<junction x="55.88" y="15.24"/>
+</segment>
+</net>
+<net name="PD0" class="0">
+<segment>
+<pinref part="U8" gate="G$1" pin="!CS"/>
+<wire x1="58.42" y1="20.32" x2="55.88" y2="20.32" width="0.1524" layer="91"/>
+<label x="55.88" y="20.32" size="1.778" layer="95" rot="R180"/>
+</segment>
+</net>
+<net name="PC10" class="0">
+<segment>
+<pinref part="U8" gate="G$1" pin="SCK"/>
+<wire x1="58.42" y1="12.7" x2="55.88" y2="12.7" width="0.1524" layer="91"/>
+<label x="55.88" y="12.7" size="1.778" layer="95" rot="R180"/>
+</segment>
+</net>
+<net name="PC12" class="0">
+<segment>
+<pinref part="U8" gate="G$1" pin="SI"/>
+<wire x1="58.42" y1="10.16" x2="55.88" y2="10.16" width="0.1524" layer="91"/>
+<label x="55.88" y="10.16" size="1.778" layer="95" rot="R180"/>
+</segment>
+</net>
+<net name="PC11" class="0">
+<segment>
+<pinref part="U8" gate="G$1" pin="SO"/>
+<wire x1="78.74" y1="15.24" x2="81.28" y2="15.24" width="0.1524" layer="91"/>
+<label x="81.28" y="15.24" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>
