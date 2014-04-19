@@ -1153,6 +1153,46 @@ Source: http://www.analog.com/UploadedFiles/Data_Sheets/703465986AD8611_2_0.pdf<
 <rectangle x1="0.725" y1="0.8" x2="1.175" y2="1.4" layer="51"/>
 <rectangle x1="-1.175" y1="0.8" x2="-0.725" y2="1.4" layer="51"/>
 </package>
+<package name="USB-2410-06">
+<description>&lt;b&gt;USB connector, surface mount&lt;/b&gt;</description>
+<wire x1="-6.5" y1="0.3" x2="-6.4999" y2="0.3" width="0.2032" layer="21"/>
+<wire x1="-6.4999" y1="0.3" x2="-6.2" y2="0.3" width="0.2032" layer="21"/>
+<wire x1="-5.9" y1="0" x2="5.9" y2="0" width="0.2032" layer="21"/>
+<wire x1="6.2" y1="0.3" x2="6.5" y2="0.3" width="0.2032" layer="21"/>
+<wire x1="6.5" y1="0.3" x2="6.5" y2="9" width="0.2032" layer="21"/>
+<wire x1="6.5" y1="9" x2="6.5" y2="11.5" width="0.2032" layer="21"/>
+<wire x1="6.5" y1="11.5" x2="6.5" y2="14" width="0.2032" layer="21"/>
+<wire x1="6.5" y1="14" x2="-6.5" y2="14" width="0.2032" layer="21"/>
+<wire x1="-6.5" y1="14" x2="-6.5" y2="11.5" width="0.2032" layer="21"/>
+<wire x1="-6.5" y1="11.5" x2="-6.5" y2="9" width="0.2032" layer="21"/>
+<wire x1="-6.5" y1="9" x2="-6.5" y2="0.3" width="0.2032" layer="21"/>
+<wire x1="-6.7999" y1="0" x2="-6.4999" y2="0.3" width="0.2032" layer="21" curve="90"/>
+<wire x1="-6.8" y1="0" x2="-7" y2="0" width="0.2032" layer="21"/>
+<wire x1="-6.2" y1="0.3" x2="-5.9" y2="0" width="0.2032" layer="21" curve="-90"/>
+<wire x1="6.5" y1="0.3" x2="6.8" y2="0" width="0.2032" layer="21" curve="90"/>
+<wire x1="5.9" y1="0" x2="6.2" y2="0.3001" width="0.2032" layer="21" curve="-89.980911"/>
+<wire x1="-5" y1="8" x2="-4" y2="2" width="0.2032" layer="21"/>
+<wire x1="-4" y1="2" x2="-3" y2="2" width="0.2032" layer="21"/>
+<wire x1="-3" y1="2" x2="-2" y2="8" width="0.2032" layer="21"/>
+<wire x1="5" y1="8" x2="4" y2="2" width="0.2032" layer="21"/>
+<wire x1="4" y1="2" x2="3" y2="2" width="0.2032" layer="21"/>
+<wire x1="3" y1="2" x2="2" y2="8" width="0.2032" layer="21"/>
+<wire x1="-6.5" y1="11.5" x2="-8" y2="11" width="0.2032" layer="21"/>
+<wire x1="-8" y1="11" x2="-8" y2="9.5" width="0.2032" layer="21"/>
+<wire x1="-8" y1="9.5" x2="-6.5" y2="9" width="0.2032" layer="21"/>
+<wire x1="6.5" y1="11.5" x2="8" y2="11" width="0.2032" layer="21"/>
+<wire x1="8" y1="11" x2="8" y2="9.5" width="0.2032" layer="21"/>
+<wire x1="8" y1="9.5" x2="6.5" y2="9" width="0.2032" layer="21"/>
+<wire x1="6.8" y1="0" x2="7" y2="0" width="0.2032" layer="21"/>
+<text x="0" y="10.28" size="1.27" layer="25" align="center">&gt;NAME</text>
+<text x="0" y="0.475" size="1.27" layer="27" align="bottom-center">&gt;VALUE</text>
+<smd name="1" x="-3.5" y="13.86" dx="2.88" dy="1.12" layer="1" rot="R90"/>
+<smd name="2" x="-1" y="13.86" dx="2.88" dy="1.12" layer="1" rot="R90"/>
+<smd name="3" x="1" y="13.86" dx="2.88" dy="1.12" layer="1" rot="R90"/>
+<smd name="4" x="3.5" y="13.86" dx="2.88" dy="1.12" layer="1" rot="R90"/>
+<pad name="S1" x="-6.57" y="10.28" drill="2.3"/>
+<pad name="S2" x="6.57" y="10.28" drill="2.3"/>
+</package>
 </packages>
 <symbols>
 <symbol name="AD5933">
@@ -1257,6 +1297,41 @@ Source: http://www.analog.com/UploadedFiles/Data_Sheets/703465986AD8611_2_0.pdf<
 <pin name="OUT" x="7.62" y="0" visible="pad" length="short" direction="out" rot="R180"/>
 <pin name="-VS" x="2.54" y="-5.08" visible="pad" length="short" direction="in" rot="R90"/>
 <pin name="+VS" x="2.54" y="5.08" visible="pad" length="short" direction="in" rot="R270"/>
+</symbol>
+<symbol name="USB">
+<description>Shielded USB-A Connector</description>
+<wire x1="-2.54" y1="-5.08" x2="3.81" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="7.62" x2="3.81" y2="7.62" width="0.254" layer="94"/>
+<wire x1="-1.27" y1="6.35" x2="-1.27" y2="-3.81" width="0.254" layer="94"/>
+<wire x1="-1.27" y1="-3.81" x2="0.762" y2="-3.81" width="0.254" layer="94"/>
+<wire x1="3.81" y1="-5.08" x2="3.81" y2="7.62" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="7.62" x2="-2.54" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="-1.27" y1="6.35" x2="0.762" y2="6.35" width="0.254" layer="94"/>
+<text x="-2.54" y="8.89" size="1.778" layer="95" font="vector">&gt;NAME</text>
+<text x="-1.27" y="-10.16" size="1.778" layer="96" font="vector">&gt;VALUE</text>
+<text x="0.254" y="0" size="1.016" layer="94" rot="R90">USB</text>
+<rectangle x1="0.762" y1="4.572" x2="1.27" y2="5.588" layer="94"/>
+<rectangle x1="0.762" y1="2.032" x2="1.27" y2="3.048" layer="94"/>
+<rectangle x1="0.762" y1="-0.508" x2="1.27" y2="0.508" layer="94"/>
+<rectangle x1="0.762" y1="-3.048" x2="1.27" y2="-2.032" layer="94"/>
+<pin name="VCC" x="-5.08" y="5.08" visible="pad" length="short" direction="pas"/>
+<pin name="D-" x="-5.08" y="2.54" visible="pad" length="short" direction="pas"/>
+<pin name="D+" x="-5.08" y="0" visible="pad" length="short" direction="pas"/>
+<pin name="GND" x="-5.08" y="-2.54" visible="pad" length="short" direction="pas"/>
+<polygon width="0.254" layer="94">
+<vertex x="0.762" y="6.35"/>
+<vertex x="2.54" y="6.35"/>
+<vertex x="2.54" y="-3.81"/>
+<vertex x="0.762" y="-3.81"/>
+<vertex x="1.27" y="-3.302"/>
+<vertex x="1.27" y="5.842"/>
+</polygon>
+<pin name="S1" x="-5.08" y="-7.62" visible="off" length="short" direction="pas"/>
+<pin name="S2" x="-5.08" y="-10.16" visible="off" length="short" direction="pas"/>
+<wire x1="0" y1="8.89" x2="5.08" y2="8.89" width="0.127" layer="94" style="shortdash"/>
+<wire x1="5.08" y1="8.89" x2="5.08" y2="-6.35" width="0.127" layer="94" style="shortdash"/>
+<wire x1="5.08" y1="-6.35" x2="-2.54" y2="-6.35" width="0.127" layer="94" style="shortdash"/>
+<wire x1="-2.54" y1="-6.35" x2="-2.54" y2="-11.43" width="0.127" layer="94" style="shortdash"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -1423,6 +1498,29 @@ Source: ADG706.pdf</description>
 <technologies>
 <technology name="A">
 <attribute name="RS" value="796-8925" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="USB-2410-06" prefix="J">
+<description>&lt;b&gt;Lumberg 2410 06 USB-A connector&lt;/b&gt;&lt;p&gt;</description>
+<gates>
+<gate name="G$1" symbol="USB" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="USB-2410-06">
+<connects>
+<connect gate="G$1" pin="D+" pad="3"/>
+<connect gate="G$1" pin="D-" pad="2"/>
+<connect gate="G$1" pin="GND" pad="4"/>
+<connect gate="G$1" pin="S1" pad="S1"/>
+<connect gate="G$1" pin="S2" pad="S2"/>
+<connect gate="G$1" pin="VCC" pad="1"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="RS" value="737-8791" constant="no"/>
 </technology>
 </technologies>
 </device>
@@ -3185,6 +3283,9 @@ Metric Code Size 3225</description>
 <part name="P+12" library="supply1" deviceset="VCC" device=""/>
 <part name="P+13" library="supply1" deviceset="VCC" device=""/>
 <part name="AGND6" library="supply1" deviceset="AGND" device=""/>
+<part name="J1" library="parts" deviceset="USB-2410-06" device=""/>
+<part name="GND15" library="supply1" deviceset="GND" device=""/>
+<part name="P+14" library="supply1" deviceset="+5V" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -3447,7 +3548,7 @@ AGND - Analog ground</text>
 <label x="104.14" y="53.34" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
-<net name="PB15" class="0">
+<net name="USB_P" class="0">
 <segment>
 <pinref part="JP1" gate="A" pin="39"/>
 <wire x1="20.32" y1="33.02" x2="12.7" y2="33.02" width="0.1524" layer="91"/>
@@ -3475,7 +3576,7 @@ AGND - Analog ground</text>
 <label x="35.56" y="38.1" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="PB14" class="0">
+<net name="USB_N" class="0">
 <segment>
 <pinref part="JP1" gate="A" pin="38"/>
 <wire x1="27.94" y1="35.56" x2="35.56" y2="35.56" width="0.1524" layer="91"/>
@@ -4131,10 +4232,51 @@ AGND - Analog ground</text>
 <plain>
 </plain>
 <instances>
+<instance part="J1" gate="G$1" x="12.7" y="17.78"/>
+<instance part="GND15" gate="1" x="5.08" y="2.54"/>
+<instance part="P+14" gate="1" x="5.08" y="30.48"/>
 </instances>
 <busses>
 </busses>
 <nets>
+<net name="+5V" class="0">
+<segment>
+<pinref part="J1" gate="G$1" pin="VCC"/>
+<pinref part="P+14" gate="1" pin="+5V"/>
+<wire x1="7.62" y1="22.86" x2="5.08" y2="22.86" width="0.1524" layer="91"/>
+<wire x1="5.08" y1="22.86" x2="5.08" y2="27.94" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="GND" class="0">
+<segment>
+<pinref part="J1" gate="G$1" pin="GND"/>
+<pinref part="GND15" gate="1" pin="GND"/>
+<wire x1="7.62" y1="15.24" x2="5.08" y2="15.24" width="0.1524" layer="91"/>
+<wire x1="5.08" y1="15.24" x2="5.08" y2="10.16" width="0.1524" layer="91"/>
+<pinref part="J1" gate="G$1" pin="S2"/>
+<wire x1="5.08" y1="10.16" x2="5.08" y2="7.62" width="0.1524" layer="91"/>
+<wire x1="5.08" y1="7.62" x2="5.08" y2="5.08" width="0.1524" layer="91"/>
+<wire x1="7.62" y1="7.62" x2="5.08" y2="7.62" width="0.1524" layer="91"/>
+<junction x="5.08" y="7.62"/>
+<pinref part="J1" gate="G$1" pin="S1"/>
+<wire x1="7.62" y1="10.16" x2="5.08" y2="10.16" width="0.1524" layer="91"/>
+<junction x="5.08" y="10.16"/>
+</segment>
+</net>
+<net name="USB_P" class="0">
+<segment>
+<pinref part="J1" gate="G$1" pin="D+"/>
+<wire x1="7.62" y1="17.78" x2="2.54" y2="17.78" width="0.1524" layer="91"/>
+<label x="2.54" y="17.78" size="1.778" layer="95" rot="R180"/>
+</segment>
+</net>
+<net name="USB_N" class="0">
+<segment>
+<pinref part="J1" gate="G$1" pin="D-"/>
+<wire x1="2.54" y1="20.32" x2="7.62" y2="20.32" width="0.1524" layer="91"/>
+<label x="2.54" y="20.32" size="1.778" layer="95" rot="R180"/>
+</segment>
+</net>
 </nets>
 </sheet>
 </sheets>
