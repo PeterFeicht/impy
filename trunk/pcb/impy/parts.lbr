@@ -115,11 +115,13 @@ This library contains parts used for the Impedance Spectrometer project that are
     &lt;li&gt;&lt;b&gt;AD8615&lt;/b&gt; - Precision, 20 MHz, CMOS, Rail-to-Rail Input/Output Operational Amplifier&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;ADG704&lt;/b&gt; - CMOS Low Voltage 4 Ω, 4-Channel Multiplexer&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;ADG706&lt;/b&gt; - CMOS, +1.8 V to +5.5 V/±2.5 V, 2.5 Ω Low-Voltage, 8-/16-Channel Multiplexers&lt;/li&gt;
+    &lt;li&gt;&lt;b&gt;AT25DF081A&lt;/b&gt; - 8-MBit 2.7V Minimum Serial Peripheral Interface Serial Flash Memory&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;DP83848&lt;/b&gt; - PHYTER Industrial Temperature Single Port 10/100 Mb/s Ethernet Physical Layer Transceiver (adapted from &lt;code&gt;national-semiconductor.lbr&lt;/code&gt;)&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;M24C08&lt;/b&gt; - 8-Kbit serial I²C bus EEPROM&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;MAX4781&lt;/b&gt; - High-Speed, Low-Voltage, 0.7 Ω CMOS Analog Switches/Multiplexers&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;MIC2005A-1&lt;/b&gt; - 0.5A Current Limiting Power Distribution Switch&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;SI-60062-F&lt;/b&gt; - MagJack 10/100 Base-T Ethernet connector&lt;/li&gt;
+    &lt;li&gt;&lt;b&gt;SST25VF080B&lt;/b&gt; - 8 MBit SPI Serial Flash&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;USB-2410-06&lt;/b&gt; - Lumberg 2410 06 USB-A connector&lt;/li&gt;
 &lt;/ul&gt;</description>
 <packages>
@@ -429,6 +431,7 @@ Source: 8x ADG1408_1409.pdf</description>
 </package>
 <package name="SO8">
 <description>&lt;b&gt;8-Lead Small Outline IC&lt;/b&gt; (SO-8)&lt;p&gt;
+JEDEC 150mil body,
 Source: http://www.analog.com/UploadedFiles/Data_Sheets/703465986AD8611_2_0.pdf</description>
 <wire x1="2.4" y1="1.9" x2="2.4" y2="-1.4" width="0.2032" layer="51"/>
 <wire x1="2.4" y1="-1.4" x2="2.4" y2="-1.9" width="0.2032" layer="51"/>
@@ -559,6 +562,47 @@ Source: SI-60062-F.pdf</description>
 <rectangle x1="0.7" y1="-1.5" x2="1.2" y2="-0.85" layer="51"/>
 <rectangle x1="0.7" y1="0.85" x2="1.2" y2="1.5" layer="51"/>
 <rectangle x1="-1.2" y1="0.85" x2="-0.7" y2="1.5" layer="51"/>
+</package>
+<package name="SOIC8">
+<description>&lt;b&gt;8-Lead Small Outline IC&lt;/b&gt; (SO-8)&lt;p&gt;
+EIAJ 200mil body, Source: &lt;code&gt;atmel.lbr&lt;/code&gt;</description>
+<wire x1="-2.6" y1="2.25" x2="-2.35" y2="2.5" width="0.1524" layer="21" curve="-90"/>
+<wire x1="2.35" y1="2.5" x2="2.6" y2="2.25" width="0.1524" layer="21" curve="-90"/>
+<wire x1="2.35" y1="-2.5" x2="2.6" y2="-2.25" width="0.1524" layer="21" curve="90"/>
+<wire x1="-2.6" y1="-2.25" x2="-2.35" y2="-2.5" width="0.1524" layer="21" curve="90"/>
+<wire x1="2.36" y1="-2.5" x2="-2.34" y2="-2.5" width="0.1524" layer="51"/>
+<wire x1="-2.34" y1="2.5" x2="2.36" y2="2.5" width="0.1524" layer="51"/>
+<wire x1="-2.21" y1="2.5" x2="-2.34" y2="2.5" width="0.1524" layer="21"/>
+<wire x1="-1.59" y1="2.5" x2="-0.95" y2="2.5" width="0.1524" layer="21"/>
+<wire x1="-0.32" y1="2.5" x2="0.32" y2="2.5" width="0.1524" layer="21"/>
+<wire x1="0.95" y1="2.5" x2="1.59" y2="2.5" width="0.1524" layer="21"/>
+<wire x1="2.21" y1="2.5" x2="2.36" y2="2.5" width="0.1524" layer="21"/>
+<wire x1="2.2" y1="-2.5" x2="2.33" y2="-2.5" width="0.1524" layer="21"/>
+<wire x1="1.59" y1="-2.5" x2="0.94" y2="-2.5" width="0.1524" layer="21"/>
+<wire x1="0.32" y1="-2.5" x2="-0.33" y2="-2.5" width="0.1524" layer="21"/>
+<wire x1="-0.95" y1="-2.5" x2="-1.59" y2="-2.5" width="0.1524" layer="21"/>
+<wire x1="-2.21" y1="-2.5" x2="-2.34" y2="-2.5" width="0.1524" layer="21"/>
+<wire x1="-2.6" y1="2.25" x2="-2.6" y2="-2.24" width="0.1524" layer="21"/>
+<wire x1="2.6" y1="-2.25" x2="2.6" y2="2.25" width="0.1524" layer="21"/>
+<circle x="-1.42" y="-1.115" radius="0.5" width="0.0508" layer="21"/>
+<smd name="1" x="-1.905" y="-3.154" dx="0.5" dy="2.2" layer="1"/>
+<smd name="2" x="-0.645" y="-3.154" dx="0.5" dy="2.2" layer="1"/>
+<smd name="3" x="0.625" y="-3.154" dx="0.5" dy="2.2" layer="1"/>
+<smd name="4" x="1.895" y="-3.154" dx="0.5" dy="2.2" layer="1"/>
+<smd name="8" x="-1.905" y="3.154" dx="0.5" dy="2.2" layer="1"/>
+<smd name="7" x="-0.635" y="3.154" dx="0.5" dy="2.2" layer="1"/>
+<smd name="6" x="0.635" y="3.154" dx="0.5" dy="2.2" layer="1"/>
+<smd name="5" x="1.905" y="3.154" dx="0.5" dy="2.2" layer="1"/>
+<text x="-2.8575" y="-2.159" size="1.27" layer="25" ratio="10" rot="R90">&gt;NAME</text>
+<text x="4.064" y="-2.159" size="1.27" layer="27" ratio="10" rot="R90">&gt;VALUE</text>
+<rectangle x1="-2.08" y1="2.5" x2="-1.73" y2="3.4" layer="51"/>
+<rectangle x1="-0.81" y1="2.5" x2="-0.46" y2="3.4" layer="51"/>
+<rectangle x1="0.46" y1="2.5" x2="0.81" y2="3.4" layer="51"/>
+<rectangle x1="1.73" y1="2.5" x2="2.08" y2="3.4" layer="51"/>
+<rectangle x1="1.72" y1="-3.4" x2="2.07" y2="-2.5" layer="51"/>
+<rectangle x1="0.45" y1="-3.4" x2="0.8" y2="-2.5" layer="51"/>
+<rectangle x1="-0.82" y1="-3.4" x2="-0.47" y2="-2.5" layer="51"/>
+<rectangle x1="-2.08" y1="-3.4" x2="-1.73" y2="-2.5" layer="51"/>
 </package>
 </packages>
 <symbols>
@@ -704,6 +748,7 @@ Source: SI-60062-F.pdf</description>
 <text x="-7.62" y="-10.16" size="1.27" layer="96">&gt;VALUE</text>
 </symbol>
 <symbol name="SPI-FLASH">
+<description>Generic symbol for 8-pin SPI memories</description>
 <wire x1="-7.62" y1="7.62" x2="-7.62" y2="-7.62" width="0.254" layer="94"/>
 <wire x1="-7.62" y1="-7.62" x2="7.62" y2="-7.62" width="0.254" layer="94"/>
 <wire x1="7.62" y1="-7.62" x2="7.62" y2="7.62" width="0.254" layer="94"/>
@@ -714,8 +759,8 @@ Source: SI-60062-F.pdf</description>
 <pin name="SCK" x="-10.16" y="-2.54" length="short" direction="in"/>
 <pin name="VDD" x="10.16" y="5.08" length="short" direction="pwr" rot="R180"/>
 <pin name="GND" x="10.16" y="-5.08" length="short" direction="pwr" rot="R180"/>
-<text x="2.54" y="8.89" size="1.27" layer="95">&gt;NAME</text>
-<text x="-7.62" y="8.89" size="1.27" layer="96">&gt;VALUE</text>
+<text x="-7.62" y="8.89" size="1.27" layer="95">&gt;NAME</text>
+<text x="-7.62" y="-10.16" size="1.27" layer="96">&gt;VALUE</text>
 <pin name="!HOLD" x="-10.16" y="2.54" length="short" direction="in"/>
 <pin name="SI" x="-10.16" y="-5.08" length="short" direction="in"/>
 </symbol>
@@ -1238,6 +1283,94 @@ Current limit 0.5A, Enable signal active high</description>
 <technologies>
 <technology name="">
 <attribute name="RS" value="727-4731" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="AT25DF081A" prefix="U">
+<description>&lt;b&gt;8-MBit 2.7V Minimum Serial Peripheral Interface Serial Flash Memory&lt;/b&gt;&lt;p&gt;</description>
+<gates>
+<gate name="G$1" symbol="SPI-FLASH" x="0" y="0"/>
+</gates>
+<devices>
+<device name="-SS" package="SO8">
+<connects>
+<connect gate="G$1" pin="!CS" pad="1"/>
+<connect gate="G$1" pin="!HOLD" pad="7"/>
+<connect gate="G$1" pin="!WP" pad="3"/>
+<connect gate="G$1" pin="GND" pad="4"/>
+<connect gate="G$1" pin="SCK" pad="6"/>
+<connect gate="G$1" pin="SI" pad="5"/>
+<connect gate="G$1" pin="SO" pad="2"/>
+<connect gate="G$1" pin="VDD" pad="8"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="RS" value="
+738-0094" constant="no"/>
+</technology>
+</technologies>
+</device>
+<device name="-S" package="SOIC8">
+<connects>
+<connect gate="G$1" pin="!CS" pad="1"/>
+<connect gate="G$1" pin="!HOLD" pad="7"/>
+<connect gate="G$1" pin="!WP" pad="3"/>
+<connect gate="G$1" pin="GND" pad="4"/>
+<connect gate="G$1" pin="SCK" pad="6"/>
+<connect gate="G$1" pin="SI" pad="5"/>
+<connect gate="G$1" pin="SO" pad="2"/>
+<connect gate="G$1" pin="VDD" pad="8"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="RS" value="738-0085" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="SST25VF080B" prefix="U">
+<description>&lt;b&gt;8 MBit SPI Serial Flash&lt;/b&gt;&lt;p&gt;</description>
+<gates>
+<gate name="G$1" symbol="SPI-FLASH" x="0" y="0"/>
+</gates>
+<devices>
+<device name="-S" package="SO8">
+<connects>
+<connect gate="G$1" pin="!CS" pad="1"/>
+<connect gate="G$1" pin="!HOLD" pad="7"/>
+<connect gate="G$1" pin="!WP" pad="3"/>
+<connect gate="G$1" pin="GND" pad="4"/>
+<connect gate="G$1" pin="SCK" pad="6"/>
+<connect gate="G$1" pin="SI" pad="5"/>
+<connect gate="G$1" pin="SO" pad="2"/>
+<connect gate="G$1" pin="VDD" pad="8"/>
+</connects>
+<technologies>
+<technology name="-80-4C"/>
+<technology name="-80-4I"/>
+</technologies>
+</device>
+<device name="-S2" package="SOIC8">
+<connects>
+<connect gate="G$1" pin="!CS" pad="1"/>
+<connect gate="G$1" pin="!HOLD" pad="7"/>
+<connect gate="G$1" pin="!WP" pad="3"/>
+<connect gate="G$1" pin="GND" pad="4"/>
+<connect gate="G$1" pin="SCK" pad="6"/>
+<connect gate="G$1" pin="SI" pad="5"/>
+<connect gate="G$1" pin="SO" pad="2"/>
+<connect gate="G$1" pin="VDD" pad="8"/>
+</connects>
+<technologies>
+<technology name="-80-4C">
+<attribute name="RS" value="" constant="no"/>
+</technology>
+<technology name="-80-4I">
+<attribute name="RS" value="
+736-9258" constant="no"/>
 </technology>
 </technologies>
 </device>
