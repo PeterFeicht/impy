@@ -8525,6 +8525,8 @@ AGND - Analog ground</text>
 <wire x1="139.7" y1="58.42" x2="104.14" y2="58.42" width="0.1524" layer="97"/>
 <wire x1="104.14" y1="58.42" x2="104.14" y2="81.28" width="0.1524" layer="97"/>
 <text x="105.41" y="82.55" size="1.778" layer="97">Supply Current Measurement</text>
+<text x="12.7" y="68.58" size="1.778" layer="97" rot="R180">PA1</text>
+<text x="86.36" y="25.4" size="1.778" layer="97">PC9</text>
 </plain>
 <instances>
 <instance part="JP1" gate="A" x="22.86" y="50.8"/>
@@ -8824,13 +8826,6 @@ AGND - Analog ground</text>
 <label x="86.36" y="63.5" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="PA1" class="0">
-<segment>
-<pinref part="JP1" gate="A" pin="11"/>
-<wire x1="20.32" y1="68.58" x2="12.7" y2="68.58" width="0.1524" layer="91"/>
-<label x="12.7" y="68.58" size="1.778" layer="95" rot="R180"/>
-</segment>
-</net>
 <net name="PA7" class="0">
 <segment>
 <pinref part="JP1" gate="A" pin="17"/>
@@ -8929,11 +8924,16 @@ AGND - Analog ground</text>
 <label x="86.36" y="35.56" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="PC9" class="0">
+<net name="ETH_CLK" class="0">
 <segment>
 <pinref part="JP2" gate="A" pin="46"/>
-<wire x1="78.74" y1="25.4" x2="86.36" y2="25.4" width="0.1524" layer="91"/>
-<label x="86.36" y="25.4" size="1.778" layer="95"/>
+<label x="45.72" y="88.9" size="1.778" layer="95"/>
+<wire x1="78.74" y1="25.4" x2="99.06" y2="25.4" width="0.1524" layer="91"/>
+<wire x1="99.06" y1="25.4" x2="99.06" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="99.06" y1="88.9" x2="2.54" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="2.54" y1="88.9" x2="2.54" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="2.54" y1="68.58" x2="20.32" y2="68.58" width="0.1524" layer="91"/>
+<pinref part="JP1" gate="A" pin="11"/>
 </segment>
 </net>
 <net name="PC12" class="0">
@@ -10148,7 +10148,7 @@ AGND - Analog ground</text>
 <label x="187.96" y="53.34" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="PC9" class="0">
+<net name="ETH_CLK" class="0">
 <segment>
 <pinref part="U6" gate="G$1" pin="X1"/>
 <wire x1="71.12" y1="17.78" x2="66.04" y2="17.78" width="0.1524" layer="91"/>
