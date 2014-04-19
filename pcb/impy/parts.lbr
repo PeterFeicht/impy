@@ -1307,8 +1307,7 @@ Current limit 0.5A, Enable signal active high</description>
 </connects>
 <technologies>
 <technology name="">
-<attribute name="RS" value="
-738-0094" constant="no"/>
+<attribute name="RS" value="738-0094" constant="no"/>
 </technology>
 </technologies>
 </device>
@@ -1349,7 +1348,6 @@ Current limit 0.5A, Enable signal active high</description>
 <connect gate="G$1" pin="VDD" pad="8"/>
 </connects>
 <technologies>
-<technology name="-80-4C"/>
 <technology name="-80-4I"/>
 </technologies>
 </device>
@@ -1365,12 +1363,8 @@ Current limit 0.5A, Enable signal active high</description>
 <connect gate="G$1" pin="VDD" pad="8"/>
 </connects>
 <technologies>
-<technology name="-80-4C">
-<attribute name="RS" value="" constant="no"/>
-</technology>
 <technology name="-80-4I">
-<attribute name="RS" value="
-736-9258" constant="no"/>
+<attribute name="RS" value="736-9258" constant="no"/>
 </technology>
 </technologies>
 </device>
