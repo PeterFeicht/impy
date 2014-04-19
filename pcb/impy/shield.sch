@@ -8362,8 +8362,8 @@ W = angled&lt;p&gt;
 </class>
 </classes>
 <parts>
-<part name="JP1" library="parts" deviceset="PINHD-2X25" device="-F"/>
-<part name="JP2" library="parts" deviceset="PINHD-2X25" device="-F"/>
+<part name="JP1" library="parts" deviceset="PINHD-2X25" device="-F" value="P1"/>
+<part name="JP2" library="parts" deviceset="PINHD-2X25" device="-F" value="P2"/>
 <part name="P+1" library="supply1" deviceset="+5V" device=""/>
 <part name="P+2" library="supply1" deviceset="+5V" device=""/>
 <part name="+3V1" library="supply1" deviceset="+3V3" device=""/>
@@ -8385,8 +8385,8 @@ W = angled&lt;p&gt;
 <part name="P+4" library="supply1" deviceset="VCC" device=""/>
 <part name="AGND1" library="supply1" deviceset="AGND" device=""/>
 <part name="GND10" library="supply1" deviceset="GND" device=""/>
-<part name="JP3" library="jumper" deviceset="JP1E" device=""/>
-<part name="JP4" library="jumper" deviceset="JP1E" device=""/>
+<part name="JP3" library="jumper" deviceset="JP1E" device="" value="Icc"/>
+<part name="JP4" library="jumper" deviceset="JP1E" device="" value="Idd"/>
 <part name="P+5" library="supply1" deviceset="VCC" device=""/>
 <part name="+3V3" library="supply1" deviceset="+3V3" device=""/>
 <part name="VDD4" library="supply1" deviceset="VDD" device=""/>
@@ -8409,8 +8409,8 @@ W = angled&lt;p&gt;
 <part name="RCAL3" library="rcl" deviceset="R-EU_" device="R0805" value="100k 0.1%"/>
 <part name="RCAL2" library="rcl" deviceset="R-EU_" device="R0805" value="10k 0.1%"/>
 <part name="RCAL1" library="rcl" deviceset="R-EU_" device="R0805" value="1k 0.1%"/>
-<part name="JP5" library="con-lstb" deviceset="MA10-1" device=""/>
-<part name="JP6" library="pinhead" deviceset="PINHD-1X2" device=""/>
+<part name="JP5" library="con-lstb" deviceset="MA10-1" device="" value="OUT"/>
+<part name="JP6" library="pinhead" deviceset="PINHD-1X2" device="" value="COM"/>
 <part name="U4" library="parts" deviceset="M24C08" device="MN" technology="W"/>
 <part name="P+10" library="supply1" deviceset="VCC" device=""/>
 <part name="GND12" library="supply1" deviceset="GND" device=""/>
@@ -8431,7 +8431,7 @@ W = angled&lt;p&gt;
 <part name="J1" library="parts" deviceset="USB-2410-06" device=""/>
 <part name="GND15" library="supply1" deviceset="GND" device=""/>
 <part name="P+14" library="supply1" deviceset="+5V" device=""/>
-<part name="JP7" library="con-lstb" deviceset="MA04-1" device=""/>
+<part name="JP7" library="con-lstb" deviceset="MA04-1" device="" value="I2C"/>
 <part name="GND16" library="supply1" deviceset="GND" device=""/>
 <part name="P+15" library="supply1" deviceset="VCC" device=""/>
 <part name="U6" library="parts" deviceset="DP83848" device="" technology="I"/>
@@ -8469,7 +8469,7 @@ W = angled&lt;p&gt;
 <part name="GND27" library="supply1" deviceset="GND" device=""/>
 <part name="R5" library="rcl" deviceset="R-EU_" device="R0805" value="1k5"/>
 <part name="P+21" library="supply1" deviceset="VCC" device=""/>
-<part name="JP8" library="con-lstb" deviceset="MA05-1" device=""/>
+<part name="JP8" library="con-lstb" deviceset="MA05-1" device="" value="JTAG"/>
 <part name="RS1" library="rcl" deviceset="R-EU_" device="R0805" value="2k2"/>
 <part name="P+22" library="supply1" deviceset="VCC" device=""/>
 <part name="RS2" library="rcl" deviceset="R-EU_" device="R0805" value="2k2"/>
@@ -9156,7 +9156,7 @@ AGND - Analog ground</text>
 <attribute name="VALUE" x="163.83" y="66.802" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="JP5" gate="1" x="139.7" y="81.28" smashed="yes" rot="R180">
-<attribute name="VALUE" x="140.97" y="96.52" size="1.778" layer="96" rot="R180"/>
+<attribute name="VALUE" x="142.24" y="82.55" size="1.778" layer="96" rot="R270"/>
 <attribute name="NAME" x="135.89" y="94.742" size="1.778" layer="95"/>
 </instance>
 <instance part="JP6" gate="G$1" x="71.12" y="93.98"/>
@@ -9762,11 +9762,6 @@ AGND - Analog ground</text>
 <wire x1="33.02" y1="-10.16" x2="-10.16" y2="-10.16" width="0.1524" layer="97"/>
 <wire x1="-10.16" y1="-10.16" x2="-10.16" y2="50.8" width="0.1524" layer="97"/>
 <text x="-8.89" y="52.07" size="1.778" layer="97">USB Host</text>
-<text x="48.26" y="63.5" size="1.778" layer="97">JTAG</text>
-<wire x1="51.562" y1="62.738" x2="54.102" y2="55.118" width="0.1524" layer="97"/>
-<wire x1="54.102" y1="55.118" x2="54.102" y2="57.658" width="0.1524" layer="97"/>
-<wire x1="54.102" y1="57.658" x2="52.578" y2="57.15" width="0.1524" layer="97"/>
-<wire x1="52.578" y1="57.15" x2="54.102" y2="55.118" width="0.1524" layer="97"/>
 </plain>
 <instances>
 <instance part="J1" gate="G$1" x="12.7" y="10.16"/>
@@ -9810,7 +9805,7 @@ AGND - Analog ground</text>
 </instance>
 <instance part="P+21" gate="VCC" x="48.26" y="50.8"/>
 <instance part="JP8" gate="G$1" x="53.34" y="43.18" smashed="yes" rot="MR180">
-<attribute name="VALUE" x="52.07" y="53.34" size="1.778" layer="96" rot="MR180"/>
+<attribute name="VALUE" x="52.07" y="55.88" size="1.778" layer="96" rot="MR180"/>
 <attribute name="NAME" x="57.15" y="51.562" size="1.778" layer="95" rot="MR0"/>
 </instance>
 <instance part="RS1" gate="G$1" x="154.94" y="30.48" smashed="yes" rot="R90">
