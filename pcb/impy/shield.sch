@@ -1675,7 +1675,7 @@ Fuel/battery cell condition monitoring
 </connects>
 <technologies>
 <technology name="Y">
-<attribute name="RS" value="709-4816" constant="no"/>
+<attribute name="RS" value="709-4816"/>
 </technology>
 </technologies>
 </device>
@@ -1703,7 +1703,7 @@ Source: ADG704.pdf</description>
 </connects>
 <technologies>
 <technology name="B">
-<attribute name="RS" value="523-8761" constant="no"/>
+<attribute name="RS" value="523-8761"/>
 </technology>
 </technologies>
 </device>
@@ -1746,7 +1746,7 @@ Source: ADG706.pdf</description>
 </connects>
 <technologies>
 <technology name="B">
-<attribute name="RS" value="523-6478" constant="no"/>
+<attribute name="RS" value="523-6478"/>
 </technology>
 </technologies>
 </device>
@@ -1770,15 +1770,15 @@ Source: ADG706.pdf</description>
 <technologies>
 <technology name="F">
 <attribute name="RS" value="" constant="no"/>
-<attribute name="VCC" value="1.7V - 5.5V" constant="no"/>
+<attribute name="VCC" value="1.7V - 5.5V"/>
 </technology>
 <technology name="R">
 <attribute name="RS" value="" constant="no"/>
-<attribute name="VCC" value="1.8V - 5.5V" constant="no"/>
+<attribute name="VCC" value="1.8V - 5.5V"/>
 </technology>
 <technology name="W">
-<attribute name="RS" value="415-1180" constant="no"/>
-<attribute name="VCC" value="2.5V - 5.5V" constant="no"/>
+<attribute name="RS" value="415-1180"/>
+<attribute name="VCC" value="2.5V - 5.5V"/>
 </technology>
 </technologies>
 </device>
@@ -1800,7 +1800,7 @@ Source: ADG706.pdf</description>
 </connects>
 <technologies>
 <technology name="A">
-<attribute name="RS" value="796-8925" constant="no"/>
+<attribute name="RS" value="796-8925"/>
 </technology>
 </technologies>
 </device>
@@ -1823,7 +1823,7 @@ Source: ADG706.pdf</description>
 </connects>
 <technologies>
 <technology name="">
-<attribute name="RS" value="737-8791" constant="no"/>
+<attribute name="RS" value="737-8791"/>
 </technology>
 </technologies>
 </device>
@@ -1889,16 +1889,12 @@ http://www.ti.com/product/dp83848i</description>
 </connects>
 <technologies>
 <technology name="">
-<attribute name="MF" value="" constant="no"/>
-<attribute name="MPN" value="DP83848VYB" constant="no"/>
-<attribute name="OC_FARNELL" value="1286817" constant="no"/>
-<attribute name="OC_RS" value="" constant="no"/>
+<attribute name="MPN" value="DP83848VYB"/>
+<attribute name="RS" value="" constant="no"/>
 </technology>
 <technology name="I">
-<attribute name="MF" value="" constant="no"/>
-<attribute name="MPN" value="DP83848IVV" constant="no"/>
-<attribute name="OC_FARNELL" value="" constant="no"/>
-<attribute name="OC_RS" value="651-5766" constant="no"/>
+<attribute name="MPN" value="DP83848IVV"/>
+<attribute name="RS" value="651-5766"/>
 </technology>
 </technologies>
 </device>
@@ -1928,7 +1924,7 @@ http://www.ti.com/product/dp83848i</description>
 </connects>
 <technologies>
 <technology name="">
-<attribute name="RS" value="741-8489" constant="no"/>
+<attribute name="RS" value="741-8489"/>
 </technology>
 </technologies>
 </device>
@@ -1951,7 +1947,7 @@ Current limit 0.5A, Enable signal active high</description>
 </connects>
 <technologies>
 <technology name="">
-<attribute name="RS" value="727-4731" constant="no"/>
+<attribute name="RS" value="727-4731"/>
 </technology>
 </technologies>
 </device>
@@ -1976,7 +1972,7 @@ Current limit 0.5A, Enable signal active high</description>
 </connects>
 <technologies>
 <technology name="">
-<attribute name="RS" value="738-0094" constant="no"/>
+<attribute name="RS" value="738-0094"/>
 </technology>
 </technologies>
 </device>
@@ -1993,7 +1989,7 @@ Current limit 0.5A, Enable signal active high</description>
 </connects>
 <technologies>
 <technology name="">
-<attribute name="RS" value="738-0085" constant="no"/>
+<attribute name="RS" value="738-0085"/>
 </technology>
 </technologies>
 </device>
@@ -2033,7 +2029,7 @@ Current limit 0.5A, Enable signal active high</description>
 </connects>
 <technologies>
 <technology name="-80-4I">
-<attribute name="RS" value="736-9258" constant="no"/>
+<attribute name="RS" value="736-9258"/>
 </technology>
 </technologies>
 </device>
@@ -2054,16 +2050,16 @@ Current limit 0.5A, Enable signal active high</description>
 </connects>
 <technologies>
 <technology name="-2.8">
-<attribute name="RS" value="703-7917" constant="no"/>
-<attribute name="VOUT" value="2.8V" constant="no"/>
+<attribute name="RS" value="703-7917"/>
+<attribute name="VOUT" value="2.8V"/>
 </technology>
 <technology name="-3.3">
-<attribute name="RS" value="703-7905" constant="no"/>
-<attribute name="VOUT" value="3.3V" constant="no"/>
+<attribute name="RS" value="703-7905"/>
+<attribute name="VOUT" value="3.3V"/>
 </technology>
 <technology name="-5.0">
-<attribute name="RS" value="703-7901" constant="no"/>
-<attribute name="VOUT" value="5V" constant="no"/>
+<attribute name="RS" value="703-7901"/>
+<attribute name="VOUT" value="5V"/>
 </technology>
 </technologies>
 </device>
@@ -2186,7 +2182,9 @@ Current limit 0.5A, Enable signal active high</description>
 <connect gate="A" pin="9" pad="9"/>
 </connects>
 <technologies>
-<technology name=""/>
+<technology name="">
+<attribute name="RS" value="766-6660"/>
+</technology>
 </technologies>
 </device>
 </devices>
@@ -2209,7 +2207,7 @@ Current limit 0.5A, Enable signal active high</description>
 </connects>
 <technologies>
 <technology name="-I">
-<attribute name="RS" value="792-8738" constant="no"/>
+<attribute name="RS" value="792-8738"/>
 </technology>
 </technologies>
 </device>
@@ -2231,7 +2229,7 @@ Tyco Electronics FSM series surface mount switch</description>
 </connects>
 <technologies>
 <technology name="">
-<attribute name="RS" value="718-2455" constant="no"/>
+<attribute name="RS" value="718-2455"/>
 </technology>
 </technologies>
 </device>
