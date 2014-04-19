@@ -1176,6 +1176,27 @@ EIAJ 200mil body, Source: &lt;code&gt;atmel.lbr&lt;/code&gt;</description>
 <rectangle x1="-0.82" y1="-3.4" x2="-0.47" y2="-2.5" layer="51"/>
 <rectangle x1="-2.08" y1="-3.4" x2="-1.73" y2="-2.5" layer="51"/>
 </package>
+<package name="SOT223">
+<description>&lt;b&gt;Small Outline Transistor&lt;/b&gt;</description>
+<wire x1="3.2766" y1="1.778" x2="3.2766" y2="-1.778" width="0.2032" layer="21"/>
+<wire x1="3.2766" y1="-1.778" x2="-3.2766" y2="-1.778" width="0.2032" layer="21"/>
+<wire x1="-3.2766" y1="-1.778" x2="-3.2766" y2="1.778" width="0.2032" layer="21"/>
+<wire x1="-3.2766" y1="1.778" x2="3.2766" y2="1.778" width="0.2032" layer="21"/>
+<smd name="1" x="-2.3114" y="-3.0988" dx="1.2192" dy="2.2352" layer="1"/>
+<smd name="2" x="0" y="-3.0988" dx="1.2192" dy="2.2352" layer="1"/>
+<smd name="3" x="2.3114" y="-3.0988" dx="1.2192" dy="2.2352" layer="1"/>
+<smd name="4" x="0" y="3.099" dx="3.6" dy="2.2" layer="1"/>
+<text x="-3.6068" y="-3.302" size="1.27" layer="25" rot="R90">&gt;NAME</text>
+<text x="4.8768" y="-3.302" size="1.27" layer="27" rot="R90">&gt;VALUE</text>
+<rectangle x1="-1.6002" y1="1.8034" x2="1.6002" y2="3.6576" layer="51"/>
+<rectangle x1="-0.4318" y1="-3.6576" x2="0.4318" y2="-1.8034" layer="51"/>
+<rectangle x1="-2.7432" y1="-3.6576" x2="-1.8796" y2="-1.8034" layer="51"/>
+<rectangle x1="1.8796" y1="-3.6576" x2="2.7432" y2="-1.8034" layer="51"/>
+<rectangle x1="-1.6002" y1="1.8034" x2="1.6002" y2="3.6576" layer="51"/>
+<rectangle x1="-0.4318" y1="-3.6576" x2="0.4318" y2="-1.8034" layer="51"/>
+<rectangle x1="-2.7432" y1="-3.6576" x2="-1.8796" y2="-1.8034" layer="51"/>
+<rectangle x1="1.8796" y1="-3.6576" x2="2.7432" y2="-1.8034" layer="51"/>
+</package>
 </packages>
 <symbols>
 <symbol name="AD5933">
@@ -1481,6 +1502,21 @@ EIAJ 200mil body, Source: &lt;code&gt;atmel.lbr&lt;/code&gt;</description>
 <text x="-7.62" y="-10.16" size="1.27" layer="96">&gt;VALUE</text>
 <pin name="!HOLD" x="-10.16" y="2.54" length="short" direction="in"/>
 <pin name="SI" x="-10.16" y="-5.08" length="short" direction="in"/>
+</symbol>
+<symbol name="VREG-4">
+<wire x1="-5.08" y1="-5.08" x2="5.08" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="5.08" y1="-5.08" x2="5.08" y2="2.54" width="0.254" layer="94"/>
+<wire x1="5.08" y1="2.54" x2="-5.08" y2="2.54" width="0.254" layer="94"/>
+<wire x1="-5.08" y1="2.54" x2="-5.08" y2="-5.08" width="0.254" layer="94"/>
+<text x="2.54" y="-7.62" size="1.778" layer="95">&gt;NAME</text>
+<text x="2.54" y="-10.16" size="1.778" layer="96">&gt;VALUE</text>
+<text x="-3.302" y="-4.318" size="1.524" layer="95">GND</text>
+<text x="-4.445" y="-0.635" size="1.524" layer="95">IN</text>
+<text x="0.635" y="-0.635" size="1.524" layer="95">OUT</text>
+<pin name="IN" x="-7.62" y="0" visible="off" length="short" direction="pwr"/>
+<pin name="GND" x="-2.54" y="-7.62" visible="off" length="short" direction="pwr" swaplevel="1" rot="R90"/>
+<pin name="OUT" x="7.62" y="0" visible="off" length="short" direction="out" rot="R180"/>
+<pin name="GND1" x="0" y="-7.62" visible="off" length="short" direction="pwr" swaplevel="1" rot="R90"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -1880,6 +1916,36 @@ Current limit 0.5A, Enable signal active high</description>
 <technologies>
 <technology name="-80-4I">
 <attribute name="RS" value="736-9258" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="TC1262" prefix="U">
+<description>&lt;b&gt;500mA Fixed Output CMOS LDO&lt;/b&gt;&lt;p&gt;</description>
+<gates>
+<gate name="G$1" symbol="VREG-4" x="0" y="0"/>
+</gates>
+<devices>
+<device name="VDB" package="SOT223">
+<connects>
+<connect gate="G$1" pin="GND" pad="2"/>
+<connect gate="G$1" pin="GND1" pad="4"/>
+<connect gate="G$1" pin="IN" pad="1"/>
+<connect gate="G$1" pin="OUT" pad="3"/>
+</connects>
+<technologies>
+<technology name="-2.8">
+<attribute name="RS" value="703-7917" constant="no"/>
+<attribute name="VOUT" value="2.8V" constant="no"/>
+</technology>
+<technology name="-3.3">
+<attribute name="RS" value="703-7905" constant="no"/>
+<attribute name="VOUT" value="3.3V" constant="no"/>
+</technology>
+<technology name="-5.0">
+<attribute name="RS" value="703-7901" constant="no"/>
+<attribute name="VOUT" value="5V" constant="no"/>
 </technology>
 </technologies>
 </device>
@@ -8215,6 +8281,15 @@ W = angled&lt;p&gt;
 <part name="P+26" library="supply1" deviceset="VCC" device=""/>
 <part name="P+27" library="supply1" deviceset="VCC" device=""/>
 <part name="GND32" library="supply1" deviceset="GND" device=""/>
+<part name="U10" library="parts" deviceset="TC1262" device="VDB" technology="-3.3"/>
+<part name="P+28" library="supply1" deviceset="+5V" device=""/>
+<part name="GND33" library="supply1" deviceset="GND" device=""/>
+<part name="+3V4" library="supply1" deviceset="+3V3" device=""/>
+<part name="GND34" library="supply1" deviceset="GND" device=""/>
+<part name="GND35" library="supply1" deviceset="GND" device=""/>
+<part name="C19" library="rcl" deviceset="C-EU" device="C1210" value="10u"/>
+<part name="C20" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
+<part name="C21" library="rcl" deviceset="C-EU" device="C1210" value="10u"/>
 </parts>
 <sheets>
 <sheet>
@@ -8227,6 +8302,7 @@ VCC - Shield 3.3V supply
 
 GND - Digital common ground
 AGND - Analog ground</text>
+<text x="165.1" y="45.72" size="1.016" layer="97" align="top-right">ESR should be 0.1-5 Ohm</text>
 </plain>
 <instances>
 <instance part="JP1" gate="A" x="22.86" y="50.8"/>
@@ -8283,6 +8359,17 @@ AGND - Analog ground</text>
 <instance part="C8" gate="G$1" x="40.64" y="5.08"/>
 <instance part="C9" gate="G$1" x="48.26" y="5.08"/>
 <instance part="C10" gate="G$1" x="55.88" y="5.08"/>
+<instance part="U10" gate="G$1" x="157.48" y="27.94"/>
+<instance part="P+28" gate="1" x="139.7" y="35.56" smashed="yes" rot="MR0">
+<attribute name="VALUE" x="139.7" y="35.56" size="1.778" layer="96" rot="MR90"/>
+</instance>
+<instance part="GND33" gate="1" x="157.48" y="12.7"/>
+<instance part="+3V4" gate="G$1" x="167.64" y="53.34"/>
+<instance part="GND34" gate="1" x="139.7" y="12.7"/>
+<instance part="GND35" gate="1" x="152.4" y="40.64" rot="R270"/>
+<instance part="C19" gate="G$1" x="139.7" y="22.86" rot="MR0"/>
+<instance part="C20" gate="G$1" x="144.78" y="22.86"/>
+<instance part="C21" gate="G$1" x="160.02" y="40.64" rot="MR270"/>
 </instances>
 <busses>
 </busses>
@@ -8391,6 +8478,26 @@ AGND - Analog ground</text>
 <wire x1="55.88" y1="-2.54" x2="55.88" y2="0" width="0.1524" layer="91"/>
 <junction x="48.26" y="-2.54"/>
 </segment>
+<segment>
+<pinref part="U10" gate="G$1" pin="GND1"/>
+<pinref part="GND33" gate="1" pin="GND"/>
+<wire x1="157.48" y1="20.32" x2="157.48" y2="17.78" width="0.1524" layer="91"/>
+<pinref part="U10" gate="G$1" pin="GND"/>
+<wire x1="157.48" y1="17.78" x2="157.48" y2="15.24" width="0.1524" layer="91"/>
+<wire x1="157.48" y1="17.78" x2="154.94" y2="17.78" width="0.1524" layer="91"/>
+<wire x1="154.94" y1="17.78" x2="154.94" y2="20.32" width="0.1524" layer="91"/>
+<junction x="157.48" y="17.78"/>
+</segment>
+<segment>
+<pinref part="C19" gate="G$1" pin="2"/>
+<pinref part="GND34" gate="1" pin="GND"/>
+<wire x1="139.7" y1="17.78" x2="139.7" y2="15.24" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="GND35" gate="1" pin="GND"/>
+<pinref part="C21" gate="G$1" pin="1"/>
+<wire x1="154.94" y1="40.64" x2="157.48" y2="40.64" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="+5V" class="0">
 <segment>
@@ -8402,6 +8509,15 @@ AGND - Analog ground</text>
 <pinref part="P+2" gate="1" pin="+5V"/>
 <pinref part="JP2" gate="A" pin="4"/>
 <wire x1="91.44" y1="78.74" x2="78.74" y2="78.74" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="U10" gate="G$1" pin="IN"/>
+<pinref part="P+28" gate="1" pin="+5V"/>
+<wire x1="149.86" y1="27.94" x2="139.7" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="139.7" y1="27.94" x2="139.7" y2="33.02" width="0.1524" layer="91"/>
+<pinref part="C19" gate="G$1" pin="1"/>
+<wire x1="139.7" y1="25.4" x2="139.7" y2="27.94" width="0.1524" layer="91"/>
+<junction x="139.7" y="27.94"/>
 </segment>
 </net>
 <net name="+3V3" class="0">
@@ -8425,6 +8541,16 @@ AGND - Analog ground</text>
 <wire x1="116.84" y1="76.2" x2="124.46" y2="76.2" width="0.1524" layer="91"/>
 <wire x1="124.46" y1="76.2" x2="124.46" y2="73.66" width="0.1524" layer="91"/>
 <junction x="116.84" y="76.2"/>
+</segment>
+<segment>
+<pinref part="U10" gate="G$1" pin="OUT"/>
+<pinref part="+3V4" gate="G$1" pin="+3V3"/>
+<wire x1="165.1" y1="27.94" x2="167.64" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="167.64" y1="27.94" x2="167.64" y2="40.64" width="0.1524" layer="91"/>
+<pinref part="C21" gate="G$1" pin="2"/>
+<wire x1="167.64" y1="40.64" x2="167.64" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="165.1" y1="40.64" x2="167.64" y2="40.64" width="0.1524" layer="91"/>
+<junction x="167.64" y="40.64"/>
 </segment>
 </net>
 <net name="!RST" class="0">
