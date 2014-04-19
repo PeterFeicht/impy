@@ -53,7 +53,7 @@ EEPROM_Error EEPROM_Init(I2C_HandleTypeDef *i2c, uint8_t e2_set)
 /**
  * Resets the driver to initialization state.
  * 
- * @return {@code AD_ERROR} if the driver has not been initialized, {@code AD_OK} otherwise
+ * @return {@code EE_ERROR} if the driver has not been initialized, {@code EE_OK} otherwise
  */
 EEPROM_Error EEPROM_Reset(void)
 {
