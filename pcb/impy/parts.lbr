@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="yes"/>
@@ -118,6 +118,7 @@ This library contains parts used for the Impedance Spectrometer project that are
     &lt;li&gt;&lt;b&gt;DP83848&lt;/b&gt; - PHYTER Industrial Temperature Single Port 10/100 Mb/s Ethernet Physical Layer Transceiver (adapted from &lt;code&gt;national-semiconductor.lbr&lt;/code&gt;)&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;M24C08&lt;/b&gt; - 8-Kbit serial I²C bus EEPROM&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;MAX4781&lt;/b&gt; - High-Speed, Low-Voltage, 0.7 Ω CMOS Analog Switches/Multiplexers&lt;/li&gt;
+    &lt;li&gt;&lt;b&gt;MIC2005A-1&lt;/b&gt; - 0.5A Current Limiting Power Distribution Switch&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;SI-60062-F&lt;/b&gt; - MagJack 10/100 Base-T Ethernet connector&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;USB-2410-06&lt;/b&gt; - Lumberg 2410 06 USB-A connector&lt;/li&gt;
 &lt;/ul&gt;</description>
@@ -533,6 +534,32 @@ Source: SI-60062-F.pdf</description>
 <pad name="S1" x="-6.57" y="10.28" drill="2.3"/>
 <pad name="S2" x="6.57" y="10.28" drill="2.3"/>
 </package>
+<package name="SOT23-5">
+<description>&lt;b&gt;Small Outline Transistor&lt;/b&gt;</description>
+<wire x1="1.4224" y1="0.8104" x2="1.4224" y2="-0.8104" width="0.1524" layer="21"/>
+<wire x1="1.4224" y1="-0.8104" x2="-1.4224" y2="-0.8104" width="0.1524" layer="51"/>
+<wire x1="-1.4224" y1="-0.8104" x2="-1.4224" y2="0.8104" width="0.1524" layer="21"/>
+<wire x1="-1.4224" y1="0.8104" x2="1.4224" y2="0.8104" width="0.1524" layer="51"/>
+<wire x1="-0.5224" y1="0.8104" x2="0.5224" y2="0.8104" width="0.1524" layer="21"/>
+<wire x1="-0.4276" y1="-0.8104" x2="-0.5224" y2="-0.8104" width="0.1524" layer="21"/>
+<wire x1="0.5224" y1="-0.8104" x2="0.4276" y2="-0.8104" width="0.1524" layer="21"/>
+<wire x1="-1.3276" y1="-0.8104" x2="-1.4224" y2="-0.8104" width="0.1524" layer="21"/>
+<wire x1="1.4224" y1="-0.8104" x2="1.3276" y2="-0.8104" width="0.1524" layer="21"/>
+<wire x1="1.3276" y1="0.8104" x2="1.4224" y2="0.8104" width="0.1524" layer="21"/>
+<wire x1="-1.4224" y1="0.8104" x2="-1.3276" y2="0.8104" width="0.1524" layer="21"/>
+<smd name="1" x="-0.95" y="-1.3001" dx="0.55" dy="1.2" layer="1"/>
+<smd name="2" x="0" y="-1.3001" dx="0.55" dy="1.2" layer="1"/>
+<smd name="3" x="0.95" y="-1.3001" dx="0.55" dy="1.2" layer="1"/>
+<smd name="4" x="0.95" y="1.3001" dx="0.55" dy="1.2" layer="1"/>
+<smd name="5" x="-0.95" y="1.3001" dx="0.55" dy="1.2" layer="1"/>
+<text x="-1.905" y="1.905" size="1.27" layer="25">&gt;NAME</text>
+<text x="-1.905" y="-3.175" size="1.27" layer="27">&gt;VALUE</text>
+<rectangle x1="-1.2" y1="-1.5" x2="-0.7" y2="-0.85" layer="51"/>
+<rectangle x1="-0.25" y1="-1.5" x2="0.25" y2="-0.85" layer="51"/>
+<rectangle x1="0.7" y1="-1.5" x2="1.2" y2="-0.85" layer="51"/>
+<rectangle x1="0.7" y1="0.85" x2="1.2" y2="1.5" layer="51"/>
+<rectangle x1="-1.2" y1="0.85" x2="-0.7" y2="1.5" layer="51"/>
+</package>
 </packages>
 <symbols>
 <symbol name="AD5933">
@@ -846,6 +873,20 @@ Source: SI-60062-F.pdf</description>
 <wire x1="5.08" y1="8.89" x2="5.08" y2="-6.35" width="0.127" layer="94" style="shortdash"/>
 <wire x1="5.08" y1="-6.35" x2="-2.54" y2="-6.35" width="0.127" layer="94" style="shortdash"/>
 <wire x1="-2.54" y1="-6.35" x2="-2.54" y2="-11.43" width="0.127" layer="94" style="shortdash"/>
+</symbol>
+<symbol name="MIC2005A-1">
+<description>&lt;b&gt;MIC2005A-1 Power Switch&lt;/b&gt;&lt;p&gt;</description>
+<wire x1="-7.62" y1="7.62" x2="7.62" y2="7.62" width="0.254" layer="94"/>
+<wire x1="7.62" y1="7.62" x2="7.62" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="7.62" y1="-7.62" x2="-7.62" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="-7.62" y1="-7.62" x2="-7.62" y2="7.62" width="0.254" layer="94"/>
+<pin name="VIN" x="-10.16" y="5.08" length="short" direction="pwr"/>
+<pin name="GND" x="-10.16" y="0" length="short" direction="pwr"/>
+<pin name="VOUT" x="10.16" y="5.08" length="short" direction="out" rot="R180"/>
+<pin name="!FAULT" x="10.16" y="-2.54" length="short" direction="out" rot="R180"/>
+<pin name="EN" x="-10.16" y="-5.08" length="short" direction="in"/>
+<text x="-7.62" y="8.89" size="1.27" layer="95">&gt;NAME</text>
+<text x="-7.62" y="-10.16" size="1.27" layer="96">&gt;VALUE</text>
 </symbol>
 </symbols>
 <devicesets>
@@ -1174,6 +1215,29 @@ Source: &lt;a href="http://datasheets.maximintegrated.com/en/ds/MAX4781-MAX4783.
 <technologies>
 <technology name="">
 <attribute name="RS" value="737-8791" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="MIC2005A-1" prefix="U">
+<description>&lt;b&gt;0.5A Current Limiting Power Distribution Switch&lt;/b&gt;&lt;p&gt;
+Current limit 0.5A, Enable signal active high</description>
+<gates>
+<gate name="G$1" symbol="MIC2005A-1" x="0" y="0"/>
+</gates>
+<devices>
+<device name="YM5" package="SOT23-5">
+<connects>
+<connect gate="G$1" pin="!FAULT" pad="4"/>
+<connect gate="G$1" pin="EN" pad="3"/>
+<connect gate="G$1" pin="GND" pad="2"/>
+<connect gate="G$1" pin="VIN" pad="1"/>
+<connect gate="G$1" pin="VOUT" pad="5"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="RS" value="727-4731" constant="no"/>
 </technology>
 </technologies>
 </device>
