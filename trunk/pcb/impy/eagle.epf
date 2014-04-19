@@ -7,6 +7,8 @@ Desktop="Desktop"
 
 [Globals]
 AutoSaveProject=1
+UsedLibrary="C:/Program Files (x86)/EAGLE-6.5.0/lbr/con-lsta.lbr"
+UsedLibrary="C:/Program Files (x86)/EAGLE-6.5.0/lbr/con-lstb.lbr"
 UsedLibrary="C:/Program Files (x86)/EAGLE-6.5.0/lbr/diode.lbr"
 UsedLibrary="C:/Program Files (x86)/EAGLE-6.5.0/lbr/holes.lbr"
 UsedLibrary="C:/Program Files (x86)/EAGLE-6.5.0/lbr/jump-0r-smd.lbr"
@@ -29,11 +31,11 @@ UsedLibrary="parts.lbr"
 
 [Win_1]
 Type="Schematic Editor"
-Loc="665 230 1264 629"
+Loc="652 321 1251 720"
 State=1
 Number=1
 File="shield.sch"
-View="-16.256 -14.986 168.656 103.886"
+View="-1.34394 15.4898 169.4 103.763"
 WireWidths=" 0 0.3048 0.6096 0.8128 1.016 1.27 1.4224 1.6764 1.778 1.9304 2.1844 2.54 3.81 6.4516 0.4064 0.1524"
 PadDiameters=" 0.254 0.3048 0.4064 0.6096 0.8128 1.016 1.27 1.4224 1.6764 1.778 1.9304 2.1844 2.54 3.81 6.4516 0"
 PadDrills=" 0.5 0.6 0.7 0.9 1 1.1 1.2 1.3 1.4 1.5 1.6 2 2.2 2.8 3.2 0.8"
@@ -72,12 +74,12 @@ ArcDirection=0
 AddLevel=2
 PadsSameType=0
 Layer=91
-Views=" 1: -16.256 -14.986 168.656 103.886 2: -11.87 -6.99377 115.649 76.2661"
-Sheet=1
+Views=" 1: 1.78089 -15.295 142.516 88.828 4: -2.98939 -9.85543 104.02 58.9362"
+Sheet=2
 
 [Win_2]
 Type="Control Panel"
-Loc="125 125 1315 886"
+Loc="278 109 1590 901"
 State=2
 Number=0
 
