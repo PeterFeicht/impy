@@ -1216,6 +1216,44 @@ EIAJ 200mil body, Source: &lt;code&gt;atmel.lbr&lt;/code&gt;</description>
 <circle x="2.2" y="-2.2" radius="0.5" width="0.127" layer="21"/>
 <circle x="-2.2" y="-2.2" radius="0.5" width="0.127" layer="21"/>
 </package>
+<package name="JACK-SMD2.5">
+<description>&lt;b&gt;DC POWER JACK 2.5mm&lt;/b&gt; Right Angle, Surface Mount&lt;p&gt;
+Created by Robert Siegler, modified</description>
+<wire x1="0" y1="-4.5" x2="0" y2="-3.2" width="0.1" layer="21"/>
+<wire x1="0" y1="-3.2" x2="0" y2="3.2" width="0.1" layer="21"/>
+<wire x1="0" y1="3.2" x2="0" y2="4.5" width="0.1" layer="21"/>
+<wire x1="3.5" y1="-4.5" x2="3.5" y2="4" width="0.1" layer="21"/>
+<wire x1="3.5" y1="4" x2="3.5" y2="4.5" width="0.1" layer="21"/>
+<wire x1="3.5" y1="-4" x2="12" y2="-4" width="0.1" layer="21"/>
+<wire x1="3.5" y1="4" x2="12" y2="4" width="0.1" layer="21"/>
+<wire x1="12" y1="-4" x2="12" y2="4" width="0.1" layer="21"/>
+<wire x1="12" y1="-4.5" x2="12" y2="-4" width="0.1" layer="21"/>
+<wire x1="12" y1="4" x2="12" y2="4.5" width="0.1" layer="21"/>
+<wire x1="0" y1="4.5" x2="12" y2="4.5" width="0.1" layer="21"/>
+<wire x1="12" y1="-4" x2="14" y2="-4" width="0.1" layer="21"/>
+<wire x1="12" y1="4" x2="14" y2="4" width="0.1" layer="21"/>
+<wire x1="14" y1="4" x2="14.5" y2="4" width="0.1" layer="21"/>
+<wire x1="14.5" y1="-4" x2="14.5" y2="4" width="0.1" layer="21"/>
+<wire x1="14" y1="-4" x2="14" y2="4" width="0.1" layer="21"/>
+<wire x1="0" y1="3.2" x2="9" y2="3.2" width="0.1" layer="21" style="shortdash"/>
+<wire x1="0" y1="-3.2" x2="9" y2="-3.2" width="0.1" layer="21" style="shortdash"/>
+<wire x1="9" y1="-3.2" x2="9" y2="3.2" width="0.1" layer="21" style="shortdash"/>
+<wire x1="2" y1="1.25" x2="9" y2="1.25" width="0.1" layer="21" style="shortdash"/>
+<wire x1="2" y1="-1.25" x2="9" y2="-1.25" width="0.1" layer="21" style="shortdash"/>
+<wire x1="2" y1="1.25" x2="2" y2="-1.25" width="0.1" layer="21" curve="180"/>
+<wire x1="14" y1="-4" x2="14.5" y2="-4" width="0.1" layer="21"/>
+<wire x1="0" y1="-4.5" x2="12" y2="-4.5" width="0.1" layer="21"/>
+<text x="10.59" y="-6.35" size="1.27" layer="27">&gt;VALUE</text>
+<text x="10.59" y="5.08" size="1.27" layer="25">&gt;NAME</text>
+<rectangle x1="7.65" y1="-1.25" x2="7.85" y2="1.25" layer="21"/>
+<hole x="3" y="0" drill="2.2"/>
+<smd name="2" x="6.8" y="6.45" dx="6.2" dy="3.9" layer="1"/>
+<smd name="3" x="6.8" y="-6.45" dx="6.2" dy="3.9" layer="1"/>
+<smd name="1" x="15.8" y="0" dx="4.4" dy="3.3" layer="1"/>
+<rectangle x1="4" y1="4.5" x2="9.5" y2="7.5" layer="21"/>
+<rectangle x1="4" y1="-7.5" x2="9.5" y2="-4.5" layer="21"/>
+<rectangle x1="13.6" y1="-1.45" x2="17.6" y2="0.25" layer="21"/>
+</package>
 </packages>
 <symbols>
 <symbol name="AD5933">
@@ -1635,6 +1673,32 @@ EIAJ 200mil body, Source: &lt;code&gt;atmel.lbr&lt;/code&gt;</description>
 <pin name="0@B" x="-5.08" y="-2.54" visible="off" length="short" direction="pas" swaplevel="1"/>
 <pin name="1@B" x="7.62" y="-2.54" visible="off" length="short" direction="pas" swaplevel="2" rot="R180"/>
 <pin name="1@A" x="7.62" y="0" visible="off" length="short" direction="pas" swaplevel="2" rot="R180"/>
+</symbol>
+<symbol name="JACK-PLUG">
+<description>&lt;b&gt;DC power jack with switch&lt;/b&gt;&lt;p&gt;</description>
+<wire x1="-5.715" y1="1.27" x2="-5.715" y2="3.81" width="0.1524" layer="94" curve="-180"/>
+<wire x1="-5.715" y1="3.81" x2="-1.27" y2="3.81" width="0.1524" layer="94"/>
+<wire x1="-1.27" y1="3.81" x2="-1.27" y2="1.27" width="0.1524" layer="94"/>
+<wire x1="-1.27" y1="1.27" x2="-5.715" y2="1.27" width="0.1524" layer="94"/>
+<wire x1="-1.27" y1="1.27" x2="-1.27" y2="0.635" width="0.1524" layer="94"/>
+<wire x1="-1.27" y1="0.635" x2="0" y2="0.635" width="0.1524" layer="94"/>
+<wire x1="0" y1="0.635" x2="0" y2="4.445" width="0.1524" layer="94"/>
+<wire x1="0" y1="4.445" x2="-1.27" y2="4.445" width="0.1524" layer="94"/>
+<wire x1="-1.27" y1="4.445" x2="-1.27" y2="3.81" width="0.1524" layer="94"/>
+<wire x1="0" y1="-2.54" x2="-5.715" y2="-2.54" width="0.1524" layer="94"/>
+<wire x1="-5.715" y1="-2.54" x2="-6.35" y2="-1.27" width="0.1524" layer="94"/>
+<wire x1="-6.35" y1="-1.27" x2="-6.985" y2="-2.54" width="0.1524" layer="94"/>
+<wire x1="0" y1="0" x2="0" y2="-2.54" width="0.1524" layer="94"/>
+<text x="-7.62" y="5.08" size="1.778" layer="95">&gt;NAME</text>
+<text x="-7.62" y="-5.08" size="1.778" layer="96">&gt;VALUE</text>
+<pin name="1" x="5.08" y="2.54" visible="pad" length="middle" direction="pas" rot="R180"/>
+<pin name="2" x="5.08" y="0" visible="pad" length="middle" direction="pas" rot="R180"/>
+<pin name="3" x="5.08" y="-2.54" visible="pad" length="middle" direction="pas" rot="R180"/>
+<polygon width="0.1524" layer="94">
+<vertex x="0" y="-2.54"/>
+<vertex x="-0.508" y="-1.27"/>
+<vertex x="0.508" y="-1.27"/>
+</polygon>
 </symbol>
 </symbols>
 <devicesets>
@@ -2230,6 +2294,28 @@ Tyco Electronics FSM series surface mount switch</description>
 <technologies>
 <technology name="">
 <attribute name="RS" value="718-2455"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="JACK-PLUG" prefix="J" uservalue="yes">
+<description>&lt;b&gt;DC Power Jack&lt;/b&gt;&lt;br&gt;
+Power Jack, DC, Right Angle, Surface Mount&lt;br&gt;
+2.5A, 16VDC</description>
+<gates>
+<gate name="G$1" symbol="JACK-PLUG" x="0" y="0"/>
+</gates>
+<devices>
+<device name="-S2.5" package="JACK-SMD2.5">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="3"/>
+<connect gate="G$1" pin="3" pad="2"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="RS" value="476-157"/>
 </technology>
 </technologies>
 </device>
@@ -8605,7 +8691,6 @@ W = angled&lt;p&gt;
 <part name="GND33" library="supply1" deviceset="GND" device=""/>
 <part name="+3V4" library="supply1" deviceset="+3V3" device=""/>
 <part name="GND34" library="supply1" deviceset="GND" device=""/>
-<part name="GND35" library="supply1" deviceset="GND" device=""/>
 <part name="C19" library="rcl" deviceset="C-EU" device="C1210" value="10u"/>
 <part name="C20" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
 <part name="C21" library="rcl" deviceset="C-EU" device="C1210" value="10u"/>
@@ -8625,6 +8710,8 @@ W = angled&lt;p&gt;
 <part name="VDD6" library="supply1" deviceset="VDD" device=""/>
 <part name="GND38" library="supply1" deviceset="GND" device=""/>
 <part name="JP10" library="jumper" deviceset="JP1Q" device="" value="VBUS"/>
+<part name="J3" library="parts" deviceset="JACK-PLUG" device="-S2.5" value="5V"/>
+<part name="GND39" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -8637,7 +8724,7 @@ VCC - Shield 3.3V supply
 
 GND - Digital common ground
 AGND - Analog ground</text>
-<text x="167.64" y="27.94" size="1.016" layer="97" align="top-right">ESR should be 0.1-5 Ohm</text>
+<text x="167.64" y="27.178" size="1.016" layer="97" align="top-right">ESR should be 0.1-5 Ohm</text>
 <wire x1="104.14" y1="83.82" x2="139.7" y2="83.82" width="0.1524" layer="97"/>
 <wire x1="139.7" y1="83.82" x2="139.7" y2="60.96" width="0.1524" layer="97"/>
 <wire x1="139.7" y1="60.96" x2="104.14" y2="60.96" width="0.1524" layer="97"/>
@@ -8706,16 +8793,15 @@ AGND - Analog ground</text>
 <instance part="C9" gate="G$1" x="48.26" y="5.08"/>
 <instance part="C10" gate="G$1" x="55.88" y="5.08"/>
 <instance part="U10" gate="G$1" x="160.02" y="10.16"/>
-<instance part="P+28" gate="1" x="142.24" y="17.78" smashed="yes" rot="MR0">
-<attribute name="VALUE" x="142.24" y="17.78" size="1.778" layer="96" rot="MR90"/>
+<instance part="P+28" gate="1" x="142.24" y="43.18" smashed="yes" rot="MR0">
+<attribute name="VALUE" x="142.24" y="43.18" size="1.778" layer="96" rot="MR90"/>
 </instance>
 <instance part="GND33" gate="1" x="160.02" y="-5.08"/>
 <instance part="+3V4" gate="G$1" x="170.18" y="35.56"/>
 <instance part="GND34" gate="1" x="142.24" y="-7.62"/>
-<instance part="GND35" gate="1" x="154.94" y="22.86" rot="R270"/>
 <instance part="C19" gate="G$1" x="142.24" y="5.08" rot="MR0"/>
 <instance part="C20" gate="G$1" x="147.32" y="5.08"/>
-<instance part="C21" gate="G$1" x="162.56" y="22.86" rot="MR270"/>
+<instance part="C21" gate="G$1" x="160.02" y="22.86" rot="MR270"/>
 <instance part="C22" gate="G$1" x="63.5" y="5.08"/>
 <instance part="SJ2" gate="1" x="48.26" y="88.9"/>
 <instance part="JP9" gate="A" x="50.8" y="45.72"/>
@@ -8725,6 +8811,8 @@ AGND - Analog ground</text>
 <instance part="VDD6" gate="G$1" x="177.8" y="78.74"/>
 <instance part="GND38" gate="1" x="177.8" y="50.8"/>
 <instance part="JP10" gate="A" x="96.52" y="45.72"/>
+<instance part="J3" gate="G$1" x="154.94" y="35.56" rot="MR0"/>
+<instance part="GND39" gate="1" x="147.32" y="17.78"/>
 </instances>
 <busses>
 </busses>
@@ -8873,11 +8961,6 @@ AGND - Analog ground</text>
 <junction x="142.24" y="-2.54"/>
 </segment>
 <segment>
-<pinref part="GND35" gate="1" pin="GND"/>
-<pinref part="C21" gate="G$1" pin="1"/>
-<wire x1="157.48" y1="22.86" x2="160.02" y2="22.86" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="S2" gate="G$1" pin="1@A"/>
 <pinref part="GND38" gate="1" pin="GND"/>
 <wire x1="172.72" y1="58.42" x2="177.8" y2="58.42" width="0.1524" layer="91"/>
@@ -8886,6 +8969,16 @@ AGND - Analog ground</text>
 <wire x1="177.8" y1="55.88" x2="177.8" y2="53.34" width="0.1524" layer="91"/>
 <wire x1="172.72" y1="55.88" x2="177.8" y2="55.88" width="0.1524" layer="91"/>
 <junction x="177.8" y="55.88"/>
+</segment>
+<segment>
+<pinref part="J3" gate="G$1" pin="3"/>
+<pinref part="GND39" gate="1" pin="GND"/>
+<wire x1="149.86" y1="33.02" x2="147.32" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="147.32" y1="33.02" x2="147.32" y2="22.86" width="0.1524" layer="91"/>
+<pinref part="C21" gate="G$1" pin="1"/>
+<wire x1="147.32" y1="22.86" x2="147.32" y2="20.32" width="0.1524" layer="91"/>
+<wire x1="157.48" y1="22.86" x2="147.32" y2="22.86" width="0.1524" layer="91"/>
+<junction x="147.32" y="22.86"/>
 </segment>
 </net>
 <net name="+5V" class="1">
@@ -8899,13 +8992,17 @@ AGND - Analog ground</text>
 <pinref part="P+28" gate="1" pin="+5V"/>
 <wire x1="152.4" y1="10.16" x2="147.32" y2="10.16" width="0.1524" layer="91"/>
 <wire x1="147.32" y1="10.16" x2="142.24" y2="10.16" width="0.1524" layer="91"/>
-<wire x1="142.24" y1="10.16" x2="142.24" y2="15.24" width="0.1524" layer="91"/>
+<wire x1="142.24" y1="10.16" x2="142.24" y2="38.1" width="0.1524" layer="91"/>
 <pinref part="C19" gate="G$1" pin="1"/>
+<wire x1="142.24" y1="38.1" x2="142.24" y2="40.64" width="0.1524" layer="91"/>
 <wire x1="142.24" y1="7.62" x2="142.24" y2="10.16" width="0.1524" layer="91"/>
 <junction x="142.24" y="10.16"/>
 <pinref part="C20" gate="G$1" pin="1"/>
 <wire x1="147.32" y1="7.62" x2="147.32" y2="10.16" width="0.1524" layer="91"/>
 <junction x="147.32" y="10.16"/>
+<pinref part="J3" gate="G$1" pin="1"/>
+<wire x1="149.86" y1="38.1" x2="142.24" y2="38.1" width="0.1524" layer="91"/>
+<junction x="142.24" y="38.1"/>
 </segment>
 <segment>
 <pinref part="JP2" gate="A" pin="4"/>
@@ -8946,7 +9043,7 @@ AGND - Analog ground</text>
 <wire x1="170.18" y1="10.16" x2="170.18" y2="22.86" width="0.1524" layer="91"/>
 <pinref part="C21" gate="G$1" pin="2"/>
 <wire x1="170.18" y1="22.86" x2="170.18" y2="33.02" width="0.1524" layer="91"/>
-<wire x1="167.64" y1="22.86" x2="170.18" y2="22.86" width="0.1524" layer="91"/>
+<wire x1="165.1" y1="22.86" x2="170.18" y2="22.86" width="0.1524" layer="91"/>
 <junction x="170.18" y="22.86"/>
 </segment>
 </net>
@@ -9293,6 +9390,18 @@ AGND - Analog ground</text>
 <pinref part="JP10" gate="A" pin="1"/>
 <wire x1="78.74" y1="27.94" x2="96.52" y2="27.94" width="0.1524" layer="91"/>
 <wire x1="96.52" y1="27.94" x2="96.52" y2="38.1" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="PE2" class="0">
+<segment>
+<pinref part="JP2" gate="A" pin="15"/>
+<wire x1="71.12" y1="63.5" x2="63.5" y2="63.5" width="0.1524" layer="91"/>
+<label x="63.5" y="63.5" size="1.778" layer="95" rot="R180"/>
+</segment>
+<segment>
+<pinref part="J3" gate="G$1" pin="2"/>
+<wire x1="149.86" y1="35.56" x2="147.32" y2="35.56" width="0.1524" layer="91"/>
+<label x="147.32" y="35.56" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
 </nets>
