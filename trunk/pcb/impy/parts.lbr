@@ -120,6 +120,7 @@ This library contains parts used for the Impedance Spectrometer project that are
     &lt;li&gt;&lt;b&gt;DP83848&lt;/b&gt; - PHYTER Industrial Temperature Single Port 10/100 Mb/s Ethernet Physical Layer Transceiver (adapted from &lt;code&gt;national-semiconductor.lbr&lt;/code&gt;)&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;FSM4JSMATR&lt;/b&gt; - Micro Miniature Pushbutton Switch&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;JACK-PLUG&lt;/b&gt; - DC Power jack&lt;/li&gt;
+    &lt;li&gt;&lt;b&gt;LTC3406AB&lt;/b&gt; - 1.5MHz, 600mA Synchronous Step-Down Regulator in ThinSOT&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;M24C08&lt;/b&gt; - 8-Kbit serial I²C bus EEPROM&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;MAX4781&lt;/b&gt; - High-Speed, Low-Voltage, 0.7 Ω CMOS Analog Switches/Multiplexers&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;MIC2005A-1&lt;/b&gt; - 0.5A Current Limiting Power Distribution Switch&lt;/li&gt;
@@ -1574,6 +1575,20 @@ Created by Robert Siegler, modified</description>
 <vertex x="0.508" y="-1.27"/>
 </polygon>
 </symbol>
+<symbol name="VREG-SW-ENFB">
+<description>&lt;b&gt;Switching regulator with feedback and enable inputs&lt;/b&gt;&lt;p&gt;</description>
+<pin name="VIN" x="-10.16" y="5.08" length="short" direction="pwr"/>
+<pin name="RUN" x="-10.16" y="0" length="short" direction="in"/>
+<pin name="GND" x="-10.16" y="-5.08" length="short" direction="pwr"/>
+<pin name="VFB" x="10.16" y="-5.08" length="short" direction="in" rot="R180"/>
+<pin name="SW" x="10.16" y="5.08" length="short" direction="pas" rot="R180"/>
+<wire x1="-7.62" y1="7.62" x2="7.62" y2="7.62" width="0.254" layer="94"/>
+<wire x1="7.62" y1="7.62" x2="7.62" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="7.62" y1="-7.62" x2="-7.62" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="-7.62" y1="-7.62" x2="-7.62" y2="7.62" width="0.254" layer="94"/>
+<text x="-7.62" y="-10.16" size="1.778" layer="96">&gt;VALUE</text>
+<text x="-7.62" y="8.89" size="1.778" layer="95">&gt;NAME</text>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="AD5933" prefix="U">
@@ -2224,6 +2239,28 @@ Power Jack, DC, Right Angle, Surface Mount&lt;br&gt;
 <technologies>
 <technology name="">
 <attribute name="RS" value="476-157"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="LTC3406" prefix="U">
+<description>&lt;b&gt;1.5MHz, 600mA Synchronous Step-Down Regulator in ThinSOT&lt;/b&gt;&lt;p&gt;</description>
+<gates>
+<gate name="G$1" symbol="VREG-SW-ENFB" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="TSOT23-5">
+<connects>
+<connect gate="G$1" pin="GND" pad="2"/>
+<connect gate="G$1" pin="RUN" pad="1"/>
+<connect gate="G$1" pin="SW" pad="3"/>
+<connect gate="G$1" pin="VFB" pad="5"/>
+<connect gate="G$1" pin="VIN" pad="4"/>
+</connects>
+<technologies>
+<technology name="AB">
+<attribute name="RS" value="761-9409"/>
 </technology>
 </technologies>
 </device>
