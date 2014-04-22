@@ -9182,7 +9182,7 @@ diameter 5 mm, horizontal, grid 15.24 mm</description>
 <part name="C22" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
 <part name="C23" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
 <part name="GND37" library="supply1" deviceset="GND" device=""/>
-<part name="R11" library="rcl" deviceset="R-EU_" device="R0805" value="10k"/>
+<part name="R11" library="rcl" deviceset="R-EU_" device="R0805" value="2k2"/>
 <part name="P+30" library="supply1" deviceset="VCC" device=""/>
 <part name="SJ2" library="jumper" deviceset="SJ" device="" value="ETH_CLK"/>
 <part name="JP9" library="jumper" deviceset="JP1Q" device="" value="BOOT0"/>
