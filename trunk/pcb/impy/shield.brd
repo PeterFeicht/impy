@@ -2461,7 +2461,7 @@ design rules under a new name.</description>
 </element>
 <element name="C22" library="rcl" package="C0805" value="100n" x="-120.65" y="41.91"/>
 <element name="C23" library="rcl" package="C0805" value="100n" x="107.95" y="87.63"/>
-<element name="R11" library="rcl" package="R0805" value="10k" x="148.59" y="99.06"/>
+<element name="R11" library="rcl" package="R0805" value="2k2" x="148.59" y="99.06"/>
 <element name="SJ2" library="jumper" package="SJ" value="ETH_CLK" x="0" y="34.29"/>
 <element name="JP9" library="jumper" package="JP1" value="BOOT0" x="36.83" y="36.83"/>
 <element name="S2" library="parts" package="FSM" value="FSM4JSMATR" x="40.64" y="54.61" rot="R90">
