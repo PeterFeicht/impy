@@ -124,6 +124,7 @@ This library contains parts used for the Impedance Spectrometer project that are
     &lt;li&gt;&lt;b&gt;M24C08&lt;/b&gt; - 8-Kbit serial I²C bus EEPROM&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;MAX4781&lt;/b&gt; - High-Speed, Low-Voltage, 0.7 Ω CMOS Analog Switches/Multiplexers&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;MIC2005A-1&lt;/b&gt; - 0.5A Current Limiting Power Distribution Switch&lt;/li&gt;
+    &lt;li&gt;&lt;b&gt;MIC2009A-1&lt;/b&gt; - Adjustable Current Limiting Power Distribution Switch&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;PINHD-2X25&lt;/b&gt; - 2x25 pin header with first pin marker&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;SI-60062-F&lt;/b&gt; - MagJack 10/100 Base-T Ethernet connector&lt;/li&gt;
     &lt;li&gt;&lt;b&gt;SST25VF080B&lt;/b&gt; - 8 MBit SPI Serial Flash&lt;/li&gt;
@@ -1092,6 +1093,28 @@ Created by Robert Siegler, modified</description>
 <rectangle x1="4" y1="-7.5" x2="9.5" y2="-4.5" layer="21"/>
 <rectangle x1="13.6" y1="-1.45" x2="17.6" y2="0.25" layer="21"/>
 </package>
+<package name="SOT23-6">
+<description>&lt;b&gt;Small Outline Transistor&lt;/b&gt; 6 lead</description>
+<wire x1="1.422" y1="-0.781" x2="-1.423" y2="-0.781" width="0.1524" layer="51"/>
+<wire x1="-1.423" y1="-0.781" x2="-1.423" y2="0.781" width="0.1524" layer="21"/>
+<wire x1="-1.423" y1="0.781" x2="1.422" y2="0.781" width="0.1524" layer="51"/>
+<wire x1="1.422" y1="0.781" x2="1.422" y2="-0.781" width="0.1524" layer="21"/>
+<circle x="-1.15" y="-0.5" radius="0.1" width="0" layer="21"/>
+<smd name="1" x="-0.95" y="-1.15" dx="0.6" dy="0.9" layer="1"/>
+<smd name="2" x="0" y="-1.15" dx="0.6" dy="0.9" layer="1"/>
+<smd name="3" x="0.95" y="-1.15" dx="0.6" dy="0.9" layer="1"/>
+<smd name="4" x="0.95" y="1.15" dx="0.6" dy="0.9" layer="1"/>
+<smd name="5" x="0" y="1.15" dx="0.6" dy="0.9" layer="1"/>
+<smd name="6" x="-0.95" y="1.15" dx="0.6" dy="0.9" layer="1"/>
+<text x="-1.397" y="-2.672" size="1.016" layer="27" ratio="10">&gt;VALUE</text>
+<text x="-1.397" y="1.702" size="1.016" layer="25" ratio="10">&gt;NAME</text>
+<rectangle x1="-1.2" y1="-1.4" x2="-0.7" y2="-0.8" layer="51"/>
+<rectangle x1="-0.25" y1="-1.4" x2="0.25" y2="-0.8" layer="51"/>
+<rectangle x1="0.7" y1="-1.4" x2="1.2" y2="-0.8" layer="51"/>
+<rectangle x1="0.7" y1="0.8" x2="1.2" y2="1.4" layer="51"/>
+<rectangle x1="-0.25" y1="0.8" x2="0.25" y2="1.4" layer="51"/>
+<rectangle x1="-1.2" y1="0.8" x2="-0.7" y2="1.4" layer="51"/>
+</package>
 </packages>
 <symbols>
 <symbol name="AD5933">
@@ -1588,6 +1611,21 @@ Created by Robert Siegler, modified</description>
 <wire x1="-7.62" y1="-7.62" x2="-7.62" y2="7.62" width="0.254" layer="94"/>
 <text x="-7.62" y="-10.16" size="1.778" layer="96">&gt;VALUE</text>
 <text x="-7.62" y="8.89" size="1.778" layer="95">&gt;NAME</text>
+</symbol>
+<symbol name="MIC2009A-1">
+<description>&lt;b&gt;MIC2009A-1 Power Switch&lt;/b&gt;&lt;p&gt;</description>
+<wire x1="-7.62" y1="7.62" x2="7.62" y2="7.62" width="0.254" layer="94"/>
+<wire x1="7.62" y1="7.62" x2="7.62" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="7.62" y1="-7.62" x2="-7.62" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="-7.62" y1="-7.62" x2="-7.62" y2="7.62" width="0.254" layer="94"/>
+<pin name="VIN" x="-10.16" y="5.08" length="short" direction="pwr"/>
+<pin name="GND" x="-10.16" y="0" length="short" direction="pwr"/>
+<pin name="VOUT" x="10.16" y="5.08" length="short" direction="out" rot="R180"/>
+<pin name="!FAULT" x="10.16" y="-5.08" length="short" direction="out" rot="R180"/>
+<pin name="EN" x="-10.16" y="-5.08" length="short" direction="in"/>
+<text x="-7.62" y="8.89" size="1.27" layer="95">&gt;NAME</text>
+<text x="-7.62" y="-10.16" size="1.27" layer="96">&gt;VALUE</text>
+<pin name="ILIM" x="10.16" y="0" length="short" direction="pas" rot="R180"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -2261,6 +2299,30 @@ Power Jack, DC, Right Angle, Surface Mount&lt;br&gt;
 <technologies>
 <technology name="AB">
 <attribute name="RS" value="761-9409"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="MIC2009A-1" prefix="U">
+<description>&lt;b&gt;Adjustable Current Limiting Power Distribution Switch&lt;/b&gt;&lt;p&gt;
+Current limit 0.1A-0.9A, Enable signal active high</description>
+<gates>
+<gate name="G$1" symbol="MIC2009A-1" x="0" y="0"/>
+</gates>
+<devices>
+<device name="YM6" package="SOT23-6">
+<connects>
+<connect gate="G$1" pin="!FAULT" pad="4"/>
+<connect gate="G$1" pin="EN" pad="3"/>
+<connect gate="G$1" pin="GND" pad="2"/>
+<connect gate="G$1" pin="ILIM" pad="5"/>
+<connect gate="G$1" pin="VIN" pad="1"/>
+<connect gate="G$1" pin="VOUT" pad="6"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="RS" value="727-4832"/>
 </technology>
 </technologies>
 </device>
