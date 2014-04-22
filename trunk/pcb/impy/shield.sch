@@ -727,32 +727,6 @@ Source: SI-60062-F.pdf</description>
 <rectangle x1="-0.25" y1="0.8" x2="0.25" y2="1.4" layer="51"/>
 <rectangle x1="-1.2" y1="0.8" x2="-0.7" y2="1.4" layer="51"/>
 </package>
-<package name="SOT23-5">
-<description>&lt;b&gt;Small Outline Transistor&lt;/b&gt;</description>
-<wire x1="1.4224" y1="0.8104" x2="1.4224" y2="-0.8104" width="0.1524" layer="21"/>
-<wire x1="1.4224" y1="-0.8104" x2="-1.4224" y2="-0.8104" width="0.1524" layer="51"/>
-<wire x1="-1.4224" y1="-0.8104" x2="-1.4224" y2="0.8104" width="0.1524" layer="21"/>
-<wire x1="-1.4224" y1="0.8104" x2="1.4224" y2="0.8104" width="0.1524" layer="51"/>
-<wire x1="-0.5224" y1="0.8104" x2="0.5224" y2="0.8104" width="0.1524" layer="21"/>
-<wire x1="-0.4276" y1="-0.8104" x2="-0.5224" y2="-0.8104" width="0.1524" layer="21"/>
-<wire x1="0.5224" y1="-0.8104" x2="0.4276" y2="-0.8104" width="0.1524" layer="21"/>
-<wire x1="-1.3276" y1="-0.8104" x2="-1.4224" y2="-0.8104" width="0.1524" layer="21"/>
-<wire x1="1.4224" y1="-0.8104" x2="1.3276" y2="-0.8104" width="0.1524" layer="21"/>
-<wire x1="1.3276" y1="0.8104" x2="1.4224" y2="0.8104" width="0.1524" layer="21"/>
-<wire x1="-1.4224" y1="0.8104" x2="-1.3276" y2="0.8104" width="0.1524" layer="21"/>
-<smd name="1" x="-0.95" y="-1.3001" dx="0.55" dy="1.2" layer="1"/>
-<smd name="2" x="0" y="-1.3001" dx="0.55" dy="1.2" layer="1"/>
-<smd name="3" x="0.95" y="-1.3001" dx="0.55" dy="1.2" layer="1"/>
-<smd name="4" x="0.95" y="1.3001" dx="0.55" dy="1.2" layer="1"/>
-<smd name="5" x="-0.95" y="1.3001" dx="0.55" dy="1.2" layer="1"/>
-<text x="-1.905" y="1.905" size="1.27" layer="25">&gt;NAME</text>
-<text x="-1.905" y="-3.175" size="1.27" layer="27">&gt;VALUE</text>
-<rectangle x1="-1.2" y1="-1.5" x2="-0.7" y2="-0.85" layer="51"/>
-<rectangle x1="-0.25" y1="-1.5" x2="0.25" y2="-0.85" layer="51"/>
-<rectangle x1="0.7" y1="-1.5" x2="1.2" y2="-0.85" layer="51"/>
-<rectangle x1="0.7" y1="0.85" x2="1.2" y2="1.5" layer="51"/>
-<rectangle x1="-1.2" y1="0.85" x2="-0.7" y2="1.5" layer="51"/>
-</package>
 <package name="SOIC8">
 <description>&lt;b&gt;8-Lead Small Outline IC&lt;/b&gt; (SO-8)&lt;p&gt;
 EIAJ 200mil body, Source: &lt;code&gt;atmel.lbr&lt;/code&gt;</description>
@@ -1566,20 +1540,6 @@ Created by Robert Siegler, modified</description>
 <text x="-7.62" y="-10.16" size="1.27" layer="96">&gt;VALUE</text>
 <pin name="ILIM" x="10.16" y="0" length="short" direction="pas" rot="R180"/>
 </symbol>
-<symbol name="MIC2005A-1">
-<description>&lt;b&gt;MIC2005A-1 Power Switch&lt;/b&gt;&lt;p&gt;</description>
-<wire x1="-7.62" y1="7.62" x2="7.62" y2="7.62" width="0.254" layer="94"/>
-<wire x1="7.62" y1="7.62" x2="7.62" y2="-7.62" width="0.254" layer="94"/>
-<wire x1="7.62" y1="-7.62" x2="-7.62" y2="-7.62" width="0.254" layer="94"/>
-<wire x1="-7.62" y1="-7.62" x2="-7.62" y2="7.62" width="0.254" layer="94"/>
-<pin name="VIN" x="-10.16" y="5.08" length="short" direction="pwr"/>
-<pin name="GND" x="-10.16" y="0" length="short" direction="pwr"/>
-<pin name="VOUT" x="10.16" y="5.08" length="short" direction="out" rot="R180"/>
-<pin name="!FAULT" x="10.16" y="-2.54" length="short" direction="out" rot="R180"/>
-<pin name="EN" x="-10.16" y="-5.08" length="short" direction="in"/>
-<text x="-7.62" y="8.89" size="1.27" layer="95">&gt;NAME</text>
-<text x="-7.62" y="-10.16" size="1.27" layer="96">&gt;VALUE</text>
-</symbol>
 <symbol name="SPI-FLASH">
 <description>Generic symbol for 8-pin SPI memories</description>
 <wire x1="-7.62" y1="7.62" x2="-7.62" y2="-7.62" width="0.254" layer="94"/>
@@ -2050,29 +2010,6 @@ Current limit 0.1A-0.9A, Enable signal active high</description>
 <technologies>
 <technology name="">
 <attribute name="RS" value="727-4832"/>
-</technology>
-</technologies>
-</device>
-</devices>
-</deviceset>
-<deviceset name="MIC2005A-1" prefix="U">
-<description>&lt;b&gt;0.5A Current Limiting Power Distribution Switch&lt;/b&gt;&lt;p&gt;
-Current limit 0.5A, Enable signal active high</description>
-<gates>
-<gate name="G$1" symbol="MIC2005A-1" x="0" y="0"/>
-</gates>
-<devices>
-<device name="YM5" package="SOT23-5">
-<connects>
-<connect gate="G$1" pin="!FAULT" pad="4"/>
-<connect gate="G$1" pin="EN" pad="3"/>
-<connect gate="G$1" pin="GND" pad="2"/>
-<connect gate="G$1" pin="VIN" pad="1"/>
-<connect gate="G$1" pin="VOUT" pad="5"/>
-</connects>
-<technologies>
-<technology name="">
-<attribute name="RS" value="727-4731"/>
 </technology>
 </technologies>
 </device>
@@ -9205,7 +9142,7 @@ diameter 5 mm, horizontal, grid 15.24 mm</description>
 <part name="RS4" library="rcl" deviceset="R-EU_" device="R0805" value="2k2"/>
 <part name="R9" library="rcl" deviceset="R-EU_" device="R0805" value="150R"/>
 <part name="R10" library="rcl" deviceset="R-EU_" device="R0805" value="150R"/>
-<part name="U7" library="parts" deviceset="MIC2005A-1" device="YM5"/>
+<part name="U7" library="parts" deviceset="MIC2009A-1" device="YM6"/>
 <part name="GND18" library="supply1" deviceset="GND" device=""/>
 <part name="U8" library="parts" deviceset="AT25DF081A" device="-SS"/>
 <part name="P+24" library="supply1" deviceset="VCC" device=""/>
@@ -9246,6 +9183,8 @@ diameter 5 mm, horizontal, grid 15.24 mm</description>
 <part name="D1" library="diode" deviceset="SCHOTTKY-DIODE" device="SMD"/>
 <part name="R12" library="rcl" deviceset="R-EU_" device="R0805" value="301R"/>
 <part name="GND40" library="supply1" deviceset="GND" device=""/>
+<part name="GND41" library="supply1" deviceset="GND" device=""/>
+<part name="R13" library="rcl" deviceset="R-EU_" device="R0805" value="511R"/>
 </parts>
 <sheets>
 <sheet>
@@ -9957,7 +9896,7 @@ AGND - Analog ground</text>
 <label x="147.32" y="35.56" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
-<net name="N$36" class="0">
+<net name="N$36" class="1">
 <segment>
 <pinref part="U12" gate="G$1" pin="VIN"/>
 <pinref part="JP4" gate="A" pin="1"/>
@@ -10746,6 +10685,8 @@ AGND - Analog ground</text>
 <attribute name="VALUE" x="39.878" y="38.862" size="1.778" layer="96" rot="R270"/>
 </instance>
 <instance part="P+30" gate="VCC" x="43.18" y="43.18"/>
+<instance part="GND41" gate="1" x="25.4" y="5.08"/>
+<instance part="R13" gate="G$1" x="25.4" y="15.24" rot="R90"/>
 </instances>
 <busses>
 </busses>
@@ -10868,6 +10809,11 @@ AGND - Analog ground</text>
 <pinref part="GND37" gate="1" pin="GND"/>
 <pinref part="C23" gate="G$1" pin="2"/>
 <wire x1="43.18" y1="10.16" x2="43.18" y2="12.7" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="GND41" gate="1" pin="GND"/>
+<wire x1="25.4" y1="7.62" x2="25.4" y2="10.16" width="0.1524" layer="91"/>
+<pinref part="R13" gate="G$1" pin="1"/>
 </segment>
 </net>
 <net name="USB_P" class="0">
@@ -11263,7 +11209,7 @@ AGND - Analog ground</text>
 <wire x1="187.96" y1="48.26" x2="187.96" y2="38.1" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$26" class="0">
+<net name="N$26" class="1">
 <segment>
 <pinref part="J1" gate="G$1" pin="VCC"/>
 <wire x1="7.62" y1="15.24" x2="5.08" y2="15.24" width="0.1524" layer="91"/>
@@ -11292,8 +11238,9 @@ AGND - Analog ground</text>
 <net name="PD9" class="0">
 <segment>
 <pinref part="U7" gate="G$1" pin="!FAULT"/>
-<wire x1="20.32" y1="33.02" x2="22.86" y2="33.02" width="0.1524" layer="91"/>
-<label x="22.86" y="33.02" size="1.778" layer="95"/>
+<wire x1="20.32" y1="30.48" x2="22.86" y2="30.48" width="0.1524" layer="91"/>
+<label x="22.86" y="27.94" size="1.778" layer="95" rot="R180"/>
+<wire x1="22.86" y1="30.48" x2="22.86" y2="27.94" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$32" class="0">
@@ -11305,6 +11252,14 @@ AGND - Analog ground</text>
 <pinref part="R11" gate="G$1" pin="1"/>
 <wire x1="43.18" y1="27.94" x2="43.18" y2="25.4" width="0.1524" layer="91"/>
 <junction x="43.18" y="25.4"/>
+</segment>
+</net>
+<net name="N$39" class="0">
+<segment>
+<pinref part="U7" gate="G$1" pin="ILIM"/>
+<wire x1="20.32" y1="35.56" x2="25.4" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="25.4" y1="35.56" x2="25.4" y2="20.32" width="0.1524" layer="91"/>
+<pinref part="R13" gate="G$1" pin="2"/>
 </segment>
 </net>
 </nets>
