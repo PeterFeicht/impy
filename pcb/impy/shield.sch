@@ -9069,10 +9069,10 @@ diameter 5 mm, horizontal, grid 15.24 mm</description>
 <part name="P+6" library="supply1" deviceset="VCC" device=""/>
 <part name="P+7" library="supply1" deviceset="VCC" device=""/>
 <part name="AGND2" library="supply1" deviceset="AGND" device=""/>
-<part name="RFB1" library="rcl" deviceset="R-EU_" device="R0805" value="1k 0.1%"/>
-<part name="RFB2" library="rcl" deviceset="R-EU_" device="R0805" value="10k 0.1%"/>
-<part name="RFB3" library="rcl" deviceset="R-EU_" device="R0805" value="100k 0.1%"/>
-<part name="RFB4" library="rcl" deviceset="R-EU_" device="R0805" value="1M 0.1%"/>
+<part name="RFB1" library="rcl" deviceset="R-EU_" device="R0603" value="1k"/>
+<part name="RFB2" library="rcl" deviceset="R-EU_" device="R0603" value="10k"/>
+<part name="RFB3" library="rcl" deviceset="R-EU_" device="R0603" value="100k"/>
+<part name="RFB4" library="rcl" deviceset="R-EU_" device="R0603" value="1M"/>
 <part name="SJ1" library="jumper" deviceset="SJ" device="" value="GND"/>
 <part name="AGND3" library="supply1" deviceset="AGND" device=""/>
 <part name="GND11" library="supply1" deviceset="GND" device=""/>
@@ -9080,10 +9080,10 @@ diameter 5 mm, horizontal, grid 15.24 mm</description>
 <part name="AGND4" library="supply1" deviceset="AGND" device=""/>
 <part name="P+8" library="supply1" deviceset="VCC" device=""/>
 <part name="P+9" library="supply1" deviceset="VCC" device=""/>
-<part name="RCAL4" library="rcl" deviceset="R-EU_" device="R0805" value="1M 0.1%"/>
-<part name="RCAL3" library="rcl" deviceset="R-EU_" device="R0805" value="100k 0.1%"/>
-<part name="RCAL2" library="rcl" deviceset="R-EU_" device="R0805" value="10k 0.1%"/>
-<part name="RCAL1" library="rcl" deviceset="R-EU_" device="R0805" value="1k 0.1%"/>
+<part name="RCAL4" library="rcl" deviceset="R-EU_" device="R0603" value="1M 0.1%"/>
+<part name="RCAL3" library="rcl" deviceset="R-EU_" device="R0603" value="100k 0.1%"/>
+<part name="RCAL2" library="rcl" deviceset="R-EU_" device="R0603" value="10k 0.1%"/>
+<part name="RCAL1" library="rcl" deviceset="R-EU_" device="R0603" value="1k 0.1%"/>
 <part name="JP5" library="con-lstb" deviceset="MA10-1" device="" value="OUT"/>
 <part name="JP6" library="pinhead" deviceset="PINHD-1X2" device="" value="COM"/>
 <part name="U4" library="parts" deviceset="M24C08" device="MN" technology="W"/>
@@ -9093,12 +9093,12 @@ diameter 5 mm, horizontal, grid 15.24 mm</description>
 <part name="U5" library="parts" deviceset="AD8615" device="UJ" technology="A"/>
 <part name="AGND5" library="supply1" deviceset="AGND" device=""/>
 <part name="P+11" library="supply1" deviceset="VCC" device=""/>
-<part name="C1" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
-<part name="C3" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
-<part name="C4" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
-<part name="C5" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
-<part name="C2" library="rcl" deviceset="C-EU" device="C1210" value="10u"/>
-<part name="C6" library="rcl" deviceset="C-EU" device="C1210" value="10u"/>
+<part name="C1" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
+<part name="C3" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
+<part name="C4" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
+<part name="C5" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
+<part name="C2" library="rcl" deviceset="C-EU" device="C0603" value="10u"/>
+<part name="C6" library="rcl" deviceset="C-EU" device="C0603" value="10u"/>
 <part name="GND14" library="supply1" deviceset="GND" device=""/>
 <part name="P+12" library="supply1" deviceset="VCC" device=""/>
 <part name="P+13" library="supply1" deviceset="VCC" device=""/>
@@ -9110,55 +9110,55 @@ diameter 5 mm, horizontal, grid 15.24 mm</description>
 <part name="GND16" library="supply1" deviceset="GND" device=""/>
 <part name="P+15" library="supply1" deviceset="VCC" device=""/>
 <part name="U6" library="parts" deviceset="DP83848" device="" technology="I"/>
-<part name="C7" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
-<part name="C8" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
-<part name="C9" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
-<part name="C10" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
+<part name="C7" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
+<part name="C8" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
+<part name="C9" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
+<part name="C10" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
 <part name="J2" library="parts" deviceset="SI-60062-F" device=""/>
 <part name="GND17" library="supply1" deviceset="GND" device=""/>
 <part name="GND19" library="supply1" deviceset="GND" device=""/>
 <part name="P+16" library="supply1" deviceset="VCC" device=""/>
 <part name="P+17" library="supply1" deviceset="VCC" device=""/>
 <part name="P+18" library="supply1" deviceset="VCC" device=""/>
-<part name="C11" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
-<part name="C12" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
-<part name="C13" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
-<part name="C14" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
-<part name="R1" library="rcl" deviceset="R-EU_" device="R0805" value="49R9"/>
-<part name="R2" library="rcl" deviceset="R-EU_" device="R0805" value="49R9"/>
-<part name="R3" library="rcl" deviceset="R-EU_" device="R0805" value="49R9"/>
-<part name="R4" library="rcl" deviceset="R-EU_" device="R0805" value="49R9"/>
+<part name="C11" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
+<part name="C12" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
+<part name="C13" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
+<part name="C14" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
+<part name="R1" library="rcl" deviceset="R-EU_" device="R0603" value="51R"/>
+<part name="R2" library="rcl" deviceset="R-EU_" device="R0603" value="51R"/>
+<part name="R3" library="rcl" deviceset="R-EU_" device="R0603" value="51R"/>
+<part name="R4" library="rcl" deviceset="R-EU_" device="R0603" value="51R"/>
 <part name="GND20" library="supply1" deviceset="GND" device=""/>
 <part name="GND21" library="supply1" deviceset="GND" device=""/>
 <part name="GND22" library="supply1" deviceset="GND" device=""/>
 <part name="GND23" library="supply1" deviceset="GND" device=""/>
 <part name="P+19" library="supply1" deviceset="VCC" device=""/>
 <part name="P+20" library="supply1" deviceset="VCC" device=""/>
-<part name="C15" library="rcl" deviceset="C-EU" device="C1210" value="10u"/>
-<part name="C16" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
-<part name="C17" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
-<part name="C18" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
+<part name="C15" library="rcl" deviceset="C-EU" device="C0603" value="10u"/>
+<part name="C16" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
+<part name="C17" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
+<part name="C18" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
 <part name="GND24" library="supply1" deviceset="GND" device=""/>
 <part name="GND25" library="supply1" deviceset="GND" device=""/>
 <part name="GND26" library="supply1" deviceset="GND" device=""/>
 <part name="GND27" library="supply1" deviceset="GND" device=""/>
-<part name="R5" library="rcl" deviceset="R-EU_" device="R0805" value="1k5"/>
+<part name="R5" library="rcl" deviceset="R-EU_" device="R0603" value="1k5"/>
 <part name="P+21" library="supply1" deviceset="VCC" device=""/>
 <part name="JP8" library="con-lstb" deviceset="MA05-1" device="" value="JTAG"/>
-<part name="RS1" library="rcl" deviceset="R-EU_" device="R0805" value="2k2"/>
+<part name="RS1" library="rcl" deviceset="R-EU_" device="R0603" value="2k2"/>
 <part name="P+22" library="supply1" deviceset="VCC" device=""/>
-<part name="RS2" library="rcl" deviceset="R-EU_" device="R0805" value="2k2"/>
+<part name="RS2" library="rcl" deviceset="R-EU_" device="R0603" value="2k2"/>
 <part name="GND28" library="supply1" deviceset="GND" device=""/>
-<part name="R6" library="rcl" deviceset="R-EU_" device="R0805" value="4k87 1%"/>
+<part name="R6" library="rcl" deviceset="R-EU_" device="R0603" value="4k87 1%"/>
 <part name="GND29" library="supply1" deviceset="GND" device=""/>
-<part name="R7" library="rcl" deviceset="R-EU_" device="R0805" value="2k2"/>
-<part name="R8" library="rcl" deviceset="R-EU_" device="R0805" value="2k2"/>
+<part name="R7" library="rcl" deviceset="R-EU_" device="R0603" value="2k2"/>
+<part name="R8" library="rcl" deviceset="R-EU_" device="R0603" value="2k2"/>
 <part name="GND30" library="supply1" deviceset="GND" device=""/>
 <part name="P+23" library="supply1" deviceset="VCC" device=""/>
-<part name="RS3" library="rcl" deviceset="R-EU_" device="R0805" value="2k2"/>
-<part name="RS4" library="rcl" deviceset="R-EU_" device="R0805" value="2k2"/>
-<part name="R9" library="rcl" deviceset="R-EU_" device="R0805" value="150R"/>
-<part name="R10" library="rcl" deviceset="R-EU_" device="R0805" value="150R"/>
+<part name="RS3" library="rcl" deviceset="R-EU_" device="R0603" value="2k2"/>
+<part name="RS4" library="rcl" deviceset="R-EU_" device="R0603" value="2k2"/>
+<part name="R9" library="rcl" deviceset="R-EU_" device="R0603" value="150R"/>
+<part name="R10" library="rcl" deviceset="R-EU_" device="R0603" value="150R"/>
 <part name="U7" library="parts" deviceset="MIC2009A-1" device="YM6"/>
 <part name="GND18" library="supply1" deviceset="GND" device=""/>
 <part name="U8" library="parts" deviceset="AT25DF081A" device="-SS"/>
@@ -9173,16 +9173,16 @@ diameter 5 mm, horizontal, grid 15.24 mm</description>
 <part name="GND33" library="supply1" deviceset="GND" device=""/>
 <part name="+3V4" library="supply1" deviceset="+3V3" device=""/>
 <part name="GND34" library="supply1" deviceset="GND" device=""/>
-<part name="C19" library="rcl" deviceset="C-EU" device="C1210" value="10u"/>
-<part name="C20" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
+<part name="C19" library="rcl" deviceset="C-EU" device="C0603" value="10u"/>
+<part name="C20" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
 <part name="C21" library="rcl" deviceset="C-EU" device="C1210" value="10u"/>
 <part name="U11" library="parts" deviceset="23LCV1024" device="/SN" technology="-I"/>
 <part name="P+29" library="supply1" deviceset="VCC" device=""/>
 <part name="GND36" library="supply1" deviceset="GND" device=""/>
-<part name="C22" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
-<part name="C23" library="rcl" deviceset="C-EU" device="C0805" value="100n"/>
+<part name="C22" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
+<part name="C23" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
 <part name="GND37" library="supply1" deviceset="GND" device=""/>
-<part name="R11" library="rcl" deviceset="R-EU_" device="R0805" value="2k2"/>
+<part name="R11" library="rcl" deviceset="R-EU_" device="R0603" value="2k2"/>
 <part name="P+30" library="supply1" deviceset="VCC" device=""/>
 <part name="SJ2" library="jumper" deviceset="SJ" device="" value="ETH_CLK"/>
 <part name="JP9" library="jumper" deviceset="JP1Q" device="" value="BOOT0"/>
@@ -9197,14 +9197,14 @@ diameter 5 mm, horizontal, grid 15.24 mm</description>
 <part name="U12" library="parts" deviceset="MIC2009A-1" device="YM6"/>
 <part name="GND35" library="supply1" deviceset="GND" device=""/>
 <part name="D1" library="diode" deviceset="SCHOTTKY-DIODE" device="SMD"/>
-<part name="R12" library="rcl" deviceset="R-EU_" device="R0805" value="301R"/>
+<part name="R12" library="rcl" deviceset="R-EU_" device="R0603" value="300R"/>
 <part name="GND40" library="supply1" deviceset="GND" device=""/>
 <part name="GND41" library="supply1" deviceset="GND" device=""/>
-<part name="R13" library="rcl" deviceset="R-EU_" device="R0805" value="511R"/>
+<part name="R13" library="rcl" deviceset="R-EU_" device="R0603" value="510R"/>
 <part name="U10" library="parts" deviceset="LTC3406" device="" technology="AB"/>
-<part name="R14" library="rcl" deviceset="R-EU_" device="R0805" value="1M43"/>
-<part name="R15" library="rcl" deviceset="R-EU_" device="R0805" value="316k"/>
-<part name="C24" library="rcl" deviceset="C-EU" device="C0805" value="22p"/>
+<part name="R14" library="rcl" deviceset="R-EU_" device="R0603" value="1M43"/>
+<part name="R15" library="rcl" deviceset="R-EU_" device="R0603" value="316k"/>
+<part name="C24" library="rcl" deviceset="C-EU" device="C0603" value="22p"/>
 <part name="GND42" library="supply1" deviceset="GND" device=""/>
 <part name="GND43" library="supply1" deviceset="GND" device=""/>
 <part name="L1" library="parts" deviceset="A916CY" device="" technology="-8R2M"/>
@@ -10018,21 +10018,21 @@ AGND - Analog ground</text>
 <instance part="P+6" gate="VCC" x="30.48" y="71.12" rot="R90"/>
 <instance part="P+7" gate="VCC" x="68.58" y="76.2" rot="R270"/>
 <instance part="AGND2" gate="VR1" x="63.5" y="68.58"/>
-<instance part="RFB1" gate="G$1" x="17.78" y="96.52" smashed="yes">
-<attribute name="NAME" x="11.43" y="98.0186" size="1.778" layer="95"/>
-<attribute name="VALUE" x="31.75" y="99.822" size="1.778" layer="96" rot="R180"/>
+<instance part="RFB1" gate="G$1" x="22.86" y="96.52" smashed="yes">
+<attribute name="NAME" x="16.51" y="98.0186" size="1.778" layer="95"/>
+<attribute name="VALUE" x="29.21" y="99.822" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="RFB2" gate="G$1" x="17.78" y="91.44" smashed="yes">
-<attribute name="NAME" x="11.43" y="92.9386" size="1.778" layer="95"/>
-<attribute name="VALUE" x="31.75" y="94.742" size="1.778" layer="96" rot="R180"/>
+<instance part="RFB2" gate="G$1" x="22.86" y="91.44" smashed="yes">
+<attribute name="NAME" x="16.51" y="92.9386" size="1.778" layer="95"/>
+<attribute name="VALUE" x="29.21" y="94.742" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="RFB3" gate="G$1" x="17.78" y="86.36" smashed="yes">
-<attribute name="NAME" x="11.43" y="87.8586" size="1.778" layer="95"/>
-<attribute name="VALUE" x="31.75" y="89.662" size="1.778" layer="96" rot="R180"/>
+<instance part="RFB3" gate="G$1" x="22.86" y="86.36" smashed="yes">
+<attribute name="NAME" x="16.51" y="87.8586" size="1.778" layer="95"/>
+<attribute name="VALUE" x="29.21" y="89.662" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="RFB4" gate="G$1" x="17.78" y="81.28" smashed="yes">
-<attribute name="NAME" x="11.43" y="82.7786" size="1.778" layer="95"/>
-<attribute name="VALUE" x="31.75" y="84.582" size="1.778" layer="96" rot="R180"/>
+<instance part="RFB4" gate="G$1" x="22.86" y="81.28" smashed="yes">
+<attribute name="NAME" x="16.51" y="82.7786" size="1.778" layer="95"/>
+<attribute name="VALUE" x="29.21" y="84.582" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="U3" gate="G$1" x="116.84" y="68.58" rot="MR0"/>
 <instance part="AGND4" gate="VR1" x="96.52" y="40.64"/>
@@ -10172,20 +10172,20 @@ AGND - Analog ground</text>
 </segment>
 <segment>
 <pinref part="RFB1" gate="G$1" pin="1"/>
-<wire x1="12.7" y1="96.52" x2="10.16" y2="96.52" width="0.1524" layer="91"/>
-<wire x1="10.16" y1="96.52" x2="10.16" y2="91.44" width="0.1524" layer="91"/>
+<wire x1="17.78" y1="96.52" x2="15.24" y2="96.52" width="0.1524" layer="91"/>
+<wire x1="15.24" y1="96.52" x2="15.24" y2="91.44" width="0.1524" layer="91"/>
 <pinref part="RFB4" gate="G$1" pin="1"/>
-<wire x1="10.16" y1="91.44" x2="10.16" y2="86.36" width="0.1524" layer="91"/>
-<wire x1="10.16" y1="86.36" x2="10.16" y2="81.28" width="0.1524" layer="91"/>
-<wire x1="10.16" y1="81.28" x2="12.7" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="15.24" y1="91.44" x2="15.24" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="15.24" y1="86.36" x2="15.24" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="15.24" y1="81.28" x2="17.78" y2="81.28" width="0.1524" layer="91"/>
 <pinref part="RFB3" gate="G$1" pin="1"/>
-<wire x1="12.7" y1="86.36" x2="10.16" y2="86.36" width="0.1524" layer="91"/>
-<junction x="10.16" y="86.36"/>
+<wire x1="17.78" y1="86.36" x2="15.24" y2="86.36" width="0.1524" layer="91"/>
+<junction x="15.24" y="86.36"/>
 <pinref part="RFB2" gate="G$1" pin="1"/>
-<wire x1="12.7" y1="91.44" x2="10.16" y2="91.44" width="0.1524" layer="91"/>
-<junction x="10.16" y="91.44"/>
-<wire x1="10.16" y1="86.36" x2="7.62" y2="86.36" width="0.1524" layer="91"/>
-<label x="7.62" y="86.36" size="1.778" layer="95" rot="R180"/>
+<wire x1="17.78" y1="91.44" x2="15.24" y2="91.44" width="0.1524" layer="91"/>
+<junction x="15.24" y="91.44"/>
+<wire x1="15.24" y1="86.36" x2="12.7" y2="86.36" width="0.1524" layer="91"/>
+<label x="12.7" y="86.36" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
 <net name="VIN" class="2">
@@ -10255,14 +10255,14 @@ AGND - Analog ground</text>
 <segment>
 <pinref part="RFB1" gate="G$1" pin="2"/>
 <pinref part="U2" gate="G$1" pin="S1"/>
-<wire x1="22.86" y1="96.52" x2="35.56" y2="96.52" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="96.52" x2="35.56" y2="96.52" width="0.1524" layer="91"/>
 <wire x1="35.56" y1="96.52" x2="35.56" y2="91.44" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$2" class="2">
 <segment>
 <pinref part="RFB2" gate="G$1" pin="2"/>
-<wire x1="22.86" y1="91.44" x2="33.02" y2="91.44" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="91.44" x2="33.02" y2="91.44" width="0.1524" layer="91"/>
 <wire x1="33.02" y1="91.44" x2="33.02" y2="88.9" width="0.1524" layer="91"/>
 <pinref part="U2" gate="G$1" pin="S2"/>
 <wire x1="33.02" y1="88.9" x2="35.56" y2="88.9" width="0.1524" layer="91"/>
@@ -10272,13 +10272,13 @@ AGND - Analog ground</text>
 <segment>
 <pinref part="RFB3" gate="G$1" pin="2"/>
 <pinref part="U2" gate="G$1" pin="S3"/>
-<wire x1="22.86" y1="86.36" x2="35.56" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="86.36" x2="35.56" y2="86.36" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$4" class="2">
 <segment>
 <pinref part="RFB4" gate="G$1" pin="2"/>
-<wire x1="22.86" y1="81.28" x2="33.02" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="81.28" x2="33.02" y2="81.28" width="0.1524" layer="91"/>
 <wire x1="33.02" y1="81.28" x2="33.02" y2="83.82" width="0.1524" layer="91"/>
 <pinref part="U2" gate="G$1" pin="S4"/>
 <wire x1="33.02" y1="83.82" x2="35.56" y2="83.82" width="0.1524" layer="91"/>
