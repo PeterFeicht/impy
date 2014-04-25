@@ -9586,6 +9586,20 @@ AGND - Analog ground</text>
 <wire x1="180.34" y1="20.32" x2="177.8" y2="20.32" width="0.1524" layer="91"/>
 </segment>
 </net>
+<net name="PB8" class="0">
+<segment>
+<pinref part="JP2" gate="A" pin="19"/>
+<wire x1="71.12" y1="58.42" x2="63.5" y2="58.42" width="0.1524" layer="91"/>
+<label x="63.5" y="58.42" size="1.778" layer="95" rot="R180"/>
+</segment>
+</net>
+<net name="PD2" class="0">
+<segment>
+<pinref part="JP2" gate="A" pin="34"/>
+<wire x1="78.74" y1="40.64" x2="86.36" y2="40.64" width="0.1524" layer="91"/>
+<label x="86.36" y="40.64" size="1.778" layer="95"/>
+</segment>
+</net>
 </nets>
 </sheet>
 <sheet>
