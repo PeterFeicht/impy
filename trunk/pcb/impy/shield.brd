@@ -3283,6 +3283,12 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <contactref element="U10" pad="3"/>
 <wire x1="-86.39" y1="13.655" x2="-93.345" y2="14.23" width="0" layer="19" extent="1-1"/>
 </signal>
+<signal name="PB8">
+<contactref element="JP2" pad="19"/>
+</signal>
+<signal name="PD2">
+<contactref element="JP2" pad="34"/>
+</signal>
 </signals>
 </board>
 </drawing>
