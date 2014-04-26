@@ -3620,7 +3620,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="26.67" y1="22.86" x2="141.2875" y2="51.7525" width="0" layer="19" extent="1-1"/>
 <wire x1="-100.33" y1="-27.94" x2="26.67" y2="22.86" width="0" layer="19" extent="1-1"/>
 </signal>
-<signal name="N$3">
+<signal name="N$3" class="2">
 <contactref element="RA1" pad="2"/>
 <contactref element="RA2" pad="1"/>
 <contactref element="RA3" pad="1"/>
@@ -3633,7 +3633,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="117.055" y1="21.9075" x2="119.0625" y2="24.2325" width="0" layer="19" extent="1-1"/>
 <wire x1="127.01" y1="19.664" x2="125.73" y2="24.2325" width="0" layer="19" extent="1-1"/>
 </signal>
-<signal name="VCC/2">
+<signal name="VCC/2" class="2">
 <contactref element="C26" pad="2"/>
 <contactref element="R16" pad="1"/>
 <contactref element="R17" pad="2"/>
@@ -3651,7 +3651,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="124.7775" y1="16.8275" x2="125.095" y2="16.51" width="0.3556" layer="1"/>
 <wire x1="120.3325" y1="17.565" x2="-114.935" y2="-19.05" width="0" layer="19" extent="1-1"/>
 </signal>
-<signal name="N$6">
+<signal name="N$6" class="2">
 <contactref element="U5" pad="19"/>
 <contactref element="RFB1" pad="1"/>
 <wire x1="123.1475" y1="6.07" x2="121.565" y2="6.07" width="0.3556" layer="1"/>
@@ -3660,42 +3660,42 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="120.3325" y1="7.9375" x2="120.015" y2="8.255" width="0.3556" layer="1"/>
 <wire x1="120.015" y1="8.255" x2="118.96" y2="8.255" width="0.3556" layer="1"/>
 </signal>
-<signal name="N$7">
+<signal name="N$7" class="2">
 <contactref element="U5" pad="20"/>
 <contactref element="RFB2" pad="1"/>
 <wire x1="123.1475" y1="5.42" x2="121.2625" y2="5.42" width="0.3556" layer="1"/>
 <wire x1="121.2625" y1="5.42" x2="119.6975" y2="6.985" width="0.3556" layer="1"/>
 <wire x1="119.6975" y1="6.985" x2="115.15" y2="6.985" width="0.3556" layer="1"/>
 </signal>
-<signal name="N$8">
+<signal name="N$8" class="2">
 <contactref element="U5" pad="21"/>
 <contactref element="RFB3" pad="1"/>
 <wire x1="123.1475" y1="4.77" x2="120.96" y2="4.77" width="0.3556" layer="1"/>
 <wire x1="120.96" y1="4.77" x2="120.015" y2="5.715" width="0.3556" layer="1"/>
 <wire x1="120.015" y1="5.715" x2="118.96" y2="5.715" width="0.3556" layer="1"/>
 </signal>
-<signal name="N$9">
+<signal name="N$9" class="2">
 <contactref element="U5" pad="22"/>
 <contactref element="RFB4" pad="1"/>
 <wire x1="123.1475" y1="4.12" x2="120.6575" y2="4.12" width="0.3556" layer="1"/>
 <wire x1="120.6575" y1="4.12" x2="120.3325" y2="4.445" width="0.3556" layer="1"/>
 <wire x1="120.3325" y1="4.445" x2="115.15" y2="4.445" width="0.3556" layer="1"/>
 </signal>
-<signal name="N$10">
+<signal name="N$10" class="2">
 <contactref element="U5" pad="23"/>
 <contactref element="RFB5" pad="1"/>
 <wire x1="123.1475" y1="3.47" x2="120.6275" y2="3.47" width="0.3556" layer="1"/>
 <wire x1="120.6275" y1="3.47" x2="120.3325" y2="3.175" width="0.3556" layer="1"/>
 <wire x1="120.3325" y1="3.175" x2="118.96" y2="3.175" width="0.3556" layer="1"/>
 </signal>
-<signal name="N$11">
+<signal name="N$11" class="2">
 <contactref element="U5" pad="24"/>
 <contactref element="RFB6" pad="1"/>
 <wire x1="123.1475" y1="2.82" x2="120.93" y2="2.82" width="0.3556" layer="1"/>
 <wire x1="120.93" y1="2.82" x2="120.015" y2="1.905" width="0.3556" layer="1"/>
 <wire x1="120.015" y1="1.905" x2="115.15" y2="1.905" width="0.3556" layer="1"/>
 </signal>
-<signal name="N$1">
+<signal name="N$1" class="2">
 <contactref element="RFB1" pad="2"/>
 <contactref element="U3" pad="7"/>
 <contactref element="R18" pad="2"/>
@@ -3727,7 +3727,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="113.45" y1="7.7225" x2="104.99" y2="10.4775" width="0" layer="19" extent="1-1"/>
 <wire x1="127" y1="13.356" x2="117.26" y2="8.255" width="0" layer="19" extent="1-1"/>
 </signal>
-<signal name="N$12">
+<signal name="N$12" class="2">
 <contactref element="U3" pad="6"/>
 <contactref element="U13" pad="41"/>
 <contactref element="C27" pad="1"/>
@@ -3743,7 +3743,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="144.34" y1="7.1875" x2="129.8575" y2="17.145" width="0" layer="19" extent="1-16"/>
 <wire x1="128.27" y1="-5.0825" x2="145.0975" y2="4.445" width="0" layer="19" extent="1-16"/>
 </signal>
-<signal name="N$14">
+<signal name="N$14" class="2">
 <contactref element="U3" pad="1"/>
 <contactref element="U14" pad="43"/>
 <contactref element="C29" pad="1"/>
@@ -3755,7 +3755,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="128.27" y1="19.664" x2="120.015" y2="41.59" width="0" layer="19" extent="1-1"/>
 <wire x1="-125.095" y1="-27.94" x2="120.015" y2="41.59" width="0" layer="19" extent="1-1"/>
 </signal>
-<signal name="N$15">
+<signal name="N$15" class="2">
 <contactref element="U14" pad="41"/>
 <contactref element="U2" pad="8"/>
 <contactref element="C30" pad="2"/>
@@ -3767,7 +3767,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="122.555" y1="31.9581" x2="125.095" y2="41.595" width="0" layer="19" extent="1-1"/>
 <wire x1="-120.015" y1="-19.05" x2="122.555" y2="31.9581" width="0" layer="19" extent="1-1"/>
 </signal>
-<signal name="N$16">
+<signal name="N$16" class="2">
 <contactref element="JP12" pad="1"/>
 <contactref element="U13" pad="25"/>
 <wire x1="151.34" y1="3.6875" x2="151.34" y2="2.965" width="0.254" layer="16"/>
@@ -3778,7 +3778,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="155.8925" y1="14.605" x2="160.655" y2="19.3675" width="0.254" layer="16"/>
 <wire x1="160.655" y1="19.3675" x2="162.56" y2="19.3675" width="0.254" layer="16"/>
 </signal>
-<signal name="N$17">
+<signal name="N$17" class="2">
 <contactref element="U13" pad="26"/>
 <contactref element="JP12" pad="2"/>
 <wire x1="150.84" y1="3.6875" x2="150.84" y2="2.5125" width="0.254" layer="16"/>
@@ -3789,7 +3789,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="156.5275" y1="13.6525" x2="159.7025" y2="16.8275" width="0.254" layer="16"/>
 <wire x1="159.7025" y1="16.8275" x2="162.56" y2="16.8275" width="0.254" layer="16"/>
 </signal>
-<signal name="N$18">
+<signal name="N$18" class="2">
 <contactref element="JP12" pad="3"/>
 <contactref element="U13" pad="27"/>
 <wire x1="150.34" y1="3.6875" x2="150.34" y2="2.06" width="0.254" layer="16"/>
@@ -3800,7 +3800,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="157.1625" y1="11.7475" x2="159.7025" y2="14.2875" width="0.254" layer="16"/>
 <wire x1="159.7025" y1="14.2875" x2="162.56" y2="14.2875" width="0.254" layer="16"/>
 </signal>
-<signal name="N$19">
+<signal name="N$19" class="2">
 <contactref element="U13" pad="28"/>
 <contactref element="JP12" pad="4"/>
 <wire x1="149.84" y1="3.6875" x2="149.84" y2="1.6075" width="0.254" layer="16"/>
@@ -3811,7 +3811,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="157.7975" y1="9.8425" x2="159.7025" y2="11.7475" width="0.254" layer="16"/>
 <wire x1="159.7025" y1="11.7475" x2="162.56" y2="11.7475" width="0.254" layer="16"/>
 </signal>
-<signal name="N$42">
+<signal name="N$42" class="2">
 <contactref element="JP12" pad="5"/>
 <contactref element="U13" pad="29"/>
 <wire x1="149.34" y1="3.6875" x2="149.34" y2="1.155" width="0.254" layer="16"/>
@@ -3822,7 +3822,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="158.4325" y1="7.9375" x2="159.7025" y2="9.2075" width="0.254" layer="16"/>
 <wire x1="159.7025" y1="9.2075" x2="162.56" y2="9.2075" width="0.254" layer="16"/>
 </signal>
-<signal name="N$43">
+<signal name="N$43" class="2">
 <contactref element="JP12" pad="6"/>
 <contactref element="U13" pad="30"/>
 <wire x1="148.84" y1="3.6875" x2="148.84" y2="0.7025" width="0.254" layer="16"/>
@@ -3833,7 +3833,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="159.0675" y1="6.0325" x2="159.7025" y2="6.6675" width="0.254" layer="16"/>
 <wire x1="159.7025" y1="6.6675" x2="162.56" y2="6.6675" width="0.254" layer="16"/>
 </signal>
-<signal name="N$44">
+<signal name="N$44" class="2">
 <contactref element="U13" pad="31"/>
 <contactref element="JP12" pad="7"/>
 <wire x1="148.34" y1="3.6875" x2="148.34" y2="0.25" width="0.254" layer="16"/>
@@ -3844,7 +3844,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="159.7025" y1="0.9525" x2="157.48" y2="-1.27" width="0.254" layer="16"/>
 <wire x1="157.48" y1="-1.27" x2="149.86" y2="-1.27" width="0.254" layer="16"/>
 </signal>
-<signal name="N$45">
+<signal name="N$45" class="2">
 <contactref element="JP12" pad="8"/>
 <contactref element="U13" pad="32"/>
 <wire x1="147.84" y1="3.6875" x2="147.84" y2="-0.2025" width="0.254" layer="16"/>
@@ -3855,7 +3855,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="157.7975" y1="-1.905" x2="160.3375" y2="0.635" width="0.254" layer="16"/>
 <wire x1="160.3375" y1="0.635" x2="160.3375" y2="1.27" width="0.254" layer="16"/>
 </signal>
-<signal name="N$46">
+<signal name="N$46" class="2">
 <contactref element="U13" pad="33"/>
 <contactref element="JP12" pad="9"/>
 <wire x1="147.34" y1="3.6875" x2="147.34" y2="-0.655" width="0.254" layer="16"/>
@@ -3864,7 +3864,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="159.7025" y1="-0.9525" x2="158.115" y2="-2.54" width="0.254" layer="16"/>
 <wire x1="158.115" y1="-2.54" x2="149.225" y2="-2.54" width="0.254" layer="16"/>
 </signal>
-<signal name="N$47">
+<signal name="N$47" class="2">
 <contactref element="JP12" pad="10"/>
 <contactref element="U13" pad="34"/>
 <wire x1="146.84" y1="3.6875" x2="146.84" y2="-1.1075" width="0.254" layer="16"/>
@@ -3874,7 +3874,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="159.7025" y1="-1.905" x2="160.9725" y2="-1.905" width="0.254" layer="16"/>
 <wire x1="160.9725" y1="-1.905" x2="162.56" y2="-3.4925" width="0.254" layer="16"/>
 </signal>
-<signal name="N$48">
+<signal name="N$48" class="2">
 <contactref element="JP11" pad="1"/>
 <contactref element="U13" pad="12"/>
 <wire x1="165.1" y1="19.3675" x2="165.1" y2="20.6375" width="0.254" layer="16"/>
@@ -3885,7 +3885,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="151.765" y1="13.335" x2="153.67" y2="13.335" width="0.254" layer="16"/>
 <wire x1="153.67" y1="13.335" x2="161.6075" y2="21.2725" width="0.254" layer="16"/>
 </signal>
-<signal name="N$49">
+<signal name="N$49" class="2">
 <contactref element="U13" pad="11"/>
 <contactref element="JP11" pad="2"/>
 <wire x1="165.1" y1="16.8275" x2="166.37" y2="16.8275" width="0.254" layer="16"/>
@@ -3898,7 +3898,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="151.4475" y1="13.97" x2="153.3525" y2="13.97" width="0.254" layer="16"/>
 <wire x1="153.3525" y1="13.97" x2="161.29" y2="21.9075" width="0.254" layer="16"/>
 </signal>
-<signal name="N$50">
+<signal name="N$50" class="2">
 <contactref element="JP11" pad="3"/>
 <contactref element="U13" pad="10"/>
 <wire x1="165.1" y1="14.2875" x2="166.37" y2="14.2875" width="0.254" layer="16"/>
@@ -3911,7 +3911,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="150.34" y1="13.815" x2="151.13" y2="14.605" width="0.254" layer="16"/>
 <wire x1="151.13" y1="14.605" x2="153.035" y2="14.605" width="0.254" layer="16"/>
 </signal>
-<signal name="N$51">
+<signal name="N$51" class="2">
 <contactref element="U13" pad="9"/>
 <contactref element="JP11" pad="4"/>
 <wire x1="149.84" y1="12.1875" x2="149.84" y2="14.2675" width="0.254" layer="16"/>
@@ -3926,7 +3926,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="153.9875" y1="15.875" x2="157.48" y2="15.875" width="0.254" layer="1"/>
 <wire x1="157.48" y1="15.875" x2="160.3375" y2="13.0175" width="0.254" layer="1"/>
 </signal>
-<signal name="N$52">
+<signal name="N$52" class="2">
 <contactref element="JP11" pad="5"/>
 <contactref element="U13" pad="8"/>
 <wire x1="165.1" y1="9.2075" x2="163.83" y2="10.4775" width="0.254" layer="16"/>
@@ -3945,7 +3945,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="159.0675" y1="13.0175" x2="159.0675" y2="11.7475" width="0.254" layer="1"/>
 <wire x1="159.0675" y1="11.7475" x2="160.3375" y2="10.4775" width="0.254" layer="1"/>
 </signal>
-<signal name="N$53">
+<signal name="N$53" class="2">
 <contactref element="U13" pad="7"/>
 <contactref element="JP11" pad="6"/>
 <wire x1="165.1" y1="6.6675" x2="163.83" y2="7.9375" width="0.254" layer="16"/>
@@ -3967,7 +3967,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="158.4325" y1="11.43" x2="159.0675" y2="10.795" width="0.254" layer="1"/>
 <wire x1="159.0675" y1="10.795" x2="159.0675" y2="9.8425" width="0.254" layer="1"/>
 </signal>
-<signal name="N$54">
+<signal name="N$54" class="2">
 <contactref element="JP11" pad="7"/>
 <contactref element="U13" pad="6"/>
 <wire x1="165.1" y1="4.1275" x2="163.83" y2="5.3975" width="0.254" layer="16"/>
@@ -3988,7 +3988,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="157.7975" y1="11.1125" x2="158.4325" y2="10.4775" width="0.254" layer="1"/>
 <wire x1="158.4325" y1="10.4775" x2="158.4325" y2="9.2075" width="0.254" layer="1"/>
 </signal>
-<signal name="N$55">
+<signal name="N$55" class="2">
 <contactref element="U13" pad="5"/>
 <contactref element="JP11" pad="8"/>
 <wire x1="165.1" y1="1.5875" x2="166.37" y2="1.5875" width="0.254" layer="16"/>
@@ -4011,7 +4011,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="156.5275" y1="9.525" x2="156.5275" y2="7.3025" width="0.254" layer="1"/>
 <wire x1="156.5275" y1="7.3025" x2="156.845" y2="6.985" width="0.254" layer="1"/>
 </signal>
-<signal name="N$56">
+<signal name="N$56" class="2">
 <contactref element="JP11" pad="9"/>
 <contactref element="U13" pad="4"/>
 <wire x1="165.1" y1="-0.9525" x2="166.37" y2="-0.9525" width="0.254" layer="16"/>
@@ -4040,7 +4040,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="157.1625" y1="9.8425" x2="157.1625" y2="8.255" width="0.254" layer="1"/>
 <wire x1="157.1625" y1="8.255" x2="157.7975" y2="7.62" width="0.254" layer="1"/>
 </signal>
-<signal name="N$57">
+<signal name="N$57" class="2">
 <contactref element="U13" pad="3"/>
 <contactref element="JP11" pad="10"/>
 <wire x1="160.3375" y1="3.4925" x2="158.4325" y2="5.3975" width="0.254" layer="1"/>
@@ -4069,7 +4069,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="157.1625" y1="10.795" x2="157.7975" y2="10.16" width="0.254" layer="1"/>
 <wire x1="157.7975" y1="10.16" x2="157.7975" y2="8.5725" width="0.254" layer="1"/>
 </signal>
-<signal name="N$58">
+<signal name="N$58" class="2">
 <contactref element="JP5" pad="1"/>
 <contactref element="U14" pad="12"/>
 <wire x1="165.1" y1="54.9275" x2="165.1" y2="56.1975" width="0.254" layer="16"/>
@@ -4080,7 +4080,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="153.67" y1="48.895" x2="161.6075" y2="56.8325" width="0.254" layer="16"/>
 <wire x1="161.6075" y1="56.8325" x2="164.465" y2="56.8325" width="0.254" layer="16"/>
 </signal>
-<signal name="N$59">
+<signal name="N$59" class="2">
 <contactref element="U14" pad="11"/>
 <contactref element="JP5" pad="2"/>
 <wire x1="165.1" y1="52.3875" x2="166.37" y2="52.3875" width="0.254" layer="16"/>
@@ -4093,7 +4093,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="150.84" y1="48.9225" x2="151.4475" y2="49.53" width="0.254" layer="16"/>
 <wire x1="151.4475" y1="49.53" x2="153.3525" y2="49.53" width="0.254" layer="16"/>
 </signal>
-<signal name="N$60">
+<signal name="N$60" class="2">
 <contactref element="JP5" pad="3"/>
 <contactref element="U14" pad="10"/>
 <wire x1="150.34" y1="47.7475" x2="150.34" y2="49.375" width="0.254" layer="16"/>
@@ -4106,7 +4106,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="167.3225" y1="50.8" x2="166.37" y2="49.8475" width="0.254" layer="16"/>
 <wire x1="166.37" y1="49.8475" x2="165.1" y2="49.8475" width="0.254" layer="16"/>
 </signal>
-<signal name="N$61">
+<signal name="N$61" class="2">
 <contactref element="U14" pad="9"/>
 <contactref element="JP5" pad="4"/>
 <wire x1="165.1" y1="47.3075" x2="163.83" y2="48.5775" width="0.254" layer="16"/>
@@ -4121,7 +4121,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="153.9875" y1="51.435" x2="157.48" y2="51.435" width="0.254" layer="1"/>
 <wire x1="157.48" y1="51.435" x2="160.3375" y2="48.5775" width="0.254" layer="1"/>
 </signal>
-<signal name="N$62">
+<signal name="N$62" class="2">
 <contactref element="JP5" pad="5"/>
 <contactref element="U14" pad="8"/>
 <wire x1="165.1" y1="44.7675" x2="163.83" y2="46.0375" width="0.254" layer="16"/>
@@ -4140,7 +4140,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="153.3525" y1="50.8" x2="156.845" y2="50.8" width="0.254" layer="1"/>
 <wire x1="156.845" y1="50.8" x2="159.0675" y2="48.5775" width="0.254" layer="1"/>
 </signal>
-<signal name="N$63">
+<signal name="N$63" class="2">
 <contactref element="U14" pad="7"/>
 <contactref element="JP5" pad="6"/>
 <wire x1="165.1" y1="42.2275" x2="163.83" y2="43.4975" width="0.254" layer="16"/>
@@ -4162,7 +4162,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="153.035" y1="50.165" x2="156.5275" y2="50.165" width="0.254" layer="1"/>
 <wire x1="156.5275" y1="50.165" x2="158.4325" y2="48.26" width="0.254" layer="1"/>
 </signal>
-<signal name="N$64">
+<signal name="N$64" class="2">
 <contactref element="JP5" pad="7"/>
 <contactref element="U14" pad="6"/>
 <wire x1="165.1" y1="39.6875" x2="163.83" y2="40.9575" width="0.254" layer="16"/>
@@ -4183,7 +4183,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="157.7975" y1="46.6725" x2="158.4325" y2="46.0375" width="0.254" layer="1"/>
 <wire x1="158.4325" y1="46.0375" x2="158.4325" y2="44.7675" width="0.254" layer="1"/>
 </signal>
-<signal name="N$65">
+<signal name="N$65" class="2">
 <contactref element="U14" pad="5"/>
 <contactref element="JP5" pad="8"/>
 <wire x1="165.1" y1="37.1475" x2="166.37" y2="37.1475" width="0.254" layer="16"/>
@@ -4206,7 +4206,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="156.5275" y1="45.085" x2="156.5275" y2="43.4975" width="0.254" layer="1"/>
 <wire x1="156.5275" y1="43.4975" x2="156.845" y2="43.18" width="0.254" layer="1"/>
 </signal>
-<signal name="N$66">
+<signal name="N$66" class="2">
 <contactref element="JP5" pad="9"/>
 <contactref element="U14" pad="4"/>
 <wire x1="165.1" y1="34.6075" x2="166.37" y2="34.6075" width="0.254" layer="16"/>
@@ -4235,7 +4235,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="157.1625" y1="45.4025" x2="157.1625" y2="43.815" width="0.254" layer="1"/>
 <wire x1="157.1625" y1="43.815" x2="157.7975" y2="43.18" width="0.254" layer="1"/>
 </signal>
-<signal name="N$67">
+<signal name="N$67" class="2">
 <contactref element="U14" pad="3"/>
 <contactref element="JP5" pad="10"/>
 <wire x1="165.1" y1="32.0675" x2="165.1" y2="30.7975" width="0.254" layer="16"/>
@@ -4264,7 +4264,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="157.1625" y1="46.355" x2="157.7975" y2="45.72" width="0.254" layer="1"/>
 <wire x1="157.7975" y1="45.72" x2="157.7975" y2="44.1325" width="0.254" layer="1"/>
 </signal>
-<signal name="N$68">
+<signal name="N$68" class="2">
 <contactref element="U14" pad="25"/>
 <contactref element="JP6" pad="1"/>
 <wire x1="151.34" y1="39.2475" x2="151.34" y2="38.525" width="0.254" layer="16"/>
@@ -4275,7 +4275,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="162.56" y1="54.9275" x2="160.655" y2="54.9275" width="0.254" layer="16"/>
 <wire x1="160.655" y1="54.9275" x2="155.8925" y2="50.165" width="0.254" layer="16"/>
 </signal>
-<signal name="N$69">
+<signal name="N$69" class="2">
 <contactref element="U14" pad="26"/>
 <contactref element="JP6" pad="2"/>
 <wire x1="150.84" y1="39.2475" x2="150.84" y2="38.0725" width="0.254" layer="16"/>
@@ -4286,7 +4286,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="162.56" y1="52.3875" x2="159.7025" y2="52.3875" width="0.254" layer="16"/>
 <wire x1="159.7025" y1="52.3875" x2="156.5275" y2="49.2125" width="0.254" layer="16"/>
 </signal>
-<signal name="N$70">
+<signal name="N$70" class="2">
 <contactref element="U14" pad="27"/>
 <contactref element="JP6" pad="3"/>
 <wire x1="150.34" y1="39.2475" x2="150.34" y2="37.62" width="0.254" layer="16"/>
@@ -4297,7 +4297,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="157.1625" y1="47.3075" x2="157.1625" y2="37.7825" width="0.254" layer="16"/>
 <wire x1="157.1625" y1="37.7825" x2="156.21" y2="36.83" width="0.254" layer="16"/>
 </signal>
-<signal name="N$71">
+<signal name="N$71" class="2">
 <contactref element="U14" pad="28"/>
 <contactref element="JP6" pad="4"/>
 <wire x1="149.84" y1="39.2475" x2="149.84" y2="37.1675" width="0.254" layer="16"/>
@@ -4308,7 +4308,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="157.7975" y1="37.465" x2="156.5275" y2="36.195" width="0.254" layer="16"/>
 <wire x1="156.5275" y1="36.195" x2="150.8125" y2="36.195" width="0.254" layer="16"/>
 </signal>
-<signal name="N$72">
+<signal name="N$72" class="2">
 <contactref element="U14" pad="29"/>
 <contactref element="JP6" pad="5"/>
 <wire x1="149.34" y1="39.2475" x2="149.34" y2="36.715" width="0.254" layer="16"/>
@@ -4319,7 +4319,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="158.4325" y1="37.1475" x2="156.845" y2="35.56" width="0.254" layer="16"/>
 <wire x1="156.845" y1="35.56" x2="150.495" y2="35.56" width="0.254" layer="16"/>
 </signal>
-<signal name="N$73">
+<signal name="N$73" class="2">
 <contactref element="U14" pad="30"/>
 <contactref element="JP6" pad="6"/>
 <wire x1="148.84" y1="39.2475" x2="148.84" y2="36.2625" width="0.254" layer="16"/>
@@ -4330,7 +4330,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="159.0675" y1="36.83" x2="157.1625" y2="34.925" width="0.254" layer="16"/>
 <wire x1="157.1625" y1="34.925" x2="150.1775" y2="34.925" width="0.254" layer="16"/>
 </signal>
-<signal name="N$74">
+<signal name="N$74" class="2">
 <contactref element="U14" pad="31"/>
 <contactref element="JP6" pad="7"/>
 <wire x1="148.34" y1="39.2475" x2="148.34" y2="35.81" width="0.254" layer="16"/>
@@ -4341,7 +4341,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="159.7025" y1="38.735" x2="160.655" y2="39.6875" width="0.254" layer="16"/>
 <wire x1="160.655" y1="39.6875" x2="162.56" y2="39.6875" width="0.254" layer="16"/>
 </signal>
-<signal name="N$75">
+<signal name="N$75" class="2">
 <contactref element="U14" pad="32"/>
 <contactref element="JP6" pad="8"/>
 <wire x1="147.84" y1="39.2475" x2="147.84" y2="35.3575" width="0.254" layer="16"/>
@@ -4352,7 +4352,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="160.3375" y1="36.195" x2="157.7975" y2="33.655" width="0.254" layer="16"/>
 <wire x1="157.7975" y1="33.655" x2="149.5425" y2="33.655" width="0.254" layer="16"/>
 </signal>
-<signal name="N$76">
+<signal name="N$76" class="2">
 <contactref element="U14" pad="33"/>
 <contactref element="JP6" pad="9"/>
 <wire x1="147.34" y1="39.2475" x2="147.34" y2="34.905" width="0.254" layer="16"/>
@@ -4361,7 +4361,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="159.7025" y1="34.6075" x2="158.115" y2="33.02" width="0.254" layer="16"/>
 <wire x1="158.115" y1="33.02" x2="149.225" y2="33.02" width="0.254" layer="16"/>
 </signal>
-<signal name="N$77">
+<signal name="N$77" class="2">
 <contactref element="U14" pad="34"/>
 <contactref element="JP6" pad="10"/>
 <wire x1="146.84" y1="39.2475" x2="146.84" y2="34.4525" width="0.254" layer="16"/>
@@ -4371,7 +4371,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="159.7025" y1="33.655" x2="158.4325" y2="32.385" width="0.254" layer="16"/>
 <wire x1="158.4325" y1="32.385" x2="148.9075" y2="32.385" width="0.254" layer="16"/>
 </signal>
-<signal name="N$78">
+<signal name="N$78" class="2">
 <contactref element="U14" pad="2"/>
 <contactref element="JP13" pad="1"/>
 <wire x1="150.495" y1="27.305" x2="154.6225" y2="27.305" width="0.254" layer="16"/>
@@ -4392,7 +4392,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="144.145" y1="42.2275" x2="146.3675" y2="40.005" width="0.254" layer="1"/>
 <wire x1="146.3675" y1="40.005" x2="146.3675" y2="33.9725" width="0.254" layer="1"/>
 </signal>
-<signal name="N$79">
+<signal name="N$79" class="2">
 <contactref element="U14" pad="1"/>
 <contactref element="JP13" pad="2"/>
 <wire x1="147.955" y1="27.305" x2="149.225" y2="28.575" width="0.254" layer="16"/>
@@ -4412,7 +4412,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="143.51" y1="41.91" x2="145.7325" y2="39.6875" width="0.254" layer="1"/>
 <wire x1="145.7325" y1="39.6875" x2="145.7325" y2="33.655" width="0.254" layer="1"/>
 </signal>
-<signal name="N$80">
+<signal name="N$80" class="2">
 <contactref element="U14" pad="48"/>
 <contactref element="JP13" pad="3"/>
 <wire x1="145.415" y1="27.305" x2="146.685" y2="28.575" width="0.254" layer="16"/>
@@ -4431,7 +4431,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="144.4625" y1="37.465" x2="144.4625" y2="35.2425" width="0.254" layer="1"/>
 <wire x1="140.6525" y1="47.3075" x2="142.875" y2="45.085" width="0.254" layer="1"/>
 </signal>
-<signal name="N$81">
+<signal name="N$81" class="2">
 <contactref element="U14" pad="47"/>
 <contactref element="JP13" pad="4"/>
 <wire x1="142.875" y1="27.305" x2="144.145" y2="28.575" width="0.254" layer="16"/>
@@ -4450,7 +4450,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="142.24" y1="40.9575" x2="142.24" y2="44.7675" width="0.254" layer="1"/>
 <wire x1="142.24" y1="44.7675" x2="141.2875" y2="45.72" width="0.254" layer="1"/>
 </signal>
-<signal name="N$82">
+<signal name="N$82" class="2">
 <contactref element="U14" pad="46"/>
 <contactref element="JP13" pad="5"/>
 <wire x1="140.335" y1="27.305" x2="139.065" y2="28.575" width="0.254" layer="16"/>
@@ -4468,7 +4468,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="138.1125" y1="33.02" x2="138.1125" y2="43.4975" width="0.254" layer="1"/>
 <wire x1="138.1125" y1="43.4975" x2="139.065" y2="44.45" width="0.254" layer="1"/>
 </signal>
-<signal name="N$83">
+<signal name="N$83" class="2">
 <contactref element="U14" pad="45"/>
 <contactref element="JP13" pad="6"/>
 <wire x1="137.795" y1="27.305" x2="136.8425" y2="27.305" width="0.254" layer="16"/>
@@ -4485,7 +4485,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <via x="139.3825" y="35.8775" extent="1-16" drill="0.8" shape="octagon"/>
 <wire x1="139.3825" y1="35.8775" x2="139.3825" y2="34.29" width="0.254" layer="16"/>
 </signal>
-<signal name="N$84">
+<signal name="N$84" class="2">
 <contactref element="U14" pad="35"/>
 <contactref element="JP14" pad="1"/>
 <wire x1="150.495" y1="29.845" x2="150.495" y2="31.4325" width="0.254" layer="16"/>
@@ -4494,14 +4494,14 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="146.34" y1="34" x2="148.59" y2="31.75" width="0.254" layer="16"/>
 <wire x1="148.59" y1="31.75" x2="150.1775" y2="31.75" width="0.254" layer="16"/>
 </signal>
-<signal name="N$85">
+<signal name="N$85" class="2">
 <contactref element="U14" pad="36"/>
 <contactref element="JP14" pad="2"/>
 <wire x1="145.84" y1="39.2475" x2="145.84" y2="33.5475" width="0.254" layer="16"/>
 <wire x1="145.84" y1="33.5475" x2="147.955" y2="31.4325" width="0.254" layer="16"/>
 <wire x1="147.955" y1="31.4325" x2="147.955" y2="29.845" width="0.254" layer="16"/>
 </signal>
-<signal name="N$86">
+<signal name="N$86" class="2">
 <contactref element="U14" pad="37"/>
 <contactref element="JP14" pad="3"/>
 <wire x1="144.34" y1="40.7475" x2="144.34" y2="39.81" width="0.254" layer="16"/>
@@ -4512,7 +4512,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="144.34" y1="39.81" x2="144.78" y2="39.37" width="0.254" layer="16"/>
 <wire x1="144.78" y1="39.37" x2="144.78" y2="37.7825" width="0.254" layer="16"/>
 </signal>
-<signal name="N$87">
+<signal name="N$87" class="2">
 <contactref element="U14" pad="38"/>
 <contactref element="JP14" pad="4"/>
 <wire x1="143.4825" y1="41.2475" x2="143.1925" y2="40.9575" width="0.254" layer="16"/>
@@ -4522,7 +4522,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="141.9225" y1="38.735" x2="143.1925" y2="40.005" width="0.254" layer="16"/>
 <wire x1="143.1925" y1="40.005" x2="143.1925" y2="40.9575" width="0.254" layer="16"/>
 </signal>
-<signal name="N$88">
+<signal name="N$88" class="2">
 <contactref element="U14" pad="39"/>
 <contactref element="JP14" pad="5"/>
 <wire x1="143.03" y1="41.7475" x2="142.5575" y2="41.275" width="0.254" layer="16"/>
@@ -4533,7 +4533,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="142.5575" y1="40.3225" x2="141.2875" y2="39.0525" width="0.254" layer="16"/>
 <wire x1="141.2875" y1="39.0525" x2="141.2875" y2="32.385" width="0.254" layer="16"/>
 </signal>
-<signal name="N$89">
+<signal name="N$89" class="2">
 <contactref element="U14" pad="40"/>
 <contactref element="JP14" pad="6"/>
 <wire x1="142.5775" y1="42.2475" x2="141.9225" y2="41.5925" width="0.254" layer="16"/>
@@ -4543,7 +4543,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="141.9225" y1="40.64" x2="140.6525" y2="39.37" width="0.254" layer="16"/>
 <wire x1="140.6525" y1="39.37" x2="140.6525" y2="32.7025" width="0.254" layer="16"/>
 </signal>
-<signal name="N$90">
+<signal name="N$90" class="2">
 <contactref element="U13" pad="2"/>
 <contactref element="JP15" pad="1"/>
 <wire x1="146.34" y1="12.1875" x2="146.34" y2="13.3625" width="0.254" layer="16"/>
@@ -4554,7 +4554,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="149.5425" y1="20.32" x2="150.495" y2="21.2725" width="0.254" layer="16"/>
 <wire x1="150.495" y1="21.2725" x2="150.495" y2="22.225" width="0.254" layer="16"/>
 </signal>
-<signal name="N$91">
+<signal name="N$91" class="2">
 <contactref element="U13" pad="1"/>
 <contactref element="JP15" pad="2"/>
 <wire x1="147.955" y1="22.225" x2="147.955" y2="21.2725" width="0.254" layer="16"/>
@@ -4565,7 +4565,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="145.84" y1="12.91" x2="143.8275" y2="14.9225" width="0.254" layer="16"/>
 <wire x1="143.8275" y1="14.9225" x2="143.8275" y2="19.05" width="0.254" layer="16"/>
 </signal>
-<signal name="N$92">
+<signal name="N$92" class="2">
 <contactref element="U13" pad="48"/>
 <contactref element="JP15" pad="3"/>
 <wire x1="145.415" y1="22.225" x2="145.415" y2="21.59" width="0.254" layer="16"/>
@@ -4574,7 +4574,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="144.34" y1="10.6875" x2="143.6175" y2="10.6875" width="0.254" layer="16"/>
 <wire x1="143.6175" y1="10.6875" x2="143.1925" y2="11.1125" width="0.254" layer="16"/>
 </signal>
-<signal name="N$93">
+<signal name="N$93" class="2">
 <contactref element="U13" pad="47"/>
 <contactref element="JP15" pad="4"/>
 <wire x1="142.875" y1="22.225" x2="142.875" y2="20.0025" width="0.254" layer="16"/>
@@ -4583,7 +4583,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="143.165" y1="10.1875" x2="142.5575" y2="10.795" width="0.254" layer="16"/>
 <wire x1="142.5575" y1="10.795" x2="142.5575" y2="19.685" width="0.254" layer="16"/>
 </signal>
-<signal name="N$94">
+<signal name="N$94" class="2">
 <contactref element="U13" pad="46"/>
 <contactref element="JP15" pad="5"/>
 <wire x1="144.34" y1="9.6875" x2="142.7125" y2="9.6875" width="0.254" layer="16"/>
@@ -4594,7 +4594,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="140.0175" y1="20.6375" x2="140.335" y2="20.955" width="0.254" layer="16"/>
 <wire x1="140.335" y1="20.955" x2="140.335" y2="22.225" width="0.254" layer="16"/>
 </signal>
-<signal name="N$95">
+<signal name="N$95" class="2">
 <contactref element="U13" pad="45"/>
 <contactref element="JP15" pad="6"/>
 <wire x1="144.34" y1="9.1875" x2="142.26" y2="9.1875" width="0.254" layer="16"/>
@@ -4603,7 +4603,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="141.2875" y1="14.2875" x2="137.795" y2="17.78" width="0.254" layer="16"/>
 <wire x1="137.795" y1="17.78" x2="137.795" y2="22.225" width="0.254" layer="16"/>
 </signal>
-<signal name="N$96">
+<signal name="N$96" class="2">
 <contactref element="U13" pad="35"/>
 <contactref element="JP16" pad="1"/>
 <wire x1="150.495" y1="24.765" x2="153.035" y2="24.765" width="0.254" layer="16"/>
@@ -4621,7 +4621,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="147.32" y1="13.6525" x2="147.32" y2="1.905" width="0.254" layer="1"/>
 <wire x1="147.32" y1="1.905" x2="145.415" y2="0" width="0.254" layer="1"/>
 </signal>
-<signal name="N$97">
+<signal name="N$97" class="2">
 <contactref element="U13" pad="36"/>
 <contactref element="JP16" pad="2"/>
 <wire x1="147.955" y1="24.765" x2="149.225" y2="23.495" width="0.254" layer="16"/>
@@ -4640,7 +4640,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="144.78" y1="2.2225" x2="146.685" y2="4.1275" width="0.254" layer="1"/>
 <wire x1="146.685" y1="4.1275" x2="146.685" y2="13.335" width="0.254" layer="1"/>
 </signal>
-<signal name="N$98">
+<signal name="N$98" class="2">
 <contactref element="U13" pad="37"/>
 <contactref element="JP16" pad="3"/>
 <wire x1="145.415" y1="24.765" x2="144.145" y2="26.035" width="0.254" layer="16"/>
@@ -4658,7 +4658,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="138.7475" y1="7.3025" x2="138.7475" y2="4.445" width="0.254" layer="16"/>
 <wire x1="138.7475" y1="4.445" x2="139.7" y2="3.4925" width="0.254" layer="16"/>
 </signal>
-<signal name="N$99">
+<signal name="N$99" class="2">
 <contactref element="U13" pad="38"/>
 <contactref element="JP16" pad="4"/>
 <wire x1="142.875" y1="24.765" x2="141.605" y2="23.495" width="0.254" layer="16"/>
@@ -4674,7 +4674,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <via x="139.3825" y="8.5725" extent="1-16" drill="0.8" shape="octagon"/>
 <wire x1="139.3825" y1="8.5725" x2="139.3825" y2="4.7625" width="0.254" layer="16"/>
 </signal>
-<signal name="N$100">
+<signal name="N$100" class="2">
 <contactref element="U13" pad="39"/>
 <contactref element="JP16" pad="5"/>
 <wire x1="140.335" y1="24.765" x2="139.065" y2="23.495" width="0.254" layer="16"/>
@@ -4688,7 +4688,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="139.065" y1="10.16" x2="138.1125" y2="9.2075" width="0.254" layer="1"/>
 <wire x1="138.1125" y1="9.2075" x2="138.1125" y2="7.9375" width="0.254" layer="1"/>
 </signal>
-<signal name="N$101">
+<signal name="N$101" class="2">
 <contactref element="U13" pad="40"/>
 <contactref element="JP16" pad="6"/>
 <wire x1="137.795" y1="24.765" x2="136.525" y2="23.495" width="0.254" layer="16"/>
@@ -4698,34 +4698,34 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="141.2675" y1="6.6875" x2="140.6525" y2="7.3025" width="0.254" layer="16"/>
 <wire x1="140.6525" y1="7.3025" x2="140.6525" y2="13.97" width="0.254" layer="16"/>
 </signal>
-<signal name="N$4">
+<signal name="N$4" class="2">
 <contactref element="RA3" pad="2"/>
 <contactref element="U2" pad="4"/>
 <wire x1="123.055" y1="27.7319" x2="123.5075" y2="25.9325" width="0" layer="19" extent="1-1"/>
 </signal>
-<signal name="N$5">
+<signal name="N$5" class="2">
 <contactref element="U2" pad="7"/>
 <contactref element="RA4" pad="2"/>
 <wire x1="125.73" y1="25.9325" x2="123.055" y2="31.9581" width="0" layer="19" extent="1-1"/>
 </signal>
-<signal name="N$102">
+<signal name="N$102" class="2">
 <contactref element="U2" pad="9"/>
 <contactref element="RA2" pad="2"/>
 <wire x1="119.0625" y1="25.9325" x2="122.055" y2="31.9581" width="0" layer="19" extent="1-1"/>
 </signal>
-<signal name="N$103">
+<signal name="N$103" class="2">
 <contactref element="U2" pad="2"/>
 <contactref element="RA1" pad="1"/>
 <wire x1="121.285" y1="25.9325" x2="122.055" y2="27.7319" width="0" layer="19" extent="1-1"/>
 </signal>
-<signal name="N$104">
+<signal name="N$104" class="2">
 <contactref element="U5" pad="25"/>
 <contactref element="RFB7" pad="1"/>
 <wire x1="123.1475" y1="2.17" x2="121.2325" y2="2.17" width="0.3556" layer="1"/>
 <wire x1="121.2325" y1="2.17" x2="119.6975" y2="0.635" width="0.3556" layer="1"/>
 <wire x1="119.6975" y1="0.635" x2="118.96" y2="0.635" width="0.3556" layer="1"/>
 </signal>
-<signal name="N$105">
+<signal name="N$105" class="2">
 <contactref element="U5" pad="26"/>
 <contactref element="RFB8" pad="1"/>
 <wire x1="123.1475" y1="1.52" x2="121.535" y2="1.52" width="0.3556" layer="1"/>
@@ -4734,7 +4734,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="120.3325" y1="-0.3175" x2="120.015" y2="-0.635" width="0.3556" layer="1"/>
 <wire x1="120.015" y1="-0.635" x2="115.15" y2="-0.635" width="0.3556" layer="1"/>
 </signal>
-<signal name="N$2">
+<signal name="N$2" class="2">
 <contactref element="RA" pad="2"/>
 <contactref element="C25" pad="1"/>
 <contactref element="TP10" pad="TP"/>
@@ -4746,7 +4746,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <contactref element="U6" pad="25"/>
 <wire x1="-95.25" y1="-19.05" x2="128.48" y2="80.985" width="0" layer="19" extent="1-1"/>
 </signal>
-<signal name="N$13">
+<signal name="N$13" class="2">
 <contactref element="U13" pad="43"/>
 <contactref element="U5" pad="28"/>
 <contactref element="C28" pad="2"/>
