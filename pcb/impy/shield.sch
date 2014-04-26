@@ -9753,9 +9753,9 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <classes>
 <class number="0" name="default" width="0" drill="0">
 </class>
-<class number="1" name="supply" width="1.4732" drill="0">
+<class number="1" name="supply" width="0.9144" drill="0">
 </class>
-<class number="2" name="analog" width="0.9144" drill="0">
+<class number="2" name="analog" width="0" drill="0">
 </class>
 </classes>
 <parts>
