@@ -10039,6 +10039,9 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <part name="TP24" library="testpad" deviceset="TP" device="TP20R">
 <attribute name="TP_SIGNAL_NAME" value="ETH_MDIO"/>
 </part>
+<part name="TP25" library="testpad" deviceset="TP" device="TP20R">
+<attribute name="TP_SIGNAL_NAME" value="AD5933_CLK"/>
+</part>
 </parts>
 <sheets>
 <sheet>
@@ -11005,6 +11008,7 @@ AGND - Analog ground</text>
 <instance part="TP10" gate="G$1" x="43.18" y="127"/>
 <instance part="TP11" gate="G$1" x="35.56" y="88.9"/>
 <instance part="AGND14" gate="VR1" x="35.56" y="81.28" rot="MR0"/>
+<instance part="TP25" gate="G$1" x="48.26" y="88.9"/>
 </instances>
 <busses>
 </busses>
@@ -11218,6 +11222,11 @@ AGND - Analog ground</text>
 <pinref part="U1" gate="A" pin="MCLK"/>
 <wire x1="27.94" y1="40.64" x2="22.86" y2="40.64" width="0.1524" layer="91"/>
 <label x="22.86" y="40.64" size="1.778" layer="95" rot="R180"/>
+</segment>
+<segment>
+<pinref part="TP25" gate="G$1" pin="TP"/>
+<wire x1="48.26" y1="86.36" x2="48.26" y2="83.82" width="0.1524" layer="91"/>
+<label x="48.26" y="83.82" size="1.778" layer="95" rot="R270"/>
 </segment>
 </net>
 <net name="N$3" class="0">
