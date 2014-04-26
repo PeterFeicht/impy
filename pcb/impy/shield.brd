@@ -2749,6 +2749,9 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <element name="TP24" library="testpad" package="TP20R" value="TPTP20R" x="-95.25" y="-27.94">
 <attribute name="TP_SIGNAL_NAME" value="ETH_MDIO" x="-95.25" y="-27.94" size="1.778" layer="27" display="off"/>
 </element>
+<element name="TP25" library="testpad" package="TP20R" value="TPTP20R" x="-125.095" y="-34.29">
+<attribute name="TP_SIGNAL_NAME" value="AD5933_CLK" x="-125.095" y="-34.29" size="1.778" layer="27" display="off"/>
+</element>
 </elements>
 <signals>
 <signal name="VDD" class="1">
@@ -3503,7 +3506,9 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <signal name="PB8">
 <contactref element="JP2" pad="19"/>
 <contactref element="U1" pad="8"/>
-<wire x1="24.13" y1="40.64" x2="135.59" y2="15.35" width="0" layer="19" extent="1-1"/>
+<contactref element="TP25" pad="TP"/>
+<wire x1="24.13" y1="40.64" x2="-125.095" y2="-34.29" width="0" layer="19" extent="1-1"/>
+<wire x1="135.59" y1="15.35" x2="24.13" y2="40.64" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="PD2">
 <contactref element="JP2" pad="34"/>
