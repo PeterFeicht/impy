@@ -3,4 +3,5 @@
 This project contains the PCBs for the AD5933 mini Impedance Spectrometer:
 <ul>
     <li><b>shield</b>: The main shield that plugs onto the STM32F4 discovery board and contains the AD5933, memory and analog mux.</li>
+    <li><b>rcal</b>: Little board with calibration resistors that plugs onto the main shield calibration connectors.</li>
 </ul>
