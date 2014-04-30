@@ -10025,7 +10025,7 @@ AGND - Analog ground</text>
 <wire x1="170.18" y1="55.88" x2="104.14" y2="55.88" width="0.1524" layer="97"/>
 <wire x1="104.14" y1="55.88" x2="104.14" y2="88.9" width="0.1524" layer="97"/>
 <text x="105.41" y="90.17" size="1.778" layer="97">Supply Current Measurement + Power Switch</text>
-<text x="86.36" y="25.4" size="1.778" layer="97">PC9</text>
+<text x="12.7" y="68.58" size="1.778" layer="97" rot="R180">PA1</text>
 <wire x1="208.28" y1="83.82" x2="172.72" y2="83.82" width="0.1524" layer="97"/>
 <wire x1="172.72" y1="83.82" x2="172.72" y2="45.72" width="0.1524" layer="97"/>
 <wire x1="172.72" y1="45.72" x2="208.28" y2="45.72" width="0.1524" layer="97"/>
@@ -10541,16 +10541,6 @@ AGND - Analog ground</text>
 <label x="86.36" y="35.56" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="ETH_CLK" class="0">
-<segment>
-<pinref part="JP2" gate="A" pin="46"/>
-<label x="60.96" y="88.9" size="1.778" layer="95"/>
-<wire x1="78.74" y1="25.4" x2="101.6" y2="25.4" width="0.1524" layer="91"/>
-<wire x1="101.6" y1="25.4" x2="101.6" y2="88.9" width="0.1524" layer="91"/>
-<wire x1="101.6" y1="88.9" x2="53.34" y2="88.9" width="0.1524" layer="91"/>
-<pinref part="SJ2" gate="1" pin="2"/>
-</segment>
-</net>
 <net name="PC12" class="0">
 <segment>
 <pinref part="JP2" gate="A" pin="35"/>
@@ -10720,14 +10710,14 @@ AGND - Analog ground</text>
 <label x="12.7" y="30.48" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
-<net name="PA1" class="0">
+<net name="ETH_CLK" class="0">
 <segment>
 <pinref part="JP1" gate="A" pin="11"/>
 <wire x1="43.18" y1="88.9" x2="2.54" y2="88.9" width="0.1524" layer="91"/>
 <wire x1="2.54" y1="88.9" x2="2.54" y2="68.58" width="0.1524" layer="91"/>
 <wire x1="2.54" y1="68.58" x2="20.32" y2="68.58" width="0.1524" layer="91"/>
 <pinref part="SJ2" gate="1" pin="1"/>
-<label x="12.7" y="68.58" size="1.778" layer="95" rot="R180"/>
+<label x="20.32" y="88.9" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="PA9" class="0">
@@ -10819,6 +10809,16 @@ AGND - Analog ground</text>
 <pinref part="JP2" gate="A" pin="34"/>
 <wire x1="78.74" y1="40.64" x2="86.36" y2="40.64" width="0.1524" layer="91"/>
 <label x="86.36" y="40.64" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="PC9" class="0">
+<segment>
+<pinref part="JP2" gate="A" pin="46"/>
+<label x="86.36" y="25.4" size="1.778" layer="95"/>
+<wire x1="78.74" y1="25.4" x2="101.6" y2="25.4" width="0.1524" layer="91"/>
+<wire x1="101.6" y1="25.4" x2="101.6" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="101.6" y1="88.9" x2="53.34" y2="88.9" width="0.1524" layer="91"/>
+<pinref part="SJ2" gate="1" pin="2"/>
 </segment>
 </net>
 </nets>
