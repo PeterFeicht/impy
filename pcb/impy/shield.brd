@@ -3096,14 +3096,14 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="26.67" y1="17.78" x2="-99.06" y2="30.42" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="ETH_CLK">
-<contactref element="JP2" pad="46"/>
-<contactref element="SJ2" pad="2"/>
 <contactref element="U6" pad="34"/>
 <wire x1="-7.465" y1="73.0025" x2="-7.465" y2="71.91" width="0.254" layer="16"/>
 <wire x1="-7.465" y1="71.91" x2="-7.62" y2="71.755" width="0.254" layer="16"/>
 <wire x1="-7.62" y1="71.755" x2="-17.145" y2="71.755" width="0.254" layer="16"/>
-<wire x1="3.556" y1="4.1275" x2="-7.62" y2="71.755" width="0" layer="19" extent="1-16"/>
-<wire x1="26.67" y1="7.62" x2="3.556" y2="4.1275" width="0" layer="19" extent="1-1"/>
+<contactref element="JP1" pad="11"/>
+<contactref element="SJ2" pad="1"/>
+<wire x1="-26.67" y1="50.8" x2="-17.145" y2="71.755" width="0" layer="19" extent="16-16"/>
+<wire x1="2.032" y1="4.1275" x2="-26.67" y2="50.8" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="PC12">
 <contactref element="JP2" pad="35"/>
@@ -3475,11 +3475,6 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <contactref element="JP1" pad="41"/>
 <contactref element="U7" pad="4"/>
 <wire x1="-75.05" y1="75.885" x2="-26.67" y2="12.7" width="0" layer="19" extent="1-1"/>
-</signal>
-<signal name="PA1">
-<contactref element="JP1" pad="11"/>
-<contactref element="SJ2" pad="1"/>
-<wire x1="2.032" y1="4.1275" x2="-26.67" y2="50.8" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="RFB" class="2">
 <contactref element="U1" pad="4"/>
@@ -5045,6 +5040,11 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="123.1475" y1="6.085" x2="124.195" y2="6.085" width="0.3556" layer="1"/>
 <wire x1="124.195" y1="6.085" x2="125.095" y2="6.985" width="0.3556" layer="1"/>
 <wire x1="125.095" y1="6.985" x2="125.095" y2="9.31" width="0.3556" layer="1"/>
+</signal>
+<signal name="PC9">
+<contactref element="JP2" pad="46"/>
+<contactref element="SJ2" pad="2"/>
+<wire x1="3.556" y1="4.1275" x2="26.67" y2="7.62" width="0" layer="19" extent="1-1"/>
 </signal>
 </signals>
 </board>
