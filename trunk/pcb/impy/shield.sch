@@ -10008,6 +10008,8 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <attribute name="TP_SIGNAL_NAME" value="AD5933_CLK"/>
 </part>
 <part name="R20" library="rcl" deviceset="R-EU_" device="R0603" value="10k"/>
+<part name="GND44" library="supply1" deviceset="GND" device=""/>
+<part name="P+36" library="supply1" deviceset="+5V" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -10083,7 +10085,7 @@ AGND - Analog ground</text>
 <instance part="C2" gate="G$1" x="7.62" y="5.08"/>
 <instance part="C6" gate="G$1" x="114.3" y="5.08"/>
 <instance part="GND14" gate="1" x="0" y="-7.62"/>
-<instance part="P+12" gate="VCC" x="0" y="15.24"/>
+<instance part="P+12" gate="VCC" x="63.5" y="15.24"/>
 <instance part="P+13" gate="VCC" x="104.14" y="15.24"/>
 <instance part="AGND6" gate="VR1" x="104.14" y="-7.62"/>
 <instance part="C7" gate="G$1" x="33.02" y="5.08"/>
@@ -10133,6 +10135,10 @@ AGND - Analog ground</text>
 <instance part="U3" gate="P" x="99.06" y="3.81" rot="MR0"/>
 <instance part="TP1" gate="G$1" x="48.26" y="15.24"/>
 <instance part="TP2" gate="G$1" x="152.4" y="25.4"/>
+<instance part="GND44" gate="1" x="63.5" y="-7.62"/>
+<instance part="P+36" gate="1" x="0" y="15.24" smashed="yes" rot="MR0">
+<attribute name="VALUE" x="-2.54" y="17.78" size="1.778" layer="96" rot="MR180"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -10227,22 +10233,21 @@ AGND - Analog ground</text>
 <wire x1="127" y1="27.94" x2="127" y2="25.4" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="C1" gate="G$1" pin="2"/>
-<pinref part="GND14" gate="1" pin="GND"/>
-<wire x1="0" y1="0" x2="0" y2="-2.54" width="0.1524" layer="91"/>
 <pinref part="C2" gate="G$1" pin="2"/>
+<wire x1="7.62" y1="-2.54" x2="7.62" y2="0" width="0.1524" layer="91"/>
+<pinref part="GND14" gate="1" pin="GND"/>
 <wire x1="0" y1="-2.54" x2="0" y2="-5.08" width="0.1524" layer="91"/>
 <wire x1="0" y1="-2.54" x2="7.62" y2="-2.54" width="0.1524" layer="91"/>
-<wire x1="7.62" y1="-2.54" x2="7.62" y2="0" width="0.1524" layer="91"/>
 <junction x="0" y="-2.54"/>
+<pinref part="C1" gate="G$1" pin="2"/>
+<wire x1="0" y1="0" x2="0" y2="-2.54" width="0.1524" layer="91"/>
+</segment>
+<segment>
 <pinref part="C3" gate="G$1" pin="2"/>
-<wire x1="7.62" y1="-2.54" x2="20.32" y2="-2.54" width="0.1524" layer="91"/>
 <wire x1="20.32" y1="-2.54" x2="20.32" y2="0" width="0.1524" layer="91"/>
-<junction x="7.62" y="-2.54"/>
 <pinref part="C7" gate="G$1" pin="2"/>
 <wire x1="20.32" y1="-2.54" x2="33.02" y2="-2.54" width="0.1524" layer="91"/>
 <wire x1="33.02" y1="-2.54" x2="33.02" y2="0" width="0.1524" layer="91"/>
-<junction x="20.32" y="-2.54"/>
 <pinref part="C8" gate="G$1" pin="2"/>
 <wire x1="33.02" y1="-2.54" x2="40.64" y2="-2.54" width="0.1524" layer="91"/>
 <wire x1="40.64" y1="-2.54" x2="40.64" y2="0" width="0.1524" layer="91"/>
@@ -10259,6 +10264,9 @@ AGND - Analog ground</text>
 <wire x1="55.88" y1="-2.54" x2="63.5" y2="-2.54" width="0.1524" layer="91"/>
 <wire x1="63.5" y1="-2.54" x2="63.5" y2="0" width="0.1524" layer="91"/>
 <junction x="55.88" y="-2.54"/>
+<pinref part="GND44" gate="1" pin="GND"/>
+<wire x1="63.5" y1="-5.08" x2="63.5" y2="-2.54" width="0.1524" layer="91"/>
+<junction x="63.5" y="-2.54"/>
 </segment>
 <segment>
 <pinref part="C19" gate="G$1" pin="2"/>
@@ -10343,6 +10351,16 @@ AGND - Analog ground</text>
 <pinref part="D1" gate="G$1" pin="C"/>
 <wire x1="96.52" y1="68.58" x2="96.52" y2="78.74" width="0.1524" layer="91"/>
 <junction x="96.52" y="78.74"/>
+</segment>
+<segment>
+<pinref part="C1" gate="G$1" pin="1"/>
+<pinref part="C2" gate="G$1" pin="1"/>
+<wire x1="7.62" y1="10.16" x2="7.62" y2="7.62" width="0.1524" layer="91"/>
+<wire x1="0" y1="10.16" x2="7.62" y2="10.16" width="0.1524" layer="91"/>
+<wire x1="0" y1="10.16" x2="0" y2="7.62" width="0.1524" layer="91"/>
+<pinref part="P+36" gate="1" pin="+5V"/>
+<wire x1="0" y1="10.16" x2="0" y2="12.7" width="0.1524" layer="91"/>
+<junction x="0" y="10.16"/>
 </segment>
 </net>
 <net name="+3V3" class="1">
@@ -10607,21 +10625,11 @@ AGND - Analog ground</text>
 <net name="VCC" class="1">
 <segment>
 <pinref part="P+12" gate="VCC" pin="VCC"/>
-<pinref part="C1" gate="G$1" pin="1"/>
-<wire x1="0" y1="12.7" x2="0" y2="10.16" width="0.1524" layer="91"/>
-<pinref part="C2" gate="G$1" pin="1"/>
-<wire x1="0" y1="10.16" x2="0" y2="7.62" width="0.1524" layer="91"/>
-<wire x1="0" y1="10.16" x2="7.62" y2="10.16" width="0.1524" layer="91"/>
-<wire x1="7.62" y1="10.16" x2="7.62" y2="7.62" width="0.1524" layer="91"/>
-<junction x="0" y="10.16"/>
 <pinref part="C3" gate="G$1" pin="1"/>
-<wire x1="7.62" y1="10.16" x2="20.32" y2="10.16" width="0.1524" layer="91"/>
 <wire x1="20.32" y1="10.16" x2="20.32" y2="7.62" width="0.1524" layer="91"/>
-<junction x="7.62" y="10.16"/>
 <pinref part="C7" gate="G$1" pin="1"/>
 <wire x1="20.32" y1="10.16" x2="33.02" y2="10.16" width="0.1524" layer="91"/>
 <wire x1="33.02" y1="10.16" x2="33.02" y2="7.62" width="0.1524" layer="91"/>
-<junction x="20.32" y="10.16"/>
 <pinref part="C8" gate="G$1" pin="1"/>
 <wire x1="33.02" y1="10.16" x2="40.64" y2="10.16" width="0.1524" layer="91"/>
 <wire x1="40.64" y1="10.16" x2="40.64" y2="7.62" width="0.1524" layer="91"/>
@@ -10640,6 +10648,8 @@ AGND - Analog ground</text>
 <junction x="55.88" y="10.16"/>
 <pinref part="TP1" gate="G$1" pin="TP"/>
 <wire x1="48.26" y1="12.7" x2="48.26" y2="10.16" width="0.1524" layer="91"/>
+<wire x1="63.5" y1="10.16" x2="63.5" y2="12.7" width="0.1524" layer="91"/>
+<junction x="63.5" y="10.16"/>
 </segment>
 <segment>
 <pinref part="P+13" gate="VCC" pin="VCC"/>
