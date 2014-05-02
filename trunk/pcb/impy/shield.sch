@@ -10005,6 +10005,7 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <part name="GND44" library="supply1" deviceset="GND" device=""/>
 <part name="P+36" library="supply1" deviceset="+5V" device=""/>
 <part name="VDD7" library="supply1" deviceset="VDD" device=""/>
+<part name="GND45" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -10132,6 +10133,7 @@ AGND - Analog ground</text>
 <instance part="P+36" gate="1" x="0" y="15.24" smashed="yes" rot="MR0">
 <attribute name="VALUE" x="-2.54" y="17.78" size="1.778" layer="96" rot="MR180"/>
 </instance>
+<instance part="GND45" gate="1" x="58.42" y="20.32" rot="R270"/>
 </instances>
 <busses>
 </busses>
@@ -10301,6 +10303,11 @@ AGND - Analog ground</text>
 <pinref part="GND43" gate="1" pin="GND"/>
 <pinref part="C21" gate="G$1" pin="2"/>
 <wire x1="200.66" y1="-5.08" x2="200.66" y2="0" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="GND45" gate="1" pin="GND"/>
+<pinref part="JP2" gate="A" pin="49"/>
+<wire x1="60.96" y1="20.32" x2="71.12" y2="20.32" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="+5V" class="1">
