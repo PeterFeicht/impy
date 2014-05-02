@@ -2741,6 +2741,8 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="38.4175" y1="65.405" x2="35.8775" y2="62.865" width="0.9144" layer="16"/>
 <wire x1="35.8775" y1="62.865" x2="30.48" y2="57.4675" width="0.9144" layer="16"/>
 <wire x1="30.48" y1="57.4675" x2="30.48" y2="39.6875" width="0.9144" layer="16"/>
+<contactref element="JP7" pad="4"/>
+<wire x1="47.73" y1="77.4975" x2="99.695" y2="57.15" width="0" layer="19" extent="1-1"/>
 <wire x1="-24.13" y1="60.96" x2="30.48" y2="57.4675" width="0" layer="19" extent="16-16"/>
 <wire x1="-26.67" y1="60.96" x2="-24.13" y2="60.96" width="0" layer="19" extent="1-1"/>
 </signal>
@@ -3517,7 +3519,6 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <contactref element="U9" pad="8"/>
 <contactref element="U11" pad="8"/>
 <contactref element="U11" pad="7"/>
-<contactref element="JP7" pad="4"/>
 <contactref element="J2" pad="2"/>
 <contactref element="J2" pad="5"/>
 <contactref element="C11" pad="1"/>
@@ -3651,7 +3652,6 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="56.515" y1="60.96" x2="56.515" y2="58.42" width="0.9144" layer="16"/>
 <wire x1="79.0575" y1="91.1225" x2="88.2015" y2="91.4019" width="0" layer="19" extent="16-16"/>
 <wire x1="66.675" y1="65.7225" x2="71.755" y2="81.495" width="0" layer="19" extent="1-16"/>
-<wire x1="99.695" y1="57.15" x2="79.375" y2="57.4675" width="0" layer="19" extent="1-1"/>
 <wire x1="2.12" y1="74.13625" x2="42.125" y2="48.5775" width="0" layer="19" extent="1-16"/>
 <wire x1="0.42" y1="80.48625" x2="2.12" y2="76.2" width="0" layer="19" extent="16-16"/>
 <wire x1="-3.39" y1="74.77125" x2="2.12" y2="74.13625" width="0" layer="19" extent="16-16"/>
