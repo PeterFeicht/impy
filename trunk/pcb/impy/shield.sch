@@ -9884,8 +9884,6 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <part name="R11" library="rcl" deviceset="R-EU_" device="R0603" value="2k2"/>
 <part name="P+30" library="supply1" deviceset="VCC" device=""/>
 <part name="SJ2" library="jumper" deviceset="SJ" device="" value="ETH_CLK"/>
-<part name="JP9" library="jumper" deviceset="JP1Q" device="" value="BOOT0"/>
-<part name="VDD5" library="supply1" deviceset="VDD" device=""/>
 <part name="S2" library="parts" deviceset="FSM4JSMATR" device=""/>
 <part name="S1" library="parts" deviceset="FSM4JSMATR" device=""/>
 <part name="VDD6" library="supply1" deviceset="VDD" device=""/>
@@ -10099,8 +10097,6 @@ AGND - Analog ground</text>
 <instance part="C21" gate="G$1" x="200.66" y="5.08" rot="MR0"/>
 <instance part="C22" gate="G$1" x="63.5" y="5.08"/>
 <instance part="SJ2" gate="1" x="48.26" y="88.9"/>
-<instance part="JP9" gate="A" x="50.8" y="45.72"/>
-<instance part="VDD5" gate="G$1" x="50.8" y="30.48" rot="R180"/>
 <instance part="S2" gate="G$1" x="190.5" y="58.42"/>
 <instance part="S1" gate="G$1" x="190.5" y="73.66"/>
 <instance part="VDD6" gate="G$1" x="203.2" y="78.74"/>
@@ -10155,11 +10151,6 @@ AGND - Analog ground</text>
 <pinref part="VDD3" gate="G$1" pin="VDD"/>
 <pinref part="JP2" gate="A" pin="22"/>
 <wire x1="86.36" y1="55.88" x2="78.74" y2="55.88" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="JP9" gate="A" pin="1"/>
-<wire x1="50.8" y1="33.02" x2="50.8" y2="38.1" width="0.1524" layer="91"/>
-<pinref part="VDD5" gate="G$1" pin="VDD"/>
 </segment>
 <segment>
 <pinref part="S1" gate="G$1" pin="1@B"/>
@@ -10422,9 +10413,7 @@ AGND - Analog ground</text>
 <segment>
 <pinref part="JP2" gate="A" pin="21"/>
 <label x="63.5" y="55.88" size="1.778" layer="95" rot="R180"/>
-<pinref part="JP9" gate="A" pin="2"/>
-<wire x1="50.8" y1="53.34" x2="50.8" y2="55.88" width="0.1524" layer="91"/>
-<wire x1="50.8" y1="55.88" x2="71.12" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="63.5" y1="55.88" x2="71.12" y2="55.88" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="PE1" class="0">
