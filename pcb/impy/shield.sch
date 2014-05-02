@@ -9809,7 +9809,6 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <part name="P+14" library="supply1" deviceset="+5V" device=""/>
 <part name="JP7" library="con-lstb" deviceset="MA04-1" device="" value="I2C"/>
 <part name="GND16" library="supply1" deviceset="GND" device=""/>
-<part name="P+15" library="supply1" deviceset="VCC" device=""/>
 <part name="U6" library="parts" deviceset="DP83848" device="" technology="I"/>
 <part name="C7" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
 <part name="C8" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
@@ -10007,6 +10006,7 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <part name="R20" library="rcl" deviceset="R-EU_" device="R0603" value="10k"/>
 <part name="GND44" library="supply1" deviceset="GND" device=""/>
 <part name="P+36" library="supply1" deviceset="+5V" device=""/>
+<part name="VDD7" library="supply1" deviceset="VDD" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -12236,7 +12236,6 @@ AGND - Analog ground</text>
 <instance part="P+14" gate="1" x="-2.54" y="45.72"/>
 <instance part="JP7" gate="1" x="5.08" y="81.28"/>
 <instance part="GND16" gate="1" x="15.24" y="71.12"/>
-<instance part="P+15" gate="VCC" x="15.24" y="88.9"/>
 <instance part="U6" gate="G$1" x="104.14" y="43.18"/>
 <instance part="J2" gate="G$1" x="208.28" y="53.34"/>
 <instance part="GND17" gate="1" x="210.82" y="27.94"/>
@@ -12329,6 +12328,7 @@ AGND - Analog ground</text>
 <attribute name="TP_SIGNAL_NAME" x="8.89" y="44.45" size="1.778" layer="97"/>
 </instance>
 <instance part="TP14" gate="G$1" x="88.9" y="7.62" rot="R180"/>
+<instance part="VDD7" gate="G$1" x="15.24" y="88.9"/>
 </instances>
 <busses>
 </busses>
@@ -12473,12 +12473,6 @@ AGND - Analog ground</text>
 </segment>
 </net>
 <net name="VCC" class="1">
-<segment>
-<pinref part="JP7" gate="1" pin="4"/>
-<pinref part="P+15" gate="VCC" pin="VCC"/>
-<wire x1="12.7" y1="83.82" x2="15.24" y2="83.82" width="0.1524" layer="91"/>
-<wire x1="15.24" y1="83.82" x2="15.24" y2="86.36" width="0.1524" layer="91"/>
-</segment>
 <segment>
 <pinref part="P+18" gate="VCC" pin="VCC"/>
 <wire x1="177.8" y1="68.58" x2="177.8" y2="63.5" width="0.1524" layer="91"/>
@@ -12911,6 +12905,14 @@ AGND - Analog ground</text>
 <pinref part="J2" gate="G$1" pin="CG"/>
 <pinref part="R10" gate="G$1" pin="2"/>
 <wire x1="195.58" y1="40.64" x2="190.5" y2="40.64" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="VDD" class="1">
+<segment>
+<pinref part="JP7" gate="1" pin="4"/>
+<wire x1="12.7" y1="83.82" x2="15.24" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="15.24" y1="83.82" x2="15.24" y2="86.36" width="0.1524" layer="91"/>
+<pinref part="VDD7" gate="G$1" pin="VDD"/>
 </segment>
 </net>
 </nets>
