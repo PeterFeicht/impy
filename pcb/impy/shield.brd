@@ -2891,6 +2891,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="40.3225" y1="44.1325" x2="36.5125" y2="44.1325" width="0.3556" layer="1"/>
 <wire x1="36.5125" y1="44.1325" x2="35.8775" y2="43.4975" width="0.3556" layer="1"/>
 <via x="35.8775" y="43.4975" extent="1-16" drill="0.8" shape="octagon"/>
+<contactref element="JP2" pad="49"/>
 <wire x1="-73.9775" y1="38.9925" x2="-79.6925" y2="41.3775" width="0" layer="19" extent="1-1"/>
 <wire x1="-73.9875" y1="38.4385" x2="-73.9775" y2="38.9925" width="0" layer="19" extent="1-1"/>
 <wire x1="-67.6275" y1="49.1525" x2="-73.9775" y2="38.9925" width="0" layer="19" extent="1-1"/>
