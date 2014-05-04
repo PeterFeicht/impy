@@ -10596,13 +10596,6 @@ AGND - Analog ground</text>
 <label x="12.7" y="48.26" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
-<net name="PE11" class="0">
-<segment>
-<pinref part="JP1" gate="A" pin="29"/>
-<wire x1="20.32" y1="45.72" x2="12.7" y2="45.72" width="0.1524" layer="91"/>
-<label x="12.7" y="45.72" size="1.778" layer="95" rot="R180"/>
-</segment>
-</net>
 <net name="PE12" class="0">
 <segment>
 <pinref part="JP1" gate="A" pin="30"/>
