@@ -10006,6 +10006,7 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <part name="P+36" library="supply1" deviceset="+5V" device=""/>
 <part name="VDD7" library="supply1" deviceset="VDD" device=""/>
 <part name="GND45" library="supply1" deviceset="GND" device=""/>
+<part name="AGND15" library="supply1" deviceset="AGND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -10969,6 +10970,9 @@ AGND - Analog ground</text>
 <instance part="TP11" gate="G$1" x="35.56" y="88.9"/>
 <instance part="AGND14" gate="VR1" x="35.56" y="81.28" rot="MR0"/>
 <instance part="R20" gate="G$1" x="147.32" y="58.42"/>
+<instance part="AGND15" gate="VR1" x="111.76" y="53.34" smashed="yes">
+<attribute name="VALUE" x="111.76" y="55.88" size="1.778" layer="96" rot="R180"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -11125,6 +11129,12 @@ AGND - Analog ground</text>
 <pinref part="TP11" gate="G$1" pin="TP"/>
 <wire x1="35.56" y1="83.82" x2="35.56" y2="86.36" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="U5" gate="G$1" pin="A3"/>
+<pinref part="AGND15" gate="VR1" pin="AGND"/>
+<wire x1="114.3" y1="58.42" x2="111.76" y2="58.42" width="0.1524" layer="91"/>
+<wire x1="111.76" y1="58.42" x2="111.76" y2="55.88" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="PB6" class="0">
 <segment>
@@ -11272,13 +11282,6 @@ AGND - Analog ground</text>
 <pinref part="U5" gate="G$1" pin="A2"/>
 <wire x1="111.76" y1="60.96" x2="114.3" y2="60.96" width="0.1524" layer="91"/>
 <label x="111.76" y="60.96" size="1.778" layer="95" rot="R180"/>
-</segment>
-</net>
-<net name="PE11" class="0">
-<segment>
-<pinref part="U5" gate="G$1" pin="A3"/>
-<wire x1="111.76" y1="58.42" x2="114.3" y2="58.42" width="0.1524" layer="91"/>
-<label x="111.76" y="58.42" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
 <net name="N$6" class="2">
