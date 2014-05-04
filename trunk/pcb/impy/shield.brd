@@ -4230,16 +4230,17 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <signal name="PE2">
 <contactref element="JP2" pad="15"/>
 <contactref element="J3" pad="3"/>
-<wire x1="43.3975" y1="95.1175" x2="43.3975" y2="89.1175" width="0.3556" layer="1"/>
-<wire x1="43.3975" y1="89.1175" x2="38.4175" y2="84.1375" width="0.3556" layer="1"/>
-<wire x1="38.4175" y1="84.1375" x2="22.86" y2="84.1375" width="0.3556" layer="1"/>
-<via x="22.86" y="84.1375" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="24.13" y1="45.72" x2="21.9075" y2="45.72" width="0.3556" layer="16"/>
-<via x="21.9075" y="45.72" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="21.9075" y1="45.72" x2="21.9075" y2="69.215" width="0.3556" layer="1"/>
-<via x="21.9075" y="69.215" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="21.9075" y1="69.215" x2="22.86" y2="70.1675" width="0.3556" layer="16"/>
-<wire x1="22.86" y1="70.1675" x2="22.86" y2="84.1375" width="0.3556" layer="16"/>
+<wire x1="24.13" y1="45.72" x2="25.4" y2="46.99" width="0.3556" layer="16"/>
+<wire x1="25.4" y1="46.99" x2="25.4" y2="56.515" width="0.3556" layer="16"/>
+<wire x1="25.4" y1="56.515" x2="26.035" y2="57.15" width="0.3556" layer="16"/>
+<wire x1="26.035" y1="57.15" x2="28.8925" y2="57.15" width="0.3556" layer="16"/>
+<wire x1="28.8925" y1="57.15" x2="37.1475" y2="65.405" width="0.3556" layer="16"/>
+<wire x1="37.1475" y1="65.405" x2="37.1475" y2="76.2" width="0.3556" layer="16"/>
+<wire x1="37.1475" y1="76.2" x2="44.45" y2="83.5025" width="0.3556" layer="16"/>
+<wire x1="44.45" y1="83.5025" x2="44.45" y2="84.455" width="0.3556" layer="16"/>
+<via x="44.45" y="84.455" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="44.45" y1="84.455" x2="44.45" y2="94.065" width="0.3556" layer="1"/>
+<wire x1="44.45" y1="94.065" x2="43.3975" y2="95.1175" width="0.3556" layer="1"/>
 </signal>
 <signal name="PB10">
 <contactref element="JP1" pad="34"/>
