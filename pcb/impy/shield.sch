@@ -10041,7 +10041,7 @@ AGND - Analog ground</text>
 <attribute name="VALUE" x="93.98" y="86.36" size="1.778" layer="96" rot="MR180"/>
 </instance>
 <instance part="+3V1" gate="G$1" x="88.9" y="76.2" smashed="yes" rot="MR90">
-<attribute name="VALUE" x="86.36" y="73.66" size="1.778" layer="96" rot="MR180"/>
+<attribute name="VALUE" x="88.9" y="76.2" size="1.778" layer="96" rot="MR180"/>
 </instance>
 <instance part="+3V2" gate="G$1" x="60.96" y="76.2" smashed="yes" rot="R90">
 <attribute name="VALUE" x="58.42" y="76.2" size="1.778" layer="96" rot="R180"/>
@@ -10575,20 +10575,6 @@ AGND - Analog ground</text>
 <label x="63.5" y="40.64" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
-<net name="PE12" class="0">
-<segment>
-<pinref part="JP1" gate="A" pin="30"/>
-<wire x1="27.94" y1="45.72" x2="35.56" y2="45.72" width="0.1524" layer="91"/>
-<label x="35.56" y="45.72" size="1.778" layer="95"/>
-</segment>
-</net>
-<net name="PE13" class="0">
-<segment>
-<pinref part="JP1" gate="A" pin="31"/>
-<wire x1="12.7" y1="43.18" x2="20.32" y2="43.18" width="0.1524" layer="91"/>
-<label x="12.7" y="43.18" size="1.778" layer="95" rot="R180"/>
-</segment>
-</net>
 <net name="VCC" class="1">
 <segment>
 <pinref part="P+12" gate="VCC" pin="VCC"/>
@@ -10817,6 +10803,20 @@ AGND - Analog ground</text>
 <pinref part="JP2" gate="A" pin="25"/>
 <wire x1="71.12" y1="50.8" x2="63.5" y2="50.8" width="0.1524" layer="91"/>
 <label x="63.5" y="50.8" size="1.778" layer="95" rot="R180"/>
+</segment>
+</net>
+<net name="PE5" class="0">
+<segment>
+<pinref part="JP2" gate="A" pin="14"/>
+<wire x1="78.74" y1="66.04" x2="86.36" y2="66.04" width="0.1524" layer="91"/>
+<label x="86.36" y="66.04" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="PE6" class="0">
+<segment>
+<pinref part="JP2" gate="A" pin="11"/>
+<wire x1="71.12" y1="68.58" x2="63.5" y2="68.58" width="0.1524" layer="91"/>
+<label x="63.5" y="68.58" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
 </nets>
@@ -11212,14 +11212,14 @@ AGND - Analog ground</text>
 <junction x="60.96" y="119.38"/>
 </segment>
 </net>
-<net name="PE13" class="0">
+<net name="PE6" class="0">
 <segment>
 <pinref part="U2" gate="G$1" pin="A1"/>
 <wire x1="71.12" y1="134.62" x2="68.58" y2="134.62" width="0.1524" layer="91"/>
 <label x="68.58" y="134.62" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
-<net name="PE12" class="0">
+<net name="PE5" class="0">
 <segment>
 <pinref part="U2" gate="G$1" pin="A0"/>
 <wire x1="71.12" y1="137.16" x2="68.58" y2="137.16" width="0.1524" layer="91"/>
