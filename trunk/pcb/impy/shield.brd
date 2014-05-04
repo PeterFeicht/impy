@@ -2607,15 +2607,15 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <element name="S1" library="parts" package="FSM" value="FSM4JSMATR" x="43.18" y="75.2475" rot="R270">
 <attribute name="RS" value="718-2455" x="36.83" y="-8.5725" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="JP10" library="jumper" package="JP1" value="VBUS" x="35.2425" y="8.89"/>
+<element name="JP10" library="jumper" package="JP1" value="VBUS" x="35.2425" y="11.43"/>
 <element name="J3" library="parts" package="JACK-SMD2.5" value="5V" x="49.8475" y="101.9175" rot="R270">
 <attribute name="RS" value="476-157" x="49.8475" y="101.9175" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
 <element name="U12" library="parts" package="SOT23-6" value="MIC2009A-1YM6" x="15.5575" y="41.275" rot="R270">
 <attribute name="RS" value="727-4832" x="15.5575" y="41.275" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="D1" library="parts" package="DO214AC" value="STPS1L30A" x="35.2425" y="14.9225" rot="R270">
-<attribute name="RS" value="485-8061" x="35.2425" y="14.9225" size="1.778" layer="27" rot="R270" display="off"/>
+<element name="D1" library="parts" package="DO214AC" value="STPS1L30A" x="30.48" y="14.9225" rot="R270">
+<attribute name="RS" value="485-8061" x="30.48" y="14.9225" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
 <element name="R12" library="rcl" package="R0603" value="510R" x="16.1925" y="43.815" rot="R180"/>
 <element name="R13" library="rcl" package="R0603" value="510R" x="41.275" y="10.16"/>
@@ -2979,11 +2979,10 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="43.4975" y1="72.0725" x2="40.64" y2="69.215" width="0.9144" layer="16"/>
 <wire x1="53.975" y1="13.335" x2="52.49" y2="14.82" width="0.3556" layer="1"/>
 <wire x1="52.49" y1="14.82" x2="51.1175" y2="14.82" width="0.3556" layer="1"/>
-<wire x1="28.8925" y1="20.0025" x2="31.9225" y2="16.9725" width="0.9144" layer="1"/>
-<wire x1="35.2425" y1="16.9725" x2="31.9225" y2="16.9725" width="0.9144" layer="1"/>
-<wire x1="35.2425" y1="16.9725" x2="44.305" y2="16.9725" width="0.9144" layer="1"/>
 <wire x1="44.305" y1="16.9725" x2="44.7675" y2="16.51" width="0.9144" layer="1"/>
-<wire x1="28.8925" y1="20.0025" x2="28.8925" y2="40.64" width="0.9144" layer="1"/>
+<wire x1="28.8925" y1="18.56" x2="28.8925" y2="40.64" width="0.9144" layer="1"/>
+<wire x1="28.8925" y1="18.56" x2="30.48" y2="16.9725" width="0.9144" layer="1"/>
+<wire x1="30.48" y1="16.9725" x2="44.305" y2="16.9725" width="0.9144" layer="1"/>
 </signal>
 <signal name="+3V3" class="1">
 <contactref element="JP2" pad="5"/>
@@ -4138,7 +4137,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <signal name="PA9">
 <contactref element="JP2" pad="44"/>
 <contactref element="JP10" pad="1"/>
-<wire x1="26.67" y1="10.16" x2="35.2425" y2="7.62" width="0" layer="19" extent="1-1"/>
+<wire x1="35.2425" y1="10.16" x2="26.67" y2="10.16" width="0.9144" layer="16"/>
 </signal>
 <signal name="PE2">
 <contactref element="JP2" pad="15"/>
@@ -4163,7 +4162,10 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <signal name="N$37">
 <contactref element="JP10" pad="2"/>
 <contactref element="D1" pad="A"/>
-<wire x1="35.2425" y1="10.16" x2="35.2425" y2="12.8725" width="0.9144" layer="1"/>
+<wire x1="35.2425" y1="12.7" x2="33.02" y2="12.7" width="0.9144" layer="16"/>
+<via x="33.02" y="12.7" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="33.02" y1="12.7" x2="30.6525" y2="12.7" width="0.9144" layer="1"/>
+<wire x1="30.6525" y1="12.7" x2="30.48" y2="12.8725" width="0.9144" layer="1"/>
 </signal>
 <signal name="N$38">
 <contactref element="U12" pad="5"/>
