@@ -9894,7 +9894,7 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <part name="U12" library="parts" deviceset="MIC2009A-1" device="YM6"/>
 <part name="GND35" library="supply1" deviceset="GND" device=""/>
 <part name="D1" library="parts" deviceset="STPS1L30" device="A"/>
-<part name="R12" library="rcl" deviceset="R-EU_" device="R0603" value="300R"/>
+<part name="R12" library="rcl" deviceset="R-EU_" device="R0603" value="510R"/>
 <part name="GND40" library="supply1" deviceset="GND" device=""/>
 <part name="GND41" library="supply1" deviceset="GND" device=""/>
 <part name="R13" library="rcl" deviceset="R-EU_" device="R0603" value="510R"/>
