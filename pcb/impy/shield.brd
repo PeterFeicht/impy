@@ -2617,7 +2617,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <element name="D1" library="parts" package="DO214AC" value="STPS1L30A" x="35.2425" y="17.4625" rot="R270">
 <attribute name="RS" value="485-8061" x="35.2425" y="17.4625" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="R12" library="rcl" package="R0603" value="300R" x="16.1925" y="43.815" rot="R180"/>
+<element name="R12" library="rcl" package="R0603" value="510R" x="16.1925" y="43.815" rot="R180"/>
 <element name="R13" library="rcl" package="R0603" value="510R" x="41.275" y="10.16"/>
 <element name="U10" library="parts" package="TSOT23-5" value="LTC3406AB" x="13.6525" y="53.975">
 <attribute name="RS" value="761-9409" x="13.6525" y="53.975" size="1.778" layer="27" display="off"/>
