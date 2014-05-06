@@ -143,6 +143,20 @@
 <vertex x="54.9275" y="9.2075"/>
 <vertex x="54.9275" y="-5.08"/>
 </polygon>
+<text x="-19.3675" y="11.1125" size="1.6764" layer="1" font="vector" align="top-left">mini Impedance Spectrometer
+Peter Feichtinger 2014</text>
+<text x="-19.3675" y="5.08" size="1.6764" layer="1" font="vector" align="top-left">REV 1.0</text>
+<wire x1="-19.685" y1="6.19125" x2="19.05" y2="6.19125" width="0.254" layer="41"/>
+<wire x1="19.05" y1="6.19125" x2="19.05" y2="11.58875" width="0.254" layer="41"/>
+<wire x1="19.05" y1="11.58875" x2="-19.685" y2="11.58875" width="0.254" layer="41"/>
+<wire x1="-19.685" y1="11.58875" x2="-19.685" y2="6.19125" width="0.254" layer="41"/>
+<wire x1="-19.685" y1="5.715" x2="-19.685" y2="2.8575" width="0.254" layer="41"/>
+<wire x1="-19.685" y1="2.8575" x2="-8.89" y2="2.8575" width="0.254" layer="41"/>
+<wire x1="-8.89" y1="2.8575" x2="-8.89" y2="5.715" width="0.254" layer="41"/>
+<wire x1="-8.89" y1="5.715" x2="-19.685" y2="5.715" width="0.254" layer="41"/>
+<text x="-19.3675" y="11.1125" size="1.6764" layer="51" font="vector" align="top-left">mini Impedance Spectrometer
+Peter Feichtinger 2014</text>
+<text x="-19.3675" y="5.08" size="1.6764" layer="51" font="vector" align="top-left">REV 1.0</text>
 </plain>
 <libraries>
 <library name="parts">
@@ -5535,6 +5549,8 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <approved hash="5,16,2d0ad745e7280480"/>
 <approved hash="5,16,5d3902c131280213"/>
 <approved hash="5,16,95504c454aa401ab"/>
+<approved hash="3,1,e9aa13435342a9ab"/>
+<approved hash="3,1,d4955037d07c54de"/>
 <approved hash="3,1,10685d0e5d09106f"/>
 <approved hash="3,1,876dca0bca0a876c"/>
 <approved hash="3,1,7663bb05bb047662"/>
@@ -5665,23 +5681,23 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <approved hash="3,1,ec8a77b671a8ea94"/>
 <approved hash="3,1,b91b35e734eab816"/>
 <approved hash="3,1,394a05d6052939b5"/>
+<approved hash="19,1,b8cff6ab1be6bec8"/>
 <approved hash="19,1,babb581640579657"/>
 <approved hash="19,1,ac44e29e0009b6c8"/>
 <approved hash="19,1,b2a27c2d819d2ee8"/>
-<approved hash="19,1,b8cff6ab1be6bec8"/>
+<approved hash="19,1,c2b406d119b9e2f5"/>
 <approved hash="19,1,d22c0c8683c572f4"/>
 <approved hash="19,1,c93e186f8c3c69c0"/>
 <approved hash="19,1,ca96123a0590ea6b"/>
-<approved hash="19,1,c2b406d119b9e2f5"/>
 <approved hash="5,1,3938c75b8e083519"/>
 <approved hash="5,1,2326c69fb1f050ff"/>
 <approved hash="5,1,d947275b8e083566"/>
 <approved hash="5,1,c359269fb1f05080"/>
 <approved hash="5,1,f942075b8e083563"/>
-<approved hash="5,1,835f669fb1f05086"/>
 <approved hash="5,1,9941675b8e083560"/>
-<approved hash="5,1,a352469fb1f0508b"/>
+<approved hash="5,1,835f669fb1f05086"/>
 <approved hash="5,1,b94c475b8e08356d"/>
+<approved hash="5,1,a352469fb1f0508b"/>
 <approved hash="5,1,5948a75b8e083569"/>
 <approved hash="5,1,7957875b8e083576"/>
 <approved hash="5,1,d38fc585c3b89210"/>
@@ -5689,41 +5705,41 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <approved hash="5,1,7ccda28582c942e5"/>
 <approved hash="5,1,0e6804c3423c8eb3"/>
 <approved hash="5,1,10c2acf25221ee93"/>
-<approved hash="5,1,b31301d8e33cf042"/>
-<approved hash="5,1,1dbdfc8b29b43fa0"/>
 <approved hash="5,1,6fb0d57db651ace0"/>
 <approved hash="5,1,c8d0b24d277e2405"/>
-<approved hash="5,1,60cda6c5b678c012"/>
-<approved hash="5,1,5f62c4d307ff3c32"/>
+<approved hash="5,1,b31301d8e33cf042"/>
+<approved hash="5,1,1dbdfc8b29b43fa0"/>
 <approved hash="5,1,55a25fc35f759686"/>
 <approved hash="5,1,83c011be535a6091"/>
-<approved hash="5,1,feb2627f01533de2"/>
-<approved hash="5,1,7bd2014d277e2407"/>
+<approved hash="5,1,60cda6c5b678c012"/>
+<approved hash="5,1,5f62c4d307ff3c32"/>
 <approved hash="5,1,98e6a6a34770d982"/>
 <approved hash="5,1,aebf4f8b29b43fa2"/>
+<approved hash="5,1,feb2627f01533de2"/>
+<approved hash="5,1,7bd2014d277e2407"/>
 <approved hash="5,1,2867229bae03416d"/>
 <approved hash="5,1,280f31fd702ec96b"/>
-<approved hash="5,1,f008dbc58c0e2e1f"/>
 <approved hash="5,1,c008df5d94bf958e"/>
+<approved hash="5,1,f008dbc58c0e2e1f"/>
 <approved hash="5,1,ee6f55de96f28d3f"/>
-<approved hash="5,1,951c27d7c533d64d"/>
-<approved hash="5,1,3fb2de8b2db43baf"/>
 <approved hash="5,1,49bff372905e8aef"/>
 <approved hash="5,1,eadf904d237e200a"/>
-<approved hash="5,1,31bf2dbf9b7d9919"/>
-<approved hash="5,1,01bf2b5681bf2019"/>
-<approved hash="5,1,7169dad819f41239"/>
+<approved hash="5,1,951c27d7c533d64d"/>
+<approved hash="5,1,3fb2de8b2db43baf"/>
 <approved hash="5,1,dba93dc3574a6cba"/>
 <approved hash="5,1,adcb0fb54d514e9a"/>
+<approved hash="5,1,01bf2b5681bf2019"/>
+<approved hash="5,1,31bf2dbf9b7d9919"/>
+<approved hash="5,1,7169dad819f41239"/>
 <approved hash="5,1,041adba8257bfa4b"/>
 <approved hash="5,1,b0b4518b2db43ba9"/>
-<approved hash="5,1,2e6831be2f49f059"/>
 <approved hash="5,1,d8b901be2f49f6e9"/>
+<approved hash="5,1,2e6831be2f49f059"/>
 <approved hash="5,1,65d91f4d237e200c"/>
-<approved hash="4,1,252d91ee658283e9"/>
 <approved hash="4,1,33e4d0637840d5b5"/>
-<approved hash="4,1,76e4ecf649535106"/>
+<approved hash="4,1,252d91ee658283e9"/>
 <approved hash="4,1,6b088e7d7e464eeb"/>
+<approved hash="4,1,76e4ecf649535106"/>
 <approved hash="4,1,256a7b131d3b8041"/>
 <approved hash="4,1,c556985007fd5dbe"/>
 <approved hash="6,1,11f30d263fe6b00b"/>
@@ -6280,4 +6296,10 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 </errors>
 </board>
 </drawing>
+<compatibility>
+<note version="6.3" minversion="6.2.2" severity="warning">
+Since Version 6.2.2 text objects can contain more than one line,
+which will not be processed correctly with this version.
+</note>
+</compatibility>
 </eagle>
