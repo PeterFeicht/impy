@@ -9817,11 +9817,7 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <part name="GND3" library="supply1" deviceset="GND" device=""/>
 <part name="GND4" library="supply1" deviceset="GND" device=""/>
 <part name="GND5" library="supply1" deviceset="GND" device=""/>
-<part name="GND6" library="supply1" deviceset="GND" device=""/>
-<part name="GND7" library="supply1" deviceset="GND" device=""/>
 <part name="GND8" library="supply1" deviceset="GND" device=""/>
-<part name="VDD1" library="supply1" deviceset="VDD" device=""/>
-<part name="VDD2" library="supply1" deviceset="VDD" device=""/>
 <part name="VDD3" library="supply1" deviceset="VDD" device=""/>
 <part name="GND9" library="supply1" deviceset="GND" device=""/>
 <part name="U1" library="parts" deviceset="AD5933" device="RS" technology="Y"/>
@@ -10098,15 +10094,7 @@ AGND - Analog ground</text>
 <instance part="GND3" gate="1" x="38.1" y="20.32" rot="R90"/>
 <instance part="GND4" gate="1" x="40.64" y="81.28" rot="R90"/>
 <instance part="GND5" gate="1" x="7.62" y="81.28" rot="R270"/>
-<instance part="GND6" gate="1" x="7.62" y="76.2" rot="R270"/>
-<instance part="GND7" gate="1" x="10.16" y="53.34" rot="R270"/>
 <instance part="GND8" gate="1" x="10.16" y="20.32" rot="R270"/>
-<instance part="VDD1" gate="G$1" x="35.56" y="78.74" smashed="yes" rot="R270">
-<attribute name="VALUE" x="35.56" y="78.74" size="1.778" layer="96"/>
-</instance>
-<instance part="VDD2" gate="G$1" x="12.7" y="78.74" smashed="yes" rot="R90">
-<attribute name="VALUE" x="12.7" y="78.74" size="1.778" layer="96" rot="R180"/>
-</instance>
 <instance part="VDD3" gate="G$1" x="93.98" y="60.96" smashed="yes">
 <attribute name="VALUE" x="91.186" y="62.738" size="1.778" layer="96"/>
 </instance>
@@ -10187,16 +10175,6 @@ AGND - Analog ground</text>
 <nets>
 <net name="VDD" class="1">
 <segment>
-<pinref part="VDD1" gate="G$1" pin="VDD"/>
-<pinref part="JP1" gate="A" pin="4"/>
-<wire x1="33.02" y1="78.74" x2="27.94" y2="78.74" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="JP1" gate="A" pin="3"/>
-<pinref part="VDD2" gate="G$1" pin="VDD"/>
-<wire x1="20.32" y1="78.74" x2="15.24" y2="78.74" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="VDD3" gate="G$1" pin="VDD"/>
 <pinref part="JP2" gate="A" pin="22"/>
 <wire x1="93.98" y1="58.42" x2="93.98" y2="55.88" width="0.1524" layer="91"/>
@@ -10228,16 +10206,6 @@ AGND - Analog ground</text>
 <pinref part="GND5" gate="1" pin="GND"/>
 <pinref part="JP1" gate="A" pin="1"/>
 <wire x1="10.16" y1="81.28" x2="20.32" y2="81.28" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="GND6" gate="1" pin="GND"/>
-<pinref part="JP1" gate="A" pin="5"/>
-<wire x1="10.16" y1="76.2" x2="20.32" y2="76.2" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="JP1" gate="A" pin="23"/>
-<pinref part="GND7" gate="1" pin="GND"/>
-<wire x1="20.32" y1="53.34" x2="12.7" y2="53.34" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND8" gate="1" pin="GND"/>
