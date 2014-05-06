@@ -2717,8 +2717,6 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 </elements>
 <signals>
 <signal name="VDD" class="1">
-<contactref element="JP1" pad="4"/>
-<contactref element="JP1" pad="3"/>
 <contactref element="JP2" pad="22"/>
 <contactref element="S1" pad="4"/>
 <contactref element="S1" pad="3"/>
@@ -2742,14 +2740,10 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="49.6625" y1="74.93" x2="47.73" y2="72.9975" width="0.3556" layer="1"/>
 <wire x1="38.4175" y1="66.9925" x2="38.4175" y2="68.2625" width="0.9144" layer="16"/>
 <wire x1="38.4175" y1="68.2625" x2="43.18" y2="73.025" width="0.9144" layer="16"/>
-<wire x1="-24.13" y1="60.96" x2="30.48" y2="57.4675" width="0" layer="19" extent="16-16"/>
-<wire x1="-26.67" y1="60.96" x2="-24.13" y2="60.96" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="GND" class="1">
 <contactref element="JP1" pad="2"/>
 <contactref element="JP1" pad="1"/>
-<contactref element="JP1" pad="5"/>
-<contactref element="JP1" pad="23"/>
 <contactref element="JP1" pad="49"/>
 <contactref element="JP1" pad="50"/>
 <contactref element="JP2" pad="1"/>
@@ -2914,8 +2908,6 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <via x="10.16" y="31.4325" extent="1-16" drill="0.8" shape="octagon"/>
 <wire x1="14.4075" y1="41.275" x2="17.0425" y2="43.815" width="0" layer="19" extent="1-1"/>
 <wire x1="13.335" y1="35.3025" x2="14.4075" y2="41.275" width="0" layer="19" extent="1-1"/>
-<wire x1="-26.67" y1="58.42" x2="-26.67" y2="63.5" width="0" layer="19" extent="1-1"/>
-<wire x1="-26.67" y1="35.56" x2="-26.67" y2="58.42" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="+5V" class="1">
 <contactref element="JP2" pad="3"/>
