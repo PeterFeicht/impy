@@ -9936,7 +9936,7 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <part name="VDD6" library="supply1" deviceset="VDD" device=""/>
 <part name="GND38" library="supply1" deviceset="GND" device=""/>
 <part name="JP10" library="jumper" deviceset="JP1Q" device="" value="VBUS"/>
-<part name="J3" library="parts" deviceset="JACK-PLUG" device="-T2.5" value="5V"/>
+<part name="J3" library="parts" deviceset="JACK-PLUG" device="-S2.5" value="5V"/>
 <part name="GND39" library="supply1" deviceset="GND" device=""/>
 <part name="U12" library="parts" deviceset="MIC2009A-1" device="YM6"/>
 <part name="GND35" library="supply1" deviceset="GND" device=""/>
