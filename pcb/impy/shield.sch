@@ -1330,6 +1330,41 @@ RU-28</description>
 <rectangle x1="-4.373" y1="2.1" x2="-3.373" y2="2.4" layer="51"/>
 <rectangle x1="-4.373" y1="2.6" x2="-3.373" y2="2.9" layer="51"/>
 </package>
+<package name="JACK-THT2.5">
+<description>&lt;b&gt;DC POWER JACK 2.5mm&lt;/b&gt; Right Angle, Through Hole Mount&lt;p&gt;
+Created by Robert Siegler, modified</description>
+<wire x1="0" y1="-4.5" x2="0" y2="-3.2" width="0.1" layer="21"/>
+<wire x1="0" y1="-3.2" x2="0" y2="3.2" width="0.1" layer="21"/>
+<wire x1="0" y1="3.2" x2="0" y2="4.5" width="0.1" layer="21"/>
+<wire x1="3.5" y1="-4.5" x2="3.5" y2="4" width="0.1" layer="21"/>
+<wire x1="3.5" y1="4" x2="3.5" y2="4.5" width="0.1" layer="21"/>
+<wire x1="3.5" y1="-4" x2="12" y2="-4" width="0.1" layer="21"/>
+<wire x1="3.5" y1="4" x2="12" y2="4" width="0.1" layer="21"/>
+<wire x1="12" y1="-4" x2="12" y2="4" width="0.1" layer="21"/>
+<wire x1="12" y1="-4.5" x2="12" y2="-4" width="0.1" layer="21"/>
+<wire x1="12" y1="4" x2="12" y2="4.5" width="0.1" layer="21"/>
+<wire x1="0" y1="4.5" x2="12" y2="4.5" width="0.1" layer="21"/>
+<wire x1="12" y1="-4" x2="14" y2="-4" width="0.1" layer="21"/>
+<wire x1="12" y1="4" x2="14" y2="4" width="0.1" layer="21"/>
+<wire x1="14" y1="4" x2="14.5" y2="4" width="0.1" layer="21"/>
+<wire x1="14.5" y1="-4" x2="14.5" y2="4" width="0.1" layer="21"/>
+<wire x1="14" y1="-4" x2="14" y2="4" width="0.1" layer="21"/>
+<wire x1="0" y1="3.2" x2="9" y2="3.2" width="0.1" layer="21" style="shortdash"/>
+<wire x1="0" y1="-3.2" x2="9" y2="-3.2" width="0.1" layer="21" style="shortdash"/>
+<wire x1="9" y1="-3.2" x2="9" y2="3.2" width="0.1" layer="21" style="shortdash"/>
+<wire x1="2" y1="1.25" x2="9" y2="1.25" width="0.1" layer="21" style="shortdash"/>
+<wire x1="2" y1="-1.25" x2="9" y2="-1.25" width="0.1" layer="21" style="shortdash"/>
+<wire x1="2" y1="1.25" x2="2" y2="-1.25" width="0.1" layer="21" curve="180"/>
+<wire x1="14" y1="-4" x2="14.5" y2="-4" width="0.1" layer="21"/>
+<wire x1="0" y1="-4.5" x2="12" y2="-4.5" width="0.1" layer="21"/>
+<text x="17.78" y="-3.38" size="1.27" layer="27" rot="R90">&gt;VALUE</text>
+<text x="5.51" y="5.08" size="1.27" layer="25">&gt;NAME</text>
+<rectangle x1="7.65" y1="-1.25" x2="7.85" y2="1.25" layer="21"/>
+<hole x="3" y="0" drill="2.2"/>
+<pad name="3" x="10.7" y="-4.8" drill="2.8" shape="octagon"/>
+<pad name="2" x="7.5" y="0" drill="2.8" shape="octagon"/>
+<pad name="1" x="13.8" y="0" drill="2.8" shape="octagon"/>
+</package>
 </packages>
 <symbols>
 <symbol name="AD5933">
@@ -2324,7 +2359,7 @@ Tyco Electronics FSM series surface mount switch</description>
 </deviceset>
 <deviceset name="JACK-PLUG" prefix="J" uservalue="yes">
 <description>&lt;b&gt;DC Power Jack&lt;/b&gt;&lt;br&gt;
-Power Jack, DC, Right Angle, Surface Mount&lt;br&gt;
+Power Jack, DC, Right Angle&lt;br&gt;
 2.5A, 16VDC</description>
 <gates>
 <gate name="G$1" symbol="JACK-PLUG" x="0" y="0"/>
@@ -2339,6 +2374,18 @@ Power Jack, DC, Right Angle, Surface Mount&lt;br&gt;
 <technologies>
 <technology name="">
 <attribute name="RS" value="476-157"/>
+</technology>
+</technologies>
+</device>
+<device name="-T2.5" package="JACK-THT2.5">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+<connect gate="G$1" pin="3" pad="3"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="RS" value="487-836"/>
 </technology>
 </technologies>
 </device>
@@ -9889,7 +9936,7 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <part name="VDD6" library="supply1" deviceset="VDD" device=""/>
 <part name="GND38" library="supply1" deviceset="GND" device=""/>
 <part name="JP10" library="jumper" deviceset="JP1Q" device="" value="VBUS"/>
-<part name="J3" library="parts" deviceset="JACK-PLUG" device="-S2.5" value="5V"/>
+<part name="J3" library="parts" deviceset="JACK-PLUG" device="-T2.5" value="5V"/>
 <part name="GND39" library="supply1" deviceset="GND" device=""/>
 <part name="U12" library="parts" deviceset="MIC2009A-1" device="YM6"/>
 <part name="GND35" library="supply1" deviceset="GND" device=""/>
