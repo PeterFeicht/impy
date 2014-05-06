@@ -10719,18 +10719,6 @@ AGND - Analog ground</text>
 <label x="147.32" y="35.56" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
-<net name="PB10" class="0">
-<segment>
-<pinref part="JP1" gate="A" pin="34"/>
-<wire x1="27.94" y1="40.64" x2="35.56" y2="40.64" width="0.1524" layer="91"/>
-<label x="35.56" y="40.64" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="U12" gate="G$1" pin="EN"/>
-<wire x1="132.08" y1="71.12" x2="129.54" y2="71.12" width="0.1524" layer="91"/>
-<label x="129.54" y="71.12" size="1.778" layer="95" rot="R180"/>
-</segment>
-</net>
 <net name="N$37" class="0">
 <segment>
 <pinref part="JP10" gate="A" pin="2"/>
@@ -10832,6 +10820,18 @@ AGND - Analog ground</text>
 <pinref part="JP2" gate="A" pin="11"/>
 <wire x1="71.12" y1="68.58" x2="63.5" y2="68.58" width="0.1524" layer="91"/>
 <label x="63.5" y="68.58" size="1.778" layer="95" rot="R180"/>
+</segment>
+</net>
+<net name="PC15" class="0">
+<segment>
+<pinref part="JP2" gate="A" pin="10"/>
+<wire x1="78.74" y1="71.12" x2="86.36" y2="71.12" width="0.1524" layer="91"/>
+<label x="86.36" y="71.12" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U12" gate="G$1" pin="EN"/>
+<wire x1="132.08" y1="71.12" x2="129.54" y2="71.12" width="0.1524" layer="91"/>
+<label x="129.54" y="71.12" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
 </nets>

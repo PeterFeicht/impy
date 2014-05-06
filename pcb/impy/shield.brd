@@ -123,6 +123,22 @@
 <wire x1="27.94" y1="95.25" x2="27.94" y2="90.17" width="0.3556" layer="51"/>
 <wire x1="27.94" y1="90.17" x2="25.4" y2="90.17" width="0.3556" layer="51"/>
 <wire x1="25.4" y1="90.17" x2="25.4" y2="95.25" width="0.3556" layer="51"/>
+<polygon width="0.3556" layer="41">
+<vertex x="73.3425" y="79.0575"/>
+<vertex x="73.3425" y="95.5675"/>
+<vertex x="86.995" y="95.5675"/>
+<vertex x="86.995" y="96.52"/>
+<vertex x="94.9325" y="96.52"/>
+<vertex x="94.9325" y="78.105"/>
+<vertex x="86.995" y="78.105"/>
+<vertex x="86.995" y="79.0575"/>
+</polygon>
+<polygon width="0.3556" layer="41">
+<vertex x="40.3225" y="-5.08"/>
+<vertex x="40.3225" y="9.2075"/>
+<vertex x="54.9275" y="9.2075"/>
+<vertex x="54.9275" y="-5.08"/>
+</polygon>
 </plain>
 <libraries>
 <library name="parts">
@@ -2522,8 +2538,8 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <element name="U1" library="parts" package="SSOP16" value="AD5933YRS" x="40.9575" y="42.8625">
 <attribute name="RS" value="709-4816" x="112.0775" y="14.9225" size="1.778" layer="27" display="off"/>
 </element>
-<element name="JP3" library="jumper" package="JP1" value="Icc" x="37.1475" y="66.9925" rot="R270"/>
-<element name="JP4" library="jumper" package="JP1" value="Idd" x="7.62" y="43.4975" rot="R270"/>
+<element name="JP3" library="jumper" package="JP1" value="Icc" x="37.1475" y="66.3575" rot="R270"/>
+<element name="JP4" library="jumper" package="JP1" value="Idd" x="35.8775" y="72.7075" rot="R180"/>
 <element name="SJ1" library="jumper" package="SJ" value="GND" x="38.4175" y="34.29" rot="MR0"/>
 <element name="U4" library="parts" package="SO8" value="M24C08WMN" x="13.97" y="32.7025">
 <attribute name="RS" value="415-1180" x="66.04" y="4.7625" size="1.778" layer="27" display="off"/>
@@ -2549,14 +2565,14 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <attribute name="MPN" value="DP83848IVV" x="19.685" y="36.195" size="1.778" layer="28" rot="MR270" display="off"/>
 </element>
 <element name="C7" library="rcl" package="C0603" value="100n" x="3.81" y="20.6375" rot="R180"/>
-<element name="C8" library="rcl" package="C0603" value="100n" x="-2.54" y="74.77125" rot="MR180"/>
+<element name="C8" library="rcl" package="C0603" value="100n" x="-2.54" y="74.6125" rot="MR180"/>
 <element name="C9" library="rcl" package="C0603" value="100n" x="-15.875" y="82.2325" rot="MR0"/>
-<element name="C10" library="rcl" package="C0603" value="100n" x="-15.08125" y="69.5325" rot="MR90"/>
+<element name="C10" library="rcl" package="C0603" value="100n" x="-15.08125" y="68.8975" rot="MR90"/>
 <element name="J2" library="parts" package="SI-60062-F" value="SI-60062-F" x="84.1375" y="87.3125" rot="R90">
 <attribute name="RS" value="741-8489" x="95.5675" y="119.0625" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
-<element name="C11" library="rcl" package="C0603" value="100n" x="71.755" y="80.645" rot="MR270"/>
-<element name="C12" library="rcl" package="C0603" value="100n" x="77.1525" y="96.52" rot="MR0"/>
+<element name="C11" library="rcl" package="C0603" value="100n" x="76.2" y="80.645" rot="MR0"/>
+<element name="C12" library="rcl" package="C0603" value="100n" x="80.3275" y="87.9475" rot="MR180"/>
 <element name="C13" library="rcl" package="C0603" value="100n" x="1.27" y="85.24875" rot="MR0"/>
 <element name="C14" library="rcl" package="C0603" value="100n" x="1.27" y="80.48625" rot="MR180"/>
 <element name="R1" library="rcl" package="R0603" value="51R" x="-2.54" y="80.48625" rot="MR180"/>
@@ -2564,10 +2580,10 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <element name="R3" library="rcl" package="R0603" value="51R" x="-2.54" y="85.24875" rot="MR180"/>
 <element name="R4" library="rcl" package="R0603" value="51R" x="-2.54" y="87.3125" rot="MR180"/>
 <element name="C15" library="rcl" package="C0603" value="10u" x="-2.54" y="78.4225" rot="MR0"/>
-<element name="C16" library="rcl" package="C0603" value="100n" x="-2.54" y="70.64375" rot="MR0"/>
+<element name="C16" library="rcl" package="C0603" value="100n" x="-2.54" y="70.485" rot="MR0"/>
 <element name="C17" library="rcl" package="C0603" value="100n" x="-19.05" y="75.2475" rot="MR180"/>
-<element name="C18" library="rcl" package="C0603" value="100n" x="-2.54" y="72.7075" rot="MR0"/>
-<element name="R5" library="rcl" package="R0603" value="1k5" x="-26.035" y="67.6275" rot="R270"/>
+<element name="C18" library="rcl" package="C0603" value="100n" x="-2.54" y="72.54875" rot="MR0"/>
+<element name="R5" library="rcl" package="R0603" value="1k5" x="-27.6225" y="66.675"/>
 <element name="JP8" library="con-lstb" package="MA05-1" value="JTAG" x="37.465" y="91.1225" rot="R270">
 <attribute name="OC_NEWARK" value="unknown" x="-33.655" y="44.1325" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="MPN" value="" x="-33.655" y="44.1325" size="1.778" layer="27" rot="R270" display="off"/>
@@ -2576,13 +2592,13 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 </element>
 <element name="RS1" library="rcl" package="R0603" value="2k2" x="-22.06625" y="76.99375" rot="MR180"/>
 <element name="RS2" library="rcl" package="R0603" value="2k2" x="-19.05" y="78.4225" rot="MR0"/>
-<element name="R6" library="rcl" package="R0603" value="4k87 1%" x="-2.54" y="68.58" rot="MR0"/>
-<element name="R7" library="rcl" package="R0603" value="2k2" x="1.27" y="74.13625" rot="MR180"/>
-<element name="R8" library="rcl" package="R0603" value="2k2" x="1.27" y="76.2" rot="MR180"/>
+<element name="R6" library="rcl" package="R0603" value="4k87 1%" x="-2.54" y="68.42125" rot="MR0"/>
+<element name="R7" library="rcl" package="R0603" value="2k2" x="1.905" y="74.13625" rot="MR180"/>
+<element name="R8" library="rcl" package="R0603" value="2k2" x="1.905" y="76.2" rot="MR180"/>
 <element name="RS3" library="rcl" package="R0603" value="2k2" x="-6.82625" y="69.5325" rot="MR90"/>
 <element name="RS4" library="rcl" package="R0603" value="2k2" x="-8.89" y="69.5325" rot="MR90"/>
-<element name="R9" library="rcl" package="R0603" value="150R" x="68.8975" y="81.5975"/>
-<element name="R10" library="rcl" package="R0603" value="150R" x="68.8975" y="79.375"/>
+<element name="R9" library="rcl" package="R0603" value="150R" x="68.8975" y="79.375"/>
+<element name="R10" library="rcl" package="R0603" value="150R" x="68.8975" y="81.5975"/>
 <element name="U7" library="parts" package="SOT23-6" value="MIC2009A-1YM6" x="43.18" y="13.0175" rot="R180">
 <attribute name="RS" value="727-4832" x="17.78" y="76.5175" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
@@ -2592,42 +2608,42 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <element name="U9" library="parts" package="SOIC8" value="SST25VF080B-80-4I-S2" x="2.8575" y="16.8275" rot="R270">
 <attribute name="RS" value="736-9258" x="-2.2225" y="-0.9525" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="C19" library="rcl" package="C3216" value="10u" x="16.51" y="57.4675" rot="R270"/>
-<element name="C21" library="rcl" package="C3216" value="10u LowESR" x="18.57375" y="52.3875" rot="R90"/>
+<element name="C19" library="rcl" package="C3216" value="10u" x="13.6525" y="48.895" rot="R90"/>
+<element name="C21" library="rcl" package="C3216" value="10u LowESR" x="11.58875" y="53.975" rot="R270"/>
 <element name="U11" library="parts" package="SO8" value="23LCV1024-I/SN" x="14.605" y="16.8275" rot="R270">
 <attribute name="RS" value="792-8738" x="10.795" y="-56.8325" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
 <element name="C22" library="rcl" package="C0603" value="100n" x="15.5575" y="20.32" rot="R180"/>
-<element name="C23" library="rcl" package="C0603" value="100n" x="-10.95375" y="69.5325" rot="MR270"/>
-<element name="R11" library="rcl" package="R0603" value="2k2" x="-13.0175" y="69.5325" rot="MR270"/>
+<element name="C23" library="rcl" package="C0603" value="100n" x="-10.95375" y="68.8975" rot="MR270"/>
+<element name="R11" library="rcl" package="R0603" value="2k2" x="-13.0175" y="68.8975" rot="MR270"/>
 <element name="SJ2" library="jumper" package="SJ" value="ETH_CLK" x="-21.2725" y="44.5135" rot="MR270"/>
-<element name="S2" library="parts" package="FSM" value="FSM4JSMATR" x="57.785" y="75.2475" rot="R90">
-<attribute name="RS" value="718-2455" x="86.995" y="94.2975" size="1.778" layer="27" rot="R90" display="off"/>
+<element name="S2" library="parts" package="FSM" value="FSM4JSMATR" x="60.6425" y="74.93" rot="R90">
+<attribute name="RS" value="718-2455" x="89.8525" y="93.98" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
-<element name="S1" library="parts" package="FSM" value="FSM4JSMATR" x="43.18" y="75.2475" rot="R90">
-<attribute name="RS" value="718-2455" x="49.53" y="159.0675" size="1.778" layer="27" rot="R90" display="off"/>
+<element name="S1" library="parts" package="FSM" value="FSM4JSMATR" x="47.3075" y="74.93" rot="R90">
+<attribute name="RS" value="718-2455" x="53.6575" y="158.75" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
 <element name="JP10" library="jumper" package="JP1" value="VBUS" x="35.2425" y="11.43"/>
 <element name="J3" library="parts" package="JACK-SMD2.5" value="5V" x="49.8475" y="101.9175" rot="R270">
 <attribute name="RS" value="476-157" x="49.8475" y="101.9175" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="U12" library="parts" package="SOT23-6" value="MIC2009A-1YM6" x="15.5575" y="41.275" rot="R270">
-<attribute name="RS" value="727-4832" x="15.5575" y="41.275" size="1.778" layer="27" rot="R270" display="off"/>
+<element name="U12" library="parts" package="SOT23-6" value="MIC2009A-1YM6" x="15.875" y="63.8175">
+<attribute name="RS" value="727-4832" x="15.875" y="63.8175" size="1.778" layer="27" display="off"/>
 </element>
 <element name="D1" library="parts" package="DO214AC" value="STPS1L30A" x="30.7975" y="14.9225" rot="R270">
 <attribute name="RS" value="485-8061" x="30.7975" y="14.9225" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="R12" library="rcl" package="R0603" value="510R" x="16.1925" y="43.815" rot="R180"/>
+<element name="R12" library="rcl" package="R0603" value="510R" x="12.3825" y="63.8175"/>
 <element name="R13" library="rcl" package="R0603" value="510R" x="41.275" y="10.16"/>
-<element name="U10" library="parts" package="TSOT23-5" value="LTC3406AB" x="13.6525" y="53.975">
-<attribute name="RS" value="761-9409" x="13.6525" y="53.975" size="1.778" layer="27" display="off"/>
+<element name="U10" library="parts" package="TSOT23-5" value="LTC3406AB" x="16.51" y="52.3875" rot="R180">
+<attribute name="RS" value="761-9409" x="16.51" y="52.3875" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
-<element name="R14" library="rcl" package="R0603" value="680k 1%" x="11.1125" y="58.1025" rot="R90"/>
-<element name="R15" library="rcl" package="R0603" value="150k 1%" x="11.1125" y="54.9275" rot="R90"/>
-<element name="C24" library="rcl" package="C0603" value="22p" x="13.17625" y="58.1025" rot="R270"/>
-<element name="L1" library="parts" package="D63CB" value="A916CY-8R2M" x="14.605" y="48.26" rot="R270">
-<attribute name="RS" value="752-1361" x="14.605" y="48.26" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="INDUCTANCE" value="8.2u" x="14.605" y="48.26" size="1.778" layer="27" rot="R270" display="off"/>
+<element name="R14" library="rcl" package="R0603" value="680k 1%" x="19.05" y="48.26" rot="R270"/>
+<element name="R15" library="rcl" package="R0603" value="150k 1%" x="19.05" y="51.435" rot="R270"/>
+<element name="C24" library="rcl" package="C0603" value="22p" x="16.98625" y="48.26" rot="R90"/>
+<element name="L1" library="parts" package="D63CB" value="A916CY-8R2M" x="15.5575" y="58.1025" rot="R90">
+<attribute name="RS" value="752-1361" x="15.5575" y="58.1025" size="1.778" layer="27" rot="R90" display="off"/>
+<attribute name="INDUCTANCE" value="8.2u" x="15.5575" y="58.1025" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
 <element name="C25" library="rcl" package="C0603" value="100u" x="50.165" y="46.6725" rot="R180"/>
 <element name="RA" library="rcl" package="R0603" value="100k" x="50.165" y="50.8" rot="R270"/>
@@ -2711,8 +2727,8 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <element name="TP13" library="testpad" package="TP20R" value="TPTP20R" x="46.99" y="13.97">
 <attribute name="TP_SIGNAL_NAME" value="USBH_VBUS" x="46.99" y="13.97" size="1.778" layer="27" display="off"/>
 </element>
-<element name="TP14" library="testpad" package="TP20R" value="TPTP20R" x="35.2425" y="73.025">
-<attribute name="TP_SIGNAL_NAME" value="MAC_CLK" x="35.2425" y="73.025" size="1.778" layer="27" display="off"/>
+<element name="TP14" library="testpad" package="TP20R" value="TPTP20R" x="35.2425" y="77.7875">
+<attribute name="TP_SIGNAL_NAME" value="MAC_CLK" x="35.2425" y="77.7875" size="1.778" layer="27" display="off"/>
 </element>
 </elements>
 <signals>
@@ -2721,25 +2737,24 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <contactref element="S1" pad="4"/>
 <contactref element="S1" pad="3"/>
 <contactref element="JP3" pad="2"/>
-<wire x1="38.63" y1="72.9975" x2="43.1525" y2="72.9975" width="0.9144" layer="1"/>
-<wire x1="43.1525" y1="72.9975" x2="43.18" y2="73.025" width="0.9144" layer="1"/>
-<via x="43.18" y="73.025" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="47.73" y1="72.9975" x2="43.2075" y2="72.9975" width="0.9144" layer="1"/>
-<wire x1="43.2075" y1="72.9975" x2="43.18" y2="73.025" width="0.9144" layer="1"/>
+<via x="42.2275" y="70.1675" extent="1-16" drill="0.8" shape="octagon"/>
 <wire x1="28.2575" y1="38.1" x2="30.48" y2="40.3225" width="0.9144" layer="16"/>
-<wire x1="43.2075" y1="72.9975" x2="43.18" y2="73.025" width="0.9144" layer="16"/>
-<wire x1="38.4175" y1="66.9925" x2="38.4175" y2="65.405" width="0.9144" layer="16"/>
+<wire x1="38.4175" y1="66.3575" x2="38.4175" y2="65.405" width="0.9144" layer="16"/>
 <wire x1="30.48" y1="57.4675" x2="30.48" y2="40.3225" width="0.9144" layer="16"/>
 <contactref element="JP7" pad="4"/>
 <wire x1="30.48" y1="57.4675" x2="38.4175" y2="65.405" width="0.9144" layer="16"/>
-<wire x1="49.6625" y1="74.93" x2="79.0575" y2="74.93" width="0.3556" layer="1"/>
-<wire x1="79.0575" y1="74.93" x2="80.01" y2="73.9775" width="0.3556" layer="1"/>
-<via x="80.01" y="73.9775" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="80.01" y1="73.9775" x2="82.2325" y2="73.9775" width="0.3556" layer="16"/>
 <wire x1="26.67" y1="38.1" x2="28.2575" y2="38.1" width="0.9144" layer="16"/>
-<wire x1="49.6625" y1="74.93" x2="47.73" y2="72.9975" width="0.3556" layer="1"/>
-<wire x1="38.4175" y1="66.9925" x2="38.4175" y2="68.2625" width="0.9144" layer="16"/>
-<wire x1="38.4175" y1="68.2625" x2="43.18" y2="73.025" width="0.9144" layer="16"/>
+<wire x1="42.7575" y1="72.68" x2="51.8575" y2="72.68" width="0.9144" layer="1"/>
+<wire x1="38.4175" y1="66.3575" x2="42.2275" y2="70.1675" width="0.9144" layer="16"/>
+<wire x1="42.2275" y1="70.1675" x2="42.2275" y2="72.4675" width="0.9144" layer="1"/>
+<wire x1="42.2275" y1="72.4675" x2="42.7575" y2="72.68" width="0.9144" layer="1"/>
+<wire x1="82.2325" y1="73.9775" x2="82.2325" y2="71.755" width="0.3556" layer="16"/>
+<wire x1="82.2325" y1="71.755" x2="81.5975" y2="71.12" width="0.3556" layer="16"/>
+<wire x1="81.5975" y1="71.12" x2="54.9275" y2="71.12" width="0.3556" layer="16"/>
+<via x="54.2925" y="70.485" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="54.9275" y1="71.12" x2="54.2925" y2="70.485" width="0.3556" layer="16"/>
+<wire x1="51.8575" y1="72.68" x2="52.0975" y2="72.68" width="0.3556" layer="1"/>
+<wire x1="52.0975" y1="72.68" x2="54.2925" y2="70.485" width="0.3556" layer="1"/>
 </signal>
 <signal name="GND" class="1">
 <contactref element="JP1" pad="2"/>
@@ -2801,29 +2816,26 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <contactref element="U10" pad="2"/>
 <contactref element="R15" pad="1"/>
 <contactref element="C21" pad="2"/>
-<wire x1="-1.69" y1="68.58" x2="-1.69" y2="70.64375" width="0.9144" layer="16"/>
 <wire x1="-6.645" y1="77.855" x2="-4.5125" y2="77.855" width="0.254" layer="16"/>
-<wire x1="-1.69" y1="74.77125" x2="-1.69" y2="72.7075" width="0.9144" layer="16"/>
-<wire x1="-1.69" y1="72.7075" x2="-1.69" y2="70.64375" width="0.9144" layer="16"/>
 <wire x1="-13.045" y1="73.955" x2="-13.545" y2="73.955" width="0.254" layer="16"/>
-<via x="16.51" y="53.975" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="16.51" y1="56.0675" x2="16.51" y2="53.975" width="0.9144" layer="1"/>
+<via x="13.6525" y="52.3875" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="13.6525" y1="50.295" x2="13.6525" y2="52.3875" width="0.9144" layer="1"/>
 <polygon width="0.3556" layer="1" thermals="no">
-<vertex x="15.5575" y="53.0225"/>
-<vertex x="19.3675" y="53.0225"/>
-<vertex x="19.3675" y="54.9275"/>
-<vertex x="17.78" y="54.9275"/>
-<vertex x="17.4625" y="55.245"/>
-<vertex x="17.4625" y="56.8325"/>
-<vertex x="15.5575" y="56.8325"/>
-<vertex x="15.5575" y="54.45125"/>
-<vertex x="10.4775" y="54.45125"/>
-<vertex x="10.4775" y="53.49875"/>
-<vertex x="13.49375" y="53.49875"/>
-<vertex x="13.49375" y="52.07"/>
-<vertex x="13.81125" y="52.07"/>
-<vertex x="13.81125" y="53.49875"/>
-<vertex x="15.5575" y="53.49875"/>
+<vertex x="14.605" y="53.34"/>
+<vertex x="10.795" y="53.34"/>
+<vertex x="10.795" y="51.435"/>
+<vertex x="12.3825" y="51.435"/>
+<vertex x="12.7" y="51.1175"/>
+<vertex x="12.7" y="49.53"/>
+<vertex x="14.605" y="49.53"/>
+<vertex x="14.605" y="51.91125"/>
+<vertex x="19.685" y="51.91125"/>
+<vertex x="19.685" y="52.86375"/>
+<vertex x="16.66875" y="52.86375"/>
+<vertex x="16.66875" y="54.2925"/>
+<vertex x="16.35125" y="54.2925"/>
+<vertex x="16.35125" y="52.86375"/>
+<vertex x="14.605" y="52.86375"/>
 </polygon>
 <wire x1="49.05375" y1="13.12" x2="51.1175" y2="13.12" width="0.9144" layer="1"/>
 <wire x1="51.1175" y1="13.12" x2="51.1175" y2="8.7875" width="0.9144" layer="1"/>
@@ -2851,11 +2863,6 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="-7.7825" y1="79.855" x2="-7.9375" y2="80.01" width="0.254" layer="16"/>
 <wire x1="-7.9375" y1="80.01" x2="-7.9375" y2="80.9625" width="0.254" layer="16"/>
 <wire x1="-7.9375" y1="80.9625" x2="-6.985" y2="81.915" width="0.254" layer="16"/>
-<wire x1="62.335" y1="72.9975" x2="57.8125" y2="72.9975" width="0.9144" layer="1"/>
-<wire x1="57.8125" y1="72.9975" x2="57.785" y2="73.025" width="0.9144" layer="1"/>
-<via x="57.785" y="73.025" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="53.235" y1="72.9975" x2="57.7575" y2="72.9975" width="0.9144" layer="1"/>
-<wire x1="57.7575" y1="72.9975" x2="57.785" y2="73.025" width="0.9144" layer="1"/>
 <polygon width="0.9144" layer="1" thermals="no">
 <vertex x="54.61" y="98.1075"/>
 <vertex x="54.61" y="92.075"/>
@@ -2882,8 +2889,6 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="36.5125" y1="44.1325" x2="35.8775" y2="43.4975" width="0.3556" layer="1"/>
 <via x="35.8775" y="43.4975" extent="1-16" drill="0.8" shape="octagon"/>
 <contactref element="JP2" pad="49"/>
-<wire x1="-0.2965" y1="14.9325" x2="0.2475" y2="14.9325" width="0.3556" layer="1"/>
-<wire x1="0.2475" y1="14.9325" x2="0.2575" y2="14.9225" width="0.3556" layer="1"/>
 <wire x1="14.7075" y1="20.32" x2="13.335" y2="20.32" width="0.9144" layer="1"/>
 <via x="13.335" y="20.32" extent="1-16" drill="0.8" shape="octagon"/>
 <wire x1="2.96" y1="20.6375" x2="1.5875" y2="20.6375" width="0.9144" layer="1"/>
@@ -2892,8 +2897,6 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="13.335" y1="14.9225" x2="14.605" y2="16.1925" width="0.3556" layer="1"/>
 <wire x1="14.605" y1="16.1925" x2="14.605" y2="20.2175" width="0.3556" layer="1"/>
 <wire x1="14.605" y1="20.2175" x2="14.7075" y2="20.32" width="0.3556" layer="1"/>
-<wire x1="0.2475" y1="14.9325" x2="1.5975" y2="14.9325" width="0.3556" layer="1"/>
-<wire x1="1.5975" y1="14.9325" x2="2.8575" y2="16.1925" width="0.3556" layer="1"/>
 <wire x1="2.8575" y1="16.1925" x2="2.8575" y2="20.535" width="0.3556" layer="1"/>
 <wire x1="2.8575" y1="20.535" x2="2.96" y2="20.6375" width="0.3556" layer="1"/>
 <wire x1="-24.765" y1="82.8675" x2="-24.765" y2="87.63" width="0.9144" layer="1"/>
@@ -2906,8 +2909,22 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="13.12" y1="33.1225" x2="13.335" y2="33.3375" width="0.9144" layer="1"/>
 <wire x1="10.16" y1="33.1225" x2="10.16" y2="31.4325" width="0.9144" layer="1"/>
 <via x="10.16" y="31.4325" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="14.4075" y1="41.275" x2="17.0425" y2="43.815" width="0" layer="19" extent="1-1"/>
-<wire x1="13.335" y1="35.3025" x2="14.4075" y2="41.275" width="0" layer="19" extent="1-1"/>
+<wire x1="15.875" y1="62.6675" x2="15.875" y2="63.34125" width="0.3556" layer="1"/>
+<wire x1="15.875" y1="63.34125" x2="16.1925" y2="63.65875" width="0.3556" layer="1"/>
+<wire x1="11.5325" y1="63.8175" x2="10.795" y2="63.8175" width="0.3556" layer="1"/>
+<wire x1="10.795" y1="63.8175" x2="10.16" y2="63.1825" width="0.3556" layer="1"/>
+<wire x1="10.16" y1="63.1825" x2="10.16" y2="53.975" width="0.3556" layer="1"/>
+<wire x1="10.16" y1="53.975" x2="10.795" y2="53.34" width="0.3556" layer="1"/>
+<wire x1="16.1925" y1="63.65875" x2="18.25625" y2="63.65875" width="0.3556" layer="1"/>
+<via x="18.25625" y="63.65875" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="56.0925" y1="72.68" x2="56.12" y2="72.7075" width="0.9144" layer="1"/>
+<wire x1="56.12" y1="72.7075" x2="60.6425" y2="72.7075" width="0.9144" layer="1"/>
+<via x="60.6425" y="72.7075" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="60.6425" y1="72.7075" x2="65.165" y2="72.7075" width="0.9144" layer="1"/>
+<wire x1="65.165" y1="72.7075" x2="65.1925" y2="72.68" width="0.9144" layer="1"/>
+<wire x1="-0.2965" y1="14.9325" x2="0.2575" y2="14.9225" width="0.3556" layer="1"/>
+<wire x1="0.2575" y1="14.9225" x2="1.5875" y2="14.9225" width="0.3556" layer="1"/>
+<wire x1="1.5875" y1="14.9225" x2="2.8575" y2="16.1925" width="0.3556" layer="1"/>
 </signal>
 <signal name="+5V" class="1">
 <contactref element="JP2" pad="3"/>
@@ -2920,13 +2937,13 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <contactref element="U10" pad="1"/>
 <contactref element="TP2" pad="TP"/>
 <polygon width="0.3556" layer="1" thermals="no" rank="2">
-<vertex x="17.4625" y="58.1025"/>
-<vertex x="15.24" y="58.1025"/>
-<vertex x="14.9225" y="57.785"/>
-<vertex x="14.9225" y="54.61"/>
-<vertex x="14.2875" y="54.61"/>
-<vertex x="14.2875" y="62.5475"/>
-<vertex x="17.4625" y="62.5475"/>
+<vertex x="12.7" y="48.26"/>
+<vertex x="14.9225" y="48.26"/>
+<vertex x="15.24" y="48.5775"/>
+<vertex x="15.24" y="51.7525"/>
+<vertex x="15.875" y="51.7525"/>
+<vertex x="15.875" y="43.815"/>
+<vertex x="12.7" y="43.815"/>
 </polygon>
 <contactref element="C1" pad="1"/>
 <contactref element="C2" pad="1"/>
@@ -2951,11 +2968,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <vertex x="46.355" y="88.265"/>
 </polygon>
 <wire x1="47.3075" y1="84.455" x2="47.3075" y2="86.36" width="0.9144" layer="16"/>
-<wire x1="12.7025" y1="52.675" x2="10.19" y2="52.675" width="0.3556" layer="1"/>
-<wire x1="10.19" y1="52.675" x2="9.525" y2="53.34" width="0.3556" layer="1"/>
-<wire x1="9.525" y1="53.34" x2="9.525" y2="61.2775" width="0.3556" layer="1"/>
-<wire x1="9.525" y1="61.2775" x2="10.16" y2="61.9125" width="0.3556" layer="1"/>
-<wire x1="10.16" y1="61.9125" x2="14.2875" y2="61.9125" width="0.3556" layer="1"/>
+<wire x1="17.46" y1="53.6875" x2="21.8775" y2="53.6875" width="0.3556" layer="1"/>
 <wire x1="53.975" y1="13.335" x2="52.49" y2="14.82" width="0.3556" layer="1"/>
 <wire x1="52.49" y1="14.82" x2="51.1175" y2="14.82" width="0.3556" layer="1"/>
 <wire x1="44.305" y1="16.9725" x2="44.7675" y2="16.51" width="0.9144" layer="1"/>
@@ -2967,15 +2980,21 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="27.6225" y1="0.3175" x2="23.1775" y2="0.3175" width="0.9144" layer="1"/>
 <wire x1="23.1775" y1="0.3175" x2="21.9075" y2="1.5875" width="0.9144" layer="1"/>
 <wire x1="21.9075" y1="1.5875" x2="21.9075" y2="36.5125" width="0.9144" layer="1"/>
-<wire x1="21.9075" y1="42.2275" x2="21.9075" y2="60.96" width="0.9144" layer="1"/>
+<wire x1="21.9075" y1="42.2275" x2="21.9075" y2="44.1325" width="0.9144" layer="1"/>
 <via x="21.9075" y="60.96" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="21.9075" y1="44.1325" x2="21.9075" y2="53.6575" width="0.9144" layer="1"/>
+<wire x1="21.9075" y1="53.6575" x2="21.9075" y2="60.96" width="0.9144" layer="1"/>
 <wire x1="21.9075" y1="60.96" x2="24.13" y2="60.96" width="0.9144" layer="16"/>
-<wire x1="21.9075" y1="60.96" x2="16.1925" y2="60.96" width="0.9144" layer="1"/>
-<wire x1="26.67" y1="60.96" x2="47.3075" y2="81.5975" width="0.9144" layer="16"/>
-<wire x1="47.3075" y1="81.5975" x2="47.3075" y2="84.455" width="0.9144" layer="16"/>
+<wire x1="47.3075" y1="78.74" x2="47.3075" y2="84.455" width="0.9144" layer="16"/>
 <wire x1="21.9075" y1="36.5125" x2="20.0025" y2="38.4175" width="0.9144" layer="1"/>
 <wire x1="20.0025" y1="38.4175" x2="20.0025" y2="40.3225" width="0.9144" layer="1"/>
 <wire x1="20.0025" y1="40.3225" x2="21.9075" y2="42.2275" width="0.9144" layer="1"/>
+<wire x1="15.24" y1="44.1325" x2="21.9075" y2="44.1325" width="0.9144" layer="1"/>
+<wire x1="21.8775" y1="53.6875" x2="21.9075" y2="53.6575" width="0.3556" layer="1"/>
+<wire x1="47.3075" y1="78.74" x2="36.83" y2="68.2625" width="0.9144" layer="16"/>
+<wire x1="36.83" y1="68.2625" x2="35.56" y2="68.2625" width="0.9144" layer="16"/>
+<wire x1="35.56" y1="68.2625" x2="28.2575" y2="60.96" width="0.9144" layer="16"/>
+<wire x1="28.2575" y1="60.96" x2="26.67" y2="60.96" width="0.9144" layer="16"/>
 </signal>
 <signal name="+3V3" class="1">
 <contactref element="JP2" pad="5"/>
@@ -2985,36 +3004,34 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <contactref element="R14" pad="2"/>
 <contactref element="C24" pad="1"/>
 <contactref element="L1" pad="2"/>
-<wire x1="11.1125" y1="58.9525" x2="12.14975" y2="58.9525" width="0.3556" layer="1"/>
+<wire x1="19.05" y1="47.41" x2="18.01275" y2="47.41" width="0.3556" layer="1"/>
 <polygon width="0.3556" layer="1" thermals="no" rank="2">
-<vertex x="19.3675" y="51.7525"/>
-<vertex x="16.8275" y="51.7525"/>
-<vertex x="16.8275" y="49.8475"/>
-<vertex x="16.51" y="49.53"/>
-<vertex x="13.335" y="49.53"/>
-<vertex x="13.335" y="45.085"/>
-<vertex x="19.3675" y="45.085"/>
+<vertex x="10.795" y="54.61"/>
+<vertex x="13.335" y="54.61"/>
+<vertex x="13.335" y="56.515"/>
+<vertex x="13.6525" y="56.8325"/>
+<vertex x="16.8275" y="56.8325"/>
+<vertex x="16.8275" y="61.2775"/>
+<vertex x="15.24" y="61.2775"/>
+<vertex x="15.24" y="63.1825"/>
+<vertex x="14.605" y="63.1825"/>
+<vertex x="14.605" y="61.2775"/>
+<vertex x="10.795" y="61.2775"/>
 </polygon>
-<wire x1="12.14975" y1="58.9525" x2="13.17625" y2="58.9525" width="0.3556" layer="1"/>
+<wire x1="18.01275" y1="47.41" x2="16.98625" y2="47.41" width="0.3556" layer="1"/>
 <wire x1="24.13" y1="58.42" x2="26.67" y2="58.42" width="0.9144" layer="16"/>
-<wire x1="24.13" y1="58.42" x2="22.225" y2="58.42" width="0.9144" layer="16"/>
-<wire x1="21.2725" y1="57.4675" x2="21.2725" y2="48.895" width="0.9144" layer="16"/>
-<wire x1="21.2725" y1="48.895" x2="20.32" y2="47.9425" width="0.9144" layer="16"/>
-<wire x1="20.32" y1="47.9425" x2="18.7325" y2="47.9425" width="0.9144" layer="16"/>
-<via x="18.7325" y="47.9425" extent="1-16" drill="0.8" shape="octagon"/>
+<via x="11.43" y="58.42" extent="1-16" drill="0.8" shape="octagon"/>
 <wire x1="26.67" y1="58.42" x2="28.8925" y2="58.42" width="0.9144" layer="16"/>
 <wire x1="28.8925" y1="58.42" x2="35.8775" y2="65.405" width="0.9144" layer="16"/>
-<wire x1="35.8775" y1="65.405" x2="35.8775" y2="66.9925" width="0.9144" layer="16"/>
+<wire x1="35.8775" y1="65.405" x2="35.8775" y2="66.3575" width="0.9144" layer="16"/>
 <contactref element="U12" pad="1"/>
-<wire x1="12.14975" y1="58.9525" x2="12.14975" y2="60.09225" width="0.3556" layer="1"/>
-<wire x1="12.14975" y1="60.09225" x2="12.7" y2="60.6425" width="0.3556" layer="1"/>
-<via x="12.7" y="60.6425" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="12.7" y1="60.6425" x2="14.605" y2="58.7375" width="0.3556" layer="16"/>
-<wire x1="22.225" y1="58.42" x2="21.2725" y2="57.4675" width="0.9144" layer="16"/>
-<wire x1="14.605" y1="58.7375" x2="14.605" y2="49.8475" width="0.3556" layer="16"/>
-<wire x1="14.605" y1="49.8475" x2="16.51" y2="47.9425" width="0.3556" layer="16"/>
-<wire x1="16.51" y1="47.9425" x2="18.7325" y2="47.9425" width="0.3556" layer="16"/>
-<wire x1="14.605" y1="45.46" x2="14.4075" y2="42.225" width="0" layer="19" extent="1-1"/>
+<wire x1="18.01275" y1="47.41" x2="18.01275" y2="46.27025" width="0.3556" layer="1"/>
+<wire x1="18.01275" y1="46.27025" x2="17.4625" y2="45.72" width="0.3556" layer="1"/>
+<via x="17.4625" y="45.72" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="17.4625" y1="45.72" x2="15.5575" y2="47.625" width="0.3556" layer="16"/>
+<wire x1="15.5575" y1="47.625" x2="15.5575" y2="58.42" width="0.3556" layer="16"/>
+<wire x1="24.13" y1="58.42" x2="15.5575" y2="58.42" width="0.9144" layer="16"/>
+<wire x1="15.5575" y1="58.42" x2="11.43" y2="58.42" width="0.9144" layer="16"/>
 </signal>
 <signal name="!RST">
 <contactref element="JP1" pad="6"/>
@@ -3022,13 +3039,13 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <contactref element="S2" pad="2"/>
 <wire x1="-24.13" y1="58.42" x2="-20.6375" y2="58.42" width="0.3556" layer="16"/>
 <via x="-20.6375" y="58.42" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="62.335" y1="77.4975" x2="53.235" y2="77.4975" width="0.9144" layer="1"/>
-<wire x1="-20.6375" y1="58.42" x2="-20.6375" y2="66.9925" width="0.3556" layer="1"/>
-<wire x1="-20.6375" y1="66.9925" x2="-19.3675" y2="68.2625" width="0.3556" layer="1"/>
-<wire x1="-19.3675" y1="68.2625" x2="-3.4925" y2="68.2625" width="0.3556" layer="1"/>
-<wire x1="-3.4925" y1="68.2625" x2="4.1275" y2="75.8825" width="0.3556" layer="1"/>
-<wire x1="4.1275" y1="75.8825" x2="51.62" y2="75.8825" width="0.3556" layer="1"/>
-<wire x1="51.62" y1="75.8825" x2="53.235" y2="77.4975" width="0.3556" layer="1"/>
+<wire x1="65.1925" y1="77.18" x2="56.0925" y2="77.18" width="0.9144" layer="1"/>
+<wire x1="-20.6375" y1="58.42" x2="-20.6375" y2="64.135" width="0.3556" layer="1"/>
+<wire x1="-20.6375" y1="64.135" x2="-19.3675" y2="65.405" width="0.3556" layer="1"/>
+<wire x1="-19.3675" y1="65.405" x2="-4.445" y2="65.405" width="0.3556" layer="1"/>
+<wire x1="-4.445" y1="65.405" x2="5.715" y2="75.565" width="0.3556" layer="1"/>
+<wire x1="5.715" y1="75.565" x2="54.4775" y2="75.565" width="0.3556" layer="1"/>
+<wire x1="54.4775" y1="75.565" x2="56.0925" y2="77.18" width="0.3556" layer="1"/>
 </signal>
 <signal name="BOOT0">
 <contactref element="JP2" pad="21"/>
@@ -3061,15 +3078,15 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <contactref element="JP1" pad="12"/>
 <contactref element="S1" pad="1"/>
 <contactref element="S1" pad="2"/>
-<wire x1="47.73" y1="77.4975" x2="38.63" y2="77.4975" width="0.9144" layer="1"/>
+<wire x1="51.8575" y1="77.18" x2="42.7575" y2="77.18" width="0.9144" layer="1"/>
 <wire x1="-24.13" y1="50.8" x2="-21.9075" y2="50.8" width="0.3556" layer="16"/>
 <via x="-21.9075" y="50.8" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="-21.9075" y1="50.8" x2="-21.9075" y2="66.675" width="0.3556" layer="1"/>
-<wire x1="-21.9075" y1="66.675" x2="-19.685" y2="68.8975" width="0.3556" layer="1"/>
-<wire x1="-19.685" y1="68.8975" x2="-3.81" y2="68.8975" width="0.3556" layer="1"/>
-<wire x1="-3.81" y1="68.8975" x2="3.81" y2="76.5175" width="0.3556" layer="1"/>
-<wire x1="3.81" y1="76.5175" x2="37.65" y2="76.5175" width="0.3556" layer="1"/>
-<wire x1="37.65" y1="76.5175" x2="38.63" y2="77.4975" width="0.3556" layer="1"/>
+<wire x1="-21.9075" y1="50.8" x2="-21.9075" y2="63.8175" width="0.3556" layer="1"/>
+<wire x1="-21.9075" y1="63.8175" x2="-19.685" y2="66.04" width="0.3556" layer="1"/>
+<wire x1="-19.685" y1="66.04" x2="-4.7625" y2="66.04" width="0.3556" layer="1"/>
+<wire x1="-4.7625" y1="66.04" x2="5.3975" y2="76.2" width="0.3556" layer="1"/>
+<wire x1="5.3975" y1="76.2" x2="41.7775" y2="76.2" width="0.3556" layer="1"/>
+<wire x1="41.7775" y1="76.2" x2="42.7575" y2="77.18" width="0.3556" layer="1"/>
 </signal>
 <signal name="PB9">
 <contactref element="JP2" pad="20"/>
@@ -3156,9 +3173,9 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <signal name="PB13">
 <contactref element="JP1" pad="37"/>
 <contactref element="U6" pad="4"/>
-<wire x1="-12.045" y1="82.255" x2="-12.045" y2="84.1175" width="0.254" layer="16"/>
-<wire x1="-12.045" y1="84.1175" x2="-13.97" y2="86.0425" width="0.254" layer="16"/>
-<wire x1="-13.97" y1="86.0425" x2="-31.115" y2="86.0425" width="0.254" layer="16"/>
+<wire x1="-12.045" y1="82.255" x2="-12.045" y2="84.435" width="0.254" layer="16"/>
+<wire x1="-12.045" y1="84.435" x2="-13.6525" y2="86.0425" width="0.254" layer="16"/>
+<wire x1="-13.6525" y1="86.0425" x2="-31.115" y2="86.0425" width="0.254" layer="16"/>
 <wire x1="-31.115" y1="86.0425" x2="-33.02" y2="84.1375" width="0.254" layer="16"/>
 <wire x1="-33.02" y1="84.1375" x2="-33.02" y2="20.955" width="0.254" layer="16"/>
 <wire x1="-33.02" y1="20.955" x2="-29.845" y2="17.78" width="0.254" layer="16"/>
@@ -3167,9 +3184,9 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <signal name="PB11">
 <contactref element="JP1" pad="35"/>
 <contactref element="U6" pad="2"/>
-<wire x1="-13.045" y1="82.255" x2="-13.045" y2="83.2125" width="0.254" layer="16"/>
-<wire x1="-13.045" y1="83.2125" x2="-14.605" y2="84.7725" width="0.254" layer="16"/>
-<wire x1="-14.605" y1="84.7725" x2="-30.48" y2="84.7725" width="0.254" layer="16"/>
+<wire x1="-13.045" y1="82.255" x2="-13.045" y2="83.53" width="0.254" layer="16"/>
+<wire x1="-13.045" y1="83.53" x2="-14.2875" y2="84.7725" width="0.254" layer="16"/>
+<wire x1="-14.2875" y1="84.7725" x2="-30.48" y2="84.7725" width="0.254" layer="16"/>
 <wire x1="-30.48" y1="84.7725" x2="-31.75" y2="83.5025" width="0.254" layer="16"/>
 <wire x1="-31.75" y1="83.5025" x2="-31.75" y2="21.59" width="0.254" layer="16"/>
 <wire x1="-31.75" y1="21.59" x2="-30.48" y2="20.32" width="0.254" layer="16"/>
@@ -3178,9 +3195,9 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <signal name="PB12">
 <contactref element="JP1" pad="36"/>
 <contactref element="U6" pad="3"/>
-<wire x1="-12.545" y1="82.255" x2="-12.545" y2="83.665" width="0.254" layer="16"/>
-<wire x1="-12.545" y1="83.665" x2="-14.2875" y2="85.4075" width="0.254" layer="16"/>
-<wire x1="-14.2875" y1="85.4075" x2="-30.7975" y2="85.4075" width="0.254" layer="16"/>
+<wire x1="-12.545" y1="82.255" x2="-12.545" y2="83.9825" width="0.254" layer="16"/>
+<wire x1="-12.545" y1="83.9825" x2="-13.97" y2="85.4075" width="0.254" layer="16"/>
+<wire x1="-13.97" y1="85.4075" x2="-30.7975" y2="85.4075" width="0.254" layer="16"/>
 <wire x1="-30.7975" y1="85.4075" x2="-32.385" y2="83.82" width="0.254" layer="16"/>
 <wire x1="-32.385" y1="83.82" x2="-32.385" y2="21.2725" width="0.254" layer="16"/>
 <wire x1="-32.385" y1="21.2725" x2="-30.1625" y2="19.05" width="0.254" layer="16"/>
@@ -3210,13 +3227,17 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <signal name="PC1">
 <contactref element="JP1" pad="7"/>
 <contactref element="U6" pad="31"/>
-<wire x1="-11.045" y1="73.955" x2="-11.045" y2="72.4575" width="0.254" layer="16"/>
-<wire x1="-11.045" y1="72.4575" x2="-11.43" y2="72.0725" width="0.254" layer="16"/>
-<wire x1="-11.43" y1="72.0725" x2="-26.67" y2="72.0725" width="0.254" layer="16"/>
-<wire x1="-26.67" y1="72.0725" x2="-28.575" y2="70.1675" width="0.254" layer="16"/>
-<wire x1="-28.575" y1="70.1675" x2="-28.575" y2="56.515" width="0.254" layer="16"/>
+<wire x1="-11.045" y1="73.955" x2="-11.045" y2="72.14" width="0.254" layer="16"/>
+<wire x1="-11.045" y1="72.14" x2="-11.7475" y2="71.4375" width="0.254" layer="16"/>
+<wire x1="-27.305" y1="71.12" x2="-28.575" y2="69.85" width="0.254" layer="16"/>
+<wire x1="-28.575" y1="69.85" x2="-28.575" y2="56.515" width="0.254" layer="16"/>
 <wire x1="-28.575" y1="56.515" x2="-27.94" y2="55.88" width="0.254" layer="16"/>
 <wire x1="-27.94" y1="55.88" x2="-26.67" y2="55.88" width="0.254" layer="16"/>
+<wire x1="-11.7475" y1="71.4375" x2="-19.3675" y2="71.4375" width="0.254" layer="16"/>
+<wire x1="-19.3675" y1="71.4375" x2="-20.32" y2="70.485" width="0.254" layer="16"/>
+<wire x1="-20.32" y1="70.485" x2="-25.4" y2="70.485" width="0.254" layer="16"/>
+<wire x1="-25.4" y1="70.485" x2="-26.035" y2="71.12" width="0.254" layer="16"/>
+<wire x1="-27.305" y1="71.12" x2="-26.035" y2="71.12" width="0.254" layer="16"/>
 </signal>
 <signal name="PC5">
 <contactref element="JP1" pad="19"/>
@@ -3304,19 +3325,17 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <contactref element="U11" pad="2"/>
 <wire x1="26.67" y1="17.78" x2="25.4" y2="16.51" width="0.3556" layer="16"/>
 <wire x1="25.4" y1="16.51" x2="22.86" y2="16.51" width="0.3556" layer="16"/>
-<wire x1="-0.2965" y1="17.4725" x2="-0.2865" y2="17.4625" width="0.3556" layer="1"/>
 <wire x1="22.86" y1="16.51" x2="21.2725" y2="14.9225" width="0.3556" layer="16"/>
 <wire x1="21.2725" y1="14.9225" x2="10.4775" y2="14.9225" width="0.3556" layer="16"/>
 <wire x1="10.4775" y1="14.9225" x2="9.8425" y2="15.5575" width="0.3556" layer="16"/>
 <wire x1="9.8425" y1="15.5575" x2="9.8425" y2="17.4625" width="0.3556" layer="16"/>
 <via x="9.8425" y="17.4625" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="9.8425" y1="17.4625" x2="-2.54" y2="17.4625" width="0.3556" layer="16"/>
 <via x="-2.54" y="17.4625" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="-0.2965" y1="17.4725" x2="0.2475" y2="17.4725" width="0.3556" layer="1"/>
-<wire x1="0.2475" y1="17.4725" x2="0.2575" y2="17.4625" width="0.3556" layer="1"/>
 <wire x1="12.005" y1="17.4625" x2="9.8425" y2="17.4625" width="0.3556" layer="1"/>
-<wire x1="-0.2965" y1="17.4725" x2="-0.3065" y2="17.4625" width="0.3556" layer="1"/>
-<wire x1="-0.3065" y1="17.4625" x2="-2.54" y2="17.4625" width="0.3556" layer="1"/>
+<wire x1="0.2575" y1="17.4625" x2="-0.2965" y2="17.4725" width="0.3556" layer="1"/>
+<wire x1="9.8425" y1="17.4625" x2="-2.54" y2="17.4625" width="0.3556" layer="16"/>
+<wire x1="-2.54" y1="17.4625" x2="-0.3065" y2="17.4625" width="0.3556" layer="1"/>
+<wire x1="-0.3065" y1="17.4625" x2="-0.2965" y2="17.4725" width="0.3556" layer="1"/>
 </signal>
 <signal name="ETH_CLK">
 <contactref element="U6" pad="34"/>
@@ -3375,10 +3394,10 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="5.4575" y1="14.9225" x2="6.0115" y2="14.9225" width="0.3556" layer="1"/>
 <wire x1="17.205" y1="14.9225" x2="20.32" y2="14.9225" width="0.3556" layer="1"/>
 <wire x1="20.32" y1="14.9225" x2="20.955" y2="15.5575" width="0.3556" layer="1"/>
-<wire x1="20.955" y1="15.5575" x2="20.955" y2="19.3675" width="0.3556" layer="1"/>
-<wire x1="20.955" y1="19.3675" x2="20.0025" y2="20.32" width="0.3556" layer="1"/>
-<via x="20.0025" y="20.32" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="20.0025" y1="20.32" x2="24.13" y2="20.32" width="0.3556" layer="16"/>
+<wire x1="20.955" y1="15.5575" x2="20.955" y2="19.685" width="0.3556" layer="1"/>
+<wire x1="20.955" y1="19.685" x2="20.32" y2="20.32" width="0.3556" layer="1"/>
+<via x="20.32" y="20.32" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="20.32" y1="20.32" x2="24.13" y2="20.32" width="0.3556" layer="16"/>
 <wire x1="6.0115" y1="14.9225" x2="8.255" y2="14.9225" width="0.3556" layer="1"/>
 <wire x1="8.255" y1="14.9225" x2="9.8425" y2="13.335" width="0.3556" layer="1"/>
 <wire x1="9.8425" y1="13.335" x2="13.97" y2="13.335" width="0.3556" layer="1"/>
@@ -3403,11 +3422,10 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <signal name="PD1">
 <contactref element="JP2" pad="33"/>
 <contactref element="U11" pad="1"/>
-<via x="12.065" y="21.9075" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="24.13" y1="22.86" x2="13.0175" y2="22.86" width="0.3556" layer="16"/>
-<wire x1="13.0175" y1="22.86" x2="12.065" y2="21.9075" width="0.3556" layer="16"/>
-<wire x1="12.065" y1="18.7925" x2="12.065" y2="21.9075" width="0.3556" layer="1"/>
-<wire x1="12.065" y1="18.7925" x2="12.005" y2="18.7325" width="0" layer="19" extent="1-1"/>
+<via x="12.065" y="22.86" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="24.13" y1="22.86" x2="12.065" y2="22.86" width="0.3556" layer="16"/>
+<wire x1="12.065" y1="22.86" x2="12.065" y2="18.7925" width="0.3556" layer="1"/>
+<wire x1="12.065" y1="18.7925" x2="12.005" y2="18.7325" width="0.3556" layer="1"/>
 </signal>
 <signal name="VCC" class="1">
 <contactref element="C3" pad="1"/>
@@ -3473,8 +3491,6 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <vertex x="80.01" y="16.1925"/>
 <vertex x="76.835" y="16.1925"/>
 </polygon>
-<wire x1="68.2625" y1="64.135" x2="74.93" y2="57.4675" width="0.9144" layer="1"/>
-<wire x1="74.93" y1="57.4675" x2="79.375" y2="57.4675" width="0.9144" layer="1"/>
 <via x="79.375" y="57.4675" extent="1-16" drill="0.8" shape="octagon"/>
 <wire x1="55.2925" y1="53.4494" x2="56.0881" y2="53.4494" width="0.254" layer="1"/>
 <wire x1="56.0881" y1="53.4494" x2="56.515" y2="53.0225" width="0.3556" layer="1"/>
@@ -3483,25 +3499,14 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="55.2925" y1="57.6756" x2="55.7706" y2="57.6756" width="0.254" layer="1"/>
 <wire x1="55.7706" y1="57.6756" x2="56.515" y2="58.42" width="0.3556" layer="1"/>
 <via x="56.515" y="58.42" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="-6.82625" y1="68.6825" x2="-8.89" y2="68.6825" width="0.9144" layer="16"/>
 <wire x1="0.42" y1="85.24875" x2="-1.69" y2="85.24875" width="0.9144" layer="16"/>
 <wire x1="-1.69" y1="80.48625" x2="0.42" y2="80.48625" width="0.9144" layer="16"/>
-<wire x1="2.12" y1="76.2" x2="2.12" y2="74.13625" width="0.9144" layer="16"/>
+<wire x1="2.755" y1="76.2" x2="2.755" y2="74.13625" width="0.9144" layer="16"/>
 <wire x1="-6.645" y1="76.355" x2="-5.39375" y2="76.355" width="0.254" layer="16"/>
-<wire x1="-5.39375" y1="76.355" x2="-3.81" y2="74.77125" width="0.254" layer="16"/>
-<wire x1="-3.81" y1="74.77125" x2="-3.39" y2="74.77125" width="0.254" layer="16"/>
+<wire x1="-5.39375" y1="76.355" x2="-3.65125" y2="74.6125" width="0.254" layer="16"/>
+<wire x1="-3.65125" y1="74.6125" x2="-3.39" y2="74.6125" width="0.254" layer="16"/>
 <wire x1="-14.945" y1="80.855" x2="-14.945" y2="82.1525" width="0.254" layer="16"/>
 <wire x1="-14.945" y1="82.1525" x2="-15.025" y2="82.2325" width="0.254" layer="16"/>
-<wire x1="75.2475" y1="84.1375" x2="79.0575" y2="84.1375" width="0.3556" layer="16"/>
-<wire x1="79.0575" y1="82.2325" x2="78.4225" y2="81.5975" width="0.3556" layer="16"/>
-<wire x1="78.4225" y1="81.5975" x2="71.8575" y2="81.5975" width="0.3556" layer="16"/>
-<wire x1="71.755" y1="81.495" x2="71.8575" y2="81.5975" width="0.3556" layer="16"/>
-<wire x1="79.0575" y1="91.1225" x2="78.0025" y2="92.1775" width="0.3556" layer="16"/>
-<wire x1="78.0025" y1="92.1775" x2="78.0025" y2="96.52" width="0.3556" layer="16"/>
-<wire x1="79.0575" y1="82.2325" x2="79.0575" y2="84.1375" width="0.3556" layer="16"/>
-<wire x1="79.0575" y1="84.1375" x2="79.0575" y2="87.9475" width="0.3556" layer="16"/>
-<wire x1="79.0575" y1="87.9475" x2="79.0575" y2="91.1225" width="0.3556" layer="16"/>
-<wire x1="77.7875" y1="87.9475" x2="79.0575" y2="87.9475" width="0.3556" layer="16"/>
 <wire x1="-1.69" y1="87.3125" x2="-1.69" y2="86.6775" width="0.9144" layer="16"/>
 <wire x1="-1.69" y1="86.6775" x2="-1.5875" y2="86.6775" width="0.9144" layer="16"/>
 <via x="0.9525" y="86.6775" extent="1-16" drill="0.8" shape="octagon"/>
@@ -3517,9 +3522,6 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="0.3175" y1="86.0425" x2="0.3175" y2="82.2325" width="0.9144" layer="1"/>
 <contactref element="J2" pad="AY"/>
 <contactref element="J2" pad="AG"/>
-<wire x1="88.2015" y1="91.4019" x2="89.8525" y2="89.7509" width="0.3556" layer="16"/>
-<wire x1="89.8525" y1="89.7509" x2="89.8525" y2="82.3341" width="0.3556" layer="16"/>
-<wire x1="89.8525" y1="82.3341" x2="88.2015" y2="80.6831" width="0.3556" layer="16"/>
 <wire x1="42.125" y1="48.5775" x2="42.5575" y2="48.145" width="0.9144" layer="1"/>
 <wire x1="42.5575" y1="48.145" x2="42.5575" y2="46.5625" width="0.9144" layer="1"/>
 <wire x1="59.055" y1="34.925" x2="59.055" y2="26.9875" width="0.9144" layer="1"/>
@@ -3541,25 +3543,11 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="48.26" y1="53.8475" x2="42.5575" y2="48.145" width="0.9144" layer="1"/>
 <wire x1="57.1925" y1="25.3025" x2="58.9575" y2="25.3025" width="0.3556" layer="1"/>
 <wire x1="58.9575" y1="25.3025" x2="59.84875" y2="26.19375" width="0.3556" layer="1"/>
-<wire x1="68.2625" y1="64.135" x2="58.7375" y2="64.135" width="0.9144" layer="1"/>
 <wire x1="48.26" y1="53.8475" x2="48.26" y2="55.245" width="0.9144" layer="1"/>
 <wire x1="48.26" y1="55.245" x2="53.975" y2="60.96" width="0.9144" layer="16"/>
-<via x="58.7375" y="64.135" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="58.7375" y1="64.135" x2="56.515" y2="61.9125" width="0.9144" layer="16"/>
-<wire x1="56.515" y1="61.9125" x2="56.515" y2="60.96" width="0.9144" layer="16"/>
-<wire x1="56.515" y1="60.96" x2="56.515" y2="58.42" width="0.9144" layer="16"/>
-<wire x1="57.15" y1="65.7225" x2="58.7375" y2="64.135" width="0.3556" layer="1"/>
 <contactref element="JP4" pad="1"/>
-<wire x1="17.205" y1="17.4625" x2="17.205" y2="18.7325" width="0.3556" layer="1"/>
-<wire x1="-0.2965" y1="16.2025" x2="0.2475" y2="16.2025" width="0.3556" layer="1"/>
-<wire x1="0.2475" y1="16.2025" x2="0.2575" y2="16.1925" width="0.3556" layer="1"/>
 <wire x1="5.4575" y1="17.4625" x2="6.0115" y2="17.4625" width="0.3556" layer="1"/>
-<wire x1="5.4575" y1="17.4625" x2="5.4575" y2="18.7325" width="0.3556" layer="1"/>
 <wire x1="5.4575" y1="18.7325" x2="6.0115" y2="18.7325" width="0.3556" layer="1"/>
-<wire x1="4.66" y1="20.6375" x2="5.4575" y2="19.84" width="0.3556" layer="1"/>
-<wire x1="5.4575" y1="19.84" x2="5.4575" y2="18.7325" width="0.3556" layer="1"/>
-<wire x1="16.4075" y1="20.32" x2="17.205" y2="19.5225" width="0.3556" layer="1"/>
-<wire x1="17.205" y1="19.5225" x2="17.205" y2="18.7325" width="0.3556" layer="1"/>
 <contactref element="U5" pad="18"/>
 <wire x1="48.5775" y1="39.8925" x2="48.7925" y2="40.1075" width="0.3556" layer="1"/>
 <wire x1="51.3925" y1="31.8025" x2="50.43" y2="31.8025" width="0.3556" layer="1"/>
@@ -3573,26 +3561,65 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="56.515" y1="39.0735" x2="56.515" y2="37.1475" width="0.9144" layer="1"/>
 <wire x1="50.165" y1="32.0675" x2="50.165" y2="34.71" width="0.3556" layer="1"/>
 <wire x1="50.165" y1="34.71" x2="51.49125" y2="36.03625" width="0.3556" layer="1"/>
-<wire x1="53.975" y1="60.96" x2="56.515" y2="60.96" width="0.9144" layer="16"/>
-<wire x1="12.065" y1="35.3025" x2="10.64" y2="35.3025" width="0.9144" layer="1"/>
-<wire x1="10.64" y1="35.3025" x2="10.16" y2="34.8225" width="0.9144" layer="1"/>
-<wire x1="79.0575" y1="91.1225" x2="88.2015" y2="91.4019" width="0" layer="19" extent="16-16"/>
-<wire x1="68.2625" y1="64.135" x2="71.755" y2="81.495" width="0" layer="19" extent="1-16"/>
-<wire x1="12.065" y1="35.3025" x2="41.9175" y2="46.5625" width="0" layer="19" extent="1-1"/>
-<wire x1="6.35" y1="43.4975" x2="10.64" y2="35.3025" width="0" layer="19" extent="1-1"/>
-<wire x1="4.66" y1="20.6375" x2="10.16" y2="34.8225" width="0" layer="19" extent="1-1"/>
-<wire x1="0.2475" y1="16.2025" x2="5.4575" y2="17.4625" width="0" layer="19" extent="1-1"/>
-<wire x1="16.4075" y1="20.32" x2="6.0115" y2="18.7325" width="0" layer="19" extent="1-1"/>
-<wire x1="-6.82625" y1="68.6825" x2="6.35" y2="43.4975" width="0" layer="19" extent="16-16"/>
-<wire x1="-13.0175" y1="68.6825" x2="-8.89" y2="68.6825" width="0" layer="19" extent="16-16"/>
-<wire x1="-15.08125" y1="68.6825" x2="-13.0175" y2="68.6825" width="0" layer="19" extent="16-16"/>
-<wire x1="-11.545" y1="73.955" x2="-13.0175" y2="68.6825" width="0" layer="19" extent="16-16"/>
-<wire x1="-6.645" y1="76.355" x2="-11.545" y2="73.955" width="0" layer="19" extent="16-16"/>
-<wire x1="-1.69" y1="80.48625" x2="-5.39375" y2="76.355" width="0" layer="19" extent="16-16"/>
-<wire x1="2.12" y1="76.2" x2="0.42" y2="80.48625" width="0" layer="19" extent="16-16"/>
-<wire x1="-14.945" y1="80.855" x2="-11.545" y2="73.955" width="0" layer="19" extent="16-16"/>
-<wire x1="-22.91625" y1="76.99375" x2="-14.945" y2="80.855" width="0" layer="19" extent="16-16"/>
-<wire x1="-26.035" y1="66.7775" x2="-22.91625" y2="76.99375" width="0" layer="19" extent="1-16"/>
+<polygon width="0.9144" layer="1" rank="6">
+<vertex x="-38.1" y="-5.08"/>
+<vertex x="94.9325" y="-5.08"/>
+<vertex x="94.9325" y="101.9175"/>
+<vertex x="-38.1" y="101.9175"/>
+</polygon>
+<wire x1="53.975" y1="60.96" x2="55.88" y2="60.96" width="0.9144" layer="16"/>
+<wire x1="55.88" y1="60.96" x2="56.515" y2="60.325" width="0.9144" layer="16"/>
+<wire x1="56.515" y1="60.325" x2="56.515" y2="58.42" width="0.9144" layer="16"/>
+<via x="33.655" y="73.9775" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="33.655" y1="73.9775" x2="35.8775" y2="73.9775" width="0.9144" layer="16"/>
+<wire x1="-0.2965" y1="16.2025" x2="0.2575" y2="16.1925" width="0.3556" layer="1"/>
+<wire x1="88.2015" y1="91.4019" x2="89.8525" y2="89.7509" width="0.3556" layer="16"/>
+<wire x1="89.8525" y1="89.7509" x2="89.8525" y2="86.36" width="0.3556" layer="16"/>
+<via x="89.8525" y="76.835" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="89.8525" y1="86.36" x2="89.8525" y2="80.01" width="0.3556" layer="16"/>
+<wire x1="89.8525" y1="80.01" x2="89.8525" y2="76.835" width="0.3556" layer="16"/>
+<wire x1="88.2015" y1="80.6831" x2="89.1794" y2="80.6831" width="0.3556" layer="16"/>
+<wire x1="89.1794" y1="80.6831" x2="89.8525" y2="80.01" width="0.3556" layer="16"/>
+<wire x1="79.0575" y1="84.1375" x2="79.0575" y2="81.5975" width="0.3556" layer="16"/>
+<wire x1="79.0575" y1="81.5975" x2="78.105" y2="80.645" width="0.3556" layer="16"/>
+<wire x1="78.105" y1="80.645" x2="77.05" y2="80.645" width="0.3556" layer="16"/>
+<wire x1="75.2475" y1="84.1375" x2="79.0575" y2="84.1375" width="0.3556" layer="16"/>
+<wire x1="77.7875" y1="87.9475" x2="79.0575" y2="87.9475" width="0.3556" layer="16"/>
+<wire x1="79.0575" y1="87.9475" x2="79.4775" y2="87.9475" width="0.3556" layer="16"/>
+<wire x1="79.0575" y1="84.1375" x2="79.0575" y2="86.36" width="0.3556" layer="16"/>
+<wire x1="79.0575" y1="86.36" x2="89.8525" y2="86.36" width="0.3556" layer="16"/>
+<wire x1="79.0575" y1="86.36" x2="79.0575" y2="87.9475" width="0.3556" layer="16"/>
+<wire x1="2.755" y1="74.13625" x2="2.755" y2="73.025" width="0.9144" layer="16"/>
+<wire x1="2.755" y1="73.025" x2="2.755" y2="72.175" width="0.9144" layer="16"/>
+<wire x1="2.755" y1="72.175" x2="3.81" y2="71.12" width="0.9144" layer="16"/>
+<via x="3.81" y="71.12" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="-6.82625" y1="68.6825" x2="-7.9375" y2="68.6825" width="0.9144" layer="16"/>
+<via x="-7.9375" y="67.31" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="-7.9375" y1="68.6825" x2="-7.9375" y2="67.31" width="0.9144" layer="16"/>
+<wire x1="-8.89" y1="68.6825" x2="-7.9375" y2="68.6825" width="0.9144" layer="16"/>
+<wire x1="-3.39" y1="74.6125" x2="-2.4375" y2="75.565" width="0.254" layer="16"/>
+<wire x1="-2.4375" y1="75.565" x2="-0.79375" y2="75.565" width="0.254" layer="16"/>
+<wire x1="-0.79375" y1="75.565" x2="0.15875" y2="74.6125" width="0.254" layer="16"/>
+<wire x1="0.15875" y1="74.6125" x2="0.15875" y2="73.3425" width="0.254" layer="16"/>
+<wire x1="0.15875" y1="73.3425" x2="0.47625" y2="73.025" width="0.254" layer="16"/>
+<wire x1="0.47625" y1="73.025" x2="2.755" y2="73.025" width="0.254" layer="16"/>
+<wire x1="-22.91625" y1="76.99375" x2="-22.86" y2="76.9375" width="0.9144" layer="16"/>
+<wire x1="-22.86" y1="76.9375" x2="-22.86" y2="75.565" width="0.9144" layer="16"/>
+<via x="-22.86" y="75.565" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="-15.08125" y1="68.0475" x2="-16.4075" y2="68.0475" width="0.9144" layer="16"/>
+<wire x1="-16.4075" y1="68.0475" x2="-16.8275" y2="67.6275" width="0.9144" layer="16"/>
+<via x="-16.8275" y="67.6275" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="-13.0175" y1="68.0475" x2="-15.08125" y2="68.0475" width="0.9144" layer="16"/>
+<wire x1="-0.2965" y1="16.2025" x2="-1.895" y2="16.2025" width="0.3556" layer="1"/>
+<wire x1="-1.895" y1="16.2025" x2="-2.2225" y2="15.875" width="0.3556" layer="1"/>
+<via x="-14.76375" y="83.66125" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="-14.76375" y1="83.66125" x2="-15.025" y2="83.4" width="0.9144" layer="16"/>
+<wire x1="-15.025" y1="83.4" x2="-15.025" y2="82.2325" width="0.9144" layer="16"/>
+<wire x1="-11.545" y1="73.955" x2="-11.545" y2="72.5925" width="0.254" layer="16"/>
+<wire x1="-11.545" y1="72.5925" x2="-12.065" y2="72.0725" width="0.254" layer="16"/>
+<wire x1="-12.065" y1="72.0725" x2="-20.32" y2="72.0725" width="0.254" layer="16"/>
+<wire x1="-20.32" y1="72.0725" x2="-20.79625" y2="71.59625" width="0.254" layer="16"/>
+<via x="-20.79625" y="71.59625" extent="1-16" drill="0.8" shape="octagon"/>
 </signal>
 <signal name="AGND" class="1">
 <contactref element="SJ1" pad="1"/>
@@ -3698,17 +3725,19 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <contactref element="JP1" pad="14"/>
 <contactref element="U6" pad="30"/>
 <contactref element="R5" pad="1"/>
-<wire x1="-10.545" y1="73.955" x2="-10.545" y2="72.005" width="0.254" layer="16"/>
-<wire x1="-10.545" y1="72.005" x2="-11.1125" y2="71.4375" width="0.254" layer="16"/>
-<wire x1="-11.1125" y1="71.4375" x2="-25.4" y2="71.4375" width="0.254" layer="16"/>
-<wire x1="-25.4" y1="71.4375" x2="-26.035" y2="70.8025" width="0.254" layer="16"/>
-<via x="-26.035" y="70.8025" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="-28.575" y1="68.2625" x2="-28.575" y2="46.99" width="0.3556" layer="1"/>
+<wire x1="-10.545" y1="73.955" x2="-10.545" y2="71.6875" width="0.254" layer="16"/>
+<wire x1="-10.545" y1="71.6875" x2="-11.43" y2="70.8025" width="0.254" layer="16"/>
+<via x="-26.67" y="69.85" extent="1-16" drill="0.8" shape="octagon"/>
 <via x="-28.575" y="46.99" extent="1-16" drill="0.8" shape="octagon"/>
 <wire x1="-28.575" y1="46.99" x2="-25.4" y2="46.99" width="0.3556" layer="16"/>
 <wire x1="-25.4" y1="46.99" x2="-24.13" y2="48.26" width="0.3556" layer="16"/>
-<wire x1="-28.575" y1="68.2625" x2="-26.035" y2="70.8025" width="0.3556" layer="1"/>
-<wire x1="-26.035" y1="70.8025" x2="-26.035" y2="68.4775" width="0" layer="19" extent="1-16"/>
+<wire x1="-28.575" y1="67.945" x2="-26.67" y2="69.85" width="0.3556" layer="1"/>
+<wire x1="-28.575" y1="46.99" x2="-28.575" y2="66.675" width="0.3556" layer="1"/>
+<wire x1="-28.575" y1="66.675" x2="-28.575" y2="67.945" width="0.3556" layer="1"/>
+<wire x1="-28.4725" y1="66.675" x2="-28.575" y2="66.675" width="0.3556" layer="1"/>
+<wire x1="-11.43" y1="70.8025" x2="-19.05" y2="70.8025" width="0.254" layer="16"/>
+<wire x1="-19.05" y1="70.8025" x2="-20.0025" y2="69.85" width="0.254" layer="16"/>
+<wire x1="-20.0025" y1="69.85" x2="-26.67" y2="69.85" width="0.254" layer="16"/>
 </signal>
 <signal name="PD8">
 <contactref element="JP1" pad="40"/>
@@ -3799,12 +3828,12 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="1.42875" y1="78.89875" x2="2.63525" y2="78.89875" width="0.254" layer="1"/>
 <wire x1="2.63525" y1="78.89875" x2="4.7625" y2="81.026" width="0.254" layer="1"/>
 <wire x1="4.7625" y1="81.026" x2="65.1927125" y2="81.026" width="0.254" layer="1"/>
-<wire x1="77.7875" y1="82.8675" x2="72.39" y2="82.8675" width="0.254" layer="16"/>
-<wire x1="72.39" y1="82.8675" x2="72.0725" y2="83.185" width="0.254" layer="16"/>
-<via x="72.0725" y="83.185" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="72.0725" y1="83.185" x2="72.0725" y2="83.2485" width="0.254" layer="1"/>
-<wire x1="72.0725" y1="83.2485" x2="71.4375" y2="83.8835" width="0.254" layer="1"/>
-<wire x1="71.4375" y1="83.8835" x2="68.0502125" y2="83.8835" width="0.254" layer="1"/>
+<wire x1="77.7875" y1="82.8675" x2="71.4375" y2="82.8675" width="0.254" layer="16"/>
+<wire x1="71.4375" y1="82.8675" x2="71.12" y2="83.185" width="0.254" layer="16"/>
+<via x="71.12" y="83.185" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="71.12" y1="83.185" x2="71.12" y2="83.2485" width="0.254" layer="1"/>
+<wire x1="71.12" y1="83.2485" x2="70.485" y2="83.8835" width="0.254" layer="1"/>
+<wire x1="70.485" y1="83.8835" x2="68.0502125" y2="83.8835" width="0.254" layer="1"/>
 <wire x1="68.0502125" y1="83.8835" x2="65.1927125" y2="81.026" width="0.254" layer="1"/>
 </signal>
 <signal name="TD_N">
@@ -3822,12 +3851,12 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="2.38125" y1="83.66125" x2="3.175" y2="82.8675" width="0.254" layer="16"/>
 <via x="3.175" y="82.8675" extent="1-16" drill="0.8" shape="octagon"/>
 <wire x1="3.556" y1="81.534" x2="64.9822875" y2="81.534" width="0.254" layer="1"/>
-<wire x1="77.7875" y1="85.4075" x2="72.39" y2="85.4075" width="0.254" layer="16"/>
-<wire x1="72.39" y1="85.4075" x2="72.0725" y2="85.09" width="0.254" layer="16"/>
-<via x="72.0725" y="85.09" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="72.0725" y1="85.09" x2="72.0725" y2="85.0265" width="0.254" layer="1"/>
-<wire x1="72.0725" y1="85.0265" x2="71.4375" y2="84.3915" width="0.254" layer="1"/>
-<wire x1="71.4375" y1="84.3915" x2="67.8397875" y2="84.3915" width="0.254" layer="1"/>
+<wire x1="77.7875" y1="85.4075" x2="71.4375" y2="85.4075" width="0.254" layer="16"/>
+<wire x1="71.4375" y1="85.4075" x2="71.12" y2="85.09" width="0.254" layer="16"/>
+<via x="71.12" y="85.09" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="71.12" y1="85.09" x2="71.12" y2="85.0265" width="0.254" layer="1"/>
+<wire x1="71.12" y1="85.0265" x2="70.485" y2="84.3915" width="0.254" layer="1"/>
+<wire x1="70.485" y1="84.3915" x2="67.8397875" y2="84.3915" width="0.254" layer="1"/>
 <wire x1="67.8397875" y1="84.3915" x2="64.9822875" y2="81.534" width="0.254" layer="1"/>
 <wire x1="3.556" y1="81.534" x2="3.175" y2="81.915" width="0.254" layer="1"/>
 <wire x1="3.175" y1="81.915" x2="3.175" y2="82.8675" width="0.254" layer="1"/>
@@ -3847,12 +3876,12 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <via x="4.445" y="84.1375" extent="1-16" drill="0.8" shape="octagon"/>
 <wire x1="9.7372875" y1="82.296" x2="64.2402125" y2="82.296" width="0.254" layer="1"/>
 <wire x1="9.7372875" y1="82.296" x2="6.8797875" y2="85.1535" width="0.254" layer="1"/>
-<wire x1="75.2475" y1="86.6775" x2="72.7075" y2="86.6775" width="0.254" layer="16"/>
-<wire x1="72.7075" y1="86.6775" x2="72.0725" y2="87.3125" width="0.254" layer="16"/>
-<via x="72.0725" y="87.3125" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="72.0725" y1="87.3125" x2="72.0725" y2="87.376" width="0.254" layer="1"/>
-<wire x1="72.0725" y1="87.376" x2="71.4375" y2="88.011" width="0.254" layer="1"/>
-<wire x1="71.4375" y1="88.011" x2="69.9552125" y2="88.011" width="0.254" layer="1"/>
+<wire x1="75.2475" y1="86.6775" x2="71.755" y2="86.6775" width="0.254" layer="16"/>
+<wire x1="71.755" y1="86.6775" x2="71.12" y2="87.3125" width="0.254" layer="16"/>
+<via x="71.12" y="87.3125" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="71.12" y1="87.3125" x2="71.12" y2="87.376" width="0.254" layer="1"/>
+<wire x1="71.12" y1="87.376" x2="70.485" y2="88.011" width="0.254" layer="1"/>
+<wire x1="70.485" y1="88.011" x2="69.9552125" y2="88.011" width="0.254" layer="1"/>
 <wire x1="64.2402125" y1="82.296" x2="69.9552125" y2="88.011" width="0.254" layer="1"/>
 <wire x1="6.8797875" y1="85.1535" x2="5.461" y2="85.1535" width="0.254" layer="1"/>
 <wire x1="5.461" y1="85.1535" x2="4.445" y2="84.1375" width="0.254" layer="1"/>
@@ -3871,11 +3900,11 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="0" y1="88.265" x2="4.4867125" y2="88.265" width="0.254" layer="1"/>
 <wire x1="9.9477125" y1="82.804" x2="64.0297875" y2="82.804" width="0.254" layer="1"/>
 <wire x1="9.9477125" y1="82.804" x2="4.4867125" y2="88.265" width="0.254" layer="1"/>
-<wire x1="75.2475" y1="89.2175" x2="72.0725" y2="89.2175" width="0.254" layer="16"/>
-<via x="72.0725" y="89.2175" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="72.0725" y1="89.2175" x2="72.0725" y2="89.154" width="0.254" layer="1"/>
-<wire x1="72.0725" y1="89.154" x2="71.4375" y2="88.519" width="0.254" layer="1"/>
-<wire x1="71.4375" y1="88.519" x2="69.7447875" y2="88.519" width="0.254" layer="1"/>
+<wire x1="75.2475" y1="89.2175" x2="71.12" y2="89.2175" width="0.254" layer="16"/>
+<via x="71.12" y="89.2175" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="71.12" y1="89.2175" x2="71.12" y2="89.154" width="0.254" layer="1"/>
+<wire x1="71.12" y1="89.154" x2="70.485" y2="88.519" width="0.254" layer="1"/>
+<wire x1="70.485" y1="88.519" x2="69.7447875" y2="88.519" width="0.254" layer="1"/>
 <wire x1="64.0297875" y1="82.804" x2="69.7447875" y2="88.519" width="0.254" layer="1"/>
 <wire x1="-3.39" y1="88.05" x2="-3.175" y2="88.265" width="0.254" layer="16"/>
 <wire x1="-3.175" y1="88.265" x2="0" y2="88.265" width="0.254" layer="16"/>
@@ -3888,14 +3917,14 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <contactref element="U6" pad="23"/>
 <contactref element="U6" pad="18"/>
 <contactref element="U6" pad="37"/>
-<wire x1="-3.39" y1="70.64375" x2="-3.39" y2="72.7075" width="0.9144" layer="16"/>
+<wire x1="-3.39" y1="70.485" x2="-3.39" y2="72.54875" width="0.9144" layer="16"/>
 <wire x1="-6.645" y1="78.355" x2="-3.4575" y2="78.355" width="0.254" layer="16"/>
 <wire x1="-3.4575" y1="78.355" x2="-3.39" y2="78.4225" width="0.254" layer="16"/>
 <wire x1="-6.645" y1="75.855" x2="-5.6875" y2="75.855" width="0.254" layer="16"/>
 <wire x1="-5.6875" y1="75.855" x2="-4.445" y2="74.6125" width="0.254" layer="16"/>
-<wire x1="-4.445" y1="74.6125" x2="-4.445" y2="73.025" width="0.254" layer="16"/>
-<wire x1="-4.445" y1="73.025" x2="-4.1275" y2="72.7075" width="0.254" layer="16"/>
-<wire x1="-4.1275" y1="72.7075" x2="-3.39" y2="72.7075" width="0.254" layer="16"/>
+<wire x1="-4.445" y1="74.6125" x2="-4.445" y2="72.86625" width="0.254" layer="16"/>
+<wire x1="-4.445" y1="72.86625" x2="-4.1275" y2="72.54875" width="0.254" layer="16"/>
+<wire x1="-4.1275" y1="72.54875" x2="-3.39" y2="72.54875" width="0.254" layer="16"/>
 <wire x1="-14.945" y1="75.355" x2="-13.545" y2="75.355" width="0.254" layer="16"/>
 <wire x1="-13.545" y1="75.355" x2="-13.335" y2="75.565" width="0.254" layer="16"/>
 <wire x1="-6.645" y1="75.855" x2="-7.91" y2="75.855" width="0.254" layer="16"/>
@@ -3984,26 +4013,27 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="-5.98125" y1="75.355" x2="-5.08" y2="74.45375" width="0.254" layer="16"/>
 <wire x1="-5.08" y1="74.45375" x2="-5.08" y2="72.7075" width="0.254" layer="16"/>
 <wire x1="-5.08" y1="72.7075" x2="-4.445" y2="72.0725" width="0.254" layer="16"/>
-<wire x1="-4.445" y1="72.0725" x2="-4.445" y2="68.8975" width="0.254" layer="16"/>
-<wire x1="-4.445" y1="68.8975" x2="-4.1275" y2="68.58" width="0.254" layer="16"/>
-<wire x1="-4.1275" y1="68.58" x2="-3.39" y2="68.58" width="0.254" layer="16"/>
+<wire x1="-4.445" y1="72.0725" x2="-4.445" y2="68.73875" width="0.254" layer="16"/>
+<wire x1="-4.445" y1="68.73875" x2="-4.1275" y2="68.42125" width="0.254" layer="16"/>
+<wire x1="-4.1275" y1="68.42125" x2="-3.39" y2="68.42125" width="0.254" layer="16"/>
 </signal>
 <signal name="N$34">
 <contactref element="R8" pad="1"/>
 <contactref element="U6" pad="20"/>
 <wire x1="-6.645" y1="77.355" x2="-4.80625" y2="77.355" width="0.254" layer="16"/>
-<wire x1="-4.80625" y1="77.355" x2="-3.96875" y2="76.5175" width="0.254" layer="16"/>
-<wire x1="-3.96875" y1="76.5175" x2="0.1025" y2="76.5175" width="0.254" layer="16"/>
-<wire x1="0.1025" y1="76.5175" x2="0.42" y2="76.2" width="0.254" layer="16"/>
+<wire x1="-4.80625" y1="77.355" x2="-4.28625" y2="76.835" width="0.254" layer="16"/>
+<wire x1="-4.28625" y1="76.835" x2="-0.3175" y2="76.835" width="0.254" layer="16"/>
+<wire x1="-0.3175" y1="76.835" x2="0.3175" y2="76.2" width="0.254" layer="16"/>
+<wire x1="0.3175" y1="76.2" x2="1.055" y2="76.2" width="0.254" layer="16"/>
 </signal>
 <signal name="N$35">
 <contactref element="R7" pad="1"/>
 <contactref element="U6" pad="21"/>
 <wire x1="-6.645" y1="76.855" x2="-5.1" y2="76.855" width="0.254" layer="16"/>
-<wire x1="-5.1" y1="76.855" x2="-4.1275" y2="75.8825" width="0.254" layer="16"/>
-<wire x1="-4.1275" y1="75.8825" x2="-0.9525" y2="75.8825" width="0.254" layer="16"/>
-<wire x1="0.42" y1="74.13625" x2="0.42" y2="74.51" width="0.254" layer="16"/>
-<wire x1="0.42" y1="74.51" x2="-0.9525" y2="75.8825" width="0.254" layer="16"/>
+<wire x1="-5.1" y1="76.855" x2="-4.445" y2="76.2" width="0.254" layer="16"/>
+<wire x1="-4.445" y1="76.2" x2="-0.635" y2="76.2" width="0.254" layer="16"/>
+<wire x1="-0.635" y1="76.2" x2="1.055" y2="74.51" width="0.254" layer="16"/>
+<wire x1="1.055" y1="74.51" x2="1.055" y2="74.13625" width="0.254" layer="16"/>
 </signal>
 <signal name="N$21">
 <contactref element="U6" pad="39"/>
@@ -4023,12 +4053,10 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="-6.82625" y1="70.3825" x2="-6.82625" y2="71.27875" width="0.3556" layer="16"/>
 <wire x1="-6.82625" y1="71.27875" x2="-6.985" y2="71.4375" width="0.3556" layer="16"/>
 <wire x1="-6.985" y1="71.4375" x2="-6.985" y2="72.7075" width="0.3556" layer="16"/>
-<wire x1="-5.715" y1="73.9775" x2="-0.9525" y2="73.9775" width="0.3556" layer="1"/>
-<wire x1="-0.9525" y1="73.9775" x2="5.08" y2="80.01" width="0.3556" layer="1"/>
-<wire x1="5.08" y1="80.01" x2="65.405" y2="80.01" width="0.3556" layer="1"/>
+<wire x1="-5.715" y1="73.9775" x2="-0.3175" y2="73.9775" width="0.3556" layer="1"/>
+<wire x1="-0.3175" y1="73.9775" x2="5.08" y2="79.375" width="0.3556" layer="1"/>
+<wire x1="5.08" y1="79.375" x2="68.0475" y2="79.375" width="0.3556" layer="1"/>
 <contactref element="R9" pad="1"/>
-<wire x1="65.405" y1="80.01" x2="66.9925" y2="81.5975" width="0.3556" layer="1"/>
-<wire x1="66.9925" y1="81.5975" x2="68.0475" y2="81.5975" width="0.3556" layer="1"/>
 </signal>
 <signal name="N$23">
 <contactref element="U6" pad="28"/>
@@ -4036,16 +4064,15 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="-9.545" y1="73.955" x2="-9.545" y2="72.41" width="0.254" layer="16"/>
 <wire x1="-9.545" y1="72.41" x2="-8.89" y2="71.755" width="0.254" layer="16"/>
 <via x="-8.89" y="71.755" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="-8.89" y1="71.755" x2="-8.255" y2="71.12" width="0.3556" layer="1"/>
-<wire x1="-8.255" y1="71.12" x2="-6.0325" y2="71.12" width="0.3556" layer="1"/>
-<wire x1="-6.0325" y1="71.12" x2="-5.3975" y2="71.755" width="0.3556" layer="1"/>
-<wire x1="-5.3975" y1="71.755" x2="-5.3975" y2="72.7075" width="0.3556" layer="1"/>
-<wire x1="-5.3975" y1="72.7075" x2="-4.7625" y2="73.3425" width="0.3556" layer="1"/>
 <wire x1="-8.89" y1="70.3825" x2="-8.89" y2="71.755" width="0.3556" layer="16"/>
-<wire x1="-4.7625" y1="73.3425" x2="-0.635" y2="73.3425" width="0.3556" layer="1"/>
-<wire x1="-0.635" y1="73.3425" x2="5.3975" y2="79.375" width="0.3556" layer="1"/>
-<wire x1="5.3975" y1="79.375" x2="68.0475" y2="79.375" width="0.3556" layer="1"/>
 <contactref element="R10" pad="1"/>
+<wire x1="-8.89" y1="71.755" x2="-8.89" y2="72.7075" width="0.3556" layer="1"/>
+<wire x1="-8.89" y1="72.7075" x2="-6.985" y2="74.6125" width="0.3556" layer="1"/>
+<wire x1="-6.985" y1="74.6125" x2="-0.635" y2="74.6125" width="0.3556" layer="1"/>
+<wire x1="-0.635" y1="74.6125" x2="4.7625" y2="80.01" width="0.3556" layer="1"/>
+<wire x1="4.7625" y1="80.01" x2="65.405" y2="80.01" width="0.3556" layer="1"/>
+<wire x1="65.405" y1="80.01" x2="66.9925" y2="81.5975" width="0.3556" layer="1"/>
+<wire x1="66.9925" y1="81.5975" x2="68.0475" y2="81.5975" width="0.3556" layer="1"/>
 </signal>
 <signal name="N$26" class="1">
 <contactref element="J1" pad="1"/>
@@ -4067,9 +4094,9 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <contactref element="U6" pad="29"/>
 <contactref element="C23" pad="1"/>
 <contactref element="R11" pad="1"/>
-<wire x1="-13.0175" y1="70.3825" x2="-10.95375" y2="70.3825" width="0.254" layer="16"/>
-<wire x1="-10.045" y1="73.955" x2="-10.045" y2="71.29125" width="0.254" layer="16"/>
-<wire x1="-10.045" y1="71.29125" x2="-10.95375" y2="70.3825" width="0.254" layer="16"/>
+<wire x1="-13.0175" y1="69.7475" x2="-10.95375" y2="69.7475" width="0.254" layer="16"/>
+<wire x1="-10.045" y1="73.955" x2="-10.045" y2="70.65625" width="0.254" layer="16"/>
+<wire x1="-10.045" y1="70.65625" x2="-10.95375" y2="69.7475" width="0.254" layer="16"/>
 </signal>
 <signal name="PA9">
 <contactref element="JP2" pad="44"/>
@@ -4081,22 +4108,15 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <contactref element="J3" pad="3"/>
 <wire x1="23.495" y1="57.15" x2="28.8925" y2="57.15" width="0.3556" layer="16"/>
 <wire x1="28.8925" y1="57.15" x2="37.1475" y2="65.405" width="0.3556" layer="16"/>
-<via x="44.7675" y="87.9475" extent="1-16" drill="0.8" shape="octagon"/>
 <wire x1="23.495" y1="57.15" x2="22.86" y2="56.515" width="0.3556" layer="16"/>
 <wire x1="22.86" y1="56.515" x2="22.86" y2="46.99" width="0.3556" layer="16"/>
 <wire x1="22.86" y1="46.99" x2="24.13" y2="45.72" width="0.3556" layer="16"/>
-<wire x1="48.895" y1="81.5975" x2="37.1475" y2="69.85" width="0.3556" layer="16"/>
-<wire x1="37.1475" y1="69.85" x2="37.1475" y2="65.405" width="0.3556" layer="16"/>
-<wire x1="48.895" y1="81.5975" x2="48.895" y2="86.995" width="0.3556" layer="16"/>
-<wire x1="48.895" y1="86.995" x2="47.9425" y2="87.9475" width="0.3556" layer="16"/>
-<wire x1="47.9425" y1="87.9475" x2="44.7675" y2="87.9475" width="0.3556" layer="16"/>
-<wire x1="44.7675" y1="87.9475" x2="44.7675" y2="93.7475" width="0.3556" layer="1"/>
-<wire x1="44.7675" y1="93.7475" x2="43.3975" y2="95.1175" width="0.3556" layer="1"/>
-</signal>
-<signal name="PB10">
-<contactref element="JP1" pad="34"/>
-<contactref element="U12" pad="3"/>
-<wire x1="-24.13" y1="22.86" x2="14.4075" y2="40.325" width="0" layer="19" extent="1-1"/>
+<wire x1="37.1475" y1="65.405" x2="37.1475" y2="66.9925" width="0.3556" layer="16"/>
+<wire x1="37.1475" y1="66.9925" x2="48.895" y2="78.74" width="0.3556" layer="16"/>
+<via x="48.895" y="92.3925" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="48.895" y1="78.74" x2="48.895" y2="92.3925" width="0.3556" layer="16"/>
+<wire x1="48.895" y1="92.3925" x2="46.17" y2="95.1175" width="0.3556" layer="1"/>
+<wire x1="46.17" y1="95.1175" x2="43.3975" y2="95.1175" width="0.3556" layer="1"/>
 </signal>
 <signal name="N$37">
 <contactref element="JP10" pad="2"/>
@@ -4109,7 +4129,10 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <signal name="N$38">
 <contactref element="U12" pad="5"/>
 <contactref element="R12" pad="2"/>
-<wire x1="16.7075" y1="41.275" x2="15.3425" y2="43.815" width="0" layer="19" extent="1-1"/>
+<wire x1="15.875" y1="64.9675" x2="15.875" y2="64.29375" width="0.3556" layer="1"/>
+<wire x1="15.875" y1="64.29375" x2="15.5575" y2="63.97625" width="0.3556" layer="1"/>
+<wire x1="15.5575" y1="63.97625" x2="13.39125" y2="63.97625" width="0.3556" layer="1"/>
+<wire x1="13.39125" y1="63.97625" x2="13.2325" y2="63.8175" width="0.3556" layer="1"/>
 </signal>
 <signal name="N$39">
 <contactref element="U7" pad="5"/>
@@ -4123,28 +4146,28 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <contactref element="R15" pad="2"/>
 <contactref element="R14" pad="1"/>
 <polygon width="0.3556" layer="1" thermals="no" rank="3">
-<vertex x="10.4775" y="55.245"/>
-<vertex x="10.4775" y="57.785"/>
-<vertex x="13.6525" y="57.785"/>
-<vertex x="13.6525" y="54.61"/>
-<vertex x="12.3825" y="54.61"/>
-<vertex x="12.3825" y="55.245"/>
+<vertex x="19.685" y="51.1175"/>
+<vertex x="19.685" y="48.5775"/>
+<vertex x="16.51" y="48.5775"/>
+<vertex x="16.51" y="51.7525"/>
+<vertex x="17.78" y="51.7525"/>
+<vertex x="17.78" y="51.1175"/>
 </polygon>
 </signal>
 <signal name="N$41" class="1">
 <contactref element="L1" pad="1"/>
 <contactref element="U10" pad="3"/>
 <polygon width="0.3556" layer="1" thermals="no" rank="2">
-<vertex x="14.76375" y="53.34"/>
-<vertex x="14.76375" y="51.7525"/>
-<vertex x="15.08125" y="51.435"/>
-<vertex x="15.875" y="51.435"/>
-<vertex x="15.875" y="50.4825"/>
-<vertex x="13.335" y="50.4825"/>
-<vertex x="13.335" y="51.435"/>
-<vertex x="14.12875" y="51.435"/>
-<vertex x="14.44625" y="51.7525"/>
-<vertex x="14.44625" y="53.34"/>
+<vertex x="15.39875" y="53.0225"/>
+<vertex x="15.39875" y="54.61"/>
+<vertex x="15.08125" y="54.9275"/>
+<vertex x="14.2875" y="54.9275"/>
+<vertex x="14.2875" y="55.88"/>
+<vertex x="16.8275" y="55.88"/>
+<vertex x="16.8275" y="54.9275"/>
+<vertex x="16.03375" y="54.9275"/>
+<vertex x="15.71625" y="54.61"/>
+<vertex x="15.71625" y="53.0225"/>
 </polygon>
 </signal>
 <signal name="PB8">
@@ -5331,11 +5354,10 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="-6.3275" y1="73.955" x2="-5.715" y2="73.3425" width="0.254" layer="16"/>
 <wire x1="-5.715" y1="73.3425" x2="-5.715" y2="72.39" width="0.254" layer="16"/>
 <wire x1="-5.715" y1="72.39" x2="-5.08" y2="71.755" width="0.254" layer="16"/>
-<wire x1="-5.08" y1="71.755" x2="-5.08" y2="66.9925" width="0.254" layer="16"/>
-<via x="-5.08" y="66.9925" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="-5.08" y1="66.9925" x2="-3.4925" y2="66.9925" width="0.3556" layer="1"/>
-<wire x1="-3.4925" y1="66.9925" x2="2.54" y2="73.025" width="0.3556" layer="1"/>
-<wire x1="2.54" y1="73.025" x2="35.2425" y2="73.025" width="0.3556" layer="1"/>
+<wire x1="-5.08" y1="71.755" x2="-5.08" y2="67.6275" width="0.254" layer="16"/>
+<via x="-5.08" y="67.6275" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="5.08" y1="77.7875" x2="35.2425" y2="77.7875" width="0.3556" layer="1"/>
+<wire x1="5.08" y1="77.7875" x2="-5.08" y2="67.6275" width="0.3556" layer="1"/>
 </signal>
 <signal name="N$13" class="2">
 <contactref element="U13" pad="43"/>
@@ -5381,31 +5403,39 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="88.2015" y1="83.2231" x2="88.2015" y2="83.2485" width="0.3556" layer="16"/>
 <wire x1="88.2015" y1="83.2485" x2="86.995" y2="84.455" width="0.3556" layer="16"/>
 <via x="77.47" y="77.7875" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="77.47" y1="77.7875" x2="73.3425" y2="77.7875" width="0.3556" layer="1"/>
 <wire x1="86.995" y1="84.455" x2="83.185" y2="84.455" width="0.3556" layer="16"/>
 <wire x1="83.185" y1="84.455" x2="77.47" y2="78.74" width="0.3556" layer="16"/>
 <wire x1="77.47" y1="78.74" x2="77.47" y2="77.7875" width="0.3556" layer="16"/>
-<wire x1="69.7475" y1="81.5975" x2="71.4375" y2="81.5975" width="0.3556" layer="1"/>
-<wire x1="71.4375" y1="81.5975" x2="72.39" y2="80.645" width="0.3556" layer="1"/>
-<wire x1="72.39" y1="80.645" x2="72.39" y2="78.74" width="0.3556" layer="1"/>
-<wire x1="72.39" y1="78.74" x2="73.3425" y2="77.7875" width="0.3556" layer="1"/>
+<wire x1="69.7475" y1="79.375" x2="71.4375" y2="79.375" width="0.3556" layer="1"/>
+<wire x1="71.4375" y1="79.375" x2="73.025" y2="77.7875" width="0.3556" layer="1"/>
+<wire x1="73.025" y1="77.7875" x2="77.47" y2="77.7875" width="0.3556" layer="1"/>
 </signal>
 <signal name="N$25">
 <contactref element="J2" pad="CG"/>
 <contactref element="R10" pad="2"/>
-<wire x1="88.2015" y1="93.9419" x2="88.2015" y2="93.9165" width="0.3556" layer="16"/>
-<wire x1="88.2015" y1="93.9165" x2="86.6775" y2="92.3925" width="0.3556" layer="16"/>
-<wire x1="86.6775" y1="92.3925" x2="86.6775" y2="88.9" width="0.3556" layer="16"/>
-<wire x1="86.6775" y1="88.9" x2="75.565" y2="77.7875" width="0.3556" layer="16"/>
-<wire x1="75.565" y1="77.7875" x2="71.4375" y2="77.7875" width="0.3556" layer="16"/>
-<via x="71.4375" y="77.7875" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="71.4375" y1="77.7875" x2="69.85" y2="79.375" width="0.3556" layer="1"/>
-<wire x1="69.7475" y1="79.375" x2="69.85" y2="79.375" width="0.3556" layer="1"/>
+<wire x1="69.7475" y1="81.5975" x2="71.4375" y2="81.5975" width="0.3556" layer="1"/>
+<wire x1="71.4375" y1="81.5975" x2="72.39" y2="82.55" width="0.3556" layer="1"/>
+<wire x1="72.39" y1="82.55" x2="72.39" y2="96.2025" width="0.3556" layer="1"/>
+<wire x1="72.39" y1="96.2025" x2="73.66" y2="97.4725" width="0.3556" layer="1"/>
+<wire x1="73.66" y1="97.4725" x2="87.3125" y2="97.4725" width="0.3556" layer="1"/>
+<via x="87.3125" y="97.4725" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="87.3125" y1="97.4725" x2="88.2015" y2="96.5835" width="0.3556" layer="16"/>
+<wire x1="88.2015" y1="96.5835" x2="88.2015" y2="93.9419" width="0.3556" layer="16"/>
 </signal>
 <signal name="N$36">
 <contactref element="U12" pad="6"/>
 <contactref element="JP4" pad="2"/>
-<wire x1="8.89" y1="43.4975" x2="16.7075" y2="42.225" width="0" layer="19" extent="1-1"/>
+<wire x1="35.8775" y1="71.4375" x2="33.3375" y2="68.8975" width="0.9144" layer="16"/>
+<via x="33.3375" y="68.8975" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="33.3375" y1="68.8975" x2="16.51" y2="68.8975" width="0.9144" layer="1"/>
+<wire x1="16.51" y1="68.8975" x2="14.9225" y2="67.31" width="0.9144" layer="1"/>
+<wire x1="14.9225" y1="67.31" x2="14.9225" y2="65.7225" width="0.9144" layer="1"/>
+<polygon width="0.3556" layer="1" thermals="no" rank="2">
+<vertex x="15.24" y="64.4525"/>
+<vertex x="14.605" y="64.4525"/>
+<vertex x="14.605" y="66.04"/>
+<vertex x="15.24" y="66.04"/>
+</polygon>
 </signal>
 <signal name="PB7">
 <contactref element="JP2" pad="24"/>
@@ -5486,6 +5516,16 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <via x="28.8925" y="50.165" extent="1-16" drill="0.8" shape="octagon"/>
 <wire x1="28.8925" y1="50.165" x2="33.9725" y2="50.165" width="0.3556" layer="1"/>
 <wire x1="33.9725" y1="50.165" x2="40.9575" y2="57.15" width="0.3556" layer="1"/>
+</signal>
+<signal name="PC15">
+<contactref element="JP2" pad="10"/>
+<contactref element="U12" pad="3"/>
+<wire x1="16.825" y1="62.6675" x2="17.2625" y2="62.23" width="0.3556" layer="1"/>
+<wire x1="17.2625" y1="62.23" x2="27.94" y2="62.23" width="0.3556" layer="1"/>
+<wire x1="27.94" y1="62.23" x2="28.8925" y2="61.2775" width="0.3556" layer="1"/>
+<wire x1="28.8925" y1="61.2775" x2="28.8925" y2="53.34" width="0.3556" layer="1"/>
+<via x="28.8925" y="53.34" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="28.8925" y1="53.34" x2="26.67" y2="53.34" width="0.3556" layer="16"/>
 </signal>
 </signals>
 </board>
