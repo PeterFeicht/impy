@@ -123,25 +123,25 @@
 <wire x1="27.94" y1="95.25" x2="27.94" y2="90.17" width="0.3556" layer="51"/>
 <wire x1="27.94" y1="90.17" x2="25.4" y2="90.17" width="0.3556" layer="51"/>
 <wire x1="25.4" y1="90.17" x2="25.4" y2="95.25" width="0.3556" layer="51"/>
-<polygon width="0.3556" layer="41">
-<vertex x="73.3425" y="79.0575"/>
-<vertex x="73.3425" y="95.5675"/>
-<vertex x="86.995" y="95.5675"/>
-<vertex x="86.995" y="96.52"/>
-<vertex x="94.9325" y="96.52"/>
-<vertex x="94.9325" y="78.105"/>
-<vertex x="86.995" y="78.105"/>
-<vertex x="86.995" y="79.0575"/>
+<polygon width="0.9144" layer="41">
+<vertex x="73.3425" y="79.375"/>
+<vertex x="73.3425" y="95.25"/>
+<vertex x="86.995" y="95.25"/>
+<vertex x="86.995" y="96.2025"/>
+<vertex x="94.615" y="96.2025"/>
+<vertex x="94.615" y="78.4225"/>
+<vertex x="86.995" y="78.4225"/>
+<vertex x="86.995" y="79.375"/>
 </polygon>
-<polygon width="0.3556" layer="41">
-<vertex x="40.3225" y="-5.08"/>
-<vertex x="40.3225" y="9.2075"/>
-<vertex x="43.18" y="9.2075"/>
-<vertex x="43.18" y="6.985"/>
-<vertex x="52.07" y="6.985"/>
-<vertex x="52.07" y="9.2075"/>
-<vertex x="54.9275" y="9.2075"/>
-<vertex x="54.9275" y="-5.08"/>
+<polygon width="0.9144" layer="41">
+<vertex x="40.64" y="-4.7625"/>
+<vertex x="40.64" y="8.89"/>
+<vertex x="42.8625" y="8.89"/>
+<vertex x="42.8625" y="6.6675"/>
+<vertex x="52.3875" y="6.6675"/>
+<vertex x="52.3875" y="8.89"/>
+<vertex x="54.61" y="8.89"/>
+<vertex x="54.61" y="-4.7625"/>
 </polygon>
 <text x="-19.3675" y="11.1125" size="1.6764" layer="1" font="vector" align="top-left">mini Impedance Spectrometer
 Peter Feichtinger 2014</text>
