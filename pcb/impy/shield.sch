@@ -10034,7 +10034,7 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <part name="TP10" library="testpad" deviceset="TP" device="TP20R">
 <attribute name="TP_SIGNAL_NAME" value="Vcoupl"/>
 </part>
-<part name="TP11" library="testpad" deviceset="TP" device="TP20R">
+<part name="TP11" library="testpad" deviceset="TP" device="PAD1-13" value="TPPAD1-13">
 <attribute name="TP_SIGNAL_NAME" value="AGND"/>
 </part>
 <part name="AGND14" library="supply1" deviceset="AGND" device=""/>
@@ -10431,13 +10431,6 @@ AGND - Analog ground</text>
 <wire x1="182.88" y1="55.88" x2="182.88" y2="58.42" width="0.1524" layer="91"/>
 <junction x="182.88" y="58.42"/>
 <label x="180.34" y="58.42" size="1.778" layer="95" rot="R180"/>
-</segment>
-</net>
-<net name="BOOT0" class="0">
-<segment>
-<pinref part="JP2" gate="A" pin="21"/>
-<label x="63.5" y="55.88" size="1.778" layer="95" rot="R180"/>
-<wire x1="63.5" y1="55.88" x2="71.12" y2="55.88" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="PE1" class="0">
