@@ -1129,11 +1129,11 @@ Inductance range: 2.0~100µH, 3.5mm max. height</description>
 <wire x1="-1.6" y1="3.1" x2="1.6" y2="3.1" width="0.127" layer="21"/>
 <wire x1="1.6" y1="-3.1" x2="-1.6" y2="-3.1" width="0.127" layer="21"/>
 <wire x1="1.6" y1="3.1" x2="3.15" y2="1.5" width="0.127" layer="21" curve="-39"/>
-<wire x1="-3.15" y1="1.5" x2="-1.6" y2="3.1" width="0.127" layer="22" curve="-39"/>
+<wire x1="-3.15" y1="1.5" x2="-1.6" y2="3.1" width="0.127" layer="21" curve="-39"/>
 <wire x1="-1.6" y1="-3.1" x2="-3.15" y2="-1.5" width="0.127" layer="21" curve="-39"/>
-<wire x1="1.6" y1="-3.1" x2="3.15" y2="-1.5" width="0.127" layer="22" curve="39"/>
-<wire x1="-3.15" y1="-1.5" x2="-3.15" y2="1.5" width="0.127" layer="21"/>
-<wire x1="3.15" y1="-1.5" x2="3.15" y2="1.5" width="0.127" layer="21"/>
+<wire x1="1.6" y1="-3.1" x2="3.15" y2="-1.5" width="0.127" layer="21" curve="39"/>
+<wire x1="-3.15" y1="-1.5" x2="-3.15" y2="1.5" width="0.127" layer="51"/>
+<wire x1="3.15" y1="-1.5" x2="3.15" y2="1.5" width="0.127" layer="51"/>
 <text x="-3" y="3.5" size="1.27" layer="25">&gt;NAME</text>
 <text x="-3" y="-5" size="1.27" layer="27">&gt;VALUE</text>
 </package>
