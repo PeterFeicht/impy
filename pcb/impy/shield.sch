@@ -10827,6 +10827,13 @@ AGND - Analog ground</text>
 <label x="129.54" y="71.12" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
+<net name="PC2" class="0">
+<segment>
+<pinref part="JP1" gate="A" pin="10"/>
+<wire x1="27.94" y1="71.12" x2="35.56" y2="71.12" width="0.1524" layer="91"/>
+<label x="35.56" y="71.12" size="1.778" layer="95"/>
+</segment>
+</net>
 </nets>
 </sheet>
 <sheet>
@@ -11335,7 +11342,7 @@ AGND - Analog ground</text>
 <wire x1="107.95" y1="83.82" x2="96.52" y2="83.82" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$1" class="2">
+<net name="PC2" class="0">
 <segment>
 <pinref part="RFB1" gate="G$1" pin="2"/>
 <wire x1="86.36" y1="109.22" x2="81.28" y2="109.22" width="0.1524" layer="91"/>
@@ -11379,6 +11386,8 @@ AGND - Analog ground</text>
 <pinref part="TP4" gate="G$1" pin="TP"/>
 <wire x1="93.98" y1="63.5" x2="93.98" y2="60.96" width="0.1524" layer="91"/>
 <junction x="93.98" y="60.96"/>
+<wire x1="104.14" y1="45.72" x2="104.14" y2="38.1" width="0.1524" layer="91"/>
+<label x="104.14" y="38.1" size="1.778" layer="95" rot="R270"/>
 </segment>
 </net>
 <net name="N$12" class="2">
