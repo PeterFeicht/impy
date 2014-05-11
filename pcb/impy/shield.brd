@@ -3019,67 +3019,67 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <attribute name="VALUE" x="58.42" y="49.2125" size="1.27" layer="28" rot="MR90"/>
 </element>
 <element name="TP1" library="testpad" package="TP20R" value="TPTP20R" x="57.15" y="66.9925" smashed="yes">
-<attribute name="TP_SIGNAL_NAME" value="VCC" x="57.15" y="64.4525" size="1" layer="37"/>
+<attribute name="TP_SIGNAL_NAME" value="VCC" x="55.88" y="64.135" size="1" layer="37"/>
 <attribute name="NAME" x="55.515" y="63.915" size="1.27" layer="25"/>
 <attribute name="VALUE" x="56.388" y="65.9765" size="0.0254" layer="27"/>
 </element>
 <element name="TP2" library="testpad" package="TP20R" value="TPTP20R" x="53.975" y="13.335" smashed="yes" rot="R180">
-<attribute name="TP_SIGNAL_NAME" value="5V" x="53.975" y="15.875" size="1" layer="37" rot="R180"/>
+<attribute name="TP_SIGNAL_NAME" value="5V" x="55.245" y="16.1925" size="1" layer="37" rot="R180"/>
 <attribute name="NAME" x="55.9275" y="11.65" size="1.27" layer="25" rot="R180"/>
 <attribute name="VALUE" x="54.737" y="14.351" size="0.0254" layer="27" rot="R180"/>
 </element>
 <element name="TP3" library="testpad" package="TP20R" value="TPTP20R" x="45.4025" y="46.6725" smashed="yes">
-<attribute name="TP_SIGNAL_NAME" value="VOUT" x="45.4025" y="44.1325" size="1" layer="37"/>
+<attribute name="TP_SIGNAL_NAME" value="VOUT" x="44.1325" y="47.625" size="1" layer="37" rot="R90"/>
 <attribute name="NAME" x="44.3525" y="47.5775" size="1.27" layer="25" rot="R90"/>
 <attribute name="VALUE" x="44.6405" y="45.6565" size="0.0254" layer="27"/>
 </element>
 <element name="TP4" library="testpad" package="TP20R" value="TPTP20R" x="41.275" y="34.29" smashed="yes">
-<attribute name="TP_SIGNAL_NAME" value="VIN" x="41.275" y="31.75" size="1" layer="37"/>
+<attribute name="TP_SIGNAL_NAME" value="VIN" x="37.1475" y="33.9725" size="1" layer="37"/>
 <attribute name="NAME" x="36.7825" y="33.435" size="1.27" layer="25"/>
 <attribute name="VALUE" x="40.513" y="33.274" size="0.0254" layer="27"/>
 </element>
 <element name="TP5" library="testpad" package="TP20R" value="TPTP20R" x="58.42" y="46.99" smashed="yes">
-<attribute name="TP_SIGNAL_NAME" value="FORCE_OUT" x="58.42" y="44.45" size="1" layer="37"/>
+<attribute name="TP_SIGNAL_NAME" value="FORCE_OUT" x="61.2775" y="45.72" size="1" layer="37" rot="R90"/>
 <attribute name="NAME" x="59.6425" y="48.04" size="1.27" layer="25"/>
 <attribute name="VALUE" x="57.658" y="45.974" size="0.0254" layer="27"/>
 </element>
 <element name="TP6" library="testpad" package="TP20R" value="TPTP20R" x="52.3875" y="59.3725" smashed="yes">
-<attribute name="TP_SIGNAL_NAME" value="SENSE_OUT" x="52.3875" y="56.8325" size="1" layer="37"/>
+<attribute name="TP_SIGNAL_NAME" value="SENSE_OUT" x="49.53" y="60.96" size="1" layer="37"/>
 <attribute name="NAME" x="51.3875" y="60.4225" size="1.27" layer="25"/>
 <attribute name="VALUE" x="51.6255" y="58.3565" size="0.0254" layer="27"/>
 </element>
 <element name="TP7" library="testpad" package="TP20R" value="TPTP20R" x="69.215" y="13.97" smashed="yes" rot="R180">
-<attribute name="TP_SIGNAL_NAME" value="FORCE_IN" x="69.215" y="16.51" size="1" layer="37" rot="R180"/>
+<attribute name="TP_SIGNAL_NAME" value="FORCE_IN" x="73.025" y="16.8275" size="1" layer="37" rot="R180"/>
 <attribute name="NAME" x="70.5325" y="12.285" size="1.27" layer="25" rot="R180"/>
 <attribute name="VALUE" x="69.977" y="14.986" size="0.0254" layer="27" rot="R180"/>
 </element>
 <element name="TP8" library="testpad" package="TP20R" value="TPTP20R" x="59.055" y="43.4975" smashed="yes">
-<attribute name="TP_SIGNAL_NAME" value="SENSE_IN" x="59.055" y="40.9575" size="1" layer="37"/>
+<attribute name="TP_SIGNAL_NAME" value="SENSE_IN" x="58.42" y="41.5925" size="1" layer="37" rot="R270"/>
 <attribute name="NAME" x="59.6425" y="44.865" size="1.27" layer="25"/>
 <attribute name="VALUE" x="58.293" y="42.4815" size="0.0254" layer="27"/>
 </element>
 <element name="TP9" library="testpad" package="TP20R" value="TPTP20R" x="53.0225" y="47.9425" smashed="yes">
-<attribute name="TP_SIGNAL_NAME" value="VCC/2" x="53.0225" y="45.4025" size="1" layer="37"/>
+<attribute name="TP_SIGNAL_NAME" value="VCC/2" x="54.2925" y="48.26" size="1" layer="37"/>
 <attribute name="NAME" x="54.245" y="47.7225" size="1.27" layer="25"/>
 <attribute name="VALUE" x="52.2605" y="46.9265" size="0.0254" layer="27"/>
 </element>
 <element name="TP10" library="testpad" package="TP20R" value="TPTP20R" x="47.3075" y="48.895" smashed="yes">
-<attribute name="TP_SIGNAL_NAME" value="Vcoupl" x="47.3075" y="46.355" size="1" layer="37"/>
+<attribute name="TP_SIGNAL_NAME" value="Vcoupl" x="45.72" y="48.895" size="1" layer="37" rot="R90"/>
 <attribute name="NAME" x="45.94" y="48.53" size="1.27" layer="25" rot="R90"/>
 <attribute name="VALUE" x="46.5455" y="47.879" size="0.0254" layer="27"/>
 </element>
 <element name="TP11" library="testpad" package="P1-13" value="TPPAD1-13" x="61.9125" y="66.9925" smashed="yes">
-<attribute name="TP_SIGNAL_NAME" value="AGND" x="61.9125" y="64.4525" size="1" layer="37"/>
+<attribute name="TP_SIGNAL_NAME" value="AGND" x="60.0075" y="64.135" size="1" layer="37"/>
 <attribute name="NAME" x="59.96" y="63.915" size="1.27" layer="25"/>
 <attribute name="VALUE" x="61.1505" y="65.9765" size="0.0254" layer="27"/>
 </element>
 <element name="TP13" library="testpad" package="TP20R" value="TPTP20R" x="46.99" y="13.97" smashed="yes">
-<attribute name="TP_SIGNAL_NAME" value="USBH_VBUS" x="46.99" y="11.43" size="1" layer="37"/>
+<attribute name="TP_SIGNAL_NAME" value="USBH_VBUS" x="42.8625" y="15.875" size="1" layer="37"/>
 <attribute name="NAME" x="45.0375" y="15.655" size="1.27" layer="25"/>
 <attribute name="VALUE" x="46.228" y="12.954" size="0.0254" layer="27"/>
 </element>
 <element name="TP14" library="testpad" package="TP20R" value="TPTP20R" x="35.2425" y="77.7875" smashed="yes">
-<attribute name="TP_SIGNAL_NAME" value="MAC_CLK" x="35.2425" y="75.2475" size="1" layer="37"/>
+<attribute name="TP_SIGNAL_NAME" value="MAC_CLK" x="34.6075" y="79.375" size="1" layer="37"/>
 <attribute name="NAME" x="34.2425" y="79.155" size="1.27" layer="25"/>
 <attribute name="VALUE" x="34.4805" y="76.7715" size="0.0254" layer="27"/>
 </element>
