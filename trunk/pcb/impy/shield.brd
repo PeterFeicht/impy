@@ -157,6 +157,22 @@ Peter Feichtinger 2014</text>
 <text x="-19.3675" y="11.1125" size="1.6764" layer="51" font="vector" align="top-left">mini Impedance Spectrometer
 Peter Feichtinger 2014</text>
 <text x="-19.3675" y="5.08" size="1.6764" layer="51" font="vector" align="top-left">REV 1.0</text>
+<text x="47.3075" y="70.1675" size="1.27" layer="51" ratio="10" align="bottom-center">User</text>
+<text x="60.6425" y="70.1675" size="1.27" layer="51" ratio="10" align="bottom-center">Reset</text>
+<text x="83.5025" y="71.12" size="1.27" layer="51" ratio="10" align="bottom-center">I2C</text>
+<text x="90.4875" y="34.29" size="1.27" layer="51" ratio="10" rot="R90" align="bottom-center">Force</text>
+<text x="87.9475" y="34.29" size="1.27" layer="51" ratio="10" rot="R90" align="bottom-center">Sense</text>
+<text x="77.47" y="37.7825" size="1.27" layer="51" ratio="10">Sense</text>
+<text x="77.47" y="40.3225" size="1.27" layer="51" ratio="10">Force</text>
+<text x="77.47" y="30.1625" size="1.27" layer="51" ratio="10">Sense</text>
+<text x="77.47" y="27.6225" size="1.27" layer="51" ratio="10">Force</text>
+<text x="89.2175" y="39.37" size="1.27" layer="51" ratio="10" rot="R90" align="bottom-center">HI</text>
+<text x="89.2175" y="29.21" size="1.27" layer="51" ratio="10" rot="R90" align="bottom-center">LO</text>
+<text x="55.88" y="86.36" size="1.27" layer="51" ratio="10">5V</text>
+<text x="35.8775" y="85.09" size="1.27" layer="51" ratio="10" rot="R90">PHY JTAG</text>
+<text x="34.6075" y="63.1825" size="1.27" layer="51" ratio="10">Idd</text>
+<text x="38.735" y="69.85" size="1.27" layer="51" ratio="10" rot="R90">Icc</text>
+<text x="35.8775" y="14.605" size="1.27" layer="51" ratio="10" rot="R90">VBUS</text>
 </plain>
 <libraries>
 <library name="parts">
@@ -2576,7 +2592,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <attribute name="VALUE" x="34.6075" y="63.119" size="1.27" layer="27" ratio="10"/>
 </element>
 <element name="JP4" library="jumper" package="JP1" value="Idd" x="35.8775" y="72.0725" smashed="yes" rot="R180">
-<attribute name="NAME" x="37.5285" y="74.6125" size="1.27" layer="25" ratio="10" rot="R270"/>
+<attribute name="NAME" x="34.2265" y="69.5325" size="1.27" layer="25" ratio="10" rot="R90"/>
 <attribute name="VALUE" x="32.9565" y="74.6125" size="1.27" layer="27" ratio="10" rot="R270"/>
 </element>
 <element name="SJ1" library="jumper" package="SJ" value="GND" x="38.4175" y="34.29" smashed="yes" rot="MR0">
@@ -2795,12 +2811,12 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 </element>
 <element name="S2" library="parts" package="FSM" value="FSM4JSMATR" x="60.6425" y="74.93" smashed="yes" rot="R90">
 <attribute name="RS" value="718-2455" x="89.8525" y="93.98" size="1.778" layer="27" rot="R90" display="off"/>
-<attribute name="NAME" x="63.6425" y="71.43" size="1.27" layer="25" rot="R180"/>
+<attribute name="NAME" x="59.8325" y="79.685" size="1.27" layer="25" rot="R180"/>
 <attribute name="VALUE" x="63.6425" y="78.43" size="1.27" layer="27" rot="R180" align="top-left"/>
 </element>
 <element name="S1" library="parts" package="FSM" value="FSM4JSMATR" x="47.3075" y="74.93" smashed="yes" rot="R90">
 <attribute name="RS" value="718-2455" x="53.6575" y="158.75" size="1.778" layer="27" rot="R90" display="off"/>
-<attribute name="NAME" x="50.3075" y="71.43" size="1.27" layer="25" rot="R180"/>
+<attribute name="NAME" x="46.4975" y="79.685" size="1.27" layer="25" rot="R180"/>
 <attribute name="VALUE" x="50.3075" y="78.43" size="1.27" layer="27" rot="R180" align="top-left"/>
 </element>
 <element name="JP10" library="jumper" package="JP1" value="VBUS" x="35.2425" y="11.43" smashed="yes">
@@ -3004,7 +3020,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 </element>
 <element name="TP1" library="testpad" package="TP20R" value="TPTP20R" x="57.15" y="66.9925" smashed="yes">
 <attribute name="TP_SIGNAL_NAME" value="VCC" x="57.15" y="64.4525" size="1" layer="37"/>
-<attribute name="NAME" x="55.515" y="68.6775" size="1.27" layer="25"/>
+<attribute name="NAME" x="55.515" y="63.915" size="1.27" layer="25"/>
 <attribute name="VALUE" x="56.388" y="65.9765" size="0.0254" layer="27"/>
 </element>
 <element name="TP2" library="testpad" package="TP20R" value="TPTP20R" x="53.975" y="13.335" smashed="yes" rot="R180">
@@ -3054,7 +3070,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 </element>
 <element name="TP11" library="testpad" package="P1-13" value="TPPAD1-13" x="61.9125" y="66.9925" smashed="yes">
 <attribute name="TP_SIGNAL_NAME" value="AGND" x="61.9125" y="64.4525" size="1" layer="37"/>
-<attribute name="NAME" x="59.96" y="68.6775" size="1.27" layer="25"/>
+<attribute name="NAME" x="59.96" y="63.915" size="1.27" layer="25"/>
 <attribute name="VALUE" x="61.1505" y="65.9765" size="0.0254" layer="27"/>
 </element>
 <element name="TP13" library="testpad" package="TP20R" value="TPTP20R" x="46.99" y="13.97" smashed="yes">
