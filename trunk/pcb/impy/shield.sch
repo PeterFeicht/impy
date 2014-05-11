@@ -9825,8 +9825,8 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <part name="P+4" library="supply1" deviceset="VCC" device=""/>
 <part name="AGND1" library="supply1" deviceset="AGND" device=""/>
 <part name="GND10" library="supply1" deviceset="GND" device=""/>
-<part name="JP3" library="jumper" deviceset="JP1E" device="" value="Icc"/>
-<part name="JP4" library="jumper" deviceset="JP1E" device="" value="Idd"/>
+<part name="JP3" library="jumper" deviceset="JP1E" device="" value="Idd"/>
+<part name="JP4" library="jumper" deviceset="JP1E" device="" value="Icc"/>
 <part name="P+5" library="supply1" deviceset="VCC" device=""/>
 <part name="+3V3" library="supply1" deviceset="+3V3" device=""/>
 <part name="VDD4" library="supply1" deviceset="VDD" device=""/>
