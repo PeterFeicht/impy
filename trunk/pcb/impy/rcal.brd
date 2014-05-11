@@ -76,6 +76,11 @@
 <wire x1="0" y1="24.13" x2="0" y2="0" width="0" layer="20"/>
 <text x="10.16" y="3.81" size="1.016" layer="51" align="top-center">Impedance Spectrometer
 Calibration Resistors</text>
+<wire x1="1.27" y1="9.525" x2="1.27" y2="17.145" width="0.1016" layer="51"/>
+<wire x1="1.27" y1="17.145" x2="0.79375" y2="15.5575" width="0.1016" layer="51"/>
+<wire x1="0.79375" y1="15.5575" x2="1.74625" y2="15.5575" width="0.1016" layer="51"/>
+<wire x1="1.74625" y1="15.5575" x2="1.27" y2="17.145" width="0.1016" layer="51"/>
+<text x="1.27" y="8.255" size="1.27" layer="51" ratio="10" rot="R90" align="center-right">UP</text>
 </plain>
 <libraries>
 <library name="con-lsta">
