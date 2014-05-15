@@ -25,6 +25,9 @@ extern USBD_VCP_ItfTypeDef USBD_VCP_fops;
 void VCP_SetEcho(uint8_t enable);
 uint8_t VCP_GetEcho(void);
 void VCP_CommandFinish(void);
+uint32_t VCP_SendChar(uint8_t c);
+uint32_t VCP_SendString(uint8_t *str);
+uint32_t VCP_SendBuffer(uint8_t *buf, uint32_t len);
 
 // ----------------------------------------------------------------------------
 
