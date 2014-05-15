@@ -312,8 +312,8 @@ void VCP_CommandFinish(void)
 /**
  * Send the specified character over the virtual COM port.
  * 
- * @param c The value to send.
- * @return {@code 1} if the character was sent, {@code 0} if the buffer is full.
+ * @param c The value to send
+ * @return {@code 1} if the character was sent, {@code 0} if the buffer is full
  */
 uint32_t VCP_SendChar(uint8_t c)
 {
@@ -348,7 +348,7 @@ uint32_t VCP_SendChar(uint8_t c)
  * transmitted consecutively. For transmitting data that does not fit into a single buffer {@link VCP_SendBuffer}
  * should be used instead.
  * 
- * @param str Pointer to a zero terminated string.
+ * @param str Pointer to a zero terminated string
  * @return The number of bytes transmitted. This can be less than the string length, if the string is longer than the
  *         free space in the transmit buffer.
  */
