@@ -11,11 +11,20 @@
 // Includes -------------------------------------------------------------------
 #include "usbd_vcp.h"
 
+// Constants ------------------------------------------------------------------
+
+/**
+ * The maximum number of characters in one command line string, terminating 0 character not included.
+ */
+#define MAX_CMDLINE_LENGTH      200
+
 // Exported variables ---------------------------------------------------------
 extern USBD_VCP_ItfTypeDef USBD_VCP_fops;
 
 // Exported functions ---------------------------------------------------------
 void VCP_SetEcho(uint8_t enable);
+uint8_t VCP_GetEcho(void);
+void VCP_CommandFinish(void);
 
 // ----------------------------------------------------------------------------
 
