@@ -32,6 +32,8 @@ uint8_t VCPTxBuffer[APP_TX_BUFFER_SIZE];
 uint32_t VCPTxBufEnd = 0;
 // Start index of fresh data to be transmitted
 uint32_t VCPTxBufStart = 0;
+// Whether an external buffer should be transmitted
+uint8_t VCPTxExternal = 0;
 // Whether to echo characters received from the host, enabled by default
 uint8_t echo_enabled = 1;
 // The current command line text (0 terminated)
@@ -236,8 +238,16 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
  */
 static int8_t VCP_Transmit(uint8_t* Buf, uint32_t Len)
 {
-    // Send new data if present
-    SendBuffer();
+    if(VCPTxExternal)
+    {
+        // Tried to transmit external buffer earlier while busy, transmit now
+        VCPTxExternal = 0;
+        USBD_VCP_TransmitPacket(&hUsbDevice);
+    }
+    else
+    {
+        SendBuffer();
+    }
     return USBD_OK;
 }
 
@@ -397,6 +407,36 @@ uint32_t VCP_SendString(uint8_t *str)
 
     SendBuffer();
     return sent;
+}
+
+/**
+ * Send the specified buffer over the virtual COM port.
+ * 
+ * This function should be used for data that does not fit into the internal buffer.
+ * 
+ * @param buf Pointer to the buffer to be sent
+ * @param len Number of bytes to be sent
+ * @return {@code 1} on success, {@code 0} otherwise
+ */
+uint32_t VCP_SendBuffer(uint8_t *buf, uint32_t len)
+{
+    if(buf == NULL)
+    {
+        return 0;
+    }
+    
+    if(len == 0)
+    {
+        return 1;
+    }
+
+    USBD_VCP_SetTxBuffer(&hUsbDevice, buf, (uint16_t)len);
+    if(USBD_VCP_TransmitPacket(&hUsbDevice) == USBD_BUSY)
+    {
+        VCPTxExternal = 1;
+    }
+    
+    return 1;
 }
 
 
