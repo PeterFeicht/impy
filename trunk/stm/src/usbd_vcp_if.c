@@ -310,6 +310,38 @@ void VCP_CommandFinish(void)
 }
 
 /**
+ * Send the specified character over the virtual COM port.
+ * 
+ * @param c The value to send.
+ * @return {@code 1} if the character was sent, {@code 0} if the buffer is full.
+ */
+uint32_t VCP_SendChar(uint8_t c)
+{
+    if(VCPTxBufStart == VCPTxBufEnd)
+    {
+        VCPTxBufStart = 0;
+        VCPTxBufEnd = 1;
+        *VCPTxBuffer = c;
+    }
+    else if((VCPTxBufEnd != VCPTxBufStart - 1) && (VCPTxBufEnd != APP_TX_BUFFER_SIZE - 1 || VCPTxBufStart != 0))
+    {
+        VCPTxBuffer[VCPTxBufEnd++] = c;
+        
+        if(VCPTxBufEnd == APP_TX_BUFFER_SIZE)
+        {
+            VCPTxBufEnd = 0;
+        }
+    }
+    else
+    {
+        return 0;
+    }
+    
+    SendBuffer();
+    return 1;
+}
+
+/**
  * Send the specified 0 terminated string over the virtual COM port.
  *
  * This function should be used for small strings that fit into the buffer and when multiple strings are to be
