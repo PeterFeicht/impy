@@ -28,10 +28,10 @@ USBD_VCP_LineCodingTypeDef linecoding =
 uint8_t VCPRxBuffer[APP_RX_BUFFER_SIZE];
 // Data to be transmitted to the host are stored in this buffer
 uint8_t VCPTxBuffer[APP_TX_BUFFER_SIZE];
-// End index of fresh data to be transmitted (in index)
-uint32_t VCPTxBufIn = 0;
-// Start index of fresh data to be transmitted (out index)
-uint32_t VCPTxBufOut = 0;
+// End index of fresh data to be transmitted
+uint32_t VCPTxBufEnd = 0;
+// Start index of fresh data to be transmitted
+uint32_t VCPTxBufStart = 0;
 // Whether to echo characters received from the host, enabled by default
 uint8_t echo_enabled = 1;
 
@@ -154,7 +154,7 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
 {
     uint8_t *rxbuf = Buf;
     uint8_t *const rxend = Buf + Len;
-    uint8_t *txbuf = VCPTxBuffer + VCPTxBufIn;
+    uint8_t *txbuf = VCPTxBuffer + VCPTxBufEnd;
     
     if(echo_enabled)
     {
@@ -171,10 +171,10 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
         }
         
         // Set buffer pointer
-        VCPTxBufIn += Len;
-        if(VCPTxBufIn >= APP_TX_BUFFER_SIZE)
+        VCPTxBufEnd += Len;
+        if(VCPTxBufEnd >= APP_TX_BUFFER_SIZE)
         {
-            VCPTxBufIn -= APP_TX_BUFFER_SIZE;
+            VCPTxBufEnd -= APP_TX_BUFFER_SIZE;
         }
         
         SendBuffer();
@@ -208,27 +208,27 @@ static int8_t SendBuffer(void)
     uint32_t buffsize;
     int8_t status;
     
-    if(VCPTxBufOut == VCPTxBufIn)
+    if(VCPTxBufStart == VCPTxBufEnd)
         return USBD_OK;
     
-    if(VCPTxBufOut > VCPTxBufIn) /* rollback */
+    if(VCPTxBufStart > VCPTxBufEnd) /* rollback */
     {
-        buffsize = APP_RX_BUFFER_SIZE - VCPTxBufOut;
+        buffsize = APP_RX_BUFFER_SIZE - VCPTxBufStart;
     }
     else
     {
-        buffsize = VCPTxBufIn - VCPTxBufOut;
+        buffsize = VCPTxBufEnd - VCPTxBufStart;
     }
     
-    USBD_VCP_SetTxBuffer(&hUsbDevice, VCPTxBuffer + VCPTxBufOut, buffsize);
+    USBD_VCP_SetTxBuffer(&hUsbDevice, VCPTxBuffer + VCPTxBufStart, buffsize);
     status = USBD_VCP_TransmitPacket(&hUsbDevice);
     
     if(status == USBD_OK)
     {
-        VCPTxBufOut += buffsize;
-        if(VCPTxBufOut == APP_RX_BUFFER_SIZE)
+        VCPTxBufStart += buffsize;
+        if(VCPTxBufStart == APP_RX_BUFFER_SIZE)
         {
-            VCPTxBufOut = 0;
+            VCPTxBufStart = 0;
         }
     }
     
