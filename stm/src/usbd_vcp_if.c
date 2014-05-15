@@ -34,6 +34,10 @@ uint32_t VCPTxBufEnd = 0;
 uint32_t VCPTxBufStart = 0;
 // Whether to echo characters received from the host, enabled by default
 uint8_t echo_enabled = 1;
+// The current command line text (0 terminated)
+uint8_t VCP_cmdline[MAX_CMDLINE_LENGTH + 1];
+// Whether the current command is still busy and input should be ignored
+uint8_t cmd_busy = 0;
 
 // USB device handle in main.c
 extern USBD_HandleTypeDef hUsbDevice;
@@ -245,6 +249,25 @@ static int8_t SendBuffer(void)
 void VCP_SetEcho(uint8_t enable)
 {
     echo_enabled = enable;
+}
+
+/**
+ * Gets a value indicating whether input received over the VCP is echoed back.
+ * 
+ * @return {@code 0} if echo is disabled, nonzero value otherwise
+ */
+uint8_t VCP_GetEcho(void)
+{
+    return echo_enabled;
+}
+
+/**
+ * This function should be called by the command line processor when it is finished with processing the current command
+ * and new console input should be possible.
+ */
+void VCP_CommandFinish(void)
+{
+    cmd_busy = 0;
 }
 
 // ----------------------------------------------------------------------------
