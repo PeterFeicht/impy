@@ -71,6 +71,7 @@ static int8_t VCP_Init(void)
 {
     USBD_VCP_SetTxBuffer(&hUsbDevice, VCPTxBuffer, 0);
     USBD_VCP_SetRxBuffer(&hUsbDevice, VCPRxBuffer);
+    *VCP_cmdline = 0;
     
     return USBD_OK;
 }
@@ -156,26 +157,65 @@ static int8_t VCP_Control(uint8_t cmd, uint8_t* pbuf, uint16_t length __attribut
  */
 static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
 {
+    // Whether the character received is the first in a new line
+    static uint8_t cmd_newline = 1;
+    // Current length of received command
+    static uint8_t cmd_len = 0;
+    // Whether to disable echo for the current line (when preceded with '@')
+    static uint8_t echo_suppress = 0;
+    
     uint8_t *rxbuf = Buf;
     uint8_t *const rxend = Buf + Len;
     uint8_t *txbuf = VCPTxBuffer + VCPTxBufEnd;
+    uint32_t txlen = 0;
     
-    if(echo_enabled)
+    // If previous command is busy, do nothing
+    for(uint8_t *rxbuf = Buf; rxbuf < rxend && !cmd_busy; rxbuf++)
     {
-        // Copy received data into transmit buffer (echo)
-        while(rxbuf < rxend)
+        if(cmd_newline && *rxbuf == '@')
         {
-            // Avoid buffer overflow
+            echo_suppress = 1;
+            continue;
+        }
+        
+        if(echo_enabled && !echo_suppress)
+        {
             if(txbuf == (VCPTxBuffer + APP_TX_BUFFER_SIZE))
             {
                 txbuf = VCPTxBuffer;
             }
-            *txbuf = *rxbuf++;
-            txbuf++;
+            *txbuf++ = *rxbuf;
+            txlen++;
         }
         
-        // Set buffer pointer
-        VCPTxBufEnd += Len;
+        if(*rxbuf == '\r' || *rxbuf == '\n' || cmd_len == MAX_CMDLINE_LENGTH)
+        {
+            // Don't call console with empty command
+            if(cmd_newline)
+            {
+                continue;
+            }
+            
+            VCP_cmdline[cmd_len] = 0;
+            cmd_newline = 1;
+            echo_suppress = 0;
+            cmd_len = 0;
+            cmd_busy = 1;
+            
+            // TODO call console
+            
+            continue;
+        }
+        else
+        {
+            cmd_newline = 0;
+            VCP_cmdline[cmd_len++] = *rxbuf;
+        }
+    }
+    
+    if(txlen > 0)
+    {
+        VCPTxBufEnd += txlen;
         if(VCPTxBufEnd >= APP_TX_BUFFER_SIZE)
         {
             VCPTxBufEnd -= APP_TX_BUFFER_SIZE;
