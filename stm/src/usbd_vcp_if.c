@@ -12,7 +12,7 @@
 #include "main.h"
 
 // Constants ------------------------------------------------------------------
-#define APP_RX_BUFFER_SIZE      2048
+#define APP_RX_BUFFER_SIZE      VCP_DATA_HS_MAX_PACKET_SIZE
 #define APP_TX_BUFFER_SIZE      2048
 
 // Private variables ----------------------------------------------------------
@@ -213,7 +213,7 @@ static int8_t SendBuffer(void)
     
     if(VCPTxBufStart > VCPTxBufEnd) /* rollback */
     {
-        buffsize = APP_RX_BUFFER_SIZE - VCPTxBufStart;
+        buffsize = APP_TX_BUFFER_SIZE - VCPTxBufStart;
     }
     else
     {
@@ -226,7 +226,7 @@ static int8_t SendBuffer(void)
     if(status == USBD_OK)
     {
         VCPTxBufStart += buffsize;
-        if(VCPTxBufStart == APP_RX_BUFFER_SIZE)
+        if(VCPTxBufStart == APP_TX_BUFFER_SIZE)
         {
             VCPTxBufStart = 0;
         }
