@@ -164,7 +164,6 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
     // Whether to disable echo for the current line (when preceded with '@')
     static uint8_t echo_suppress = 0;
     
-    uint8_t *rxbuf = Buf;
     uint8_t *const rxend = Buf + Len;
     uint8_t *txbuf = VCPTxBuffer + VCPTxBufEnd;
     uint32_t txlen = 0;
@@ -309,5 +308,64 @@ void VCP_CommandFinish(void)
 {
     cmd_busy = 0;
 }
+
+/**
+ * Send the specified 0 terminated string over the virtual COM port.
+ *
+ * This function should be used for small strings that fit into the buffer and when multiple strings are to be
+ * transmitted consecutively. For transmitting data that does not fit into a single buffer {@link VCP_SendBuffer}
+ * should be used instead.
+ * 
+ * @param str Pointer to a zero terminated string.
+ * @return The number of bytes transmitted. This can be less than the string length, if the string is longer than the
+ *         free space in the transmit buffer.
+ */
+uint32_t VCP_SendString(uint8_t *str)
+{
+    uint32_t buffered = 0;
+    uint32_t len;
+    uint32_t sent;
+    
+    if(str == NULL)
+        return 0;
+    
+    len = strlen((char *)str);
+    
+    if(VCPTxBufStart == VCPTxBufEnd)
+    {
+        sent = (len < APP_TX_BUFFER_SIZE ? len : APP_TX_BUFFER_SIZE - 1);
+        VCPTxBufStart = 0;
+        VCPTxBufEnd = sent;
+        memcpy(VCPTxBuffer, str, sent);
+    }
+    else if(VCPTxBufEnd > VCPTxBufStart)
+    {
+        buffered = VCPTxBufEnd - VCPTxBufStart;
+        sent = (len < APP_TX_BUFFER_SIZE - buffered ? len : APP_TX_BUFFER_SIZE - buffered - 1);
+        
+        if(VCPTxBufEnd + sent >= APP_TX_BUFFER_SIZE)
+        {
+            uint32_t tmp = APP_TX_BUFFER_SIZE - VCPTxBufEnd;
+            memcpy(VCPTxBuffer + VCPTxBufEnd, str, tmp);
+            memcpy(VCPTxBuffer, str + tmp, sent - tmp);
+            VCPTxBufEnd = sent - tmp;
+        }
+        else
+        {
+            memcpy(VCPTxBuffer + VCPTxBufEnd, str, sent);
+        }
+    }
+    else // VCPTxBufEnd < VCPTxBufStart
+    {
+        buffered = VCPTxBufEnd + APP_TX_BUFFER_SIZE - VCPTxBufStart;
+        sent = (len < APP_TX_BUFFER_SIZE - buffered ? len : APP_TX_BUFFER_SIZE - buffered - 1);
+        memcpy(VCPTxBuffer + VCPTxBufEnd, str, sent);
+        VCPTxBufEnd += sent;
+    }
+
+    SendBuffer();
+    return sent;
+}
+
 
 // ----------------------------------------------------------------------------
