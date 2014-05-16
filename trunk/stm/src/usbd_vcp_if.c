@@ -49,7 +49,7 @@ static int8_t VCP_Init     (void);
 static int8_t VCP_DeInit   (void);
 static int8_t VCP_Control  (uint8_t cmd, uint8_t* pbuf, uint16_t length);
 static int8_t VCP_Receive  (uint8_t* pbuf, uint32_t Len);
-static int8_t VCP_Transmit (uint8_t* pbuf, uint32_t Len);
+static int8_t VCP_Transmit (void);
 
 static int8_t SendBuffer(void);
 
@@ -232,11 +232,9 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
 /**
  * This function is called once a transfer is complete and a new one can be started.
  * 
- * @param Buf Buffer of data that was sent
- * @param Len Number of bytes transmitted
  * @return {@code USBD_Status} code
  */
-static int8_t VCP_Transmit(uint8_t* Buf, uint32_t Len)
+static int8_t VCP_Transmit(void)
 {
     if(VCPTxExternal)
     {

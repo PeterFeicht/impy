@@ -419,7 +419,7 @@ static uint8_t USBD_VCP_DataIn(USBD_HandleTypeDef *pdev, uint8_t epnum __attribu
         hcdc->TxState = 0;
         
         // Call interface callback
-        ((USBD_VCP_ItfTypeDef *)pdev->pUserData)->Transmit(hcdc->TxBuffer, hcdc->TxLength);
+        ((USBD_VCP_ItfTypeDef *)pdev->pUserData)->Transmit();
         
         return USBD_OK;
     }
