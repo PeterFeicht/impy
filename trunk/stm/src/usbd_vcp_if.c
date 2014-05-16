@@ -16,7 +16,7 @@
 #define APP_TX_BUFFER_SIZE      2048
 
 // Private variables ----------------------------------------------------------
-USBD_VCP_LineCodingTypeDef linecoding =
+static USBD_VCP_LineCodingTypeDef linecoding =
 {
     115200,     // baud rate
     0x00,       // stop bits - 1
@@ -25,21 +25,21 @@ USBD_VCP_LineCodingTypeDef linecoding =
 };
 
 // Data received from the host are stored in this buffer
-uint8_t VCPRxBuffer[APP_RX_BUFFER_SIZE];
+static uint8_t VCPRxBuffer[APP_RX_BUFFER_SIZE];
 // Data to be transmitted to the host are stored in this buffer
-uint8_t VCPTxBuffer[APP_TX_BUFFER_SIZE];
+static uint8_t VCPTxBuffer[APP_TX_BUFFER_SIZE];
 // End index of fresh data to be transmitted
-uint32_t VCPTxBufEnd = 0;
+static uint32_t VCPTxBufEnd = 0;
 // Start index of fresh data to be transmitted
-uint32_t VCPTxBufStart = 0;
+static uint32_t VCPTxBufStart = 0;
 // Whether an external buffer should be transmitted
-uint8_t VCPTxExternal = 0;
+static uint8_t VCPTxExternal = 0;
 // Whether to echo characters received from the host, enabled by default
-uint8_t echo_enabled = 1;
+static uint8_t echo_enabled = 1;
 // The current command line text (0 terminated)
-uint8_t VCP_cmdline[MAX_CMDLINE_LENGTH + 1];
+static uint8_t VCP_cmdline[MAX_CMDLINE_LENGTH + 1];
 // Whether the current command is still busy and input should be ignored
-uint8_t cmd_busy = 0;
+static uint8_t cmd_busy = 0;
 
 // USB device handle in main.c
 extern USBD_HandleTypeDef hUsbDevice;
@@ -404,7 +404,7 @@ uint32_t VCP_SendString(uint8_t *str)
         memcpy(VCPTxBuffer + VCPTxBufEnd, str, sent);
         VCPTxBufEnd += sent;
     }
-
+    
     SendBuffer();
     return sent;
 }
@@ -429,7 +429,7 @@ uint32_t VCP_SendBuffer(uint8_t *buf, uint32_t len)
     {
         return 1;
     }
-
+    
     USBD_VCP_SetTxBuffer(&hUsbDevice, buf, (uint16_t)len);
     if(USBD_VCP_TransmitPacket(&hUsbDevice) == USBD_BUSY)
     {
@@ -438,6 +438,5 @@ uint32_t VCP_SendBuffer(uint8_t *buf, uint32_t len)
     
     return 1;
 }
-
 
 // ----------------------------------------------------------------------------
