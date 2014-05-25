@@ -41,6 +41,9 @@ typedef struct
 /**
  * Pointer to a function that processes a specific command.
  * 
+ * Note that this file does not conform to the standard values {@code (argc, argv)} in that {@code argc} contains the
+ * number of elements in {@code argv}, but {@code argv} has no {@code NULL} pointer at that index.
+ * 
  * @param argc Number of arguments in the command line
  */
 typedef void (*Console_CommandFunc)(uint32_t argc, char **argv);
@@ -144,6 +147,12 @@ static const Console_Command commands[] = {
     { "usb", Console_Usb },
     { "help", Console_Help }
 };
+
+// Strings
+const char *txtErrArgNum = "Wrong number of arguments.\r\n";
+const char *txtUnknownTopic = "Unknown help topic, type 'help' for possible commands.\r\n";
+const char *txtUnknownCommand = "Unknown command.\r\n";
+const char *txtUnknownSubcommand = "Unknown subcommand.\r\n";
 
 // Private functions ----------------------------------------------------------
 
@@ -504,12 +513,43 @@ static void Console_UsbWrite(uint32_t argc, char **argv)
     
 }
 
+/**
+ * Process {@code help} command.
+ * 
+ * @param argc Number of arguments
+ * @param argv Array of arguments
+ */
 static void Console_Help(uint32_t argc, char **argv)
 {
-    static const Console_Arg args[] = {
-        { "topic", CON_ARG_HELP_TOPIC, CON_STRING, 0 }
-    };
+    uint32_t j;
     
+    switch(argc)
+    {
+        case 1:
+            // Command without arguments, print usage
+            VCP_SendBuffer((uint8_t *)txtHelp, strlen(txtHelp));
+            break;
+        case 2:
+            // Command with topic, look for help message
+            for(j = 0; j < sizeof(txtHelpTopics); j++)
+            {
+                if(strcmp(argv[1], txtHelpTopics[j].cmd) == 0)
+                {
+                    VCP_SendBuffer((uint8_t *)txtHelpTopics[j].text, strlen(txtHelpTopics[j].text));
+                }
+            }
+            if(j == sizeof(txtHelpTopics))
+            {
+                VCP_SendString(txtUnknownTopic);
+            }
+            break;
+        default:
+            // Wrong number of arguments, print error message
+            VCP_SendString(txtErrArgNum);
+            break;
+    }
+    
+    VCP_CommandFinish();
 }
 
 
