@@ -70,6 +70,7 @@ typedef struct
 static void Console_InitHelp(void);
 static uint8_t Console_AddHelpTopic(char *help);
 static uint32_t Console_GetArguments(char *cmdline);
+static uint8_t Console_CallProcessor(uint32_t argc, char **argv, const Console_Command *cmds, uint32_t count);
 // Command line processors
 static void Console_Board(uint32_t argc, char **argv);
 static void Console_BoardGet(uint32_t argc, char **argv);
@@ -263,6 +264,7 @@ static uint32_t Console_GetArguments(char *cmdline)
         arguments[0] = cmdline++;
     }
     
+    // If we need to have quoted strings and escaping for spaces, this is the place to add it
     while((tmp = strchr(cmdline, ' ')) != NULL)
     {
         *tmp++ = 0;
@@ -280,6 +282,28 @@ static uint32_t Console_GetArguments(char *cmdline)
     }
     
     return argc;
+}
+
+/**
+ * Looks for the specified command in an array and calls the corresponding function if found.
+ * 
+ * @param argc The number of arguments in the array
+ * @param argv Array of arguments
+ * @param cmds Array of possible commands
+ * @param count The number of commands in the array
+ * @return {@code 1} if a processing function was called, {@code 0} otherwise
+ */
+static uint8_t Console_CallProcessor(uint32_t argc, char **argv, const Console_Command *cmds, uint32_t count)
+{
+    for(uint32_t j = 0; j < count; j++)
+    {
+        if(strcmp(argv[0], cmds[j].cmd) == 0)
+        {
+            cmds[j].handler(argc, argv);
+            return 1;
+        }
+    }
+    return 0;
 }
 
 static void Console_Board(uint32_t argc, char **argv)
@@ -444,12 +468,15 @@ void Console_Init(void)
  */
 void Console_ProcessLine(char *str)
 {
+    uint32_t argc;
+    
     if(str == NULL)
     {
         return;
     }
     
-    
+    argc = Console_GetArguments(str);
+    Console_CallProcessor(argc, arguments, commands, sizeof(commands));
 }
 
 // ----------------------------------------------------------------------------
