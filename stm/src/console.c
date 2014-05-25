@@ -7,6 +7,7 @@
 
 // Includes -------------------------------------------------------------------
 #include "console.h"
+#include <string.h>
 
 // Private type definitions ---------------------------------------------------
 typedef enum
@@ -67,6 +68,7 @@ typedef struct
 
 // Private function prototypes ------------------------------------------------
 static void Console_InitHelp(void);
+static uint8_t Console_AddHelpTopic(char *help);
 // Command line processors
 static void Console_Board(uint32_t argc);
 static void Console_BoardGet(uint32_t argc);
@@ -95,10 +97,11 @@ static void Console_Help(uint32_t argc);
 static char *arguments[CON_MAX_ARGUMENTS];
 
 // Console definition
-static const char* txtHelp = (char *)
+static char* txtHelp; // Eclipse error fix
+static char* txtHelp = (char *)
         #include "../command-line.txt"
         ;
-static const Console_HelpEntry txtHelpTopics[] = {
+static Console_HelpEntry txtHelpTopics[] = {
     { "eth", NULL },
     { "usb", NULL },
     { "format", NULL },
@@ -140,9 +143,102 @@ static const Console_Command commands[] = {
 
 // Private functions ----------------------------------------------------------
 
+/**
+ * Cuts the help string after the usage message and fills the help topics array.
+ */
 static void Console_InitHelp(void)
 {
+    uint8_t dashes = 0;
+    uint8_t newline = 0;
+    char *help;
     
+    // Find end of usage message (terminated by four dashes)
+    for(help = txtHelp; *help; help++)
+    {
+        if(*help == '-')
+        {
+            dashes++;
+            
+            if(dashes == 4)
+            {
+                *(help - 3) = 0;
+                help++;
+                break;
+            }
+        }
+        else
+        {
+            dashes = 0;
+        }
+    }
+    
+    // Look for specific help messages
+    while(*help)
+    {
+        if(*help == '\n' || *help == '\r')
+        {
+            newline = 1;
+        }
+        
+        if(newline && *help == 'h')
+        {
+            if(Console_AddHelpTopic(help) == 0)
+            {
+                *help = 0;
+            }
+        }
+        help++;
+    }
+}
+
+/**
+ * Adds a new help topic to the list, if present.
+ * 
+ * @param help Pointer to a new line in the help text that may contain a help topic
+ * @return {@code 0} if a help topic was added, nonzero value on error.
+ */
+static uint8_t Console_AddHelpTopic(char *help)
+{
+    // This text is at the beginning of a help topic start line
+    static char txt[] = "help ";
+    char *cmd;
+    char *tmp;
+    
+    for(uint32_t j = 0; j < sizeof(txt); j++)
+    {
+        if(*help == 0 || *help != txt[j])
+        {
+            return 1;
+        }
+        help++;
+    }
+    // What comes after the 'help ' text is the command name
+    cmd = help;
+    
+    tmp = strchr(help, ':');
+    if(tmp == NULL)
+    {
+        return 2;
+    }
+    // Terminate command name for comparison
+    *tmp = 0;
+    for(help = tmp + 1; *help == '\r' || *help == '\n'; help++);
+    if(*help == 0)
+    {
+        return 3;
+    }
+    
+    // Look for command in topic list
+    for(uint32_t j = 0; j < sizeof(txtHelpTopics); j++)
+    {
+        if(strcmp(cmd, txtHelpTopics[j].cmd) == 0)
+        {
+            txtHelpTopics[j].text = help;
+            return 0;
+        }
+    }
+    
+    return 4;
 }
 
 static void Console_Board(uint32_t argc)
@@ -293,7 +389,7 @@ static void Console_Help(uint32_t argc)
 // Exported functions ---------------------------------------------------------
 
 /**
- * TODO documentation
+ * This function sets up the console and should be called before any other console functions.
  */
 void Console_Init(void)
 {
