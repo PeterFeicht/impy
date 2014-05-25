@@ -69,6 +69,7 @@ typedef struct
 // Private function prototypes ------------------------------------------------
 static void Console_InitHelp(void);
 static uint8_t Console_AddHelpTopic(char *help);
+static uint32_t Console_GetArguments(char *cmdline);
 // Command line processors
 static void Console_Board(uint32_t argc);
 static void Console_BoardGet(uint32_t argc);
@@ -239,6 +240,46 @@ static uint8_t Console_AddHelpTopic(char *help)
     }
     
     return 4;
+}
+
+/**
+ * Extracts single arguments from the specified command line string and puts pointers into {@link arguments} array.
+ * 
+ * @param cmdline Pointer to the command line string
+ * @return The number of arguments in the command line
+ */
+static uint32_t Console_GetArguments(char *cmdline)
+{
+    uint32_t argc = 0;
+    char *tmp;
+    
+    if(cmdline == NULL)
+    {
+        return 0;
+    }
+    if(*cmdline != ' ')
+    {
+        argc = 1;
+        arguments[0] = cmdline++;
+    }
+    
+    while((tmp = strchr(cmdline, ' ')) != NULL)
+    {
+        *tmp++ = 0;
+        while(*tmp == ' ')
+        {
+            tmp++;
+        }
+        if(*tmp == 0)
+        {
+            break;
+        }
+        cmdline = tmp;
+        arguments[argc] = tmp;
+        argc++;
+    }
+    
+    return argc;
 }
 
 static void Console_Board(uint32_t argc)
