@@ -209,6 +209,7 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
         }
         else
         {
+            // TODO handle backspace
             cmd_newline = 0;
             VCP_cmdline[cmd_len++] = *rxbuf;
         }
@@ -360,7 +361,7 @@ uint32_t VCP_SendChar(uint8_t c)
  * @return The number of bytes transmitted. This can be less than the string length, if the string is longer than the
  *         free space in the transmit buffer.
  */
-uint32_t VCP_SendString(uint8_t *str)
+uint32_t VCP_SendString(const char *str)
 {
     uint32_t buffered = 0;
     uint32_t len;
@@ -369,7 +370,7 @@ uint32_t VCP_SendString(uint8_t *str)
     if(str == NULL)
         return 0;
     
-    len = strlen((char *)str);
+    len = strlen(str);
     
     if(VCPTxBufStart == VCPTxBufEnd)
     {
@@ -416,7 +417,7 @@ uint32_t VCP_SendString(uint8_t *str)
  * @param len Number of bytes to be sent
  * @return {@code 1} on success, {@code 0} otherwise
  */
-uint32_t VCP_SendBuffer(uint8_t *buf, uint32_t len)
+uint32_t VCP_SendBuffer(const uint8_t *buf, uint32_t len)
 {
     if(buf == NULL)
     {
@@ -428,7 +429,7 @@ uint32_t VCP_SendBuffer(uint8_t *buf, uint32_t len)
         return 1;
     }
     
-    USBD_VCP_SetTxBuffer(&hUsbDevice, buf, (uint16_t)len);
+    USBD_VCP_SetTxBuffer(&hUsbDevice, (uint8_t *)buf, (uint16_t)len);
     if(USBD_VCP_TransmitPacket(&hUsbDevice) == USBD_BUSY)
     {
         VCPTxExternal = 1;
