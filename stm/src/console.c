@@ -71,6 +71,8 @@ static void Console_InitHelp(void);
 static uint8_t Console_AddHelpTopic(char *help);
 static uint32_t Console_GetArguments(char *cmdline);
 static uint8_t Console_CallProcessor(uint32_t argc, char **argv, const Console_Command *cmds, uint32_t count);
+static const Console_Arg* Console_GetArg(char *arg, const Console_Arg *args, uint32_t count);
+static char* Console_GetArgValue(char *arg);
 // Command line processors
 static void Console_Board(uint32_t argc, char **argv);
 static void Console_BoardGet(uint32_t argc, char **argv);
@@ -264,7 +266,7 @@ static uint32_t Console_GetArguments(char *cmdline)
         arguments[0] = cmdline++;
     }
     
-    // If we need to have quoted strings and escaping for spaces, this is the place to add it
+    // If we need support for quoted strings and escaping for spaces, this is the place to add it
     while((tmp = strchr(cmdline, ' ')) != NULL)
     {
         *tmp++ = 0;
@@ -304,6 +306,66 @@ static uint8_t Console_CallProcessor(uint32_t argc, char **argv, const Console_C
         }
     }
     return 0;
+}
+
+/**
+ * Looks for the specified argument in an array and returns the corresponding structure if found.
+ * 
+ * @param arg Pointer to the argument
+ * @param args Array of possible arguments
+ * @param count The number of arguments in the array
+ * @return Pointer to the argument structure, or {@code NULL} if none was found
+ */
+static const Console_Arg* Console_GetArg(char *arg, const Console_Arg *args, uint32_t count)
+{
+    // If we need support for single letter arguments, this is the place to add it
+    char term;
+    char *end;
+    const Console_Arg *ret = NULL;
+    
+    if(arg[0] != '-' || arg[0] != '-')
+    {
+        return NULL;
+    }
+    
+    arg += 2;
+    end = arg;
+    while(*end != 0 && *end != '=')
+    {
+        end++;
+    }
+    term = *end;
+    *end = 0;
+    
+    for(uint32_t j = 0; j < count; j++)
+    {
+        if(strcmp(arg, args[j].arg) == 0)
+        {
+            ret = &args[j];
+            break;
+        }
+    }
+    
+    *end = term;
+    return ret;
+}
+
+/**
+ * Gets the value of an argument, that is the string after the equals sign.
+ * 
+ * @param arg The argument to get the value from
+ * @return Pointer to the substring containing the value, or {@code NULL} in case of an error
+ */
+static char* Console_GetArgValue(char *arg)
+{
+    char *val;
+    if(arg[0] != '-' || arg[0] != '-')
+    {
+        return NULL;
+    }
+    
+    val = strchr(arg + 2, '=');
+    return (val != NULL ? val + 1 : NULL);
 }
 
 static void Console_Board(uint32_t argc, char **argv)
