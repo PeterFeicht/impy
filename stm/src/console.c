@@ -43,7 +43,7 @@ typedef struct
  * 
  * @param argc Number of arguments in the command line
  */
-typedef void (*Console_CommandFunc)(uint32_t argc);
+typedef void (*Console_CommandFunc)(uint32_t argc, char **argv);
 
 typedef enum
 {
@@ -71,28 +71,28 @@ static void Console_InitHelp(void);
 static uint8_t Console_AddHelpTopic(char *help);
 static uint32_t Console_GetArguments(char *cmdline);
 // Command line processors
-static void Console_Board(uint32_t argc);
-static void Console_BoardGet(uint32_t argc);
-static void Console_BoardInfo(uint32_t argc);
-static void Console_BoardMeasure(uint32_t argc);
-static void Console_BoardRead(uint32_t argc);
-static void Console_BoardSet(uint32_t argc);
-static void Console_BoardStart(uint32_t argc);
-static void Console_BoardStatus(uint32_t argc);
-static void Console_BoardStop(uint32_t argc);
-static void Console_BoardTemp(uint32_t argc);
-static void Console_Eth(uint32_t argc);
-static void Console_EthDisable(uint32_t argc);
-static void Console_EthEnable(uint32_t argc);
-static void Console_EthSet(uint32_t argc);
-static void Console_EthStatus(uint32_t argc);
-static void Console_Usb(uint32_t argc);
-static void Console_UsbEject(uint32_t argc);
-static void Console_UsbInfo(uint32_t argc);
-static void Console_UsbLs(uint32_t argc);
-static void Console_UsbStatus(uint32_t argc);
-static void Console_UsbWrite(uint32_t argc);
-static void Console_Help(uint32_t argc);
+static void Console_Board(uint32_t argc, char **argv);
+static void Console_BoardGet(uint32_t argc, char **argv);
+static void Console_BoardInfo(uint32_t argc, char **argv);
+static void Console_BoardMeasure(uint32_t argc, char **argv);
+static void Console_BoardRead(uint32_t argc, char **argv);
+static void Console_BoardSet(uint32_t argc, char **argv);
+static void Console_BoardStart(uint32_t argc, char **argv);
+static void Console_BoardStatus(uint32_t argc, char **argv);
+static void Console_BoardStop(uint32_t argc, char **argv);
+static void Console_BoardTemp(uint32_t argc, char **argv);
+static void Console_Eth(uint32_t argc, char **argv);
+static void Console_EthDisable(uint32_t argc, char **argv);
+static void Console_EthEnable(uint32_t argc, char **argv);
+static void Console_EthSet(uint32_t argc, char **argv);
+static void Console_EthStatus(uint32_t argc, char **argv);
+static void Console_Usb(uint32_t argc, char **argv);
+static void Console_UsbEject(uint32_t argc, char **argv);
+static void Console_UsbInfo(uint32_t argc, char **argv);
+static void Console_UsbLs(uint32_t argc, char **argv);
+static void Console_UsbStatus(uint32_t argc, char **argv);
+static void Console_UsbWrite(uint32_t argc, char **argv);
+static void Console_Help(uint32_t argc, char **argv);
 
 // Private variables ----------------------------------------------------------
 static char *arguments[CON_MAX_ARGUMENTS];
@@ -282,12 +282,12 @@ static uint32_t Console_GetArguments(char *cmdline)
     return argc;
 }
 
-static void Console_Board(uint32_t argc)
+static void Console_Board(uint32_t argc, char **argv)
 {
     
 }
 
-static void Console_BoardGet(uint32_t argc)
+static void Console_BoardGet(uint32_t argc, char **argv)
 {
     static const Console_Arg args[] = {
         { "option", CON_ARG_GET_OPTION, CON_STRING, 0 }
@@ -295,12 +295,12 @@ static void Console_BoardGet(uint32_t argc)
     
 }
 
-static void Console_BoardInfo(uint32_t argc)
+static void Console_BoardInfo(uint32_t argc, char **argv)
 {
     
 }
 
-static void Console_BoardMeasure(uint32_t argc)
+static void Console_BoardMeasure(uint32_t argc, char **argv)
 {
     static const Console_Arg args[] = {
         { "port", CON_ARG_MEAS_PORT, CON_STRING, 0 },
@@ -309,7 +309,7 @@ static void Console_BoardMeasure(uint32_t argc)
     
 }
 
-static void Console_BoardRead(uint32_t argc)
+static void Console_BoardRead(uint32_t argc, char **argv)
 {
     static const Console_Arg args[] = {
         { "format", CON_ARG_READ_FORMAT, CON_STRING, 1 }
@@ -317,7 +317,7 @@ static void Console_BoardRead(uint32_t argc)
     
 }
 
-static void Console_BoardSet(uint32_t argc)
+static void Console_BoardSet(uint32_t argc, char **argv)
 {
     static const Console_Arg args[] = {
         { "start", CON_ARG_SET_START, CON_INT, 1 },
@@ -333,7 +333,7 @@ static void Console_BoardSet(uint32_t argc)
     
 }
 
-static void Console_BoardStart(uint32_t argc)
+static void Console_BoardStart(uint32_t argc, char **argv)
 {
     static const Console_Arg args[] = {
         { "port", CON_ARG_START_PORT, CON_STRING, 0 }
@@ -341,37 +341,37 @@ static void Console_BoardStart(uint32_t argc)
     
 }
 
-static void Console_BoardStatus(uint32_t argc)
+static void Console_BoardStatus(uint32_t argc, char **argv)
 {
     
 }
 
-static void Console_BoardStop(uint32_t argc)
+static void Console_BoardStop(uint32_t argc, char **argv)
 {
     
 }
 
-static void Console_BoardTemp(uint32_t argc)
+static void Console_BoardTemp(uint32_t argc, char **argv)
 {
     
 }
 
-static void Console_Eth(uint32_t argc)
+static void Console_Eth(uint32_t argc, char **argv)
 {
     
 }
 
-static void Console_EthDisable(uint32_t argc)
+static void Console_EthDisable(uint32_t argc, char **argv)
 {
     
 }
 
-static void Console_EthEnable(uint32_t argc)
+static void Console_EthEnable(uint32_t argc, char **argv)
 {
     
 }
 
-static void Console_EthSet(uint32_t argc)
+static void Console_EthSet(uint32_t argc, char **argv)
 {
     static const Console_Arg args[] = {
         { "dhcp", CON_ARG_SET_DHCP, CON_FLAG, 1 },
@@ -380,37 +380,37 @@ static void Console_EthSet(uint32_t argc)
     
 }
 
-static void Console_EthStatus(uint32_t argc)
+static void Console_EthStatus(uint32_t argc, char **argv)
 {
     
 }
 
-static void Console_Usb(uint32_t argc)
+static void Console_Usb(uint32_t argc, char **argv)
 {
     
 }
 
-static void Console_UsbEject(uint32_t argc)
+static void Console_UsbEject(uint32_t argc, char **argv)
 {
     
 }
 
-static void Console_UsbInfo(uint32_t argc)
+static void Console_UsbInfo(uint32_t argc, char **argv)
 {
     
 }
 
-static void Console_UsbLs(uint32_t argc)
+static void Console_UsbLs(uint32_t argc, char **argv)
 {
     
 }
 
-static void Console_UsbStatus(uint32_t argc)
+static void Console_UsbStatus(uint32_t argc, char **argv)
 {
     
 }
 
-static void Console_UsbWrite(uint32_t argc)
+static void Console_UsbWrite(uint32_t argc, char **argv)
 {
     static const Console_Arg args[] = {
         { "file", CON_ARG_WRITE_FILE, CON_STRING, 0 }
@@ -418,7 +418,7 @@ static void Console_UsbWrite(uint32_t argc)
     
 }
 
-static void Console_Help(uint32_t argc)
+static void Console_Help(uint32_t argc, char **argv)
 {
     static const Console_Arg args[] = {
         { "topic", CON_ARG_HELP_TOPIC, CON_STRING, 0 }
