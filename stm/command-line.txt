@@ -1,3 +1,4 @@
+STRINGIFY((
 mini Impedance Spectrometer
 This device is configured entirely by command line, however measurement data
 can be transferred in a binary fashion as well.
@@ -28,7 +29,7 @@ Options:
   --voltage=RANGE   Set the output voltage range [default: 1]
                     Valid voltages are 0.2, 0.4, 1, 2. See also 'help voltage'
   --gain            Enable or disable the x5 input gain stage [default: off]
-  --format=FMT      Set the output format of measurement data [default: APFH]
+  --format=FMT      Set the output format of measurement data [default: APFHS]
                     For possible formats see 'help format'
   --autorange       Enable or disable auto-ranging [default: on]
                     For more information see 'help autorange'
@@ -106,3 +107,5 @@ help echo:
   disabled either completely (board set --echo=off) or just for single lines,
   by preceding them with an '@' character.
   If echo is disabled globally, the '@' character has no effect and is ignored.
+
+))
