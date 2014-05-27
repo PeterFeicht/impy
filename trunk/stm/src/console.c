@@ -115,30 +115,6 @@ static Console_HelpEntry txtHelpTopics[] = {
     { "autorange", NULL },
     { "echo", NULL }
 };
-static const Console_Command cmdsBoard[] = {
-    { "set", Console_BoardSet },
-    { "get", Console_BoardGet },
-    { "info", Console_BoardInfo },
-    { "start", Console_BoardStart },
-    { "stop", Console_BoardStop },
-    { "status", Console_BoardStatus },
-    { "temp", Console_BoardTemp },
-    { "measure", Console_BoardMeasure },
-    { "read", Console_BoardRead }
-};
-static const Console_Command cmdsEth[] = {
-    { "set", Console_EthSet },
-    { "status", Console_EthStatus },
-    { "enable", Console_EthEnable },
-    { "disable", Console_EthDisable }
-};
-static const Console_Command cmdsUsb[] = {
-    { "status", Console_UsbStatus },
-    { "info", Console_UsbInfo },
-    { "eject", Console_UsbEject },
-    { "write", Console_UsbWrite },
-    { "ls", Console_UsbLs }
-};
 static const Console_Command commands[] = {
     { "board", Console_Board },
     { "eth", Console_Eth },
@@ -148,6 +124,7 @@ static const Console_Command commands[] = {
 
 // Strings
 const char *txtErrArgNum = "Wrong number of arguments.\r\n";
+const char *txtErrNoSubcommand = "Missing command, type 'help' for possible commands.\r\n";
 const char *txtUnknownTopic = "Unknown help topic, type 'help' for possible commands.\r\n";
 const char *txtUnknownCommand = "Unknown command.\r\n";
 const char *txtUnknownSubcommand = "Unknown subcommand.\r\n";
@@ -383,7 +360,28 @@ static char* Console_GetArgValue(char *arg)
 
 static void Console_Board(uint32_t argc, char **argv)
 {
+    static const Console_Command cmds[] = {
+        { "set", Console_BoardSet },
+        { "get", Console_BoardGet },
+        { "info", Console_BoardInfo },
+        { "start", Console_BoardStart },
+        { "stop", Console_BoardStop },
+        { "status", Console_BoardStatus },
+        { "temp", Console_BoardTemp },
+        { "measure", Console_BoardMeasure },
+        { "read", Console_BoardRead }
+    };
     
+    if(argc == 1)
+    {
+        VCP_SendString(txtErrNoSubcommand);
+        VCP_CommandFinish();
+    }
+    else if(!Console_CallProcessor(argc - 1, argv + 1, cmds, NUMEL(cmds)))
+    {
+        VCP_SendString(txtUnknownSubcommand);
+        VCP_CommandFinish();
+    }
 }
 
 static void Console_BoardGet(uint32_t argc, char **argv)
@@ -457,7 +455,23 @@ static void Console_BoardTemp(uint32_t argc, char **argv)
 
 static void Console_Eth(uint32_t argc, char **argv)
 {
+    static const Console_Command cmds[] = {
+        { "set", Console_EthSet },
+        { "status", Console_EthStatus },
+        { "enable", Console_EthEnable },
+        { "disable", Console_EthDisable }
+    };
     
+    if(argc == 1)
+    {
+        VCP_SendString(txtErrNoSubcommand);
+        VCP_CommandFinish();
+    }
+    else if(!Console_CallProcessor(argc - 1, argv + 1, cmds, NUMEL(cmds)))
+    {
+        VCP_SendString(txtUnknownSubcommand);
+        VCP_CommandFinish();
+    }
 }
 
 static void Console_EthDisable(uint32_t argc, char **argv)
@@ -486,7 +500,24 @@ static void Console_EthStatus(uint32_t argc, char **argv)
 
 static void Console_Usb(uint32_t argc, char **argv)
 {
+    static const Console_Command cmds[] = {
+        { "status", Console_UsbStatus },
+        { "info", Console_UsbInfo },
+        { "eject", Console_UsbEject },
+        { "write", Console_UsbWrite },
+        { "ls", Console_UsbLs }
+    };
     
+    if(argc == 1)
+    {
+        VCP_SendString(txtErrNoSubcommand);
+        VCP_CommandFinish();
+    }
+    else if(!Console_CallProcessor(argc - 1, argv + 1, cmds, NUMEL(cmds)))
+    {
+        VCP_SendString(txtUnknownSubcommand);
+        VCP_CommandFinish();
+    }
 }
 
 static void Console_UsbEject(uint32_t argc, char **argv)
