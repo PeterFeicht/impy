@@ -21,7 +21,7 @@
 
 // Macros ---------------------------------------------------------------------
 
-#define STRINGIFY(src)          #src
+#define NUMEL(X)                (sizeof(X) / sizeof(*X))
 
 // Exported functions ---------------------------------------------------------
 void Console_Init(void);
