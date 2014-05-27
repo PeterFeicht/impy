@@ -106,6 +106,7 @@ static char *arguments[CON_MAX_ARGUMENTS];
 // Console definition
 extern char helptext_start;
 static char *txtHelp;
+// All help topics from command-line.txt need to be added here
 static Console_HelpEntry txtHelpTopics[] = {
     { "eth", NULL },
     { "usb", NULL },
@@ -115,6 +116,7 @@ static Console_HelpEntry txtHelpTopics[] = {
     { "autorange", NULL },
     { "echo", NULL }
 };
+// Those are the top level commands, subcommands are called from their respective processing functions
 static const Console_Command commands[] = {
     { "board", Console_Board },
     { "eth", Console_Eth },
@@ -185,6 +187,8 @@ static void Console_InitHelp(void)
 
 /**
  * Adds a new help topic to the list, if present.
+ * 
+ * Help topics are designated by {@code help TOPIC:} at the beginning of a line in the {@code command-line.txt} file.
  * 
  * @param help Pointer to a new line in the help text that may contain a help topic
  * @return {@code 0} if a help topic was added, nonzero value on error.
