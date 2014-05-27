@@ -12,10 +12,7 @@
 // Private type definitions ---------------------------------------------------
 typedef enum
 {
-    CON_ARG_GET_OPTION = 1,
-    CON_ARG_MEAS_FREQ,
-    CON_ARG_MEAS_PORT,
-    CON_ARG_READ_FORMAT,
+    CON_ARG_READ_FORMAT = 1,
     CON_ARG_SET_AUTORANGE,
     CON_ARG_SET_ECHO,
     CON_ARG_SET_FORMAT,
@@ -25,11 +22,8 @@ typedef enum
     CON_ARG_SET_STEPS,
     CON_ARG_SET_STOP,
     CON_ARG_SET_VOLTAGE,
-    CON_ARG_START_PORT,
     CON_ARG_SET_DHCP,
-    CON_ARG_SET_IP,
-    CON_ARG_HELP_TOPIC,
-    CON_ARG_WRITE_FILE
+    CON_ARG_SET_IP
 } Console_ArgID;
 
 typedef struct
@@ -60,7 +54,6 @@ typedef struct
     char *arg;              //!< Name of this argument
     Console_ArgID id;       //!< ID of this argument
     Console_ArgType type;   //!< Type of this argument
-    uint8_t optional;       //!< Whether this argument must be present or not
 } Console_Arg;
 
 typedef struct
@@ -391,9 +384,7 @@ static void Console_Board(uint32_t argc, char **argv)
 
 static void Console_BoardGet(uint32_t argc, char **argv)
 {
-    static const Console_Arg args[] = {
-        { "option", CON_ARG_GET_OPTION, CON_STRING, 0 }
-    };
+    // Arguments: option
     
     VCP_SendString(txtNotImplemented);
     VCP_CommandFinish();
@@ -407,10 +398,7 @@ static void Console_BoardInfo(uint32_t argc, char **argv)
 
 static void Console_BoardMeasure(uint32_t argc, char **argv)
 {
-    static const Console_Arg args[] = {
-        { "port", CON_ARG_MEAS_PORT, CON_STRING, 0 },
-        { "freq", CON_ARG_MEAS_FREQ, CON_INT, 0 }
-    };
+    // Arguments: port, freq
 
     VCP_SendString(txtNotImplemented);
     VCP_CommandFinish();
@@ -419,7 +407,7 @@ static void Console_BoardMeasure(uint32_t argc, char **argv)
 static void Console_BoardRead(uint32_t argc, char **argv)
 {
     static const Console_Arg args[] = {
-        { "format", CON_ARG_READ_FORMAT, CON_STRING, 1 }
+        { "format", CON_ARG_READ_FORMAT, CON_STRING }
     };
 
     VCP_SendString(txtNotImplemented);
@@ -429,15 +417,15 @@ static void Console_BoardRead(uint32_t argc, char **argv)
 static void Console_BoardSet(uint32_t argc, char **argv)
 {
     static const Console_Arg args[] = {
-        { "start", CON_ARG_SET_START, CON_INT, 1 },
-        { "stop", CON_ARG_SET_STOP, CON_INT, 1 },
-        { "steps", CON_ARG_SET_STEPS, CON_INT, 1 },
-        { "settl", CON_ARG_SET_SETTL, CON_STRING, 1 },
-        { "voltage", CON_ARG_SET_VOLTAGE, CON_STRING, 1 },
-        { "gain", CON_ARG_SET_GAIN, CON_FLAG, 1 },
-        { "format", CON_ARG_SET_FORMAT, CON_STRING, 1 },
-        { "autorange", CON_ARG_SET_AUTORANGE, CON_FLAG, 1 },
-        { "echo", CON_ARG_SET_ECHO, CON_FLAG, 1 }
+        { "start", CON_ARG_SET_START, CON_INT },
+        { "stop", CON_ARG_SET_STOP, CON_INT },
+        { "steps", CON_ARG_SET_STEPS, CON_INT },
+        { "settl", CON_ARG_SET_SETTL, CON_STRING },
+        { "voltage", CON_ARG_SET_VOLTAGE, CON_STRING },
+        { "gain", CON_ARG_SET_GAIN, CON_FLAG },
+        { "format", CON_ARG_SET_FORMAT, CON_STRING },
+        { "autorange", CON_ARG_SET_AUTORANGE, CON_FLAG },
+        { "echo", CON_ARG_SET_ECHO, CON_FLAG }
     };
 
     VCP_SendString(txtNotImplemented);
@@ -446,9 +434,7 @@ static void Console_BoardSet(uint32_t argc, char **argv)
 
 static void Console_BoardStart(uint32_t argc, char **argv)
 {
-    static const Console_Arg args[] = {
-        { "port", CON_ARG_START_PORT, CON_STRING, 0 }
-    };
+    // Arguments: port
 
     VCP_SendString(txtNotImplemented);
     VCP_CommandFinish();
@@ -508,8 +494,8 @@ static void Console_EthEnable(uint32_t argc, char **argv)
 static void Console_EthSet(uint32_t argc, char **argv)
 {
     static const Console_Arg args[] = {
-        { "dhcp", CON_ARG_SET_DHCP, CON_FLAG, 1 },
-        { "ip", CON_ARG_SET_IP, CON_STRING, 1 }
+        { "dhcp", CON_ARG_SET_DHCP, CON_FLAG },
+        { "ip", CON_ARG_SET_IP, CON_STRING }
     };
 
     VCP_SendString(txtNotImplemented);
@@ -570,9 +556,7 @@ static void Console_UsbStatus(uint32_t argc, char **argv)
 
 static void Console_UsbWrite(uint32_t argc, char **argv)
 {
-    static const Console_Arg args[] = {
-        { "file", CON_ARG_WRITE_FILE, CON_STRING, 0 }
-    };
+    // Arguments: file
 
     VCP_SendString(txtNotImplemented);
     VCP_CommandFinish();
