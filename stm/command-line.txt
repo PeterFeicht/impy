@@ -1,4 +1,3 @@
-STRINGIFY((
 mini Impedance Spectrometer
 This device is configured entirely by command line, however measurement data
 can be transferred in a binary fashion as well.
@@ -65,7 +64,6 @@ Options:
   enable        Enable Ethernet interface [default: enabled]
   disable       Disable Ethernet interface
 
-
 help usb:
 TODO
 
@@ -75,7 +73,6 @@ Options:
   eject     Unmount a USB device before unplugging
   write     Write current measurement data to specified file on USB device
   ls        List files on USB device
-
 
 help format:
 Measurement data can be transferred in a number of different formats,
@@ -87,18 +84,14 @@ consist of several format flags combined:
   F/X     ASCII only: formatted floating point or raw hexadecimal
   S/T/D   ASCII only: values separated by space, tab or comma
 
-
 help settl:
   TODO
-
 
 help voltage:
   TODO
 
-
 help autorange:
   TODO
-
 
 help echo:
   By default, all characters received on the virtual COM port (VCP) are echoed
@@ -107,5 +100,3 @@ help echo:
   disabled either completely (board set --echo=off) or just for single lines,
   by preceding them with an '@' character.
   If echo is disabled globally, the '@' character has no effect and is ignored.
-
-))
