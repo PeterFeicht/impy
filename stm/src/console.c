@@ -576,6 +576,7 @@ void Console_Init(void)
 void Console_ProcessLine(char *str)
 {
     uint32_t argc;
+    uint8_t called;
     
     if(str == NULL)
     {
@@ -583,7 +584,13 @@ void Console_ProcessLine(char *str)
     }
     
     argc = Console_GetArguments(str);
-    Console_CallProcessor(argc, arguments, commands, NUMEL(commands));
+    called = Console_CallProcessor(argc, arguments, commands, NUMEL(commands));
+    
+    if(!called)
+    {
+        VCP_SendString(txtUnknownCommand);
+        VCP_CommandFinish();
+    }
 }
 
 // ----------------------------------------------------------------------------
