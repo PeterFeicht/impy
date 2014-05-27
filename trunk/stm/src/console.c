@@ -104,10 +104,8 @@ static void Console_Help(uint32_t argc, char **argv);
 static char *arguments[CON_MAX_ARGUMENTS];
 
 // Console definition
-static char* txtHelp; // Eclipse error fix
-static char* txtHelp = (char *)
-        #include "../command-line.txt"
-        ;
+extern char helptext_start;
+static char *txtHelp;
 static Console_HelpEntry txtHelpTopics[] = {
     { "eth", NULL },
     { "usb", NULL },
@@ -165,6 +163,8 @@ static void Console_InitHelp(void)
     uint8_t newline = 0;
     char *help;
     
+    txtHelp = &helptext_start;
+    
     // Find end of usage message (terminated by four dashes)
     for(help = txtHelp; *help; help++)
     {
@@ -213,7 +213,7 @@ static void Console_InitHelp(void)
 static uint8_t Console_AddHelpTopic(char *help)
 {
     // This text is at the beginning of a help topic start line
-    static char txt[] = "help ";
+    static const char txt[] = "help ";
     char *cmd;
     char *tmp;
     
