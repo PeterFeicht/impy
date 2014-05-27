@@ -243,15 +243,18 @@ static uint8_t Console_AddHelpTopic(char *help)
     }
     
     // Look for command in topic list
-    for(uint32_t j = 0; j < sizeof(txtHelpTopics); j++)
+    for(uint32_t j = 0; j < NUMEL(txtHelpTopics); j++)
     {
         if(strcmp(cmd, txtHelpTopics[j].cmd) == 0)
         {
             txtHelpTopics[j].text = help;
+            *tmp = '.';
             return 0;
         }
     }
     
+    // Should not happen, means that command-line.txt contains help for an unknown command
+    *tmp = '!';
     return 4;
 }
 
@@ -532,14 +535,15 @@ static void Console_Help(uint32_t argc, char **argv)
             break;
         case 2:
             // Command with topic, look for help message
-            for(j = 0; j < sizeof(txtHelpTopics); j++)
+            for(j = 0; j < NUMEL(txtHelpTopics); j++)
             {
                 if(strcmp(argv[1], txtHelpTopics[j].cmd) == 0)
                 {
                     VCP_SendBuffer((uint8_t *)txtHelpTopics[j].text, strlen(txtHelpTopics[j].text));
+                    break;
                 }
             }
-            if(j == sizeof(txtHelpTopics))
+            if(j == NUMEL(txtHelpTopics))
             {
                 VCP_SendString(txtUnknownTopic);
             }
@@ -579,7 +583,7 @@ void Console_ProcessLine(char *str)
     }
     
     argc = Console_GetArguments(str);
-    Console_CallProcessor(argc, arguments, commands, sizeof(commands));
+    Console_CallProcessor(argc, arguments, commands, NUMEL(commands));
 }
 
 // ----------------------------------------------------------------------------
