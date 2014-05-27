@@ -191,6 +191,7 @@ static void Console_InitHelp(void)
         if(*help == '\n' || *help == '\r')
         {
             newline = 1;
+            help++;
         }
         
         if(newline && *help == 'h')
@@ -217,7 +218,7 @@ static uint8_t Console_AddHelpTopic(char *help)
     char *cmd;
     char *tmp;
     
-    for(uint32_t j = 0; j < sizeof(txt); j++)
+    for(uint32_t j = 0; txt[j] != 0; j++)
     {
         if(*help == 0 || *help != txt[j])
         {
