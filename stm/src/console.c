@@ -128,6 +128,7 @@ const char *txtErrNoSubcommand = "Missing command, type 'help' for possible comm
 const char *txtUnknownTopic = "Unknown help topic, type 'help' for possible commands.\r\n";
 const char *txtUnknownCommand = "Unknown command.\r\n";
 const char *txtUnknownSubcommand = "Unknown subcommand.\r\n";
+const char *txtNotImplemented = "Not yet implemented.\r\n";
 
 // Private functions ----------------------------------------------------------
 
@@ -390,11 +391,14 @@ static void Console_BoardGet(uint32_t argc, char **argv)
         { "option", CON_ARG_GET_OPTION, CON_STRING, 0 }
     };
     
+    VCP_SendString(txtNotImplemented);
+    VCP_CommandFinish();
 }
 
 static void Console_BoardInfo(uint32_t argc, char **argv)
 {
-    
+    VCP_SendString(txtNotImplemented);
+    VCP_CommandFinish();
 }
 
 static void Console_BoardMeasure(uint32_t argc, char **argv)
@@ -403,7 +407,9 @@ static void Console_BoardMeasure(uint32_t argc, char **argv)
         { "port", CON_ARG_MEAS_PORT, CON_STRING, 0 },
         { "freq", CON_ARG_MEAS_FREQ, CON_INT, 0 }
     };
-    
+
+    VCP_SendString(txtNotImplemented);
+    VCP_CommandFinish();
 }
 
 static void Console_BoardRead(uint32_t argc, char **argv)
@@ -411,7 +417,9 @@ static void Console_BoardRead(uint32_t argc, char **argv)
     static const Console_Arg args[] = {
         { "format", CON_ARG_READ_FORMAT, CON_STRING, 1 }
     };
-    
+
+    VCP_SendString(txtNotImplemented);
+    VCP_CommandFinish();
 }
 
 static void Console_BoardSet(uint32_t argc, char **argv)
@@ -427,7 +435,9 @@ static void Console_BoardSet(uint32_t argc, char **argv)
         { "autorange", CON_ARG_SET_AUTORANGE, CON_FLAG, 1 },
         { "echo", CON_ARG_SET_ECHO, CON_FLAG, 1 }
     };
-    
+
+    VCP_SendString(txtNotImplemented);
+    VCP_CommandFinish();
 }
 
 static void Console_BoardStart(uint32_t argc, char **argv)
@@ -435,22 +445,27 @@ static void Console_BoardStart(uint32_t argc, char **argv)
     static const Console_Arg args[] = {
         { "port", CON_ARG_START_PORT, CON_STRING, 0 }
     };
-    
+
+    VCP_SendString(txtNotImplemented);
+    VCP_CommandFinish();
 }
 
 static void Console_BoardStatus(uint32_t argc, char **argv)
 {
-    
+    VCP_SendString(txtNotImplemented);
+    VCP_CommandFinish();
 }
 
 static void Console_BoardStop(uint32_t argc, char **argv)
 {
-    
+    VCP_SendString(txtNotImplemented);
+    VCP_CommandFinish();
 }
 
 static void Console_BoardTemp(uint32_t argc, char **argv)
 {
-    
+    VCP_SendString(txtNotImplemented);
+    VCP_CommandFinish();
 }
 
 static void Console_Eth(uint32_t argc, char **argv)
@@ -476,12 +491,14 @@ static void Console_Eth(uint32_t argc, char **argv)
 
 static void Console_EthDisable(uint32_t argc, char **argv)
 {
-    
+    VCP_SendString(txtNotImplemented);
+    VCP_CommandFinish();
 }
 
 static void Console_EthEnable(uint32_t argc, char **argv)
 {
-    
+    VCP_SendString(txtNotImplemented);
+    VCP_CommandFinish();
 }
 
 static void Console_EthSet(uint32_t argc, char **argv)
@@ -490,12 +507,15 @@ static void Console_EthSet(uint32_t argc, char **argv)
         { "dhcp", CON_ARG_SET_DHCP, CON_FLAG, 1 },
         { "ip", CON_ARG_SET_IP, CON_STRING, 1 }
     };
-    
+
+    VCP_SendString(txtNotImplemented);
+    VCP_CommandFinish();
 }
 
 static void Console_EthStatus(uint32_t argc, char **argv)
 {
-    
+    VCP_SendString(txtNotImplemented);
+    VCP_CommandFinish();
 }
 
 static void Console_Usb(uint32_t argc, char **argv)
@@ -522,22 +542,26 @@ static void Console_Usb(uint32_t argc, char **argv)
 
 static void Console_UsbEject(uint32_t argc, char **argv)
 {
-    
+    VCP_SendString(txtNotImplemented);
+    VCP_CommandFinish();
 }
 
 static void Console_UsbInfo(uint32_t argc, char **argv)
 {
-    
+    VCP_SendString(txtNotImplemented);
+    VCP_CommandFinish();
 }
 
 static void Console_UsbLs(uint32_t argc, char **argv)
 {
-    
+    VCP_SendString(txtNotImplemented);
+    VCP_CommandFinish();
 }
 
 static void Console_UsbStatus(uint32_t argc, char **argv)
 {
-    
+    VCP_SendString(txtNotImplemented);
+    VCP_CommandFinish();
 }
 
 static void Console_UsbWrite(uint32_t argc, char **argv)
@@ -545,7 +569,9 @@ static void Console_UsbWrite(uint32_t argc, char **argv)
     static const Console_Arg args[] = {
         { "file", CON_ARG_WRITE_FILE, CON_STRING, 0 }
     };
-    
+
+    VCP_SendString(txtNotImplemented);
+    VCP_CommandFinish();
 }
 
 /**
