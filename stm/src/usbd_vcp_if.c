@@ -171,7 +171,7 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
     uint8_t *txbuf = VCPTxBuffer + VCPTxBufEnd;
     uint32_t txlen = 0;
     
-    // If previous command is busy, do nothing
+    // If previous command is busy, ignore input
     for(uint8_t *rxbuf = Buf; rxbuf < rxend && !cmd_busy; rxbuf++)
     {
         if(cmd_newline && *rxbuf == '@')
@@ -210,9 +210,24 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
         }
         else
         {
-            // TODO handle backspace
-            cmd_newline = 0;
-            VCP_cmdline[cmd_len++] = *rxbuf;
+            // Process special characters (e.g. backspace)
+            switch(*rxbuf)
+            {
+                case '\b':
+                case 0x7f:
+                    // Backspace (Ctrl+H) or Delete (Ctrl+?)
+                    // PuTTY, for example, sends Ctrl+? on backspace by default
+                    if(cmd_len > 0)
+                    {
+                        cmd_len--;
+                    }
+                    break;
+                default:
+                    // Normal characters
+                    cmd_newline = 0;
+                    VCP_cmdline[cmd_len++] = *rxbuf;
+                    break;
+            }
         }
     }
     
