@@ -7,6 +7,7 @@
 
 // Includes -------------------------------------------------------------------
 #include "main.h"
+#include "console.h"
 
 // Variables ------------------------------------------------------------------
 USBD_HandleTypeDef hUsbDevice;
@@ -24,6 +25,7 @@ int main(int argc, char* argv[])
 {
     // At this stage the system clock should have already been configured at high speed.
     MX_Init();
+    Console_Init();
     
     while(1)
     {

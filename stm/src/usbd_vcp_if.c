@@ -10,6 +10,7 @@
 // Includes -------------------------------------------------------------------
 #include "usbd_vcp_if.h"
 #include "main.h"
+#include "console.h"
 
 // Constants ------------------------------------------------------------------
 #define APP_RX_BUFFER_SIZE      VCP_DATA_HS_MAX_PACKET_SIZE
@@ -203,7 +204,7 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
             cmd_len = 0;
             cmd_busy = 1;
             
-            // TODO call console
+            Console_ProcessLine((char *)VCP_cmdline);
             
             continue;
         }
