@@ -6,12 +6,23 @@
  */
 
 // Includes -------------------------------------------------------------------
+#include <math.h>
 #include "main.h"
-#include "console.h"
 
 // Variables ------------------------------------------------------------------
 USBD_HandleTypeDef hUsbDevice;
 I2C_HandleTypeDef hi2c1;
+
+// AD5933 driver values
+static AD5933_Sweep sweep;
+static AD5933_RangeSettings range;
+static AD5933_GainFactorData gainData;
+static AD5933_GainFactor gainFactor;
+static uint32_t stopFreq;
+static uint8_t port;
+
+// Private functions ----------------------------------------------------------
+
 
 // ----- main() ---------------------------------------------------------------
 
@@ -36,5 +47,58 @@ int main(int argc, char* argv[])
 }
 
 #pragma GCC diagnostic pop
+
+// Exported functions ---------------------------------------------------------
+
+/**
+ * Gets the current measurement status.
+ * 
+ * @param result Pointer to a status structure to be populated
+ */
+void Board_GetStatus(Board_Status *result)
+{
+    result->ad_status = AD5933_GetStatus();
+    result->point = AD5933_GetSweepCount();
+}
+
+/**
+ * Gets the port of the active (or last) sweep.
+ */
+uint8_t Board_GetPort(void)
+{
+    return port;
+}
+
+/**
+ * Initiates a temperature measurement from the specified source and returns the value measured.
+ * This function blocks until a value is available.
+ * 
+ * @param what Which temperature to measure
+ * @return The measured temperature, or {@code NaN} in case of an error
+ */
+float Board_MeasureTemperature(Board_TemperatureSource what)
+{
+    float temp;
+    
+    switch(what)
+    {
+        case TEMP_AD5933:
+            if(AD5933_MeasureTemperature(&temp) != AD_OK)
+            {
+                return NAN;
+            }
+            // TODO use callbacks
+            while(AD5933_GetStatus() == AD_MEASURE_TEMP)
+            {
+                HAL_Delay(1);
+            }
+            break;
+            
+        default:
+            return NAN;
+    }
+    
+    return temp;
+}
 
 // ----------------------------------------------------------------------------
