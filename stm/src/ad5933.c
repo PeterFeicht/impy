@@ -20,13 +20,13 @@ static void AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_t freq_s
         uint16_t num_incr, uint16_t settl);
 
 // Private variables ----------------------------------------------------------
-static AD5933_Status status = AD_UNINIT;
+static volatile AD5933_Status status = AD_UNINIT;
 static I2C_HandleTypeDef *i2cHandle = NULL;
 static float *pTemperature = NULL;
 static AD5933_ImpedanceData *pBuffer;
 static AD5933_Sweep sweep_spec;
 static AD5933_RangeSettings range_spec;
-static uint16_t sweep_count;
+static volatile uint16_t sweep_count;
 static AD5933_GainFactorData *pGainData;
 
 // Private functions ----------------------------------------------------------
@@ -251,6 +251,14 @@ AD5933_Error AD5933_MeasureImpedance(AD5933_Sweep *sweep, AD5933_RangeSettings *
     
     status = AD_MEASURE_IMPEDANCE;
     return AD_OK;
+}
+
+/**
+ * Gets the number of data points already measured. This value only has meaning if a sweep is running.
+ */
+uint16_t AD5933_GetSweepCount(void)
+{
+    return sweep_count;
 }
 
 /**
