@@ -43,6 +43,7 @@ typedef struct
 {
     uint16_t  PGA_Gain;         //!< PGA gain setting (one of the {@link AD5933_GAIN} values)
     uint16_t  Voltage_Range;    //!< Voltage range setting (one of the {@link AD5933_VOLTAGE} values)
+    uint16_t  Attenuation;      //!< The external output voltage attenuation after the AD5933 output
 } AD5933_RangeSettings;
 
 typedef struct
