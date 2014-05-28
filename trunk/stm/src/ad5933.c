@@ -443,6 +443,10 @@ void AD5933_CalculateGainFactor(AD5933_GainFactorData *data, AD5933_GainFactor *
         
         gf->slope = (gain2 - gf->offset) / (float)(data->freq2 - data->freq1);
     }
+    else
+    {
+        gf->slope = 0.0f;
+    }
 }
 
 /**
