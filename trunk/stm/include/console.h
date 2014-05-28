@@ -12,6 +12,41 @@
 #include <stdint.h>
 #include "usbd_vcp_if.h"
 
+// Exported type definitions --------------------------------------------------
+typedef enum
+{
+    CON_BINARY,
+    CON_ASCII
+} Console_DataEncoding;
+
+typedef enum
+{
+    CON_POLAR,
+    CON_CARTHESIAN
+} Console_CoordinateFormat;
+
+typedef enum
+{
+    CON_SPACE,
+    CON_TAB,
+    CON_COMMA
+} Console_Separator;
+
+typedef enum
+{
+    CON_FLOAT,
+    CON_HEX
+} Console_NumberFormat;
+
+typedef struct
+{
+    Console_DataEncoding encoding;      //!< Specifies the transfer encoding (binary or ASCII)
+    Console_CoordinateFormat coord;     //!< Specifies the coordinate format (polar or carthesian)
+    uint8_t header;                     //!< Specifies whether a header is sent
+    Console_Separator separator;        //!< For ASCII transfer, specifies the value separator character
+    Console_NumberFormat numbers;       //!< For ASCII transfer, specifies the number format (float or hex)
+} Console_FormatSpecification;
+
 // Constants ------------------------------------------------------------------
 
 /**
