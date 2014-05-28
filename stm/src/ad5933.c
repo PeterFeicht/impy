@@ -172,6 +172,7 @@ AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c)
     }
     
     i2cHandle = i2c;
+    status = AD_IDLE;
     HAL_Delay(5);
     AD5933_Reset();
     
