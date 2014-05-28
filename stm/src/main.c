@@ -20,9 +20,22 @@ static AD5933_GainFactorData gainData;
 static AD5933_GainFactor gainFactor;
 static uint32_t stopFreq;
 static uint8_t port;
+static uint8_t autorange;
 
 // Private functions ----------------------------------------------------------
-
+static void SetDefaults(void)
+{
+    sweep.Num_Increments = 50;
+    sweep.Start_Freq = 1000;
+    stopFreq = 100000;
+    sweep.Freq_Increment = (stopFreq - sweep.Start_Freq) / sweep.Num_Increments;
+    // TODO settling
+    
+    range.PGA_Gain = AD5933_GAIN_1;
+    range.Voltage_Range = AD5933_VOLTAGE_1;
+    
+    autorange = 1;
+}
 
 // ----- main() ---------------------------------------------------------------
 
@@ -37,6 +50,7 @@ int main(int argc, char* argv[])
     // At this stage the system clock should have already been configured at high speed.
     MX_Init();
     Console_Init();
+    SetDefaults();
     
     while(1)
     {
