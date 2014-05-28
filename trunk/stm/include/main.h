@@ -28,6 +28,12 @@ typedef enum
     TEMP_AD5933
 } Board_TemperatureSource;
 
+typedef struct
+{
+    AD5933_Status ad_status;
+    uint16_t point;
+} Board_Status;
+
 // Constants ------------------------------------------------------------------
 #define LED_PORT        GPIOD
 #define LED_ORANGE      GPIO_PIN_13
@@ -60,12 +66,12 @@ uint16_t Board_GetSettlingCycles(void);
 AD5933_RangeSettings* Board_GetRangeSettings(void);
 uint8_t Board_GetAutorange(void);
 
-AD5933_Status Board_GetStatus(void);
+void Board_GetStatus(Board_Status *result);
 AD5933_ImpedancePolar* Board_GetDataPolar(uint32_t *count);
-uint8_t Board_StartSweep(uint8_t port);
-uint8_t Board_StopSweep(void);
+Board_Error Board_StartSweep(uint8_t port);
+Board_Error Board_StopSweep(void);
 uint8_t Board_GetPort(void);
-uint8_t Board_MeasureSingleFrequency(uint8_t port, uint32_t freq);
+Board_Error Board_MeasureSingleFrequency(uint8_t port, uint32_t freq, AD5933_ImpedancePolar *result);
 float Board_MeasureTemperature(Board_TemperatureSource what);
 
 
