@@ -99,6 +99,22 @@ AD5933_RangeSettings* Board_GetRangeSettings(void)
 }
 
 /**
+ * Gets the current number of settling cycles.
+ */
+uint16_t Board_GetSettlingCycles(void)
+{
+    switch(sweep.Settling_Mult)
+    {
+        case AD5933_SETTL_MULT_2:
+            return sweep.Settling_Cycles << 1;
+        case AD5933_SETTL_MULT_4:
+            return sweep.Settling_Cycles << 2;
+        default:
+            return sweep.Settling_Cycles;
+    }
+}
+
+/**
  * Gets whether autoranging is enabled or not.
  * 
  * @return {@code 0} if autoranging is disabled, a nonzero value otherwise
