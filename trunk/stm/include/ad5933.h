@@ -36,13 +36,13 @@ typedef struct
     uint32_t Freq_Increment;    //!< Frequency increment for the sweep in Hz
     uint16_t Num_Increments;    //!< Number of frequency points for the sweep
     uint16_t Settling_Cycles;   //!< Number of settling cycles before a measurement
-    uint16_t Settling_Mult;     //!< Settling time multiplier
+    uint16_t Settling_Mult;     //!< Settling time multiplier (one of the {@link AD5933_SETTL_MULT} values)
 } AD5933_Sweep;
 
 typedef struct
 {
-    uint8_t  PGA_Gain;          //!< PGA gain setting
-    uint8_t  Voltage_Range;     //!< Voltage range setting
+    uint8_t  PGA_Gain;          //!< PGA gain setting (one of the {@link AD5933_GAIN} values)
+    uint8_t  Voltage_Range;     //!< Voltage range setting (one of the {@link AD5933_VOLTAGE} values)
 } AD5933_RangeSettings;
 
 typedef struct
