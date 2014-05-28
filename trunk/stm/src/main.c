@@ -33,6 +33,7 @@ static void SetDefaults(void)
     
     range.PGA_Gain = AD5933_GAIN_1;
     range.Voltage_Range = AD5933_VOLTAGE_1;
+    range.Attenuation = 1;
     
     autorange = 1;
 }
@@ -63,6 +64,49 @@ int main(int argc, char* argv[])
 #pragma GCC diagnostic pop
 
 // Exported functions ---------------------------------------------------------
+
+/**
+ * Gets the current start frequency used for a sweep.
+ */
+uint32_t Board_GetStartFreq(void)
+{
+    return sweep.Start_Freq;
+}
+
+/**
+ * Gets the current stop frequency used for a sweep.
+ */
+uint32_t Board_GetStopFreq(void)
+{
+    return stopFreq;
+}
+
+/**
+ * Gets the current number of frequency increments used for a sweep.
+ */
+uint16_t Board_GetFreqSteps(void)
+{
+    return sweep.Num_Increments;
+}
+
+/**
+ * Gets the current range settings.
+ * Note that the returned structure can change if autoranging is enabled and a sweep is running.
+ */
+AD5933_RangeSettings* Board_GetRangeSettings(void)
+{
+    return &range;
+}
+
+/**
+ * Gets whether autoranging is enabled or not.
+ * 
+ * @return {@code 0} if autoranging is disabled, a nonzero value otherwise
+ */
+uint8_t Board_GetAutorange(void)
+{
+    return autorange;
+}
 
 /**
  * Gets the current measurement status.
