@@ -10504,27 +10504,6 @@ AGND - Analog ground</text>
 <label x="180.34" y="58.42" size="1.778" layer="95" rot="R180"/>
 </segment>
 </net>
-<net name="PE1" class="0">
-<segment>
-<pinref part="JP2" gate="A" pin="18"/>
-<wire x1="78.74" y1="60.96" x2="86.36" y2="60.96" width="0.1524" layer="91"/>
-<label x="86.36" y="60.96" size="1.778" layer="95"/>
-</segment>
-</net>
-<net name="PE0" class="0">
-<segment>
-<pinref part="JP2" gate="A" pin="17"/>
-<wire x1="71.12" y1="60.96" x2="63.5" y2="60.96" width="0.1524" layer="91"/>
-<label x="63.5" y="60.96" size="1.778" layer="95" rot="R180"/>
-</segment>
-</net>
-<net name="PE3" class="0">
-<segment>
-<pinref part="JP2" gate="A" pin="16"/>
-<wire x1="78.74" y1="63.5" x2="86.36" y2="63.5" width="0.1524" layer="91"/>
-<label x="86.36" y="63.5" size="1.778" layer="95"/>
-</segment>
-</net>
 <net name="PA7" class="0">
 <segment>
 <pinref part="JP1" gate="A" pin="17"/>
@@ -13108,9 +13087,6 @@ AGND - Analog ground</text>
 <errors>
 <approved hash="202,4,71.12,55.88,U6,TXD_2,,,,"/>
 <approved hash="202,4,71.12,53.34,U6,TXD_3,,,,"/>
-<approved hash="106,1,71.12,60.96,PE0,,,,,"/>
-<approved hash="106,1,78.74,60.96,PE1,,,,,"/>
-<approved hash="106,1,78.74,63.5,PE3,,,,,"/>
 </errors>
 </schematic>
 </drawing>
