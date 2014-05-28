@@ -406,6 +406,7 @@ AD5933_Status AD5933_GetStatus(void);
 AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c);
 AD5933_Error AD5933_Reset(void);
 AD5933_Error AD5933_MeasureImpedance(AD5933_Sweep *sweep, AD5933_RangeSettings *range, AD5933_ImpedanceData *buffer);
+uint16_t AD5933_GetSweepCount(void);
 AD5933_Error AD5933_MeasureTemperature(float *destination);
 AD5933_Error AD5933_Calibrate(AD5933_GainFactorData *data, AD5933_RangeSettings *range);
 void AD5933_TIM_PeriodElapsedCallback(void);
