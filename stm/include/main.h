@@ -54,7 +54,7 @@ typedef struct
 Board_Error Board_SetStartFreq(uint32_t freq);
 Board_Error Board_SetStopFreq(uint32_t freq);
 Board_Error Board_SetFreqSteps(uint16_t steps);
-Board_Error Board_SetSettlingCycles(uint16_t cycles);
+Board_Error Board_SetSettlingCycles(uint16_t cycles, uint8_t multiplier);
 Board_Error Board_SetVoltageRange(uint16_t range);
 Board_Error Board_SetPGA(uint8_t enable);
 Board_Error Board_SetAutorange(uint8_t enable);
