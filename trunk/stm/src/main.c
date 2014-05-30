@@ -144,6 +144,103 @@ Board_Error Board_SetFreqSteps(uint16_t steps)
 }
 
 /**
+ * Sets the number of settling cycles used for a sweep.
+ * The value of {@code cycles} needs to be in the range from {@code 0} to {@link AD5933_MAX_SETTL}, {@code multiplier}
+ * can be {@code 1}, {@code 2} or {@code 4}.
+ * 
+ * @param cycles The number of settling cycles
+ * @param multiplier Multiplier for the cycle number
+ * @return {@link Board_Error} code
+ */
+Board_Error Board_SetSettlingCycles(uint16_t cycles, uint8_t multiplier)
+{
+    AD5933_Status status = AD5933_GetStatus();
+    if(status != AD_FINISH && status != AD_IDLE)
+    {
+        return BOARD_BUSY;
+    }
+    if(cycles > AD5933_MAX_SETTL)
+    {
+        return BOARD_ERROR;
+    }
+    
+    sweep.Settling_Cycles = cycles;
+    switch(multiplier)
+    {
+        case 1:
+            sweep.Settling_Mult = AD5933_SETTL_MULT_1;
+            break;
+        case 2:
+            sweep.Settling_Mult = AD5933_SETTL_MULT_2;
+            break;
+        case 4:
+            sweep.Settling_Mult = AD5933_SETTL_MULT_4;
+            break;
+        default:
+            return BOARD_ERROR;
+    }
+    
+    return BOARD_OK;
+}
+
+/**
+ * Sets the voltage range used for a sweep.
+ * The value can be <i>0.2V</i>, <i>0.4V</i>, <i>1V</i> or <i>2V</i>, attenuated by the values in
+ * {@link AD5933_ATTENUATION_PORT}.
+ * 
+ * @param range The output voltage in mV
+ * @return {@link Board_Error} code
+ */
+Board_Error Board_SetVoltageRange(uint16_t voltage)
+{
+    AD5933_Status status = AD5933_GetStatus();
+    if(status != AD_FINISH && status != AD_IDLE)
+    {
+        return BOARD_BUSY;
+    }
+    
+    switch(voltage)
+    {
+        case (200 / AD5933_ATTENUATION_PORT_0):
+            range.Attenuation = AD5933_ATTENUATION_PORT_0;
+            range.Voltage_Range = AD5933_VOLTAGE_0_2;
+            break;
+        case (400 / AD5933_ATTENUATION_PORT_0):
+            range.Attenuation = AD5933_ATTENUATION_PORT_0;
+            range.Voltage_Range = AD5933_VOLTAGE_0_4;
+            break;
+        case (1000 / AD5933_ATTENUATION_PORT_0):
+            range.Attenuation = AD5933_ATTENUATION_PORT_0;
+            range.Voltage_Range = AD5933_VOLTAGE_1;
+            break;
+        case (2000 / AD5933_ATTENUATION_PORT_0):
+            range.Attenuation = AD5933_ATTENUATION_PORT_0;
+            range.Voltage_Range = AD5933_VOLTAGE_2;
+            break;
+        case (200 / AD5933_ATTENUATION_PORT_1):
+            range.Attenuation = AD5933_ATTENUATION_PORT_1;
+            range.Voltage_Range = AD5933_VOLTAGE_0_2;
+            break;
+        case (400 / AD5933_ATTENUATION_PORT_1):
+            range.Attenuation = AD5933_ATTENUATION_PORT_1;
+            range.Voltage_Range = AD5933_VOLTAGE_0_4;
+            break;
+        case (1000 / AD5933_ATTENUATION_PORT_1):
+            range.Attenuation = AD5933_ATTENUATION_PORT_1;
+            range.Voltage_Range = AD5933_VOLTAGE_1;
+            break;
+        case (2000 / AD5933_ATTENUATION_PORT_1):
+            range.Attenuation = AD5933_ATTENUATION_PORT_1;
+            range.Voltage_Range = AD5933_VOLTAGE_2;
+            break;
+        default:
+            return BOARD_ERROR;
+    }
+    
+    return BOARD_OK;
+}
+
+/**
  * Sets whether the x5 gain stage of the PGA is enabled. This setting is ignored, if autoranging is enabled.
  * 
  * @param enable {@code 0} to disable the gain stage, nonzero value to enable
