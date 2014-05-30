@@ -50,6 +50,14 @@ typedef struct
  */
 #define PORT_MAX        9
 
+// Values of the calibration resistors
+#define CAL_PORT_10     10
+#define CAL_PORT_11     100
+#define CAL_PORT_12     1000
+#define CAL_PORT_13     10000
+#define CAL_PORT_14     100000
+#define CAL_PORT_15     1000000
+
 // Exported functions ---------------------------------------------------------
 Board_Error Board_SetStartFreq(uint32_t freq);
 Board_Error Board_SetStopFreq(uint32_t freq);
