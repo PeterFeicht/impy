@@ -102,6 +102,14 @@ typedef struct
  */
 #define AD5933_CLK_FREQ                     0xFFFB40
 
+/**
+ * @defgroup AD5933_ATTENUATION_PORT Output Voltage Attenuation Values
+ * @{
+ */
+#define AD5933_ATTENUATION_PORT_0           1
+#define AD5933_ATTENUATION_PORT_1           100
+/** @} */
+
 /*****************************************************************************
  *                              REGISTER MAPPING                             *
  *****************************************************************************/
@@ -110,7 +118,7 @@ typedef struct
  * Control Register High Byte (16-bit)
  * Read/Write
  * Default value: 0xA0 (Power down)
- * 
+ *
  *  + D15:D12   Control function, see {@link AD5933_FUNCTION}
  *  + D11       Not used
  *  + D10:D9    Output voltage range setting, see {@link AD5933_VOLTAGE}
@@ -122,7 +130,7 @@ typedef struct
  * Control Register Low Byte (16-bit)
  * Read/Write
  * Default value: 0x00
- * 
+ *
  *  + D7:D5     Reserved, set to 0
  *  + D4        Reset
  *  + D3        Clock source setting, see {@link AD5933_CLOCK}
@@ -134,7 +142,7 @@ typedef struct
  * Start Frequency Register High Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
- * 
+ *
  * The value for this register is calculated by <i>2^27 * (4 * freq / clk)</i> where <i>clk</i> is the system clock
  * frequency and <i>freq</i> the desired frequency value.
  */
@@ -144,7 +152,7 @@ typedef struct
  * Start Frequency Register Mid Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
- * 
+ *
  * The value for this register is calculated by <i>2^27 * (4 * freq / clk)</i> where <i>clk</i> is the system clock
  * frequency and <i>freq</i> the desired frequency value.
  */
@@ -154,7 +162,7 @@ typedef struct
  * Start Frequency Register Low Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
- * 
+ *
  * The value for this register is calculated by <i>2^27 * (4 * freq / clk)</i> where <i>clk</i> is the system clock
  * frequency and <i>freq</i> the desired frequency value.
  */
@@ -164,7 +172,7 @@ typedef struct
  * Frequency Increment Register High Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
- * 
+ *
  * The value for this register is calculated by <i>2^27 * (4 * freq / clk)</i> where <i>clk</i> is the system clock
  * frequency and <i>freq</i> the desired frequency value.
  */
@@ -174,7 +182,7 @@ typedef struct
  * Frequency Increment Register Mid Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
- * 
+ *
  * The value for this register is calculated by <i>2^27 * (4 * freq / clk)</i> where <i>clk</i> is the system clock
  * frequency and <i>freq</i> the desired frequency value.
  */
@@ -184,7 +192,7 @@ typedef struct
  * Frequency Increment Register Low Byte (24-bit unsigned)
  * Read/Write
  * Default value: none
- * 
+ *
  * The value for this register is calculated by <i>2^27 * (4 * freq / clk)</i> where <i>clk</i> is the system clock
  * frequency and <i>freq</i> the desired frequency value.
  */
@@ -194,7 +202,7 @@ typedef struct
  * Number of Increments Register High Byte (9-bit unsigned)
  * Read/Write
  * Default value: none
- * 
+ *
  *  + D16:D9    Don't care
  *  + D8        MSB of value
  */
@@ -204,7 +212,7 @@ typedef struct
  * Number of Increments Register Low Byte (9-bit unsigned)
  * Read/Write
  * Default value: none
- * 
+ *
  *  + D7:D0     LSB of value
  */
 #define AD5933_NUM_INCR_L_ADDR              0x89
@@ -213,7 +221,7 @@ typedef struct
  * Number of Settling Time Cycles Register High Byte (2+9-bit unsigned)
  * Read/Write
  * Default value: none
- * 
+ *
  *  + D15:D11   Don't care
  *  + D10:D9    Settling time multiplier, see {@link AD5933_SETTL_MULT}
  *  + D8        MSB of settling time cycles
@@ -224,7 +232,7 @@ typedef struct
  * Number of Settling Time Cycles Register Low Byte (2+9-bit unsigned)
  * Read/Write
  * Default value: none
- * 
+ *
  *  + D7:D0     LSB of settling time cycles
  */
 #define AD5933_SETTL_L_ADDR                 0x8B
@@ -233,12 +241,12 @@ typedef struct
  * Status Register
  * Read only
  * Default value: 0x00
- * 
+ *
  *  + D7:D3     Reserved
  *  + D2        Frequency sweep complete
  *  + D1        Valid real/imaginary data
  *  + D0        Valid temperature measurement
- * 
+ *
  * See also {@link AD5933_STATUS}
  */
 #define AD5933_STATUS_ADDR                  0x8F
@@ -247,7 +255,7 @@ typedef struct
  * Temperature Data Register High Byte (14-bit signed)
  * Read only
  * Default value: none
- * 
+ *
  *  + D15:D14   Don't care
  *  + D13       Sign bit
  *  + D12:D8    MSB of temperature value
@@ -258,7 +266,7 @@ typedef struct
  * Temperature Data Register Low Byte (14-bit signed)
  * Read only
  * Default value: none
- * 
+ *
  *  + D7:D0     LSB of temperature value
  */
 #define AD5933_TEMP_L_ADDR                  0x93
@@ -297,11 +305,10 @@ typedef struct
 
 /**
  * @defgroup AD5933_FUNCTION Control Register Function Values
- * 
+ *
  * Control functions (Control register D15:D12)
  * @{
  */
-// 
 #define AD5933_FUNCTION_INIT_FREQ           ((uint16_t)(0x01 << 12))    //!< Initialize with start frequency
 #define AD5933_FUNCTION_START_SWEEP         ((uint16_t)(0x02 << 12))    //!< Start frequency sweep
 #define AD5933_FUNCTION_INCREMENT_FREQ      ((uint16_t)(0x03 << 12))    //!< Increment frequency
@@ -313,7 +320,7 @@ typedef struct
 
 /**
  * @defgroup AD5933_VOLTAGE Control Register Voltage Range Values
- * 
+ *
  * Output voltage range (Control register D10:D9)
  * @{
  */
@@ -325,7 +332,7 @@ typedef struct
 
 /**
  * @defgroup AD5933_GAIN Control Register PGA Gain Settings
- * 
+ *
  * PGA gain setting (Control register D8)
  * @{
  */
@@ -335,7 +342,7 @@ typedef struct
 
 /**
  * @defgroup AD5933_CLOCK Control Register Clock Source Settings
- * 
+ *
  * Clock source (Control register D3)
  * @{
  */
@@ -345,7 +352,7 @@ typedef struct
 
 /**
  * @defgroup AD5933_SETTL_MULT Settling Time Register Multiplier Values
- * 
+ *
  * Settling time multiplier (Settling time register D10:D9)
  * @{
  */
@@ -364,7 +371,7 @@ typedef struct
 
 /**
  * @defgroup AD5933_STATUS Status Register Bits
- * 
+ *
  * Status register bitmasks
  * @{
  */
@@ -389,17 +396,17 @@ typedef struct
 
 /**
  * Minimum value of the frequency (Start frequency register) with internal clock
- * 
+ *
  * The value is <i>1kHz</i>
  */
 #define AD5933_MIN_FREQ                     ((uint32_t)0x7D02)
 
 /**
  * Maximum value of the frequency (Start frequency register + steps) with internal clock
- * 
+ *
  * The value is <i>100kHz</i>
  */
-#define AD5933_MAX_FREQ                     ((uint32_t)0x30D4E7) 
+#define AD5933_MAX_FREQ                     ((uint32_t)0x30D4E7)
 
 // Exported functions ---------------------------------------------------------
 
