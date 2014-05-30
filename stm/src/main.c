@@ -354,6 +354,7 @@ AD5933_ImpedancePolar* Board_GetDataPolar(uint32_t *count)
         {
             bufPolar[j].Frequency = bufData[j].Frequency;
             bufPolar[j].Magnitude = AD5933_GetMagnitude(&bufData[j], &gainFactor);
+            // TODO add phase calculation
             bufPolar[j].Angle = NAN;
         }
     }
@@ -380,6 +381,48 @@ Board_Error Board_StopSweep(void)
 uint8_t Board_GetPort(void)
 {
     return port;
+}
+
+/**
+ * Measures a single frequency point on the specified port with the current range settings.
+ * 
+ * @param port The port to measure on
+ * @param freq The frequency to measure
+ * @param result Pointer to a structure receiving the converted impedance value
+ * @return {@link Board_Error} code
+ */
+Board_Error Board_MeasureSingleFrequency(uint8_t port, uint32_t freq, AD5933_ImpedancePolar *result)
+{
+    AD5933_Status status = AD5933_GetStatus();
+    if(status != AD_FINISH && status != AD_IDLE)
+    {
+        return BOARD_BUSY;
+    }
+    // Uncomment if PORT_MIN is greater than 0
+    if(freq < FREQ_MIN || freq > FREQ_MAX || /*port < PORT_MIN ||*/ port > PORT_MAX || result == NULL)
+    {
+        return BOARD_ERROR;
+    }
+    
+    AD5933_ImpedanceData buffer;
+    AD5933_Sweep sw = sweep;
+    sw.Start_Freq = freq;
+    // TODO determine value
+    sw.Num_Increments = 0;
+    
+    // TODO implement autorange
+    AD5933_MeasureImpedance(&sw, &range, &buffer);
+    while(AD5933_GetStatus() != AD_FINISH)
+    {
+        HAL_Delay(2);
+    }
+    
+    result->Frequency = freq;
+    result->Magnitude = AD5933_GetMagnitude(&buffer, &gainFactor);
+    // TODO calculate phase
+    result->Angle = NAN;
+    
+    return BOARD_OK;
 }
 
 /**
