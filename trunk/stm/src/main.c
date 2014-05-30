@@ -27,6 +27,7 @@ static uint8_t autorange;
 
 static AD5933_ImpedanceData bufData[AD5933_MAX_NUM_INCREMENTS + 1];
 static AD5933_ImpedancePolar bufPolar[AD5933_MAX_NUM_INCREMENTS + 1];
+static uint8_t interrupted;
 
 // Private functions ----------------------------------------------------------
 static void SetDefaults(void)
@@ -71,6 +72,28 @@ int main(int argc, char* argv[])
 #pragma GCC diagnostic pop
 
 // Exported functions ---------------------------------------------------------
+
+/**
+ * Sets whether the x5 gain stage of the PGA is enabled. This setting is ignored, if autoranging is enabled.
+ * 
+ * @param enable {@code 0} to disable the gain stage, nonzero value to enable
+ * @return {@link Board_Error} code
+ */
+Board_Error Board_SetPGA(uint8_t enable)
+{
+    AD5933_Status status = AD5933_GetStatus();
+    if(status != AD_FINISH && status != AD_IDLE)
+    {
+        return BOARD_BUSY;
+    }
+    
+    if(!autorange)
+    {
+        range.PGA_Gain = (enable ? AD5933_GAIN_5 : AD5933_GAIN_1);
+    }
+    
+    return BOARD_OK;
+}
 
 /**
  * Gets the current start frequency used for a sweep.
@@ -140,6 +163,19 @@ void Board_GetStatus(Board_Status *result)
 {
     result->ad_status = AD5933_GetStatus();
     result->point = AD5933_GetSweepCount();
+    result->interrupted = interrupted;
+}
+
+/**
+ * Stops a currently running frequency measurement, if any.
+ * 
+ * @return {@link BOARD_OK}
+ */
+Board_Error Board_StopSweep(void)
+{
+    interrupted = 1;
+    AD5933_Reset();
+    return BOARD_OK;
 }
 
 /**
