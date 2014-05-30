@@ -9,6 +9,9 @@
 #include <math.h>
 #include "main.h"
 
+// Private function prototypes ------------------------------------------------
+static void SetDefaults(void);
+
 // Variables ------------------------------------------------------------------
 USBD_HandleTypeDef hUsbDevice;
 I2C_HandleTypeDef hi2c1;
@@ -21,6 +24,9 @@ static AD5933_GainFactor gainFactor;
 static uint32_t stopFreq;
 static uint8_t port;
 static uint8_t autorange;
+
+static AD5933_ImpedanceData bufData[AD5933_MAX_NUM_INCREMENTS + 1];
+static AD5933_ImpedancePolar bufPolar[AD5933_MAX_NUM_INCREMENTS + 1];
 
 // Private functions ----------------------------------------------------------
 static void SetDefaults(void)
@@ -35,7 +41,8 @@ static void SetDefaults(void)
     range.Voltage_Range = AD5933_VOLTAGE_1;
     range.Attenuation = 1;
     
-    autorange = 1;
+    // TODO enable autorange by default
+    autorange = 0;
 }
 
 // ----- main() ---------------------------------------------------------------
