@@ -18,20 +18,20 @@
 // Exported type definitions --------------------------------------------------
 typedef enum
 {
-    BOARD_OK = 0,
-    BOARD_BUSY,
-    BOARD_ERROR
+    BOARD_OK = 0,       //!< Indicates success
+    BOARD_BUSY,         //!< Indicates that the board is currently busy and settings cannot be changed
+    BOARD_ERROR         //!< Indicates an error condition
 } Board_Error;
 
 typedef enum
 {
-    TEMP_AD5933
+    TEMP_AD5933         //!< AD5933 internal chip temperature
 } Board_TemperatureSource;
 
 typedef struct
 {
-    AD5933_Status ad_status;
-    uint16_t point;
+    AD5933_Status ad_status;    //!< Status code of the AD5933 driver
+    uint16_t point;             //!< If a measurement is running, the number of data points already measured
 } Board_Status;
 
 // Constants ------------------------------------------------------------------
@@ -51,12 +51,17 @@ typedef struct
 #define PORT_MAX        9
 
 // Values of the calibration resistors
-#define CAL_PORT_10     10
-#define CAL_PORT_11     100
-#define CAL_PORT_12     1000
-#define CAL_PORT_13     10000
-#define CAL_PORT_14     100000
-#define CAL_PORT_15     1000000
+/**
+ * @defgroup CAL_PORT Calibration Resistor Values
+ * @{
+ */
+#define CAL_PORT_10         10              //!< Port 10 value: 10
+#define CAL_PORT_11         100             //!< Port 11 value: 100
+#define CAL_PORT_12         1000            //!< Port 12 value: 1k
+#define CAL_PORT_13         10000           //!< Port 13 value: 10k
+#define CAL_PORT_14         100000          //!< Port 14 value: 100k
+#define CAL_PORT_15         1000000         //!< Port 15 value: 1M
+/** @} */
 
 // Exported functions ---------------------------------------------------------
 Board_Error Board_SetStartFreq(uint32_t freq);
