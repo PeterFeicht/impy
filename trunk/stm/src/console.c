@@ -6,8 +6,9 @@
  */
 
 // Includes -------------------------------------------------------------------
-#include "console.h"
 #include <string.h>
+#include "console.h"
+#include "main.h"
 
 // Private type definitions ---------------------------------------------------
 typedef enum
@@ -39,6 +40,7 @@ typedef struct
  * number of elements in {@code argv}, but {@code argv} has no {@code NULL} pointer at that index.
  * 
  * @param argc Number of arguments in the command line
+ * @param argv Array of arguments
  */
 typedef void (*Console_CommandFunc)(uint32_t argc, char **argv);
 
@@ -169,6 +171,7 @@ static void Console_InitHelp(void)
         
         if(newline && *help == 'h')
         {
+            // TODO avoid writing to help text so it can be moved from RAM to Flash memory
             if(Console_AddHelpTopic(help) == 0)
             {
                 *help = 0;
@@ -601,7 +604,6 @@ static void Console_Help(uint32_t argc, char **argv)
     
     VCP_CommandFinish();
 }
-
 
 // Exported functions ---------------------------------------------------------
 
