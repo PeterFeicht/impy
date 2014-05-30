@@ -27,7 +27,9 @@ static uint8_t autorange;
 
 static AD5933_ImpedanceData bufData[AD5933_MAX_NUM_INCREMENTS + 1];
 static AD5933_ImpedancePolar bufPolar[AD5933_MAX_NUM_INCREMENTS + 1];
-static uint8_t interrupted;
+static uint8_t convertedPolar = 0;
+static uint8_t interrupted = 0;
+static uint8_t pointCount = 0;
 
 // Private functions ----------------------------------------------------------
 static void SetDefaults(void)
@@ -72,6 +74,11 @@ int main(int argc, char* argv[])
 #pragma GCC diagnostic pop
 
 // Exported functions ---------------------------------------------------------
+
+// Timer callback:
+// TODO set point count when measurement finishes
+// TODO implement autoranging
+// TODO implement calibration
 
 /**
  * Sets the start frequency used for a sweep.
@@ -331,6 +338,28 @@ void Board_GetStatus(Board_Status *result)
     result->ad_status = AD5933_GetStatus();
     result->point = AD5933_GetSweepCount();
     result->interrupted = interrupted;
+}
+
+/**
+ * Gets a pointer to the converted measurement data in polar format.
+ * 
+ * @param count Pointer to a variable receiving the number of points in the buffer
+ * @return Pointer to the data buffer
+ */
+AD5933_ImpedancePolar* Board_GetDataPolar(uint32_t *count)
+{
+    if(!convertedPolar)
+    {
+        for(int j = 0; j < pointCount; j++)
+        {
+            bufPolar[j].Frequency = bufData[j].Frequency;
+            bufPolar[j].Magnitude = AD5933_GetMagnitude(&bufData[j], &gainFactor);
+            bufPolar[j].Angle = NAN;
+        }
+    }
+    
+    *count = pointCount;
+    return &bufPolar[0];
 }
 
 /**
