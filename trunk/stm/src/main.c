@@ -74,6 +74,76 @@ int main(int argc, char* argv[])
 // Exported functions ---------------------------------------------------------
 
 /**
+ * Sets the start frequency used for a sweep.
+ * The value needs to be between {@link FREQ_MIN} and {@link FREQ_MAX}, and less than the stop frequency.
+ * 
+ * @param freq the frequency in Hz
+ * @return {@link Board_Error} code
+ */
+Board_Error Board_SetStartFreq(uint32_t freq)
+{
+    AD5933_Status status = AD5933_GetStatus();
+    if(status != AD_FINISH && status != AD_IDLE)
+    {
+        return BOARD_BUSY;
+    }
+    if(freq < FREQ_MIN || freq > FREQ_MAX || freq >= stopFreq)
+    {
+        return BOARD_ERROR;
+    }
+    
+    sweep.Start_Freq = freq;
+    return BOARD_OK;
+}
+
+/**
+ * Sets the stop frequency used for a sweep.
+ * The value needs to be between {@link FREQ_MIN} and {@link FREQ_MAX}, and greater than the start frequency.
+ * 
+ * @param freq the frequency in Hz
+ * @return {@link Board_Error} code
+ */
+Board_Error Board_SetStopFreq(uint32_t freq)
+{
+    AD5933_Status status = AD5933_GetStatus();
+    if(status != AD_FINISH && status != AD_IDLE)
+    {
+        return BOARD_BUSY;
+    }
+    if(freq < FREQ_MIN || freq > FREQ_MAX || freq <= sweep.Start_Freq)
+    {
+        return BOARD_ERROR;
+    }
+    
+    stopFreq = freq;
+    return BOARD_OK;
+}
+
+/**
+ * Sets the number of frequency increments used for a sweep.
+ * The value cannot be greater than the difference in start and stop frequency (the resolution is 1 Hz) and needs to be
+ * in the range from {@code 0} to {@link AD5933_MAX_NUM_INCREMENTS}.
+ * 
+ * @param steps the number of points to measure
+ * @return {@link Board_Error} code
+ */
+Board_Error Board_SetFreqSteps(uint16_t steps)
+{
+    AD5933_Status status = AD5933_GetStatus();
+    if(status != AD_FINISH && status != AD_IDLE)
+    {
+        return BOARD_BUSY;
+    }
+    if((stopFreq - sweep.Start_Freq) < steps || steps > AD5933_MAX_NUM_INCREMENTS)
+    {
+        return BOARD_ERROR;
+    }
+    
+    sweep.Num_Increments = steps;
+    return BOARD_OK;
+}
+
+/**
  * Sets whether the x5 gain stage of the PGA is enabled. This setting is ignored, if autoranging is enabled.
  * 
  * @param enable {@code 0} to disable the gain stage, nonzero value to enable
