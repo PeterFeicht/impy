@@ -32,6 +32,7 @@ typedef struct
 {
     AD5933_Status ad_status;    //!< Status code of the AD5933 driver
     uint16_t point;             //!< If a measurement is running, the number of data points already measured
+    uint8_t interrupted;        //!< Indicates whether the last measurement was interrupted
 } Board_Status;
 
 // Constants ------------------------------------------------------------------
