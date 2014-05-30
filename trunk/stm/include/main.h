@@ -51,6 +51,15 @@ typedef struct
  */
 #define PORT_MAX        9
 
+/**
+ * The minimum frequency that can be measured.
+ */
+#define FREQ_MIN        100
+/**
+ * The maximum frequency that can be measured.
+ */
+#define FREQ_MAX        100000
+
 // Values of the calibration resistors
 /**
  * @defgroup CAL_PORT Calibration Resistor Values
