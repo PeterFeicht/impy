@@ -82,8 +82,12 @@ typedef struct
 
 // Macros ---------------------------------------------------------------------
 
+#ifndef LOBYTE
 #define LOBYTE(x)  ((uint8_t)(x & 0x00FF))
+#endif
+#ifndef HIBYTE
 #define HIBYTE(x)  ((uint8_t)((x & 0xFF00) >> 8))
+#endif
 
 // Constants ------------------------------------------------------------------
 
