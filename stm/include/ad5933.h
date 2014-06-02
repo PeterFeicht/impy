@@ -119,6 +119,15 @@ typedef struct
 /** @} */
 
 /**
+ * @defgroup AD5933_ATTENUATION_GPIO Attenuation Mux GPIO Definition
+ * @{
+ */
+#define AD5933_ATTENUATION_GPIO_PORT        GPIOE
+#define AD5933_ATTENUATION_GPIO_0           GPIO_PIN_5
+#define AD5933_ATTENUATION_GPIO_1           GPIO_PIN_6
+/** @} */
+
+/**
  * @defgroup AD5933_FEEDBACK_PORT Feedback Resistor Values
  * 
  * Value of the feedback resistor on the respective port in Ohms
@@ -132,6 +141,16 @@ typedef struct
 #define AD5933_FEEDBACK_PORT_5              0
 #define AD5933_FEEDBACK_PORT_6              0
 #define AD5933_FEEDBACK_PORT_7              0
+/** @} */
+
+/**
+ * @defgroup AD5933_FEEDBACK_GPIO Feedback Mux GPIO Definition
+ * @{
+ */
+#define AD5933_FEEDBACK_GPIO_PORT           GPIOB
+#define AD5933_FEEDBACK_GPIO_0              GPIO_PIN_7
+#define AD5933_FEEDBACK_GPIO_1              GPIO_PIN_4
+#define AD5933_FEEDBACK_GPIO_2              GPIO_PIN_5
 /** @} */
 
 /*****************************************************************************
