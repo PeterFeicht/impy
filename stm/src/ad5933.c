@@ -16,7 +16,7 @@ static HAL_StatusTypeDef AD5933_Write24(uint16_t MemAddress, uint32_t value);
 static HAL_StatusTypeDef AD5933_Read16(uint16_t MemAddress, uint16_t *destination);
 static uint8_t AD5933_ReadStatus();
 static uint32_t AD5933_CalcFrequencyReg(uint32_t freq);
-static void AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_t freq_start, uint32_t freq_step,
+static AD5933_Error AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_t freq_start, uint32_t freq_step,
         uint16_t num_incr, uint16_t settl);
 
 // Private variables ----------------------------------------------------------
@@ -119,16 +119,77 @@ static uint32_t AD5933_CalcFrequencyReg(uint32_t freq)
 /**
  * Sends the necessary commands to the AD5933 to initiate a frequency sweep.
  * 
- * @param range Pointer to voltage and gain settings
+ * @param range Pointer to voltage, gain, attenuation and feedback settings
  * @param freq_start Start frequency register value
  * @param freq_step Frequency step register value
  * @param num_incr Number of increments
  * @param settl Settling time register value
+ * @return {@link AD5933_Error} code
  */
-static void AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_t freq_start, uint32_t freq_step,
+static AD5933_Error AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_t freq_start, uint32_t freq_step,
         uint16_t num_incr, uint16_t settl)
 {
     uint16_t data;
+    uint8_t portAtt = 0;
+    uint8_t portFb = 0;
+    uint8_t j;
+    
+    static const uint16_t attenuation[] = {
+        AD5933_ATTENUATION_PORT_0,
+        AD5933_ATTENUATION_PORT_1,
+        AD5933_ATTENUATION_PORT_2,
+        AD5933_ATTENUATION_PORT_3
+    };
+    static const uint32_t feedback[] = {
+        AD5933_FEEDBACK_PORT_0,
+        AD5933_FEEDBACK_PORT_1,
+        AD5933_FEEDBACK_PORT_2,
+        AD5933_FEEDBACK_PORT_3,
+        AD5933_FEEDBACK_PORT_4,
+        AD5933_FEEDBACK_PORT_5,
+        AD5933_FEEDBACK_PORT_6,
+        AD5933_FEEDBACK_PORT_7
+    };
+    static const GPIO_PinState SET = GPIO_PIN_SET;
+    static const GPIO_PinState RESET = GPIO_PIN_RESET;
+    
+    // Find attenuation port with desired value
+    for(j = 0; j < NUMEL(attenuation); j++)
+    {
+        if(attenuation[j] == range->Attenuation)
+        {
+            portAtt = j;
+            break;
+        }
+    }
+    if(j == NUMEL(attenuation) || attenuation[j] == 0)
+    {
+        return AD_ERROR;
+    }
+    
+    // Find feedback port with desired value
+    for(j = 0; j < NUMEL(feedback); j++)
+    {
+        if(feedback[j] == range->Feedback_Value)
+        {
+            portFb = j;
+            break;
+        }
+    }
+    if(j == NUMEL(feedback) || feedback[j] == 0)
+    {
+        return AD_ERROR;
+    }
+    
+    // Set attenuator and feedback mux
+    HAL_GPIO_WritePin(AD5933_ATTENUATION_GPIO_PORT, AD5933_ATTENUATION_GPIO_0, ((portAtt & (1 << 0)) ? SET : RESET));
+    HAL_GPIO_WritePin(AD5933_ATTENUATION_GPIO_PORT, AD5933_ATTENUATION_GPIO_1, ((portAtt & (1 << 1)) ? SET : RESET));
+    HAL_GPIO_WritePin(AD5933_FEEDBACK_GPIO_PORT, AD5933_FEEDBACK_GPIO_0, ((portFb & (1 << 0)) ? SET : RESET));
+    HAL_GPIO_WritePin(AD5933_FEEDBACK_GPIO_PORT, AD5933_FEEDBACK_GPIO_1, ((portFb & (1 << 1)) ? SET : RESET));
+    HAL_GPIO_WritePin(AD5933_FEEDBACK_GPIO_PORT, AD5933_FEEDBACK_GPIO_2, ((portFb & (1 << 2)) ? SET : RESET));
+    
+    // TODO Check for range change and charge coupling capacitor
+    range_spec = *range;
     
     // Put device in standby and send range settings
     data = AD5933_FUNCTION_STANDBY | range->PGA_Gain | range->Voltage_Range;
@@ -146,6 +207,8 @@ static void AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_t freq_s
     HAL_Delay(5);
     data = AD5933_FUNCTION_START_SWEEP | range->PGA_Gain | range->Voltage_Range;
     AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
+    
+    return AD_OK;
 }
 
 // Exported functions ---------------------------------------------------------
@@ -222,7 +285,7 @@ AD5933_Error AD5933_Reset(void)
  * Initiates a frequency sweep over the specified range with the specified output buffer.
  * 
  * @param sweep The specifications to use for the sweep
- * @param range The specifications for PGA gain and voltage range
+ * @param range The specifications for PGA gain, voltage range, external attenuation and feedback resistor
  * @param buffer Pointer to a buffer where measurement data is written (needs to be large enough for the specified
  *               number of samples)
  * @return {@link AD5933_Error} code
@@ -232,6 +295,7 @@ AD5933_Error AD5933_MeasureImpedance(AD5933_Sweep *sweep, AD5933_RangeSettings *
     uint32_t freq_start;
     uint32_t freq_step;
     uint16_t data;
+    AD5933_Error ret;
     
     if(status == AD_UNINIT || sweep == NULL || buffer == NULL || range == NULL)
     {
@@ -251,7 +315,6 @@ AD5933_Error AD5933_MeasureImpedance(AD5933_Sweep *sweep, AD5933_RangeSettings *
     
     pBuffer = buffer;
     sweep_spec = *sweep;
-    range_spec = *range;
     sweep_count = 0;
     
     freq_start = AD5933_CalcFrequencyReg(sweep->Start_Freq);
@@ -264,10 +327,13 @@ AD5933_Error AD5933_MeasureImpedance(AD5933_Sweep *sweep, AD5933_RangeSettings *
     }
     
     data = sweep->Settling_Cycles | sweep->Settling_Mult;
-    AD5933_StartMeasurement(range, freq_start, freq_step, sweep->Num_Increments, data);
+    ret = AD5933_StartMeasurement(range, freq_start, freq_step, sweep->Num_Increments, data);
     
-    status = AD_MEASURE_IMPEDANCE;
-    return AD_OK;
+    if(ret != AD_ERROR)
+    {
+        status = AD_MEASURE_IMPEDANCE;
+    }
+    return ret;
 }
 
 /**
@@ -310,12 +376,14 @@ AD5933_Error AD5933_MeasureTemperature(float *destination)
  * performed, to already be set. The structure should not be changed during the measurement.
  * 
  * @param data Structure where measurements are written to
+ * @param range The specifications for PGA gain, voltage range, external attenuation and feedback resistor
  * @return {@link AD5933_Error} code
  */
 AD5933_Error AD5933_Calibrate(AD5933_GainFactorData *data, AD5933_RangeSettings *range)
 {
     uint32_t freq_start;
     uint32_t freq_step = 0x10;
+    AD5933_Error ret;
     
     if(status == AD_UNINIT || data == NULL || range == NULL)
     {
@@ -327,7 +395,6 @@ AD5933_Error AD5933_Calibrate(AD5933_GainFactorData *data, AD5933_RangeSettings 
     }
     
     pGainData = data;
-    range_spec = *range;
     sweep_count = 0;
     
     freq_start = AD5933_CalcFrequencyReg(data->freq1);
@@ -342,9 +409,13 @@ AD5933_Error AD5933_Calibrate(AD5933_GainFactorData *data, AD5933_RangeSettings 
     }
     
     // Number of increments doesn't really matter, we check sweep_count in the callback anyway
-    AD5933_StartMeasurement(range, freq_start, freq_step, 2, 100);
+    ret = AD5933_StartMeasurement(range, freq_start, freq_step, 2, 100);
     
-    return AD_OK;
+    if(ret != AD_ERROR)
+    {
+        status = AD_CALIBRATE;
+    }
+    return ret;
 }
 
 /**
