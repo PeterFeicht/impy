@@ -114,6 +114,15 @@ typedef struct
 #define AD5933_COUPLING_TAU                 110
 
 /**
+ * @defgroup AD5933_COUPLING_GPIO Coupling Capacitor Charging Switch GPIO Definition
+ * @{
+ */
+#define AD5933_COUPLING_GPIO_PORT           GPIOE
+#define AD5933_COUPLING_GPIO_CLK_EN()       __GPIOE_CLK_ENABLE()
+#define AD5933_COUPLING_GPIO_PIN            GPIO_PIN_4
+/** @} */
+
+/**
  * @defgroup AD5933_ATTENUATION_PORT Output Voltage Attenuation Values
  * @{
  */
