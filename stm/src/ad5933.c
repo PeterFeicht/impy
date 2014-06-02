@@ -166,10 +166,27 @@ AD5933_Status AD5933_GetStatus(void)
  */
 AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c)
 {
+    GPIO_InitTypeDef init;
+    
     if(i2c == NULL)
     {
         return AD_ERROR;
     }
+    
+    // Configure attenuation and feedback mux GPIO pins
+    init.Pin = AD5933_ATTENUATION_GPIO_0 | AD5933_ATTENUATION_GPIO_1;
+    init.Mode = GPIO_MODE_OUTPUT_PP;
+    init.Speed = GPIO_SPEED_MEDIUM;
+    init.Pull = GPIO_NOPULL;
+    AD5933_ATTENUATION_GPIO_CLK_EN();
+    HAL_GPIO_Init(AD5933_ATTENUATION_GPIO_PORT, &init);
+    
+    init.Pin = AD5933_FEEDBACK_GPIO_0 | AD5933_FEEDBACK_GPIO_1 | AD5933_FEEDBACK_GPIO_2;
+    init.Mode = GPIO_MODE_OUTPUT_PP;
+    init.Speed = GPIO_SPEED_MEDIUM;
+    init.Pull = GPIO_NOPULL;
+    AD5933_FEEDBACK_GPIO_CLK_EN();
+    HAL_GPIO_Init(AD5933_FEEDBACK_GPIO_PORT, &init);
     
     i2cHandle = i2c;
     status = AD_IDLE;
