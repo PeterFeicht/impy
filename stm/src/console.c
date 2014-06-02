@@ -359,6 +359,12 @@ static char* Console_GetArgValue(char *arg)
     return (val != NULL ? val + 1 : NULL);
 }
 
+/**
+ * Calls the appropriate subcommand processing function for {@code board} commands.
+ * 
+ * @param argc Number of arguments
+ * @param argv Array of arguments
+ */
 static void Console_Board(uint32_t argc, char **argv)
 {
     static const Console_Command cmds[] = {
@@ -461,6 +467,12 @@ static void Console_BoardTemp(uint32_t argc, char **argv)
     VCP_CommandFinish();
 }
 
+/**
+ * Calls the appropriate subcommand processing function for {@code eth} commands.
+ * 
+ * @param argc Number of arguments
+ * @param argv Array of arguments
+ */
 static void Console_Eth(uint32_t argc, char **argv)
 {
     static const Console_Command cmds[] = {
@@ -511,6 +523,12 @@ static void Console_EthStatus(uint32_t argc, char **argv)
     VCP_CommandFinish();
 }
 
+/**
+ * Calls the appropriate subcommand processing function for {@code usb} commands.
+ * 
+ * @param argc Number of arguments
+ * @param argv Array of arguments
+ */
 static void Console_Usb(uint32_t argc, char **argv)
 {
     static const Console_Command cmds[] = {
@@ -566,7 +584,7 @@ static void Console_UsbWrite(uint32_t argc, char **argv)
 }
 
 /**
- * Process {@code help} command.
+ * Processes the {@code help} command.
  * 
  * @param argc Number of arguments
  * @param argv Array of arguments
