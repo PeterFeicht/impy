@@ -425,6 +425,22 @@ uint32_t VCP_SendString(const char *str)
 }
 
 /**
+ * Send the specified 0 terminated string over the virtual COM port, followed by a line break.
+ * See {@link VCP_SendString} for more information.
+ * 
+ * @param str Pointer to a zero terminated string
+ * @return The number of bytes transmitted. This can be less than the string length, if the string is longer than the
+ *         free space in the transmit buffer, or 2 more if the whole string plus the line break were transmitted.
+ */
+uint32_t VCP_SendLine(const char *str)
+{
+    const char *linebreak = "\r\n";
+    uint32_t sent = VCP_SendString(str);
+    sent += VCP_SendString(linebreak);
+    return sent;
+}
+
+/**
  * Send the specified buffer over the virtual COM port.
  * 
  * This function should be used for data that does not fit into the internal buffer.

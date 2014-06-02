@@ -27,6 +27,7 @@ uint8_t VCP_GetEcho(void);
 void VCP_CommandFinish(void);
 uint32_t VCP_SendChar(uint8_t c);
 uint32_t VCP_SendString(const char *str);
+uint32_t VCP_SendLine(const char *str);
 uint32_t VCP_SendBuffer(const uint8_t *buf, uint32_t len);
 
 // ----------------------------------------------------------------------------
