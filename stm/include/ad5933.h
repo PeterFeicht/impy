@@ -43,7 +43,8 @@ typedef struct
 {
     uint16_t  PGA_Gain;         //!< PGA gain setting (one of the {@link AD5933_GAIN} values)
     uint16_t  Voltage_Range;    //!< Voltage range setting (one of the {@link AD5933_VOLTAGE} values)
-    uint16_t  Attenuation;      //!< The external output voltage attenuation after the AD5933 output
+    uint16_t  Attenuation;      //!< The output voltage attenuation (one of the {@link AD5933_ATTENUATION_PORT} values)
+    uint32_t  Feedback_Value;   //!< Value of the feedback resistor (one of the {@link AD5933_FEEDBACK_PORT} values)
 } AD5933_RangeSettings;
 
 typedef struct
@@ -112,6 +113,25 @@ typedef struct
  */
 #define AD5933_ATTENUATION_PORT_0           1
 #define AD5933_ATTENUATION_PORT_1           100
+#define AD5933_ATTENUATION_PORT_2           0
+#define AD5933_ATTENUATION_PORT_3           0
+
+/** @} */
+
+/**
+ * @defgroup AD5933_FEEDBACK_PORT Feedback Resistor Values
+ * 
+ * Value of the feedback resistor on the respective port in Ohms
+ * @{
+ */
+#define AD5933_FEEDBACK_PORT_0              100
+#define AD5933_FEEDBACK_PORT_1              1000
+#define AD5933_FEEDBACK_PORT_2              10000
+#define AD5933_FEEDBACK_PORT_3              100000
+#define AD5933_FEEDBACK_PORT_4              1000000
+#define AD5933_FEEDBACK_PORT_5              0
+#define AD5933_FEEDBACK_PORT_6              0
+#define AD5933_FEEDBACK_PORT_7              0
 /** @} */
 
 /*****************************************************************************
