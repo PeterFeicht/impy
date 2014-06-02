@@ -123,6 +123,7 @@ typedef struct
  * @{
  */
 #define AD5933_ATTENUATION_GPIO_PORT        GPIOE
+#define AD5933_ATTENUATION_GPIO_CLK_EN()    __GPIOE_CLK_ENABLE()
 #define AD5933_ATTENUATION_GPIO_0           GPIO_PIN_5
 #define AD5933_ATTENUATION_GPIO_1           GPIO_PIN_6
 /** @} */
@@ -148,6 +149,7 @@ typedef struct
  * @{
  */
 #define AD5933_FEEDBACK_GPIO_PORT           GPIOB
+#define AD5933_FEEDBACK_GPIO_CLK_EN()       __GPIOB_CLK_ENABLE()
 #define AD5933_FEEDBACK_GPIO_0              GPIO_PIN_7
 #define AD5933_FEEDBACK_GPIO_1              GPIO_PIN_4
 #define AD5933_FEEDBACK_GPIO_2              GPIO_PIN_5
