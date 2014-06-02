@@ -188,9 +188,6 @@ static AD5933_Error AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_
     HAL_GPIO_WritePin(AD5933_FEEDBACK_GPIO_PORT, AD5933_FEEDBACK_GPIO_1, ((portFb & (1 << 1)) ? SET : RESET));
     HAL_GPIO_WritePin(AD5933_FEEDBACK_GPIO_PORT, AD5933_FEEDBACK_GPIO_2, ((portFb & (1 << 2)) ? SET : RESET));
     
-    // TODO Check for range change and charge coupling capacitor
-    range_spec = *range;
-    
     // Put device in standby and send range settings
     data = AD5933_FUNCTION_STANDBY | range->PGA_Gain | range->Voltage_Range;
     AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
@@ -201,10 +198,17 @@ static AD5933_Error AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_
     AD5933_Write16(AD5933_NUM_INCR_H_ADDR, num_incr);
     AD5933_Write16(AD5933_SETTL_H_ADDR, settl);
     
-    // Switch output on and start sweep after some settling time
+    // Switch output on
     data = AD5933_FUNCTION_INIT_FREQ | range->PGA_Gain | range->Voltage_Range;
     AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
-    HAL_Delay(5);
+    
+    // Charge coupling capacitor, this is always needed, assuming the output was previously switched off
+    HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, RESET);
+    HAL_Delay(AD5933_COUPLING_TAU * 4);
+    HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, SET);
+    range_spec = *range;
+    
+    // Start sweep
     data = AD5933_FUNCTION_START_SWEEP | range->PGA_Gain | range->Voltage_Range;
     AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
     
