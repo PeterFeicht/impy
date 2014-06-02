@@ -89,6 +89,7 @@ typedef struct
 #ifndef HIBYTE
 #define HIBYTE(x)  ((uint8_t)((x & 0xFF00) >> 8))
 #endif
+#define NUMEL(X)    (sizeof(X) / sizeof(*X))
 
 // Constants ------------------------------------------------------------------
 
