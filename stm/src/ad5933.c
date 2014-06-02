@@ -203,9 +203,9 @@ static AD5933_Error AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_
     AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
     
     // Charge coupling capacitor, this is always needed, assuming the output was previously switched off
-    HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, RESET);
+    HAL_GPIO_WritePin(AD5933_COUPLING_GPIO_PORT, AD5933_COUPLING_GPIO_PIN, RESET);
     HAL_Delay(AD5933_COUPLING_TAU * 4);
-    HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, SET);
+    HAL_GPIO_WritePin(AD5933_COUPLING_GPIO_PORT, AD5933_COUPLING_GPIO_PIN, SET);
     range_spec = *range;
     
     // Start sweep
@@ -254,6 +254,14 @@ AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c)
     init.Pull = GPIO_NOPULL;
     AD5933_FEEDBACK_GPIO_CLK_EN();
     HAL_GPIO_Init(AD5933_FEEDBACK_GPIO_PORT, &init);
+    
+    // Configure coupling capacitor charge switch GPIO pin
+    init.Pin = AD5933_COUPLING_GPIO_PIN;
+    init.Mode = GPIO_MODE_OUTPUT_PP;
+    init.Speed = GPIO_SPEED_MEDIUM;
+    init.Pull = GPIO_NOPULL;
+    AD5933_COUPLING_GPIO_CLK_EN();
+    HAL_GPIO_Init(AD5933_COUPLING_GPIO_PORT, &init);
     
     i2cHandle = i2c;
     status = AD_IDLE;
