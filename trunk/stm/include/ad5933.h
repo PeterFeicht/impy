@@ -63,6 +63,13 @@ typedef struct
 
 typedef struct
 {
+    uint32_t Frequency;     //!< Frequency of the data point in Hz
+    float    Real;          //!< Real part of the impedance in Ohms
+    float    Imag;          //!< Imaginary part of the impedance in Ohms
+} AD5933_ImpedanceCartesian;
+
+typedef struct
+{
     uint32_t impedance;     //!< Impedance used for the gain factor calibration
     uint32_t freq1;         //!< Frequency of the first calibration point
     int16_t  real1;         //!< Real part for the first calibration point
@@ -484,6 +491,7 @@ void AD5933_TIM_PeriodElapsedCallback(void);
 void AD5933_CalculateGainFactor(AD5933_GainFactorData *data, AD5933_GainFactor *gf);
 float AD5933_GetMagnitude(AD5933_ImpedanceData *data, AD5933_GainFactor *gain);
 float AD5933_GetPhase(AD5933_ImpedanceData *data, AD5933_GainFactor *gain);
+void AD5933_ConvertPolarToCartesian(AD5933_ImpedancePolar *polar, AD5933_ImpedanceCartesian *cart);
 
 // ----------------------------------------------------------------------------
 
