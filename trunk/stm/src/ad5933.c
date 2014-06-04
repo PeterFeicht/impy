@@ -618,4 +618,26 @@ float AD5933_GetPhase(AD5933_ImpedanceData *data, AD5933_GainFactor *gain)
     }
 }
 
+/**
+ * Converts an impedance value from the polar to the Cartesian representation.
+ * 
+ * @param polar Pointer to a polar impedance structure
+ * @param cart Pointer to a Cartesian structure to be populated
+ */
+void AD5933_ConvertPolarToCartesian(AD5933_ImpedancePolar *polar, AD5933_ImpedanceCartesian *cart)
+{
+    float real;
+    float imag;
+#ifdef __GNUC__
+    sincosf(polar->Angle, &imag, &real);
+#else
+    real = cosf(polar->Angle);
+    imag = sinf(polar->Angle);
+#endif
+    
+    cart->Frequency = polar->Frequency;
+    cart->Real = polar->Magnitude * real;
+    cart->Imag = polar->Magnitude * imag;
+}
+
 // ----------------------------------------------------------------------------
