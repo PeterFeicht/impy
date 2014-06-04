@@ -204,6 +204,7 @@ static AD5933_Error AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_
     
     // Charge coupling capacitor, this is always needed, assuming the output was previously switched off
     HAL_GPIO_WritePin(AD5933_COUPLING_GPIO_PORT, AD5933_COUPLING_GPIO_PIN, RESET);
+    // TODO 400ms delay is a little crazy, use interrupts
     HAL_Delay(AD5933_COUPLING_TAU * 4);
     HAL_GPIO_WritePin(AD5933_COUPLING_GPIO_PORT, AD5933_COUPLING_GPIO_PIN, SET);
     range_spec = *range;
@@ -538,22 +539,27 @@ void AD5933_CalculateGainFactor(AD5933_GainFactorData *data, AD5933_GainFactor *
     // Gain factor is calculated by 1/(Magnitude * Impedance), with Magnitude being sqrt(Real^2 + Imag^2)
     float magnitude = hypotf(data->real1, data->imag1);
     float gain2;
+    // System phase can be directly calculated from real and imaginary parts
+    float phase = atan2f((float)data->imag1, (float)data->real1);
     
     gf->is_2point = data->is_2point;
     gf->freq1 = data->freq1;
     gf->offset = 1.0f / (magnitude * (float)data->impedance);
+    gf->phaseOffset = phase;
     
-    // TODO add phase calibration
     if(data->is_2point)
     {
         magnitude = hypotf(data->real2, data->imag2);
         gain2 = 1.0f / (magnitude * (float)data->impedance);
-        
         gf->slope = (gain2 - gf->offset) / (float)(data->freq2 - data->freq1);
+        
+        phase = atan2f((float)data->imag2, (float)data->real2);
+        gf->phaseSlope = (phase - gf->phaseOffset) / (float)(data->freq2 - data->freq1);
     }
     else
     {
         gf->slope = 0.0f;
+        gf->phaseSlope = 0.0f;
     }
 }
 
