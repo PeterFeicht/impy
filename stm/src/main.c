@@ -76,8 +76,8 @@ int main(int argc, char* argv[])
 // Exported functions ---------------------------------------------------------
 
 // Timer callback:
+// TODO call AD5933 callback
 // TODO set point count when measurement finishes
-// TODO implement autoranging
 // TODO implement calibration
 
 /**
@@ -269,6 +269,8 @@ Board_Error Board_SetPGA(uint8_t enable)
     return BOARD_OK;
 }
 
+// TODO Board_Error Board_SetAutorange(uint8_t enable)
+
 /**
  * Gets the current start frequency used for a sweep.
  */
@@ -354,14 +356,15 @@ AD5933_ImpedancePolar* Board_GetDataPolar(uint32_t *count)
         {
             bufPolar[j].Frequency = bufData[j].Frequency;
             bufPolar[j].Magnitude = AD5933_GetMagnitude(&bufData[j], &gainFactor);
-            // TODO add phase calculation
-            bufPolar[j].Angle = NAN;
+            bufPolar[j].Angle = AD5933_GetPhase(&bufData[j], &gainFactor);
         }
     }
     
     *count = pointCount;
     return &bufPolar[0];
 }
+
+// TODO Board_Error Board_StartSweep(uint8_t port)
 
 /**
  * Stops a currently running frequency measurement, if any.
@@ -419,8 +422,7 @@ Board_Error Board_MeasureSingleFrequency(uint8_t port, uint32_t freq, AD5933_Imp
     
     result->Frequency = freq;
     result->Magnitude = AD5933_GetMagnitude(&buffer, &gainFactor);
-    // TODO calculate phase
-    result->Angle = NAN;
+    result->Angle = AD5933_GetPhase(&buffer, &gainFactor);
     
     return BOARD_OK;
 }
