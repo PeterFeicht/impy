@@ -584,4 +584,38 @@ float AD5933_GetMagnitude(AD5933_ImpedanceData *data, AD5933_GainFactor *gain)
     return 1.0f / (gain_2point * magnitude);
 }
 
+/**
+ * Calculates the actual impedance phase from a measurement data point.
+ * 
+ * @param data The measurement point to calculate the phase from
+ * @param gain Gain factor structure to use
+ * @return The phase in radians (in the range of -pi to +pi)
+ */
+float AD5933_GetPhase(AD5933_ImpedanceData *data, AD5933_GainFactor *gain)
+{
+    float phase = atan2f(data->Imag, data->Real);
+    float phase_2point = gain->phaseOffset;
+    
+    if(gain->is_2point)
+    {
+        phase_2point += gain->phaseSlope * (data->Frequency - gain->freq1);
+    }
+    
+    phase -= phase_2point;
+    
+    // Make sure the corrected result is in the range of -pi to pi
+    if(phase > M_PI)
+    {
+        return phase - 2 * M_PI;
+    }
+    else if(phase < -M_PI)
+    {
+        return phase + 2 * M_PI;
+    }
+    else
+    {
+        return phase;
+    }
+}
+
 // ----------------------------------------------------------------------------
