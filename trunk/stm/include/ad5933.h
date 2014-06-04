@@ -78,6 +78,8 @@ typedef struct
     float   freq1;          //!< Frequency of the first calibration point
     float   offset;         //!< Calculated gain factor at first frequency
     float   slope;          //!< Calculated gain factor slope for a two point calibration
+    float   phaseOffset;    //!< Calculated system phase at first frequency
+    float   phaseSlope;     //!< Calculated system phase slope for a two point calibration
     uint8_t is_2point;      //!< Whether this is single or two point gain factor data
 } AD5933_GainFactor;
 
@@ -481,6 +483,7 @@ void AD5933_TIM_PeriodElapsedCallback(void);
 
 void AD5933_CalculateGainFactor(AD5933_GainFactorData *data, AD5933_GainFactor *gf);
 float AD5933_GetMagnitude(AD5933_ImpedanceData *data, AD5933_GainFactor *gain);
+float AD5933_GetPhase(AD5933_ImpedanceData *data, AD5933_GainFactor *gain);
 
 // ----------------------------------------------------------------------------
 
