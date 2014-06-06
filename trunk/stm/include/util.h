@@ -24,7 +24,7 @@
 
 // Exported functions ---------------------------------------------------------
 
-uint32_t IntFromSiString(char *str);
+uint32_t IntFromSiString(const char *str, const char **end);
 
 // ----------------------------------------------------------------------------
 
