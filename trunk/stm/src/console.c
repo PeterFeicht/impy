@@ -119,7 +119,7 @@ static const Console_Command commands[] = {
     { "help", Console_Help }
 };
 // Those are the values that can be set with 'board set' and read with 'board get'
-static const Console_Arg args[] = {
+static const Console_Arg argsBoardSet[] = {
     { "start", CON_ARG_SET_START, CON_INT },
     { "stop", CON_ARG_SET_STOP, CON_INT },
     { "steps", CON_ARG_SET_STEPS, CON_INT },
