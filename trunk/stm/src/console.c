@@ -13,7 +13,8 @@
 // Private type definitions ---------------------------------------------------
 typedef enum
 {
-    CON_ARG_READ_FORMAT = 1,
+    CON_ARG_INVALID = 0,
+    CON_ARG_READ_FORMAT,
     CON_ARG_SET_AUTORANGE,
     CON_ARG_SET_ECHO,
     CON_ARG_SET_FORMAT,
@@ -639,6 +640,7 @@ void Console_ProcessLine(char *str)
     
     if(str == NULL)
     {
+        // Should not happen, VCP does not call us with NULL so do nothing (not even finish command)
         return;
     }
     
