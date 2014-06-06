@@ -118,6 +118,18 @@ static const Console_Command commands[] = {
     { "usb", Console_Usb },
     { "help", Console_Help }
 };
+// Those are the values that can be set with 'board set' and read with 'board get'
+static const Console_Arg args[] = {
+    { "start", CON_ARG_SET_START, CON_INT },
+    { "stop", CON_ARG_SET_STOP, CON_INT },
+    { "steps", CON_ARG_SET_STEPS, CON_INT },
+    { "settl", CON_ARG_SET_SETTL, CON_STRING },
+    { "voltage", CON_ARG_SET_VOLTAGE, CON_STRING },
+    { "gain", CON_ARG_SET_GAIN, CON_FLAG },
+    { "format", CON_ARG_SET_FORMAT, CON_STRING },
+    { "autorange", CON_ARG_SET_AUTORANGE, CON_FLAG },
+    { "echo", CON_ARG_SET_ECHO, CON_FLAG }
+};
 
 // Include string definitions in the desired language
 #include "strings_en.h"
@@ -420,18 +432,6 @@ static void Console_BoardRead(uint32_t argc, char **argv)
 
 static void Console_BoardSet(uint32_t argc, char **argv)
 {
-    static const Console_Arg args[] = {
-        { "start", CON_ARG_SET_START, CON_INT },
-        { "stop", CON_ARG_SET_STOP, CON_INT },
-        { "steps", CON_ARG_SET_STEPS, CON_INT },
-        { "settl", CON_ARG_SET_SETTL, CON_STRING },
-        { "voltage", CON_ARG_SET_VOLTAGE, CON_STRING },
-        { "gain", CON_ARG_SET_GAIN, CON_FLAG },
-        { "format", CON_ARG_SET_FORMAT, CON_STRING },
-        { "autorange", CON_ARG_SET_AUTORANGE, CON_FLAG },
-        { "echo", CON_ARG_SET_ECHO, CON_FLAG }
-    };
-
     VCP_SendString(txtNotImplemented);
     VCP_CommandFinish();
 }
