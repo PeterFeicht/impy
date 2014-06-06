@@ -119,13 +119,8 @@ static const Console_Command commands[] = {
     { "help", Console_Help }
 };
 
-// Strings
-const char *txtErrArgNum = "Wrong number of arguments.\r\n";
-const char *txtErrNoSubcommand = "Missing command, type 'help' for possible commands.\r\n";
-const char *txtUnknownTopic = "Unknown help topic, type 'help' for possible commands.\r\n";
-const char *txtUnknownCommand = "Unknown command.\r\n";
-const char *txtUnknownSubcommand = "Unknown subcommand.\r\n";
-const char *txtNotImplemented = "Not yet implemented.\r\n";
+// Include string definitions in the desired language
+#include "strings_en.h"
 
 // Private functions ----------------------------------------------------------
 
