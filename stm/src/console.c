@@ -563,9 +563,21 @@ static void Console_BoardStop(uint32_t argc, char **argv)
     VCP_CommandFinish();
 }
 
-static void Console_BoardTemp(uint32_t argc, char **argv)
+static void Console_BoardTemp(uint32_t argc, char **argv __attribute__((unused)))
 {
-    VCP_SendString(txtNotImplemented);
+    char buf[16];
+    
+    if(argc == 1)
+    {
+        float temp = Board_MeasureTemperature(TEMP_AD5933);
+        snprintf(buf, NUMEL(buf), "%.1f °C", temp);
+        VCP_SendLine(buf);
+    }
+    else
+    {
+        VCP_SendString(txtErrArgNum);
+    }
+    
     VCP_CommandFinish();
 }
 
