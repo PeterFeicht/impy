@@ -95,6 +95,7 @@ static void Console_UsbLs(uint32_t argc, char **argv);
 static void Console_UsbStatus(uint32_t argc, char **argv);
 static void Console_UsbWrite(uint32_t argc, char **argv);
 static void Console_Help(uint32_t argc, char **argv);
+static void Console_Debug(uint32_t argc, char **argv);
 
 // Private variables ----------------------------------------------------------
 static char *arguments[CON_MAX_ARGUMENTS];
@@ -117,7 +118,8 @@ static const Console_Command commands[] = {
     { "board", Console_Board },
     { "eth", Console_Eth },
     { "usb", Console_Usb },
-    { "help", Console_Help }
+    { "help", Console_Help },
+    { "debug", Console_Debug }
 };
 // Those are the values that can be set with 'board set' and read with 'board get'
 static const Console_Arg argsBoardSet[] = {
@@ -616,6 +618,41 @@ static void Console_Help(uint32_t argc, char **argv)
             break;
     }
     
+    VCP_CommandFinish();
+}
+
+/**
+ * Processes the {@code debug} command.
+ * 
+ * @param argc Number of arguments
+ * @param argv Array of arguments
+ */
+static void Console_Debug(uint32_t argc, char **argv)
+{
+    if(argc == 1)
+    {
+        VCP_CommandFinish();
+        return;
+    }
+    
+    if(strcmp(argv[1], "send") == 0)
+    {
+        VCP_SendString("this is a test string\r\n");
+        VCP_SendString("second SendString call with a string that is longer than before.\r\n");
+        VCP_SendString("short line\r\n");
+    }
+    else if(strcmp(argv[1], "echo") == 0)
+    {
+        for(uint32_t j = 2; j < argc; j++)
+        {
+            VCP_SendLine(argv[j]);
+        }
+    }
+    else
+    {
+        VCP_SendString(txtUnknownSubcommand);
+    }
+
     VCP_CommandFinish();
 }
 
