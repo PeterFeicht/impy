@@ -493,6 +493,8 @@ float AD5933_GetMagnitude(AD5933_ImpedanceData *data, AD5933_GainFactor *gain);
 float AD5933_GetPhase(AD5933_ImpedanceData *data, AD5933_GainFactor *gain);
 void AD5933_ConvertPolarToCartesian(AD5933_ImpedancePolar *polar, AD5933_ImpedanceCartesian *cart);
 
+uint16_t AD5933_GetVoltageFromRegister(uint16_t reg);
+
 // ----------------------------------------------------------------------------
 
 #endif /* AD5933_H_ */
