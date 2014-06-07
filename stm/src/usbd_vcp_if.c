@@ -52,8 +52,6 @@ static int8_t VCP_Control  (uint8_t cmd, uint8_t* pbuf, uint16_t length);
 static int8_t VCP_Receive  (uint8_t* pbuf, uint32_t Len);
 static int8_t VCP_Transmit (void);
 
-static int8_t SendBuffer(void);
-
 USBD_VCP_ItfTypeDef USBD_VCP_fops =
 {
     VCP_Init,
@@ -266,7 +264,7 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
         Console_ProcessLine((char *)VCP_cmdline);
     }
     
-    SendBuffer();
+    VCP_Flush();
     USBD_VCP_ReceivePacket(&hUsbDevice);
     return USBD_OK;
 }
@@ -286,48 +284,9 @@ static int8_t VCP_Transmit(void)
     }
     else
     {
-        SendBuffer();
+        VCP_Flush();
     }
     return USBD_OK;
-}
-
-/**
- * Send the current buffer contents via USB. If the buffer is empty, does nothing.
- * 
- * @return {@code USBD_Status} code
- */
-static int8_t SendBuffer(void)
-{
-    uint32_t buffsize;
-    int8_t status;
-    
-    if(VCPTxBufStart == VCPTxBufEnd)
-        return USBD_OK;
-    if(VCPTxExternal)
-        return USBD_BUSY;
-    
-    if(VCPTxBufStart > VCPTxBufEnd) /* rollback */
-    {
-        buffsize = APP_TX_BUFFER_SIZE - VCPTxBufStart;
-    }
-    else
-    {
-        buffsize = VCPTxBufEnd - VCPTxBufStart;
-    }
-    
-    USBD_VCP_SetTxBuffer(&hUsbDevice, VCPTxBuffer + VCPTxBufStart, buffsize);
-    status = USBD_VCP_TransmitPacket(&hUsbDevice);
-    
-    if(status == USBD_OK)
-    {
-        VCPTxBufStart += buffsize;
-        if(VCPTxBufStart == APP_TX_BUFFER_SIZE)
-        {
-            VCPTxBufStart = 0;
-        }
-    }
-    
-    return status;
 }
 
 // Exported functions ---------------------------------------------------------
@@ -498,7 +457,34 @@ uint32_t VCP_SendBuffer(const uint8_t *buf, uint32_t len)
  */
 void VCP_Flush(void)
 {
-    SendBuffer();
+    uint32_t buffsize;
+    
+    if(VCPTxBufStart == VCPTxBufEnd)
+        return;
+    if(VCPTxExternal)
+        return;
+    
+    if(VCPTxBufStart > VCPTxBufEnd) /* rollback */
+    {
+        buffsize = APP_TX_BUFFER_SIZE - VCPTxBufStart;
+    }
+    else
+    {
+        buffsize = VCPTxBufEnd - VCPTxBufStart;
+    }
+    
+    USBD_VCP_SetTxBuffer(&hUsbDevice, VCPTxBuffer + VCPTxBufStart, buffsize);
+    
+    if(USBD_VCP_TransmitPacket(&hUsbDevice) == USBD_OK)
+    {
+        VCPTxBufStart += buffsize;
+        if(VCPTxBufStart == APP_TX_BUFFER_SIZE)
+        {
+            VCPTxBufStart = 0;
+        }
+    }
+    
+    return;
 }
 
 // ----------------------------------------------------------------------------
