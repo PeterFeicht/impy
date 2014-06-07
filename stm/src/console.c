@@ -401,6 +401,12 @@ static void Console_Board(uint32_t argc, char **argv)
     }
 }
 
+/**
+ * Processes the 'board get' command for all the defined options. This command finishes immediately.
+ * 
+ * @param argc Number of arguments
+ * @param argv Array of arguments
+ */
 static void Console_BoardGet(uint32_t argc, char **argv)
 {
     // Arguments: option
@@ -563,6 +569,12 @@ static void Console_BoardStop(uint32_t argc, char **argv)
     VCP_CommandFinish();
 }
 
+/**
+ * Processes the 'board temp' command. This command finishes immediately.
+ * 
+ * @param argc Number of arguments
+ * @param argv Array of arguments
+ */
 static void Console_BoardTemp(uint32_t argc, char **argv __attribute__((unused)))
 {
     char buf[16];
