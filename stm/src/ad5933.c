@@ -640,4 +640,27 @@ void AD5933_ConvertPolarToCartesian(AD5933_ImpedancePolar *polar, AD5933_Impedan
     cart->Imag = polar->Magnitude * imag;
 }
 
+/**
+ * Gets the corresponding voltage in mV for a voltage range register value (one of the {@link AD5933_VOLTAGE} values).
+ * 
+ * @param reg The voltage range register value
+ * @return The corresponding output voltage in mV
+ */
+uint16_t AD5933_GetVoltageFromRegister(uint16_t reg)
+{
+    switch(reg)
+    {
+        case AD5933_VOLTAGE_0_2:
+            return 200;
+        case AD5933_VOLTAGE_0_4:
+            return 400;
+        case AD5933_VOLTAGE_1:
+            return 1000;
+        case AD5933_VOLTAGE_2:
+            return 2000;
+        default:
+            return 0;
+    }
+}
+
 // ----------------------------------------------------------------------------
