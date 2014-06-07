@@ -43,6 +43,9 @@ static void SetDefaults(void)
     range.PGA_Gain = AD5933_GAIN_1;
     range.Voltage_Range = AD5933_VOLTAGE_1;
     range.Attenuation = 1;
+    range.Feedback_Value = 1000;
+    
+    gainData.impedance = 0;
     
     // TODO enable autorange by default
     autorange = 0;
@@ -62,6 +65,7 @@ int main(int argc, char* argv[])
     MX_Init();
     Console_Init();
     SetDefaults();
+    // TODO read settings from EEPROM
     
     while(1)
     {
@@ -269,7 +273,17 @@ Board_Error Board_SetPGA(uint8_t enable)
     return BOARD_OK;
 }
 
-// TODO Board_Error Board_SetAutorange(uint8_t enable)
+/**
+ * Sets whether autoranging is enabled.
+ * 
+ * @param enable {@code 0} to disable autoranging, nonzero value to enable
+ * @return {@code BOARD_OK}
+ */
+Board_Error Board_SetAutorange(uint8_t enable)
+{
+    autorange = enable;
+    return BOARD_OK;
+}
 
 /**
  * Gets the current start frequency used for a sweep.
@@ -297,7 +311,6 @@ uint16_t Board_GetFreqSteps(void)
 
 /**
  * Gets the current range settings.
- * Note that the returned structure can change if autoranging is enabled and a sweep is running.
  */
 AD5933_RangeSettings* Board_GetRangeSettings(void)
 {
