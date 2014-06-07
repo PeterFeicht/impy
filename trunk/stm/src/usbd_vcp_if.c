@@ -33,8 +33,9 @@ static uint8_t VCPTxBuffer[APP_TX_BUFFER_SIZE];
 static uint32_t VCPTxBufEnd = 0;
 // Start index of fresh data to be transmitted
 static uint32_t VCPTxBufStart = 0;
-// Whether an external buffer should be transmitted
-static uint8_t VCPTxExternal = 0;
+// External buffer to be transmitted, or NULL if none
+static const uint8_t *VCPTxExternalBuf;
+static uint32_t VCPTxExternalLen;
 // Whether to echo characters received from the host, enabled by default
 static uint8_t echo_enabled = 1;
 // The current command line text (0 terminated)
@@ -276,16 +277,7 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
  */
 static int8_t VCP_Transmit(void)
 {
-    if(VCPTxExternal)
-    {
-        // Tried to transmit external buffer earlier while busy, transmit now
-        VCPTxExternal = 0;
-        USBD_VCP_TransmitPacket(&hUsbDevice);
-    }
-    else
-    {
-        VCP_Flush();
-    }
+    VCP_Flush();
     return USBD_OK;
 }
 
@@ -422,6 +414,10 @@ uint32_t VCP_SendLine(const char *str)
  * Send the specified buffer over the virtual COM port.
  * 
  * This function should be used for data that does not fit into the transmit buffer.
+ * When other data is queued to be sent (from prior calls to other transmission functions) then this data is sent
+ * before the specified buffer. Note that this can lead to a race condition, if data is being buffered while the
+ * current transmission has not finished then this will be sent first. This means that the external buffer is sent
+ * only if no data is buffered before the transmission of the external data starts.
  * 
  * @param buf Pointer to the buffer to be sent
  * @param len Number of bytes to be sent
@@ -439,12 +435,10 @@ uint32_t VCP_SendBuffer(const uint8_t *buf, uint32_t len)
         return 1;
     }
     
-    USBD_VCP_SetTxBuffer(&hUsbDevice, (uint8_t *)buf, (uint16_t)len);
-    if(USBD_VCP_TransmitPacket(&hUsbDevice) == USBD_BUSY)
-    {
-        VCPTxExternal = 1;
-    }
+    VCPTxExternalBuf = buf;
+    VCPTxExternalLen = len;
     
+    VCP_Flush();
     return 1;
 }
 
@@ -459,28 +453,35 @@ void VCP_Flush(void)
 {
     uint32_t buffsize;
     
-    if(VCPTxBufStart == VCPTxBufEnd)
-        return;
-    if(VCPTxExternal)
-        return;
-    
-    if(VCPTxBufStart > VCPTxBufEnd) /* rollback */
+    // Send buffered data before external buffer
+    if(VCPTxBufStart != VCPTxBufEnd)
     {
-        buffsize = APP_TX_BUFFER_SIZE - VCPTxBufStart;
-    }
-    else
-    {
-        buffsize = VCPTxBufEnd - VCPTxBufStart;
-    }
-    
-    USBD_VCP_SetTxBuffer(&hUsbDevice, VCPTxBuffer + VCPTxBufStart, buffsize);
-    
-    if(USBD_VCP_TransmitPacket(&hUsbDevice) == USBD_OK)
-    {
-        VCPTxBufStart += buffsize;
-        if(VCPTxBufStart == APP_TX_BUFFER_SIZE)
+        if(VCPTxBufStart > VCPTxBufEnd) /* rollback */
         {
-            VCPTxBufStart = 0;
+            buffsize = APP_TX_BUFFER_SIZE - VCPTxBufStart;
+        }
+        else
+        {
+            buffsize = VCPTxBufEnd - VCPTxBufStart;
+        }
+        
+        USBD_VCP_SetTxBuffer(&hUsbDevice, VCPTxBuffer + VCPTxBufStart, buffsize);
+        
+        if(USBD_VCP_TransmitPacket(&hUsbDevice) == USBD_OK)
+        {
+            VCPTxBufStart += buffsize;
+            if(VCPTxBufStart == APP_TX_BUFFER_SIZE)
+            {
+                VCPTxBufStart = 0;
+            }
+        }
+    }
+    else if(VCPTxExternalBuf != NULL)
+    {
+        USBD_VCP_SetTxBuffer(&hUsbDevice, (uint8_t *)VCPTxExternalBuf, (uint16_t)VCPTxExternalLen);
+        if(USBD_VCP_TransmitPacket(&hUsbDevice) == USBD_OK)
+        {
+            VCPTxExternalBuf = NULL;
         }
     }
     
