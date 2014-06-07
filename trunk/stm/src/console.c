@@ -197,7 +197,7 @@ static void Console_InitHelp(void)
  * Help topics are designated by {@code help TOPIC:} at the beginning of a line in the {@code command-line.txt} file.
  * 
  * @param help Pointer to a new line in the help text that may contain a help topic
- * @return {@code 0} if a help topic was added, nonzero value on error.
+ * @return {@code 0} if a help topic was added, nonzero value on error
  */
 static uint8_t Console_AddHelpTopic(char *help)
 {
@@ -404,8 +404,112 @@ static void Console_Board(uint32_t argc, char **argv)
 static void Console_BoardGet(uint32_t argc, char **argv)
 {
     // Arguments: option
+    Console_ArgID option = CON_ARG_INVALID;
+    char buf[16];
     
-    VCP_SendString(txtNotImplemented);
+    if(argc != 2)
+    {
+        VCP_SendString(txtErrArgNum);
+        VCP_CommandFinish();
+        return;
+    }
+    
+    for(uint32_t j = 0; j < NUMEL(argsBoardSet); j++)
+    {
+        if(strcmp(argsBoardSet[j].arg, argv[1]) == 0)
+        {
+            option = argsBoardSet[j].id;
+            break;
+        }
+    }
+    
+    uint8_t autorange = Board_GetAutorange();
+    switch(option)
+    {
+        case CON_ARG_SET_AUTORANGE:
+            VCP_SendLine(autorange ? txtEnabled : txtDisabled);
+            break;
+            
+        case CON_ARG_SET_ECHO:
+            // Well, do you see what you're typing or not?
+            VCP_SendLine(VCP_GetEcho() ? txtEnabled : txtDisabled);
+            break;
+            
+        case CON_ARG_SET_FORMAT:
+            // TODO get format
+            VCP_SendString(txtNotImplemented);
+            break;
+            
+        case CON_ARG_SET_GAIN:
+            VCP_SendLine(Board_GetRangeSettings()->PGA_Gain == AD5933_GAIN_1 ? txtDisabled : txtEnabled);
+            break;
+            
+        case CON_ARG_SET_SETTL:
+            if(autorange)
+            {
+                VCP_SendString(txtGetOnlyWhenAutorangeDisabled);
+            }
+            else
+            {
+                snprintf(buf, NUMEL(buf), "%u", Board_GetSettlingCycles());
+                VCP_SendLine(buf);
+            }
+            break;
+            
+        case CON_ARG_SET_START:
+            if(autorange)
+            {
+                VCP_SendString(txtGetOnlyWhenAutorangeDisabled);
+            }
+            else
+            {
+                snprintf(buf, NUMEL(buf), "%lu", Board_GetStartFreq());
+                VCP_SendLine(buf);
+            }
+            break;
+        case CON_ARG_SET_STEPS:
+            if(autorange)
+            {
+                VCP_SendString(txtGetOnlyWhenAutorangeDisabled);
+            }
+            else
+            {
+                snprintf(buf, NUMEL(buf), "%u", Board_GetFreqSteps());
+                VCP_SendLine(buf);
+            }
+            break;
+            
+        case CON_ARG_SET_STOP:
+            if(autorange)
+            {
+                VCP_SendString(txtGetOnlyWhenAutorangeDisabled);
+            }
+            else
+            {
+                snprintf(buf, NUMEL(buf), "%lu", Board_GetStopFreq());
+                VCP_SendLine(buf);
+            }
+            break;
+            
+        case CON_ARG_SET_VOLTAGE:
+            if(autorange)
+            {
+                VCP_SendString(txtGetOnlyWhenAutorangeDisabled);
+            }
+            else
+            {
+                AD5933_RangeSettings *range = Board_GetRangeSettings();
+                uint16_t voltage = AD5933_GetVoltageFromRegister(range->Voltage_Range);
+                snprintf(buf, NUMEL(buf), "%u", voltage / range->Attenuation);
+                VCP_SendLine(buf);
+            }
+            break;
+            
+        default:
+            VCP_SendString(txtUnknownOption);
+            break;
+    }
+    
     VCP_CommandFinish();
 }
 
