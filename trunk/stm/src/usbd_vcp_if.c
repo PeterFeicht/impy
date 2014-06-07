@@ -170,6 +170,7 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
     uint8_t *const rxend = Buf + Len;
     uint8_t *txbuf = VCPTxBuffer + VCPTxBufEnd;
     uint32_t txlen = 0;
+    uint8_t call = 0;
     
     // If previous command is busy, ignore input
     for(uint8_t *rxbuf = Buf; rxbuf < rxend && !cmd_busy; rxbuf++)
@@ -198,15 +199,34 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
                 continue;
             }
             
+            // If we receive either CR or LF we echo both for compatibility reasons
+            if(echo_enabled && !echo_suppress)
+            {
+                if(*rxbuf == '\n')
+                {
+                    *(txbuf - 1) = '\r';
+                }
+                
+                if(*rxbuf == '\r' || *rxbuf == '\n')
+                {
+                    if(txbuf == (VCPTxBuffer + APP_TX_BUFFER_SIZE))
+                    {
+                        txbuf = VCPTxBuffer;
+                    }
+                    *txbuf++ = '\n';
+                    txlen++;
+                }
+            }
+            
             VCP_cmdline[cmd_len] = 0;
             cmd_newline = 1;
             echo_suppress = 0;
             cmd_len = 0;
             cmd_busy = 1;
+            call = 1;
             
-            Console_ProcessLine((char *)VCP_cmdline);
-            
-            continue;
+            // We only process one command  at a time so skip remaining characters
+            break;
         }
         else
         {
@@ -222,6 +242,7 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
                         cmd_len--;
                     }
                     break;
+                    
                 default:
                     // Normal characters
                     cmd_newline = 0;
@@ -238,10 +259,14 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
         {
             VCPTxBufEnd -= APP_TX_BUFFER_SIZE;
         }
-        
-        SendBuffer();
     }
     
+    if(call)
+    {
+        Console_ProcessLine((char *)VCP_cmdline);
+    }
+    
+    SendBuffer();
     USBD_VCP_ReceivePacket(&hUsbDevice);
     return USBD_OK;
 }
@@ -278,6 +303,8 @@ static int8_t SendBuffer(void)
     
     if(VCPTxBufStart == VCPTxBufEnd)
         return USBD_OK;
+    if(VCPTxExternal)
+        return USBD_BUSY;
     
     if(VCPTxBufStart > VCPTxBufEnd) /* rollback */
     {
@@ -335,20 +362,17 @@ void VCP_CommandFinish(void)
 }
 
 /**
- * Send the specified character over the virtual COM port.
+ * Queues the specified character to be sent over the virtual COM port.
+ * 
+ * Note that this function only puts the character into the transmit buffer. To actually send the buffered data (maybe
+ * after more calls to this or other functions) {@link VCP_Flush} needs to be called.
  * 
  * @param c The value to send
- * @return {@code 1} if the character was sent, {@code 0} if the buffer is full
+ * @return {@code 1} if the character was buffered, {@code 0} if the buffer is full
  */
 uint32_t VCP_SendChar(uint8_t c)
 {
-    if(VCPTxBufStart == VCPTxBufEnd)
-    {
-        VCPTxBufStart = 0;
-        VCPTxBufEnd = 1;
-        *VCPTxBuffer = c;
-    }
-    else if((VCPTxBufEnd != VCPTxBufStart - 1) && (VCPTxBufEnd != APP_TX_BUFFER_SIZE - 1 || VCPTxBufStart != 0))
+    if((VCPTxBufEnd != VCPTxBufStart - 1) && (VCPTxBufEnd != APP_TX_BUFFER_SIZE - 1 || VCPTxBufStart != 0))
     {
         VCPTxBuffer[VCPTxBufEnd++] = c;
         
@@ -362,19 +386,21 @@ uint32_t VCP_SendChar(uint8_t c)
         return 0;
     }
     
-    SendBuffer();
     return 1;
 }
 
 /**
- * Send the specified 0 terminated string over the virtual COM port.
+ * Queue the specified 0 terminated string to be sent over the virtual COM port.
+ * 
+ * Note that this function only puts the string into the transmit buffer. To actually send the buffered data (maybe
+ * after more calls to this or other functions) {@link VCP_Flush} needs to be called.
  *
  * This function should be used for small strings that fit into the buffer and when multiple strings are to be
  * transmitted consecutively. For transmitting data that does not fit into a single buffer {@link VCP_SendBuffer}
  * should be used instead.
  * 
  * @param str Pointer to a zero terminated string
- * @return The number of bytes transmitted. This can be less than the string length, if the string is longer than the
+ * @return The number of bytes buffered. This can be less than the string length, if the string is longer than the
  *         free space in the transmit buffer.
  */
 uint32_t VCP_SendString(const char *str)
@@ -388,14 +414,7 @@ uint32_t VCP_SendString(const char *str)
     
     len = strlen(str);
     
-    if(VCPTxBufStart == VCPTxBufEnd)
-    {
-        sent = (len < APP_TX_BUFFER_SIZE ? len : APP_TX_BUFFER_SIZE - 1);
-        VCPTxBufStart = 0;
-        VCPTxBufEnd = sent;
-        memcpy(VCPTxBuffer, str, sent);
-    }
-    else if(VCPTxBufEnd > VCPTxBufStart)
+    if(VCPTxBufEnd >= VCPTxBufStart)
     {
         buffered = VCPTxBufEnd - VCPTxBufStart;
         sent = (len < APP_TX_BUFFER_SIZE - buffered ? len : APP_TX_BUFFER_SIZE - buffered - 1);
@@ -410,6 +429,7 @@ uint32_t VCP_SendString(const char *str)
         else
         {
             memcpy(VCPTxBuffer + VCPTxBufEnd, str, sent);
+            VCPTxBufEnd += sent;
         }
     }
     else // VCPTxBufEnd < VCPTxBufStart
@@ -420,21 +440,20 @@ uint32_t VCP_SendString(const char *str)
         VCPTxBufEnd += sent;
     }
     
-    SendBuffer();
     return sent;
 }
 
 /**
- * Send the specified 0 terminated string over the virtual COM port, followed by a line break.
+ * Queues the specified 0 terminated string to be sent over the virtual COM port, followed by a line break.
  * See {@link VCP_SendString} for more information.
  * 
  * @param str Pointer to a zero terminated string
- * @return The number of bytes transmitted. This can be less than the string length, if the string is longer than the
- *         free space in the transmit buffer, or 2 more if the whole string plus the line break were transmitted.
+ * @return The number of bytes buffered. This can be less than the string length, if the string is longer than the
+ *         free space in the transmit buffer, or 2 more if the whole string plus the line break was buffered.
  */
 uint32_t VCP_SendLine(const char *str)
 {
-    const char *linebreak = "\r\n";
+    static const char *linebreak = "\r\n";
     uint32_t sent = VCP_SendString(str);
     sent += VCP_SendString(linebreak);
     return sent;
@@ -443,7 +462,7 @@ uint32_t VCP_SendLine(const char *str)
 /**
  * Send the specified buffer over the virtual COM port.
  * 
- * This function should be used for data that does not fit into the internal buffer.
+ * This function should be used for data that does not fit into the transmit buffer.
  * 
  * @param buf Pointer to the buffer to be sent
  * @param len Number of bytes to be sent
@@ -468,6 +487,18 @@ uint32_t VCP_SendBuffer(const uint8_t *buf, uint32_t len)
     }
     
     return 1;
+}
+
+/**
+ * This function causes buffered data to be sent over the VCP.
+ * 
+ * The other transmission functions only copy data into the transmit buffer to avoid multiple transmissions running at
+ * the same time while one has not finished yet. If you want to transmit multiple strings at once, first call the
+ * appropriate functions with your data to buffer it and then call this function to start the transmission.
+ */
+void VCP_Flush(void)
+{
+    SendBuffer();
 }
 
 // ----------------------------------------------------------------------------
