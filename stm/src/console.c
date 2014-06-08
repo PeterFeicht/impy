@@ -773,9 +773,72 @@ static void Console_BoardStart(uint32_t argc, char **argv)
     VCP_CommandFinish();
 }
 
-static void Console_BoardStatus(uint32_t argc, char **argv)
+/**
+ * Processes the 'board status' command. This command finished immediately.
+ * 
+ * Prints the current AD5933 driver status, whether autoranging is enabled and, if a sweep is running, the number of
+ * data points already recorded.
+ * 
+ * @param argc Number of arguments
+ * @param argv Array of arguments
+ */
+static void Console_BoardStatus(uint32_t argc, char **argv __attribute__((unused)))
 {
-    VCP_SendLine(txtNotImplemented);
+    Board_Status status;
+    char buf[16];
+    
+    if(argc != 1)
+    {
+        VCP_SendLine(txtErrArgNum);
+        VCP_CommandFinish();
+        return;
+    }
+    
+    Board_GetStatus(&status);
+    switch(status.ad_status)
+    {
+        case AD_MEASURE_IMPEDANCE:
+            // Point count
+            VCP_SendString(txtAdStatusSweep);
+            snprintf(buf, NUMEL(buf), "%u", status.point);
+            VCP_SendString(buf);
+            VCP_SendString(txtOf);
+            snprintf(buf, NUMEL(buf), "%u", status.totalPoints);
+            VCP_SendLine(buf);
+            // Autorange status
+            VCP_SendString(txtAutorangeStatus);
+            VCP_SendString(status.autorange ? txtEnabled : txtDisabled);
+            VCP_SendLine(".");
+            break;
+            
+        case AD_IDLE:
+            VCP_SendLine(txtAdStatusIdle);
+            if(status.interrupted)
+            {
+                VCP_SendLine(txtLastInterrupted);
+            }
+            break;
+            
+        case AD_FINISH:
+            VCP_SendString(txtAdStatusFinish);
+            snprintf(buf, NUMEL(buf), "%u", status.point);
+            VCP_SendLine(buf);
+            break;
+            
+        case AD_MEASURE_TEMP:
+            VCP_SendLine(txtAdStatusTemp);
+            break;
+            
+        case AD_CALIBRATE:
+            VCP_SendLine(txtAdStatusCalibrate);
+            break;
+            
+        default:
+            // Should not happen, driver should be initialized by now.
+            VCP_SendLine(txtAdStatusUnknown);
+            break;
+    }
+    
     VCP_CommandFinish();
 }
 
