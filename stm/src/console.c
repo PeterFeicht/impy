@@ -28,6 +28,13 @@ typedef enum
     CON_ARG_SET_IP
 } Console_ArgID;
 
+typedef enum
+{
+    CON_FLAG_INVALID = 0,
+    CON_FLAG_ON,
+    CON_FLAG_OFF
+} Console_FlagValue;
+
 typedef struct
 {
     char *cmd;          //!< The command the help text is for
@@ -72,6 +79,7 @@ static uint32_t Console_GetArguments(char *cmdline);
 static uint8_t Console_CallProcessor(uint32_t argc, char **argv, const Console_Command *cmds, uint32_t count);
 static const Console_Arg* Console_GetArg(char *arg, const Console_Arg *args, uint32_t count);
 static char* Console_GetArgValue(char *arg);
+static Console_FlagValue Console_GetFlag(const char *str);
 // Command line processors
 static void Console_Board(uint32_t argc, char **argv);
 static void Console_BoardGet(uint32_t argc, char **argv);
@@ -127,7 +135,7 @@ static const Console_Arg argsBoardSet[] = {
     { "stop", CON_ARG_SET_STOP, CON_INT },
     { "steps", CON_ARG_SET_STEPS, CON_INT },
     { "settl", CON_ARG_SET_SETTL, CON_STRING },
-    { "voltage", CON_ARG_SET_VOLTAGE, CON_STRING },
+    { "voltage", CON_ARG_SET_VOLTAGE, CON_INT },
     { "gain", CON_ARG_SET_GAIN, CON_FLAG },
     { "format", CON_ARG_SET_FORMAT, CON_STRING },
     { "autorange", CON_ARG_SET_AUTORANGE, CON_FLAG },
@@ -367,6 +375,35 @@ static char* Console_GetArgValue(char *arg)
     
     val = strchr(arg + 2, '=');
     return (val != NULL ? val + 1 : NULL);
+}
+
+/**
+ * Gets a flag value corresponding to the specified string.
+ * 
+ * The valid flags for <i>on</i> and <i>off</i> are taken from the string constants {@code txtOn} and {@code txtOff},
+ * respectively.
+ * 
+ * @param str A string containing 'on', 'off' or some other, invalid value
+ * @return a {@link Console_FlagValue}
+ */
+static Console_FlagValue Console_GetFlag(const char *str)
+{
+    if(str == NULL)
+    {
+        return CON_FLAG_INVALID;
+    }
+    else if(strcmp(str, txtOn) == 0)
+    {
+        return CON_FLAG_ON;
+    }
+    else if(strcmp(str, txtOff) == 0)
+    {
+        return CON_FLAG_OFF;
+    }
+    else
+    {
+        return CON_FLAG_INVALID;
+    }
 }
 
 /**
