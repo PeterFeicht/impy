@@ -9,6 +9,7 @@
 #include <string.h>
 #include "console.h"
 #include "main.h"
+#include "util.h"
 
 // Private type definitions ---------------------------------------------------
 typedef enum
@@ -580,9 +581,187 @@ static void Console_BoardRead(uint32_t argc, char **argv)
     VCP_CommandFinish();
 }
 
+/**
+ * Processes the 'board set' command for all the defined options. This command finishes immediately.
+ * 
+ * All options are processed in the order they appear on the command line, that means for options that are specified
+ * multiple times, the last occurrence counts.
+ * 
+ * @param argc Number of arguments
+ * @param argv Array of arguments
+ */
 static void Console_BoardSet(uint32_t argc, char **argv)
 {
-    VCP_SendString(txtNotImplemented);
+    if(argc == 1)
+    {
+        VCP_SendString(txtErrArgNum);
+        VCP_CommandFinish();
+        return;
+    }
+    
+    for(uint32_t j = 1; j < argc; j++)
+    {
+        const Console_Arg *arg = Console_GetArg(argv[j], argsBoardSet, NUMEL(argsBoardSet));
+        char *value = Console_GetArgValue(argv[j]);
+        
+        Console_FlagValue flag = CON_FLAG_INVALID;
+        uint32_t intval = 0;
+        
+        if(arg == NULL)
+        {
+            // Complain about unknown arguments but ignore otherwise
+            VCP_SendString(txtUnknownOption);
+            VCP_SendLine(argv[j]);
+            continue;
+        }
+
+        const char *end;
+        switch(arg->type)
+        {
+            case CON_FLAG:
+                flag = Console_GetFlag(value);
+                if(flag == CON_FLAG_INVALID)
+                {
+                    VCP_SendString(txtInvalidValue);
+                    VCP_SendLine(arg->arg);
+                    continue;
+                }
+                break;
+                
+            case CON_INT:
+                intval = IntFromSiString(value, &end);
+                if(end == NULL)
+                {
+                    VCP_SendString(txtInvalidValue);
+                    VCP_SendLine(arg->arg);
+                    continue;
+                }
+                break;
+                
+            case CON_STRING:
+                // Handled by each argument
+                break;
+        }
+        
+        const uint8_t autorange = Board_GetAutorange();
+        Board_Error ok = BOARD_OK;
+        switch(arg->id)
+        {
+            case CON_ARG_SET_AUTORANGE:
+                Board_SetAutorange(flag == CON_FLAG_ON);
+                AD5933_Status status = AD5933_GetStatus();
+                if(status != AD_FINISH && status != AD_IDLE)
+                {
+                    VCP_SendString(txtEffectiveNextSweep);
+                }
+                break;
+                
+            case CON_ARG_SET_ECHO:
+                VCP_SetEcho(flag == CON_FLAG_ON);
+                break;
+                
+            case CON_ARG_SET_FORMAT:
+                // TODO set format
+                VCP_SendString(txtNotImplemented);
+                break;
+                
+            case CON_ARG_SET_GAIN:
+                if(autorange)
+                {
+                    VCP_SendString(txtSetOnlyWhenAutorangeDisabled);
+                    VCP_SendLine(arg->arg);
+                }
+                else
+                {
+                    ok = Board_SetPGA(flag == CON_FLAG_ON);
+                }
+                break;
+                
+            case CON_ARG_SET_SETTL:
+                if(autorange)
+                {
+                    VCP_SendString(txtSetOnlyWhenAutorangeDisabled);
+                    VCP_SendLine(arg->arg);
+                }
+                else
+                {
+                    char *mult = strchr(value, 'x');
+                    intval = 1;
+                    if(mult != NULL)
+                    {
+                        *mult++ = 0;
+                        intval = strtoul(mult, NULL, 10);
+                    }
+                    ok = Board_SetSettlingCycles(strtoul(value, NULL, 10), (uint8_t)intval);
+                }
+                break;
+                
+            case CON_ARG_SET_START:
+                if(autorange)
+                {
+                    VCP_SendString(txtSetOnlyWhenAutorangeDisabled);
+                    VCP_SendLine(arg->arg);
+                }
+                else
+                {
+                    ok = Board_SetStartFreq(intval);
+                }
+                break;
+                
+            case CON_ARG_SET_STEPS:
+                if(autorange)
+                {
+                    VCP_SendString(txtSetOnlyWhenAutorangeDisabled);
+                    VCP_SendLine(arg->arg);
+                }
+                else
+                {
+                    ok = Board_SetFreqSteps(intval);
+                }
+                break;
+                
+            case CON_ARG_SET_STOP:
+                if(autorange)
+                {
+                    VCP_SendString(txtSetOnlyWhenAutorangeDisabled);
+                    VCP_SendLine(arg->arg);
+                }
+                else
+                {
+                    ok = Board_SetStopFreq(intval);
+                }
+                break;
+                
+            case CON_ARG_SET_VOLTAGE:
+                if(autorange)
+                {
+                    VCP_SendString(txtSetOnlyWhenAutorangeDisabled);
+                    VCP_SendLine(arg->arg);
+                }
+                else
+                {
+                    ok = Board_SetVoltageRange(intval);
+                }
+                break;
+                
+            default:
+                // Should not happen, means that a defined argument has no switch case
+                VCP_SendString(txtNotImplemented);
+                break;
+        }
+        
+        if(ok == BOARD_BUSY)
+        {
+            VCP_SendString(txtSetOnlyWhenIdle);
+            VCP_SendLine(arg->arg);
+        }
+        else if(ok == BOARD_ERROR)
+        {
+            VCP_SendString(txtInvalidValue);
+            VCP_SendLine(arg->arg);
+        }
+    }
+    
     VCP_CommandFinish();
 }
 
