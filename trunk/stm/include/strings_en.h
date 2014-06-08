@@ -39,6 +39,7 @@ const char *txtDisabled = "disabled";
 const char *txtOn = "on";
 const char *txtOff = "off";
 const char *txtOf = " of ";
+const char *txtOK = "OK";
 
 // ----------------------------------------------------------------------------
 
