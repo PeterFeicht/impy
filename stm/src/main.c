@@ -352,7 +352,10 @@ void Board_GetStatus(Board_Status *result)
 {
     result->ad_status = AD5933_GetStatus();
     result->point = AD5933_GetSweepCount();
+    result->totalPoints = sweep.Num_Increments;
     result->interrupted = interrupted;
+    // FIXME return value for current sweep if running
+    result->autorange = autorange;
 }
 
 /**

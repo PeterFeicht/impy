@@ -32,6 +32,8 @@ typedef struct
 {
     AD5933_Status ad_status;    //!< Status code of the AD5933 driver
     uint16_t point;             //!< If a measurement is running, the number of data points already measured
+    uint16_t totalPoints;       //!< The number of frequency steps to be measured
+    uint8_t autorange;          //!< Whether autoranging is enabled
     uint8_t interrupted;        //!< Indicates whether the last measurement was interrupted
 } Board_Status;
 
