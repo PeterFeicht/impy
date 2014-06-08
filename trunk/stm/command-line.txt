@@ -2,7 +2,7 @@ mini Impedance Spectrometer
 This device is configured entirely by command line, however measurement data
 can be transferred in a binary fashion as well.
 Below you will find all commands currently understood, they are all case
-sensitive. Most settings made will be saved in memory on-board.
+sensitive. Most settings will be saved in memory on-board.
 
 Commands:
   board set [--start=FREQ] [--stop=FREQ] [--steps=NUM]
@@ -17,18 +17,19 @@ Commands:
   help [<topic>]
 
 Options:
-  --start=FREQ      Set the start frequency of a sweep in Hz [default: 1000]
+  --start           Set the start frequency of a sweep in Hz [default: 1000]
                     The valid range is 10..100000
-  --stop=FREQ       Set the stop frequency of a sweep in Hz [default: 100000]
+  --stop            Set the stop frequency of a sweep in Hz [default: 100000]
                     The valid range is 10..100000
-  --steps=NUM       Set the number of frequency points in a sweep [default: 50]
+  --steps           Set the number of frequency points in a sweep [default: 50]
                     The valid range is 1..511
-  --settl=CYCLES    Set the number of settling cycles [default: TODO]
+  --settl           Set the number of settling cycles [default: TODO]
                     The valid range is TODO, see also 'help settl'
-  --voltage=RANGE   Set the output voltage range [default: 1]
+  --voltage         Set the output voltage range in mV [default: 1000]
+                    See 'help voltage' for valid values
                     Valid voltages are 0.2, 0.4, 1, 2. See also 'help voltage'
   --gain            Enable or disable the x5 input gain stage [default: off]
-  --format=FMT      Set the output format of measurement data [default: APFHS]
+  --format          Set the output format of measurement data [default: APFHS]
                     For possible formats see 'help format'
   --autorange       Enable or disable auto-ranging [default: on]
                     For more information see 'help autorange'
@@ -39,7 +40,7 @@ Commands:
   set           Set option(s) to specified value(s)
   get           Print current value of specified option
   info          Print status information for the whole board
-  start <port>  Start a frequency sweep on specified port
+  start         Start a frequency sweep on specified port
   stop          Stop a running frequency sweep
   status        Print measurement status information
   temp          Measure and print the AD5933 chip temperature
