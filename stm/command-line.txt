@@ -91,7 +91,13 @@ extended by 2 or 4 times by specifying a multiplier like 'x2'.
 Valid values are for example '20' or '40x2', but not '512' (use 256x2 instead).
 
 help voltage:
-  TODO
+The AD5933 can output four different voltage ranges: 2V, 1V, 400mV and 200mV.
+For small impedances a small voltage is used to keep the flowing current small
+as well. Additionally, there is an external attenuator which can attenuate the
+output voltage of the AD5933 by 1 or 100, allowing effective output voltages
+down to 2mV for measuring very small impedances.
+The specified voltage needs to be one of the four AD5933 voltage ranges,
+divided by the possible attenuations.
 
 help autorange:
   TODO
