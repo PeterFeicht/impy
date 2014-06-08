@@ -842,9 +842,30 @@ static void Console_BoardStatus(uint32_t argc, char **argv __attribute__((unused
     VCP_CommandFinish();
 }
 
-static void Console_BoardStop(uint32_t argc, char **argv)
+/**
+ * Processes the 'board stop' command. This command finishes immediately.
+ * 
+ * @param argc Number of arguments
+ * @param argv Array of arguments
+ */
+static void Console_BoardStop(uint32_t argc, char **argv __attribute__((unused)))
 {
-    VCP_SendLine(txtNotImplemented);
+    if(argc == 1)
+    {
+        if(AD5933_GetStatus() == AD_MEASURE_IMPEDANCE)
+        {
+            Board_StopSweep();
+            VCP_SendLine(txtOK);
+        }
+        else
+        {
+            VCP_SendLine(txtAdStatusIdle);
+        }
+    }
+    else
+    {
+        VCP_SendLine(txtErrArgNum);
+    }
     VCP_CommandFinish();
 }
 
