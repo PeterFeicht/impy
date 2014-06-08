@@ -429,12 +429,12 @@ static void Console_Board(uint32_t argc, char **argv)
     
     if(argc == 1)
     {
-        VCP_SendString(txtErrNoSubcommand);
+        VCP_SendLine(txtErrNoSubcommand);
         VCP_CommandFinish();
     }
     else if(!Console_CallProcessor(argc - 1, argv + 1, cmds, NUMEL(cmds)))
     {
-        VCP_SendString(txtUnknownSubcommand);
+        VCP_SendLine(txtUnknownSubcommand);
         VCP_CommandFinish();
     }
 }
@@ -453,7 +453,7 @@ static void Console_BoardGet(uint32_t argc, char **argv)
     
     if(argc != 2)
     {
-        VCP_SendString(txtErrArgNum);
+        VCP_SendLine(txtErrArgNum);
         VCP_CommandFinish();
         return;
     }
@@ -481,7 +481,7 @@ static void Console_BoardGet(uint32_t argc, char **argv)
             
         case CON_ARG_SET_FORMAT:
             // TODO get format
-            VCP_SendString(txtNotImplemented);
+            VCP_SendLine(txtNotImplemented);
             break;
             
         case CON_ARG_SET_GAIN:
@@ -491,7 +491,7 @@ static void Console_BoardGet(uint32_t argc, char **argv)
         case CON_ARG_SET_SETTL:
             if(autorange)
             {
-                VCP_SendString(txtGetOnlyWhenAutorangeDisabled);
+                VCP_SendLine(txtGetOnlyWhenAutorangeDisabled);
             }
             else
             {
@@ -503,7 +503,7 @@ static void Console_BoardGet(uint32_t argc, char **argv)
         case CON_ARG_SET_START:
             if(autorange)
             {
-                VCP_SendString(txtGetOnlyWhenAutorangeDisabled);
+                VCP_SendLine(txtGetOnlyWhenAutorangeDisabled);
             }
             else
             {
@@ -514,7 +514,7 @@ static void Console_BoardGet(uint32_t argc, char **argv)
         case CON_ARG_SET_STEPS:
             if(autorange)
             {
-                VCP_SendString(txtGetOnlyWhenAutorangeDisabled);
+                VCP_SendLine(txtGetOnlyWhenAutorangeDisabled);
             }
             else
             {
@@ -526,7 +526,7 @@ static void Console_BoardGet(uint32_t argc, char **argv)
         case CON_ARG_SET_STOP:
             if(autorange)
             {
-                VCP_SendString(txtGetOnlyWhenAutorangeDisabled);
+                VCP_SendLine(txtGetOnlyWhenAutorangeDisabled);
             }
             else
             {
@@ -538,7 +538,7 @@ static void Console_BoardGet(uint32_t argc, char **argv)
         case CON_ARG_SET_VOLTAGE:
             if(autorange)
             {
-                VCP_SendString(txtGetOnlyWhenAutorangeDisabled);
+                VCP_SendLine(txtGetOnlyWhenAutorangeDisabled);
             }
             else
             {
@@ -550,7 +550,7 @@ static void Console_BoardGet(uint32_t argc, char **argv)
             break;
             
         default:
-            VCP_SendString(txtUnknownOption);
+            VCP_SendLine(txtUnknownOption);
             break;
     }
     
@@ -559,7 +559,7 @@ static void Console_BoardGet(uint32_t argc, char **argv)
 
 static void Console_BoardInfo(uint32_t argc, char **argv)
 {
-    VCP_SendString(txtNotImplemented);
+    VCP_SendLine(txtNotImplemented);
     VCP_CommandFinish();
 }
 
@@ -567,7 +567,7 @@ static void Console_BoardMeasure(uint32_t argc, char **argv)
 {
     // Arguments: port, freq
 
-    VCP_SendString(txtNotImplemented);
+    VCP_SendLine(txtNotImplemented);
     VCP_CommandFinish();
 }
 
@@ -577,7 +577,7 @@ static void Console_BoardRead(uint32_t argc, char **argv)
         { "format", CON_ARG_READ_FORMAT, CON_STRING }
     };
 
-    VCP_SendString(txtNotImplemented);
+    VCP_SendLine(txtNotImplemented);
     VCP_CommandFinish();
 }
 
@@ -594,7 +594,7 @@ static void Console_BoardSet(uint32_t argc, char **argv)
 {
     if(argc == 1)
     {
-        VCP_SendString(txtErrArgNum);
+        VCP_SendLine(txtErrArgNum);
         VCP_CommandFinish();
         return;
     }
@@ -610,7 +610,7 @@ static void Console_BoardSet(uint32_t argc, char **argv)
         if(arg == NULL)
         {
             // Complain about unknown arguments but ignore otherwise
-            VCP_SendString(txtUnknownOption);
+            VCP_SendLine(txtUnknownOption);
             VCP_SendLine(argv[j]);
             continue;
         }
@@ -652,7 +652,7 @@ static void Console_BoardSet(uint32_t argc, char **argv)
                 AD5933_Status status = AD5933_GetStatus();
                 if(status != AD_FINISH && status != AD_IDLE)
                 {
-                    VCP_SendString(txtEffectiveNextSweep);
+                    VCP_SendLine(txtEffectiveNextSweep);
                 }
                 break;
                 
@@ -662,7 +662,7 @@ static void Console_BoardSet(uint32_t argc, char **argv)
                 
             case CON_ARG_SET_FORMAT:
                 // TODO set format
-                VCP_SendString(txtNotImplemented);
+                VCP_SendLine(txtNotImplemented);
                 break;
                 
             case CON_ARG_SET_GAIN:
@@ -746,7 +746,7 @@ static void Console_BoardSet(uint32_t argc, char **argv)
                 
             default:
                 // Should not happen, means that a defined argument has no switch case
-                VCP_SendString(txtNotImplemented);
+                VCP_SendLine(txtNotImplemented);
                 break;
         }
         
@@ -769,19 +769,19 @@ static void Console_BoardStart(uint32_t argc, char **argv)
 {
     // Arguments: port
 
-    VCP_SendString(txtNotImplemented);
+    VCP_SendLine(txtNotImplemented);
     VCP_CommandFinish();
 }
 
 static void Console_BoardStatus(uint32_t argc, char **argv)
 {
-    VCP_SendString(txtNotImplemented);
+    VCP_SendLine(txtNotImplemented);
     VCP_CommandFinish();
 }
 
 static void Console_BoardStop(uint32_t argc, char **argv)
 {
-    VCP_SendString(txtNotImplemented);
+    VCP_SendLine(txtNotImplemented);
     VCP_CommandFinish();
 }
 
@@ -803,7 +803,7 @@ static void Console_BoardTemp(uint32_t argc, char **argv __attribute__((unused))
     }
     else
     {
-        VCP_SendString(txtErrArgNum);
+        VCP_SendLine(txtErrArgNum);
     }
     
     VCP_CommandFinish();
@@ -826,25 +826,25 @@ static void Console_Eth(uint32_t argc, char **argv)
     
     if(argc == 1)
     {
-        VCP_SendString(txtErrNoSubcommand);
+        VCP_SendLine(txtErrNoSubcommand);
         VCP_CommandFinish();
     }
     else if(!Console_CallProcessor(argc - 1, argv + 1, cmds, NUMEL(cmds)))
     {
-        VCP_SendString(txtUnknownSubcommand);
+        VCP_SendLine(txtUnknownSubcommand);
         VCP_CommandFinish();
     }
 }
 
 static void Console_EthDisable(uint32_t argc, char **argv)
 {
-    VCP_SendString(txtNotImplemented);
+    VCP_SendLine(txtNotImplemented);
     VCP_CommandFinish();
 }
 
 static void Console_EthEnable(uint32_t argc, char **argv)
 {
-    VCP_SendString(txtNotImplemented);
+    VCP_SendLine(txtNotImplemented);
     VCP_CommandFinish();
 }
 
@@ -855,13 +855,13 @@ static void Console_EthSet(uint32_t argc, char **argv)
         { "ip", CON_ARG_SET_IP, CON_STRING }
     };
 
-    VCP_SendString(txtNotImplemented);
+    VCP_SendLine(txtNotImplemented);
     VCP_CommandFinish();
 }
 
 static void Console_EthStatus(uint32_t argc, char **argv)
 {
-    VCP_SendString(txtNotImplemented);
+    VCP_SendLine(txtNotImplemented);
     VCP_CommandFinish();
 }
 
@@ -883,37 +883,37 @@ static void Console_Usb(uint32_t argc, char **argv)
     
     if(argc == 1)
     {
-        VCP_SendString(txtErrNoSubcommand);
+        VCP_SendLine(txtErrNoSubcommand);
         VCP_CommandFinish();
     }
     else if(!Console_CallProcessor(argc - 1, argv + 1, cmds, NUMEL(cmds)))
     {
-        VCP_SendString(txtUnknownSubcommand);
+        VCP_SendLine(txtUnknownSubcommand);
         VCP_CommandFinish();
     }
 }
 
 static void Console_UsbEject(uint32_t argc, char **argv)
 {
-    VCP_SendString(txtNotImplemented);
+    VCP_SendLine(txtNotImplemented);
     VCP_CommandFinish();
 }
 
 static void Console_UsbInfo(uint32_t argc, char **argv)
 {
-    VCP_SendString(txtNotImplemented);
+    VCP_SendLine(txtNotImplemented);
     VCP_CommandFinish();
 }
 
 static void Console_UsbLs(uint32_t argc, char **argv)
 {
-    VCP_SendString(txtNotImplemented);
+    VCP_SendLine(txtNotImplemented);
     VCP_CommandFinish();
 }
 
 static void Console_UsbStatus(uint32_t argc, char **argv)
 {
-    VCP_SendString(txtNotImplemented);
+    VCP_SendLine(txtNotImplemented);
     VCP_CommandFinish();
 }
 
@@ -921,7 +921,7 @@ static void Console_UsbWrite(uint32_t argc, char **argv)
 {
     // Arguments: file
 
-    VCP_SendString(txtNotImplemented);
+    VCP_SendLine(txtNotImplemented);
     VCP_CommandFinish();
 }
 
@@ -953,12 +953,12 @@ static void Console_Help(uint32_t argc, char **argv)
             }
             if(j == NUMEL(txtHelpTopics))
             {
-                VCP_SendString(txtUnknownTopic);
+                VCP_SendLine(txtUnknownTopic);
             }
             break;
         default:
             // Wrong number of arguments, print error message
-            VCP_SendString(txtErrArgNum);
+            VCP_SendLine(txtErrArgNum);
             break;
     }
     
@@ -994,7 +994,7 @@ static void Console_Debug(uint32_t argc, char **argv)
     }
     else
     {
-        VCP_SendString(txtUnknownSubcommand);
+        VCP_SendLine(txtUnknownSubcommand);
     }
 
     VCP_CommandFinish();
@@ -1034,7 +1034,7 @@ void Console_ProcessLine(char *str)
     }
     else if(!Console_CallProcessor(argc, arguments, commands, NUMEL(commands)))
     {
-        VCP_SendString(txtUnknownCommand);
+        VCP_SendLine(txtUnknownCommand);
         VCP_CommandFinish();
     }
 }
