@@ -38,7 +38,8 @@ static void SetDefaults(void)
     sweep.Start_Freq = 1000;
     stopFreq = 100000;
     sweep.Freq_Increment = (stopFreq - sweep.Start_Freq) / sweep.Num_Increments;
-    // TODO settling
+    sweep.Settling_Cycles = 16;
+    sweep.Settling_Mult = AD5933_SETTL_MULT_1;
     
     range.PGA_Gain = AD5933_GAIN_1;
     range.Voltage_Range = AD5933_VOLTAGE_1;
