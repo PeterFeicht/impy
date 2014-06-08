@@ -211,45 +211,27 @@ Board_Error Board_SetVoltageRange(uint16_t voltage)
         return BOARD_BUSY;
     }
     
-    switch(voltage)
+    const uint16_t voltages[] = { 200, 400, 1000, 2000 };
+    const uint16_t voltage_values[] = { AD5933_VOLTAGE_0_2, AD5933_VOLTAGE_0_4, AD5933_VOLTAGE_1, AD5933_VOLTAGE_2 };
+    const uint16_t attenuations[] = {
+        AD5933_ATTENUATION_PORT_0,
+        AD5933_ATTENUATION_PORT_1
+    };
+    
+    for(uint32_t j = 0; j < NUMEL(attenuations); j++)
     {
-        case (200 / AD5933_ATTENUATION_PORT_0):
-            range.Attenuation = AD5933_ATTENUATION_PORT_0;
-            range.Voltage_Range = AD5933_VOLTAGE_0_2;
-            break;
-        case (400 / AD5933_ATTENUATION_PORT_0):
-            range.Attenuation = AD5933_ATTENUATION_PORT_0;
-            range.Voltage_Range = AD5933_VOLTAGE_0_4;
-            break;
-        case (1000 / AD5933_ATTENUATION_PORT_0):
-            range.Attenuation = AD5933_ATTENUATION_PORT_0;
-            range.Voltage_Range = AD5933_VOLTAGE_1;
-            break;
-        case (2000 / AD5933_ATTENUATION_PORT_0):
-            range.Attenuation = AD5933_ATTENUATION_PORT_0;
-            range.Voltage_Range = AD5933_VOLTAGE_2;
-            break;
-        case (200 / AD5933_ATTENUATION_PORT_1):
-            range.Attenuation = AD5933_ATTENUATION_PORT_1;
-            range.Voltage_Range = AD5933_VOLTAGE_0_2;
-            break;
-        case (400 / AD5933_ATTENUATION_PORT_1):
-            range.Attenuation = AD5933_ATTENUATION_PORT_1;
-            range.Voltage_Range = AD5933_VOLTAGE_0_4;
-            break;
-        case (1000 / AD5933_ATTENUATION_PORT_1):
-            range.Attenuation = AD5933_ATTENUATION_PORT_1;
-            range.Voltage_Range = AD5933_VOLTAGE_1;
-            break;
-        case (2000 / AD5933_ATTENUATION_PORT_1):
-            range.Attenuation = AD5933_ATTENUATION_PORT_1;
-            range.Voltage_Range = AD5933_VOLTAGE_2;
-            break;
-        default:
-            return BOARD_ERROR;
+        for(uint32_t k = 0; k < NUMEL(voltages); k++)
+        {
+            if(voltage == voltages[k] / attenuations[j])
+            {
+                range.Attenuation = attenuations[j];
+                range.Voltage_Range = voltage_values[k];
+                return BOARD_OK;
+            }
+        }
     }
     
-    return BOARD_OK;
+    return BOARD_ERROR;
 }
 
 /**
