@@ -23,11 +23,10 @@ Options:
                     The valid range is 10..100000
   --steps           Set the number of frequency points in a sweep [default: 50]
                     The valid range is 1..511
-  --settl           Set the number of settling cycles [default: TODO]
-                    The valid range is TODO, see also 'help settl'
+  --settl           Set the number of settling cycles [default: 16]
+                    See 'help settl' for valid values
   --voltage         Set the output voltage range in mV [default: 1000]
                     See 'help voltage' for valid values
-                    Valid voltages are 0.2, 0.4, 1, 2. See also 'help voltage'
   --gain            Enable or disable the x5 input gain stage [default: off]
   --format          Set the output format of measurement data [default: APFHS]
                     For possible formats see 'help format'
@@ -86,7 +85,10 @@ consist of several format flags combined:
   S/T/D   ASCII only: values separated by space, tab or comma
 
 help settl:
-  TODO
+The number of settling cycles determines how many excitation cycles are output
+before an impedance conversion is made. The valid range is 0..511 and can be
+extended by 2 or 4 times by specifying a multiplier like 'x2'.
+Valid values are for example '20' or '40x2', but not '512' (use 256x2 instead).
 
 help voltage:
   TODO
