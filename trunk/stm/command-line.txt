@@ -103,9 +103,9 @@ help autorange:
   TODO
 
 help echo:
-  By default, all characters received on the virtual COM port (VCP) are echoed
-  back, so you can see what you type. However, when the device is configured by
-  scripts or programs, this may be undesirable. Therefore, the echoing can be
-  disabled either completely (board set --echo=off) or just for single lines,
-  by preceding them with an '@' character.
-  If echo is disabled globally, the '@' character has no effect and is ignored.
+By default, all characters received on the virtual COM port (VCP) are echoed
+back, so you can see what you type. However, when the device is configured by
+scripts or programs, this may be undesirable. Therefore, the echoing can be
+disabled either completely (board set --echo=off) or just for single lines, by
+preceding them with an '@' character.
+If echo is disabled globally, the '@' character has no effect and is ignored.
