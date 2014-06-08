@@ -389,7 +389,7 @@ AD5933_ImpedancePolar* Board_GetDataPolar(uint32_t *count)
  */
 Board_Error Board_StopSweep(void)
 {
-    interrupted = 1;
+    interrupted = (AD5933_GetStatus() == AD_MEASURE_IMPEDANCE);
     AD5933_Reset();
     return BOARD_OK;
 }
