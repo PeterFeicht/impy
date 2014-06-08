@@ -17,17 +17,28 @@ const char *txtUnknownCommand = "Unknown command.";
 const char *txtUnknownSubcommand = "Unknown subcommand.";
 const char *txtNotImplemented = "Not yet implemented.";
 const char *txtUnknownOption = "Unknown option.";
+// board get, board set
 const char *txtInvalidValue = "Invalid value for this argument: ";
 const char *txtSetOnlyWhenIdle = "This value cannot be set while a sweep is running: ";
 const char *txtEffectiveNextSweep = "Autorange setting will take effect on the next sweep.";
 const char *txtSetOnlyWhenAutorangeDisabled = "This value can only be set when autoranging is disabled: ";
 const char *txtGetOnlyWhenAutorangeDisabled = "This value can only be read when autoranging is disabled.";
+// board status
+const char *txtAdStatusUnknown = "Unknown AD5933 driver status, something went wrong.";
+const char *txtAdStatusSweep = "Impedance measurement is running, points measured: ";
+const char *txtAdStatusTemp = "Temperature measurement is running.";
+const char *txtAdStatusIdle = "No measurement is running.";
+const char *txtAdStatusFinish = "Measurement finished, points measured: ";
+const char *txtAdStatusCalibrate = "Calibration measurement is running.";
+const char *txtAutorangeStatus = "Autoranging is ";
+const char *txtLastInterrupted = "The last measurement was interrupted.";
 
 // Words ----------------------------------------------------------------------
 const char *txtEnabled = "enabled";
 const char *txtDisabled = "disabled";
 const char *txtOn = "on";
 const char *txtOff = "off";
+const char *txtOf = " of ";
 
 // ----------------------------------------------------------------------------
 
