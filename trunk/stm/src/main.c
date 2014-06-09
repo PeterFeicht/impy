@@ -211,9 +211,14 @@ Board_Error Board_SetVoltageRange(uint16_t voltage)
         return BOARD_BUSY;
     }
     
-    const uint16_t voltages[] = { 200, 400, 1000, 2000 };
-    const uint16_t voltage_values[] = { AD5933_VOLTAGE_0_2, AD5933_VOLTAGE_0_4, AD5933_VOLTAGE_1, AD5933_VOLTAGE_2 };
-    const uint16_t attenuations[] = {
+    static const uint16_t voltages[] = { 200, 400, 1000, 2000 };
+    static const uint16_t voltage_values[] = {
+        AD5933_VOLTAGE_0_2,
+        AD5933_VOLTAGE_0_4,
+        AD5933_VOLTAGE_1,
+        AD5933_VOLTAGE_2
+    };
+    static const uint16_t attenuations[] = {
         AD5933_ATTENUATION_PORT_0,
         AD5933_ATTENUATION_PORT_1
     };
