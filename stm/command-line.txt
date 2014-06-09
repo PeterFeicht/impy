@@ -18,9 +18,9 @@ Commands:
 
 Options:
   --start           Set the start frequency of a sweep in Hz [default: 1000]
-                    The valid range is 10..100000
+                    For the valid range see 'board info'
   --stop            Set the stop frequency of a sweep in Hz [default: 100000]
-                    The valid range is 10..100000
+                    For the valid range see 'board info'
   --steps           Set the number of frequency points in a sweep [default: 50]
                     The valid range is 1..511
   --settl           Set the number of settling cycles [default: 16]
@@ -40,6 +40,7 @@ Commands:
   get           Print current value of specified option
   info          Print status information for the whole board
   start         Start a frequency sweep on specified port
+                For the valid port range see 'board info'
   stop          Stop a running frequency sweep
   status        Print measurement status information
   temp          Measure and print the AD5933 chip temperature
@@ -88,14 +89,15 @@ help settl:
 The number of settling cycles determines how many excitation cycles are output
 before an impedance conversion is made. The valid range is 0..511 and can be
 extended by 2 or 4 times by specifying a multiplier like 'x2'.
-Valid values are for example '20' or '40x2', but not '512' (use 256x2 instead).
+Valid values would be '20' or '40x2', but not '512' (use '256x2' instead).
 
 help voltage:
 The AD5933 can output four different voltage ranges: 2V, 1V, 400mV and 200mV.
 For small impedances a small voltage is used to keep the flowing current small
 as well. Additionally, there is an external attenuator which can attenuate the
-output voltage of the AD5933 by 1 or 100, allowing effective output voltages
-down to 2mV for measuring very small impedances.
+output voltage of the AD5933 by certain values, allowing smaller effective
+output voltages for measuring very small impedances.
+For possible attenuations see 'board info'.
 The specified voltage needs to be one of the four AD5933 voltage ranges,
 divided by the possible attenuations.
 
