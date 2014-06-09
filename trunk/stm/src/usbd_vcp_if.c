@@ -398,14 +398,18 @@ uint32_t VCP_SendString(const char *str)
  * Queues the specified 0 terminated string to be sent over the virtual COM port, followed by a line break.
  * See {@link VCP_SendString} for more information.
  * 
- * @param str Pointer to a zero terminated string
+ * @param str Pointer to a zero terminated string (may be {@code NULL} to send only the line break)
  * @return The number of bytes buffered. This can be less than the string length, if the string is longer than the
  *         free space in the transmit buffer, or 2 more if the whole string plus the line break was buffered.
  */
 uint32_t VCP_SendLine(const char *str)
 {
     static const char *linebreak = "\r\n";
-    uint32_t sent = VCP_SendString(str);
+    uint32_t sent = 0;
+    if(str != NULL)
+    {
+        sent += VCP_SendString(str);
+    }
     sent += VCP_SendString(linebreak);
     return sent;
 }
