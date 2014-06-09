@@ -650,7 +650,7 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     // TODO print USB info
     VCP_SendLine(txtNotImplemented);
 #else
-    VCP_SendString("\r\nUSB ");
+    VCP_SendString("\r\nUSB");
     VCP_SendLine(txtNotInstalled);
 #endif
     
@@ -660,7 +660,7 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     // TODO print Ethernet info
     VCP_SendLine(txtNotImplemented);
 #else
-    VCP_SendString("\r\nEthernet ");
+    VCP_SendString("\r\nEthernet");
     VCP_SendLine(txtNotInstalled);
 #endif
     
@@ -676,7 +676,7 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     // TODO print EEPROM info
     VCP_SendLine(txtNotImplemented);
 #elif defined(MEMORY_FLAG)
-    VCP_SendString("\r\nEEPROM ");
+    VCP_SendString("\r\nEEPROM");
     VCP_SendLine(txtNotInstalled);
 #endif
     
@@ -685,7 +685,7 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     // TODO print SRAM info
     VCP_SendLine(txtNotImplemented);
 #elif defined(MEMORY_FLAG)
-    VCP_SendString("\r\nSRAM ");
+    VCP_SendString("\r\nSRAM");
     VCP_SendLine(txtNotInstalled);
 #endif
     
@@ -694,7 +694,7 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     // TODO print Flash info
     VCP_SendLine(txtNotImplemented);
 #elif defined(MEMORY_FLAG)
-    VCP_SendString("\r\nFlash ");
+    VCP_SendString("\r\nFlash");
     VCP_SendLine(txtNotInstalled);
 #endif
     
