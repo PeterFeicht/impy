@@ -75,6 +75,21 @@ typedef struct
 #define CAL_PORT_15         1000000         //!< Port 15 value: 1M
 /** @} */
 
+// Uncomment if the EEPROM is fitted
+//#define BOARD_HAS_EEPROM        1
+
+// Uncomment if the SRAM is fitted
+//#define BOARD_HAS_SRAM          1
+
+// Uncomment if the Flash memory is fitted
+//#define BOARD_HAS_FLASH         1
+
+// Uncomment if the Ethernet interface is fitted
+//#define BOARD_HAS_ETHERNET      1
+
+// Uncomment if the USB host port is fitted
+//#define BOARD_HAS_USBH          1
+
 // Exported functions ---------------------------------------------------------
 Board_Error Board_SetStartFreq(uint32_t freq);
 Board_Error Board_SetStopFreq(uint32_t freq);
