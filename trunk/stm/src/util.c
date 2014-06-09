@@ -8,6 +8,7 @@
 // Includes -------------------------------------------------------------------
 #include <string.h>
 #include <ctype.h>
+#include <stdio.h>
 #include "util.h"
 
 // Exported functions ---------------------------------------------------------
@@ -90,6 +91,46 @@ uint32_t IntFromSiString(const char *str, const char **end)
         if(end != NULL)
             *end = NULL;
         return 0;
+    }
+}
+
+/**
+ * Convert an integer value to a string with possible SI suffix (like {@code 100k}).
+ * 
+ * @param s Pointer to a buffer receiving the converted string
+ * @param size Size of the buffer in bytes
+ * @param value The value to convert
+ * @return The number of characters that would have been written, if this value is greater or equal to {@code size}
+ *         then not all characters have been written to the buffer
+ */
+int SiStringFromInt(char *s, uint32_t size, uint32_t value)
+{
+    char c = ' ';
+    
+    if(s == NULL)
+    {
+        return 0;
+    }
+    
+    if(value % 1000 == 0)
+    {
+        value /= 1000;
+        c = SI_PREFIX_KILO;
+        
+        if(value % 1000 == 0)
+        {
+            value /= 1000;
+            c = SI_PREFIX_MEGA;
+        }
+    }
+    
+    if(c == ' ')
+    {
+        return snprintf(s, size, "%lu", value);
+    }
+    else
+    {
+        return snprintf(s, size, "%lu%c", value, c);
     }
 }
 
