@@ -537,9 +537,171 @@ static void Console_BoardGet(uint32_t argc, char **argv)
     VCP_CommandFinish();
 }
 
-static void Console_BoardInfo(uint32_t argc, char **argv)
+/**
+ * Processes the 'board info' command. This command finishes immediately.
+ * 
+ * The info that is printed is:
+ *  + Measurement and AD5933 driver status
+ *  + Available ports, frequencies and values of feedback resistors, voltage attenuations and calibration resistors
+ *  + Available peripherals (EEPROM, SRAM, Ethernet, USB, Flash memory)
+ *  + USB status info
+ *  + Ethernet status info
+ *  + Memory status information (EEPROM writes, SRAM size, Flash memory size)
+ * 
+ * @param argc Number of arguments
+ * @param argv Array of arguments
+ */
+static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused)))
 {
+    const char *temp;
+    char buf[16];
+    
+    if(argc != 1)
+    {
+        VCP_SendLine(txtErrArgNum);
+        VCP_CommandFinish();
+        return;
+    }
+    
+    // Board info and AD5933 status
+    VCP_SendLine(THIS_IS_IMPY BOARD_VERSION BUILT_ON __DATE__ ", " __TIME__ ".\r\n");
+    VCP_SendString(txtAdStatus);
+    switch(AD5933_GetStatus())
+    {
+        case AD_IDLE:
+        case AD_FINISH:
+            temp = txtAdStatusIdle;
+            break;
+        case AD_MEASURE_TEMP:
+            temp = txtAdStatusTemp;
+            break;
+        case AD_MEASURE_IMPEDANCE:
+            temp = txtAdStatusMeasureImpedance;
+            break;
+        case AD_CALIBRATE:
+            temp = txtAdStatusCalibrate;
+            break;
+        default:
+            temp = txtAdStatusUnknown;
+            break;
+    }
+    VCP_SendLine(temp);
+    
+    // Ports and values
+    static const uint16_t attenuations[] = {
+        AD5933_ATTENUATION_PORT_0, AD5933_ATTENUATION_PORT_1, AD5933_ATTENUATION_PORT_2, AD5933_ATTENUATION_PORT_3
+    };
+    static const uint32_t feedbackValues[] = {
+        AD5933_FEEDBACK_PORT_0, AD5933_FEEDBACK_PORT_1, AD5933_FEEDBACK_PORT_2, AD5933_FEEDBACK_PORT_3,
+        AD5933_FEEDBACK_PORT_4, AD5933_FEEDBACK_PORT_5, AD5933_FEEDBACK_PORT_6, AD5933_FEEDBACK_PORT_7
+    };
+    static const uint32_t calibrationValues[] = {
+        CAL_PORT_10, CAL_PORT_11, CAL_PORT_12, CAL_PORT_13, CAL_PORT_14, CAL_PORT_15
+    };
+    
+    VCP_SendString(txtPortsAvailable);
+    snprintf(buf, NUMEL(buf), "%u", PORT_MAX - PORT_MIN + 1);
+    VCP_SendString(buf);
+    VCP_SendString(" (");
+    snprintf(buf, NUMEL(buf), "%u", PORT_MIN);
+    VCP_SendString(buf);
+    VCP_SendString("..");
+    snprintf(buf, NUMEL(buf), "%u", PORT_MAX);
+    VCP_SendString(buf);
+    VCP_SendLine(")");
+    
+    VCP_SendString(txtFrequencyRange);
+    SiStringFromInt(buf, NUMEL(buf), FREQ_MIN);
+    VCP_SendString(buf);
+    VCP_SendString("..");
+    SiStringFromInt(buf, NUMEL(buf), FREQ_MAX);
+    VCP_SendLine(buf);
+    
+    VCP_SendString(txtAttenuationsAvailable);
+    for(uint32_t j = 0; j < NUMEL(attenuations) && attenuations[j]; j++)
+    {
+        SiStringFromInt(buf, NUMEL(buf), attenuations[j]);
+        VCP_SendString(buf);
+        VCP_SendString(" ");
+    }
+    VCP_SendLine(NULL);
+    
+    VCP_SendString(txtFeedbackResistorValues);
+    for(uint32_t j = 0; j < NUMEL(feedbackValues) && feedbackValues[j]; j++)
+    {
+        SiStringFromInt(buf, NUMEL(buf), feedbackValues[j]);
+        VCP_SendString(buf);
+        VCP_SendString(" ");
+    }
+    VCP_SendLine(NULL);
+    
+    VCP_SendString(txtCalibrationValues);
+    for(uint32_t j = 0; j < NUMEL(calibrationValues) && calibrationValues[j]; j++)
+    {
+        SiStringFromInt(buf, NUMEL(buf), calibrationValues[j]);
+        VCP_SendString(buf);
+        VCP_SendString(" ");
+    }
+    VCP_SendLine(NULL);
+    
+    // USB info
+#if defined(BOARD_HAS_USBH) && BOARD_HAS_USBH == 1
+    VCP_SendLine(NULL);
+    // TODO print USB info
     VCP_SendLine(txtNotImplemented);
+#else
+    VCP_SendString("\r\nUSB ");
+    VCP_SendLine(txtNotInstalled);
+#endif
+    
+    // Ethernet info
+#if defined(BOARD_HAS_ETHERNET) && BOARD_HAS_ETHERNET == 1
+    VCP_SendLine(NULL);
+    // TODO print Ethernet info
+    VCP_SendLine(txtNotImplemented);
+#else
+    VCP_SendString("\r\nEthernet ");
+    VCP_SendLine(txtNotInstalled);
+#endif
+    
+    // Memory info
+#if (defined(BOARD_HAS_EEPROM) && BOARD_HAS_EEPROM == 1) || \
+    (defined(BOARD_HAS_SRAM) && BOARD_HAS_SRAM == 1) || \
+    (defined(BOARD_HAS_FLASH) && BOARD_HAS_FLASH == 1)
+#define MEMORY_FLAG
+#endif
+    
+#if defined(BOARD_HAS_EEPROM) && BOARD_HAS_EEPROM == 1
+    VCP_SendLine(NULL);
+    // TODO print EEPROM info
+    VCP_SendLine(txtNotImplemented);
+#elif defined(MEMORY_FLAG)
+    VCP_SendString("\r\nEEPROM ");
+    VCP_SendLine(txtNotInstalled);
+#endif
+    
+#if defined(BOARD_HAS_SRAM) && BOARD_HAS_SRAM == 1
+    VCP_SendLine(NULL);
+    // TODO print SRAM info
+    VCP_SendLine(txtNotImplemented);
+#elif defined(MEMORY_FLAG)
+    VCP_SendString("\r\nSRAM ");
+    VCP_SendLine(txtNotInstalled);
+#endif
+    
+#if defined(BOARD_HAS_FLASH) && BOARD_HAS_FLASH == 1
+    VCP_SendLine(NULL);
+    // TODO print Flash info
+    VCP_SendLine(txtNotImplemented);
+#elif defined(MEMORY_FLAG)
+    VCP_SendString("\r\nFlash ");
+    VCP_SendLine(txtNotInstalled);
+#endif
+    
+#ifndef MEMORY_FLAG
+    VCP_SendLine(txtNoMemory);
+#endif
+    
     VCP_CommandFinish();
 }
 
@@ -547,6 +709,7 @@ static void Console_BoardMeasure(uint32_t argc, char **argv)
 {
     // Arguments: port, freq
 
+    // TODO implement 'board measure'
     VCP_SendLine(txtNotImplemented);
     VCP_CommandFinish();
 }
@@ -557,6 +720,7 @@ static void Console_BoardRead(uint32_t argc, char **argv)
         { "format", CON_ARG_READ_FORMAT, CON_STRING }
     };
 
+    // TODO implement 'board read'
     VCP_SendLine(txtNotImplemented);
     VCP_CommandFinish();
 }
@@ -717,6 +881,7 @@ static void Console_BoardStart(uint32_t argc, char **argv)
 {
     // Arguments: port
 
+    // TODO implement 'board start'
     VCP_SendLine(txtNotImplemented);
     VCP_CommandFinish();
 }
