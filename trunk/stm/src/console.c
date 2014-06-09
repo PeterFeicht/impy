@@ -485,7 +485,14 @@ static void Console_BoardGet(uint32_t argc, char **argv)
             break;
             
         case CON_ARG_SET_GAIN:
-            VCP_SendLine(Board_GetRangeSettings()->PGA_Gain == AD5933_GAIN_1 ? txtDisabled : txtEnabled);
+            if(autorange)
+            {
+                VCP_SendLine(txtGetOnlyWhenAutorangeDisabled);
+            }
+            else
+            {
+                VCP_SendLine(Board_GetRangeSettings()->PGA_Gain == AD5933_GAIN_1 ? txtDisabled : txtEnabled);
+            }
             break;
             
         case CON_ARG_SET_SETTL:
