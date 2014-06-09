@@ -496,50 +496,23 @@ static void Console_BoardGet(uint32_t argc, char **argv)
             break;
             
         case CON_ARG_SET_SETTL:
-            if(autorange)
-            {
-                VCP_SendLine(txtGetOnlyWhenAutorangeDisabled);
-            }
-            else
-            {
-                snprintf(buf, NUMEL(buf), "%u", Board_GetSettlingCycles());
-                VCP_SendLine(buf);
-            }
+            snprintf(buf, NUMEL(buf), "%u", Board_GetSettlingCycles());
+            VCP_SendLine(buf);
             break;
             
         case CON_ARG_SET_START:
-            if(autorange)
-            {
-                VCP_SendLine(txtGetOnlyWhenAutorangeDisabled);
-            }
-            else
-            {
-                snprintf(buf, NUMEL(buf), "%lu", Board_GetStartFreq());
-                VCP_SendLine(buf);
-            }
+            snprintf(buf, NUMEL(buf), "%lu", Board_GetStartFreq());
+            VCP_SendLine(buf);
             break;
+            
         case CON_ARG_SET_STEPS:
-            if(autorange)
-            {
-                VCP_SendLine(txtGetOnlyWhenAutorangeDisabled);
-            }
-            else
-            {
-                snprintf(buf, NUMEL(buf), "%u", Board_GetFreqSteps());
-                VCP_SendLine(buf);
-            }
+            snprintf(buf, NUMEL(buf), "%u", Board_GetFreqSteps());
+            VCP_SendLine(buf);
             break;
             
         case CON_ARG_SET_STOP:
-            if(autorange)
-            {
-                VCP_SendLine(txtGetOnlyWhenAutorangeDisabled);
-            }
-            else
-            {
-                snprintf(buf, NUMEL(buf), "%lu", Board_GetStopFreq());
-                VCP_SendLine(buf);
-            }
+            snprintf(buf, NUMEL(buf), "%lu", Board_GetStopFreq());
+            VCP_SendLine(buf);
             break;
             
         case CON_ARG_SET_VOLTAGE:
@@ -685,58 +658,26 @@ static void Console_BoardSet(uint32_t argc, char **argv)
                 break;
                 
             case CON_ARG_SET_SETTL:
-                if(autorange)
+                char *mult = strchr(value, 'x');
+                intval = 1;
+                if(mult != NULL)
                 {
-                    VCP_SendString(txtSetOnlyWhenAutorangeDisabled);
-                    VCP_SendLine(arg->arg);
+                    *mult++ = 0;
+                    intval = strtoul(mult, NULL, 10);
                 }
-                else
-                {
-                    char *mult = strchr(value, 'x');
-                    intval = 1;
-                    if(mult != NULL)
-                    {
-                        *mult++ = 0;
-                        intval = strtoul(mult, NULL, 10);
-                    }
-                    ok = Board_SetSettlingCycles(strtoul(value, NULL, 10), (uint8_t)intval);
-                }
+                ok = Board_SetSettlingCycles(strtoul(value, NULL, 10), (uint8_t)intval);
                 break;
                 
             case CON_ARG_SET_START:
-                if(autorange)
-                {
-                    VCP_SendString(txtSetOnlyWhenAutorangeDisabled);
-                    VCP_SendLine(arg->arg);
-                }
-                else
-                {
-                    ok = Board_SetStartFreq(intval);
-                }
+                ok = Board_SetStartFreq(intval);
                 break;
                 
             case CON_ARG_SET_STEPS:
-                if(autorange)
-                {
-                    VCP_SendString(txtSetOnlyWhenAutorangeDisabled);
-                    VCP_SendLine(arg->arg);
-                }
-                else
-                {
-                    ok = Board_SetFreqSteps(intval);
-                }
+                ok = Board_SetFreqSteps(intval);
                 break;
                 
             case CON_ARG_SET_STOP:
-                if(autorange)
-                {
-                    VCP_SendString(txtSetOnlyWhenAutorangeDisabled);
-                    VCP_SendLine(arg->arg);
-                }
-                else
-                {
-                    ok = Board_SetStopFreq(intval);
-                }
+                ok = Board_SetStopFreq(intval);
                 break;
                 
             case CON_ARG_SET_VOLTAGE:
