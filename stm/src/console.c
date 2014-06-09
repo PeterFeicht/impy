@@ -658,8 +658,8 @@ static void Console_BoardSet(uint32_t argc, char **argv)
                 break;
                 
             case CON_ARG_SET_SETTL:
-                char *mult = strchr(value, 'x');
                 intval = 1;
+                char *mult = strchr(value, 'x');
                 if(mult != NULL)
                 {
                     *mult++ = 0;
