@@ -38,6 +38,8 @@ typedef struct
 } Board_Status;
 
 // Constants ------------------------------------------------------------------
+#define BOARD_VERSION   "1.0"
+
 #define LED_PORT        GPIOD
 #define LED_ORANGE      GPIO_PIN_13
 #define LED_GREEN       GPIO_PIN_12
