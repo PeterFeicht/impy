@@ -120,8 +120,8 @@ static uint32_t AD5933_CalcFrequencyReg(uint32_t freq)
  * Sends the necessary commands to the AD5933 to initiate a frequency sweep.
  * 
  * @param range Pointer to voltage, gain, attenuation and feedback settings
- * @param freq_start Start frequency register value
- * @param freq_step Frequency step register value
+ * @param freq_start Start frequency in Hz
+ * @param freq_step Frequency step in Hz
  * @param num_incr Number of increments
  * @param settl Settling time register value
  * @return {@link AD5933_Error} code
@@ -133,6 +133,8 @@ static AD5933_Error AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_
     uint8_t portAtt = 0;
     uint8_t portFb = 0;
     uint8_t j;
+    uint32_t start_reg;
+    uint32_t step_reg;
     
     static const uint16_t attenuation[] = {
         AD5933_ATTENUATION_PORT_0,
@@ -181,6 +183,15 @@ static AD5933_Error AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_
         return AD_ERROR;
     }
     
+    // Calculate and check register values
+    // TODO use external clock if necessary
+    start_reg = AD5933_CalcFrequencyReg(freq_start);
+    step_reg = AD5933_CalcFrequencyReg(freq_step);
+    if(start_reg < AD5933_MIN_FREQ || (start_reg + step_reg * num_incr) > AD5933_MAX_FREQ)
+    {
+        return AD_ERROR;
+    }
+    
     // Set attenuator and feedback mux
     HAL_GPIO_WritePin(AD5933_ATTENUATION_GPIO_PORT, AD5933_ATTENUATION_GPIO_0, ((portAtt & (1 << 0)) ? SET : RESET));
     HAL_GPIO_WritePin(AD5933_ATTENUATION_GPIO_PORT, AD5933_ATTENUATION_GPIO_1, ((portAtt & (1 << 1)) ? SET : RESET));
@@ -193,8 +204,8 @@ static AD5933_Error AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_
     AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
     
     // Send sweep parameters
-    AD5933_Write24(AD5933_START_FREQ_H_ADDR, freq_start);
-    AD5933_Write24(AD5933_FREQ_INCR_H_ADDR, freq_step);
+    AD5933_Write24(AD5933_START_FREQ_H_ADDR, start_reg);
+    AD5933_Write24(AD5933_FREQ_INCR_H_ADDR, step_reg);
     AD5933_Write16(AD5933_NUM_INCR_H_ADDR, num_incr);
     AD5933_Write16(AD5933_SETTL_H_ADDR, settl);
     
@@ -204,7 +215,7 @@ static AD5933_Error AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_
     
     // Charge coupling capacitor, this is always needed, assuming the output was previously switched off
     HAL_GPIO_WritePin(AD5933_COUPLING_GPIO_PORT, AD5933_COUPLING_GPIO_PIN, RESET);
-    // TODO 400ms delay is a little crazy, use interrupts
+    // FIXME 400ms delay is a little crazy, use interrupts
     HAL_Delay(AD5933_COUPLING_TAU * 4);
     HAL_GPIO_WritePin(AD5933_COUPLING_GPIO_PORT, AD5933_COUPLING_GPIO_PIN, SET);
     range_spec = *range;
@@ -305,8 +316,6 @@ AD5933_Error AD5933_Reset(void)
  */
 AD5933_Error AD5933_MeasureImpedance(AD5933_Sweep *sweep, AD5933_RangeSettings *range, AD5933_ImpedanceData *buffer)
 {
-    uint32_t freq_start;
-    uint32_t freq_step;
     uint16_t data;
     AD5933_Error ret;
     
@@ -330,17 +339,8 @@ AD5933_Error AD5933_MeasureImpedance(AD5933_Sweep *sweep, AD5933_RangeSettings *
     sweep_spec = *sweep;
     sweep_count = 0;
     
-    freq_start = AD5933_CalcFrequencyReg(sweep->Start_Freq);
-    freq_step = AD5933_CalcFrequencyReg(sweep->Freq_Increment);
-    
-    // Check sweep range
-    if(freq_start < AD5933_MIN_FREQ || (freq_start + freq_step * sweep->Num_Increments) > AD5933_MAX_FREQ)
-    {
-        return AD_ERROR;
-    }
-    
     data = sweep->Settling_Cycles | sweep->Settling_Mult;
-    ret = AD5933_StartMeasurement(range, freq_start, freq_step, sweep->Num_Increments, data);
+    ret = AD5933_StartMeasurement(range, sweep->Start_Freq, sweep->Freq_Increment, sweep->Num_Increments, data);
     
     if(ret != AD_ERROR)
     {
@@ -394,8 +394,7 @@ AD5933_Error AD5933_MeasureTemperature(float *destination)
  */
 AD5933_Error AD5933_Calibrate(AD5933_GainFactorData *data, AD5933_RangeSettings *range)
 {
-    uint32_t freq_start;
-    uint32_t freq_step = 0x10;
+    uint32_t freq_step = 10;
     AD5933_Error ret;
     
     if(status == AD_UNINIT || data == NULL || range == NULL)
@@ -410,7 +409,6 @@ AD5933_Error AD5933_Calibrate(AD5933_GainFactorData *data, AD5933_RangeSettings 
     pGainData = data;
     sweep_count = 0;
     
-    freq_start = AD5933_CalcFrequencyReg(data->freq1);
     if(data->is_2point)
     {
         if(data->freq2 <= data->freq1)
@@ -418,11 +416,11 @@ AD5933_Error AD5933_Calibrate(AD5933_GainFactorData *data, AD5933_RangeSettings 
             return AD_ERROR;
         }
         
-        freq_step = AD5933_CalcFrequencyReg(data->freq2 - data->freq1);
+        freq_step = data->freq2 - data->freq1;
     }
     
     // Number of increments doesn't really matter, we check sweep_count in the callback anyway
-    ret = AD5933_StartMeasurement(range, freq_start, freq_step, 2, 100);
+    ret = AD5933_StartMeasurement(range, data->freq1, freq_step, 2, 10);
     
     if(ret != AD_ERROR)
     {
