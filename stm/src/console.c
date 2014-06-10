@@ -1343,6 +1343,79 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
             VCP_SendLine("Pointer was NULL.");
         }
     }
+    else if(strcmp(argv[1], "malloc") == 0)
+    {
+        const uint32_t len = 81;        // String buffer length
+        const uint32_t length = 400;    // Length of buffer pointer array
+        const uint32_t size = 500;      // Size of allocated buffers
+        char *buf;
+        char **allocs;
+        uint32_t buffers = 0;           // Actual number of buffers allocated
+        
+        buf = malloc(len);
+        allocs = calloc(length, sizeof(char*));
+        if(buf == NULL || allocs == NULL)
+        {
+            VCP_SendLine("Could not allocate string buffer and pointer buffer.");
+        }
+        else
+        {
+            VCP_SendLine("Trying to allocate some buffers...");
+            VCP_Flush();
+            for(uint32_t j = 0; j < length; j++)
+            {
+                allocs[j] = malloc(size);
+                if(allocs[j] == NULL)
+                {
+                    break;
+                }
+                if(j % 10 == 0)
+                {
+                    snprintf(buf, len, "%lu ", j);
+                    VCP_SendString(buf);
+                    VCP_Flush();
+                }
+                buffers++;
+            }
+            snprintf(buf, len, "\r\nCould allocate %lu buffers with %lu bytes each.", buffers, size);
+            VCP_SendLine(buf);
+            snprintf(buf, len, "For everyone too lazy to use their brain, that's %lu bytes in total.", buffers * size);
+            VCP_SendLine(buf);
+            VCP_SendLine("Now freeing...");
+            VCP_Flush();
+            for(uint32_t j = 0; j < buffers; j++)
+            {
+                free(allocs[j]);
+            }
+            VCP_SendLine("Finished.");
+        }
+        free(buf);
+        free(allocs);
+    }
+    else if(strcmp(argv[1], "leak") == 0)
+    {
+        if(argc == 3)
+        {
+            const char *end;
+            uint32_t bytes = IntFromSiString(argv[2], &end);
+            if(end == NULL)
+            {
+                VCP_SendLine("Don't be silly.");
+            }
+            else if(malloc(bytes) != NULL)
+            {
+                VCP_SendLine("Allocation successful, memory leaked.");
+            }
+            else
+            {
+                VCP_SendLine("Allocation failed.");
+            }
+        }
+        else
+        {
+            VCP_SendLine(txtErrArgNum);
+        }
+    }
     else
     {
         VCP_SendLine(txtUnknownSubcommand);
