@@ -7,9 +7,12 @@
 
 // Includes -------------------------------------------------------------------
 #include <string.h>
+#include <math.h>
 #include "console.h"
 #include "main.h"
 #include "util.h"
+// Pull in support function needed for float formatting with printf
+__ASM (".global _printf_float");
 
 // Private type definitions ---------------------------------------------------
 typedef enum
@@ -1313,6 +1316,31 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
             
             snprintf(buf, NUMEL(buf), "%c %lu %lu %lu %c", a, j, bits_clz, bits_ffs, c);
             VCP_SendLine(buf);
+        }
+    }
+    else if(strcmp(argv[1], "printf-float") == 0)
+    {
+        char *buf;
+        uint32_t size = 100;
+        buf = malloc(size);
+        if(buf != NULL)
+        {
+            float f1 = 1.5378f;
+            float f2 = atan2f(0.5f, 0.5f);
+            snprintf(buf, size, "%g < %g", f1, f2);
+            VCP_SendLine(buf);
+            for(uint32_t j = 0; j < 10; j++)
+            {
+                f1 *= 10.0f;
+                f2 /= 10.0f;
+                snprintf(buf, size, "%g < %g", f1, f2);
+                VCP_SendLine(buf);
+            }
+            free(buf);
+        }
+        else
+        {
+            VCP_SendLine("Pointer was NULL.");
         }
     }
     else
