@@ -46,6 +46,9 @@ const char *txtCalibrationValues = "Calibration resistor values: ";
 const char *txtNotInstalled = " not installed.";
 const char *txtNoMemory = "\r\nNo external memory installed.";
 const char *txtFrequencyRange = "The possible frequency range in Hz is ";
+// board measure
+const char *txtBoardBusy = "Another measurement is currently running.";
+const char *txtImpedance = "Impedance (polar): ";
 
 // Words ----------------------------------------------------------------------
 const char *txtEnabled = "enabled";
