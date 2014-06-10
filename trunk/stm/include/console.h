@@ -52,7 +52,7 @@ typedef struct
 #define NUMEL(X)                (sizeof(X) / sizeof(*X))
 // We only accept upper case letters for flags, so they all fit in one 32 bit integer
 #define IS_FORMAT_FLAG(C)           ((C) >= 'A' && (C) <= 'Z')
-#define FORMAT_FLAG_FROM_CHAR(C)    ((uint32_t)1 << (C - 'A'))
+#define FORMAT_FLAG_FROM_CHAR(C)    ((uint32_t)1 << ((C) - 'A'))
 #ifdef __GNUC__
 #define CHAR_FROM_FORMAT_FLAG(F)    ('A' + (char)(__builtin_ctzl(F)))
 #else
