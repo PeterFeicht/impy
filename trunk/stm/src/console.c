@@ -108,6 +108,7 @@ static void Console_Debug(uint32_t argc, char **argv);
 
 // Private variables ----------------------------------------------------------
 static char *arguments[CON_MAX_ARGUMENTS];
+static uint32_t format_spec;
 
 // Console definition
 extern char helptext_start;
@@ -480,8 +481,25 @@ static void Console_BoardGet(uint32_t argc, char **argv)
             break;
             
         case CON_ARG_SET_FORMAT:
-            // TODO get format
-            VCP_SendLine(txtNotImplemented);
+            memset(buf, 0, NUMEL(buf));
+            uint8_t pos = 0;
+            buf[pos++] = CHAR_FROM_FORMAT_FLAG(format_spec & FORMAT_MASK_ENCODING);
+            buf[pos++] = CHAR_FROM_FORMAT_FLAG(format_spec & FORMAT_MASK_COORDINATES);
+            switch(format_spec & FORMAT_MASK_ENCODING)
+            {
+                case FORMAT_FLAG_ASCII:
+                    buf[pos++] = CHAR_FROM_FORMAT_FLAG(format_spec & FORMAT_MASK_NUMBERS);
+                    buf[pos++] = CHAR_FROM_FORMAT_FLAG(format_spec & FORMAT_MASK_SEPARATOR);
+                    break;
+                case FORMAT_FLAG_BINARY:
+                    // Nothing special
+                    break;
+            }
+            if(format_spec & FORMAT_FLAG_HEADER)
+            {
+                buf[pos++] = 'H';
+            }
+            VCP_SendLine(buf);
             break;
             
         case CON_ARG_SET_GAIN:
@@ -861,8 +879,42 @@ static void Console_BoardSet(uint32_t argc, char **argv)
                 break;
                 
             case CON_ARG_SET_FORMAT:
-                // TODO set format
-                VCP_SendLine(txtNotImplemented);
+                intval = 0;
+                // Set flags for all specified characters
+                for(const char *c = value; *c; c++)
+                {
+                    if(!IS_FORMAT_FLAG(*c))
+                    {
+                        intval = 0;
+                        break;
+                    }
+                    intval |= FORMAT_FLAG_FROM_CHAR(*c);
+                }
+                // Instead of bailing out we could set defaults for missing flags
+                if(!intval || (intval & FORMAT_MASK_UNKNOWN) ||
+                        !IS_POWER_OF_TWO(intval & FORMAT_MASK_COORDINATES))
+                {
+                    ok = BOARD_ERROR;
+                    break;
+                }
+                switch(intval & FORMAT_MASK_ENCODING)
+                {
+                    case FORMAT_FLAG_ASCII:
+                        if(IS_POWER_OF_TWO(intval & FORMAT_MASK_NUMBERS) &&
+                                IS_POWER_OF_TWO(intval & FORMAT_MASK_SEPARATOR))
+                        {
+                            format_spec = intval;
+                        }
+                        break;
+                        
+                    case FORMAT_FLAG_BINARY:
+                        format_spec = intval;
+                        break;
+                        
+                    default:
+                        ok = BOARD_ERROR;
+                        break;
+                }
                 break;
                 
             case CON_ARG_SET_GAIN:
@@ -1245,6 +1297,23 @@ static void Console_Debug(uint32_t argc, char **argv)
             VCP_SendLine(argv[j]);
         }
     }
+    else if(strcmp(argv[1], "char-from-flag") == 0)
+    {
+        char buf[16];
+        
+        VCP_SendLine("expected bits clz ffs CHAR_FROM_FORMAT_FLAG");
+        for(uint32_t j = 0; j < 32; j++)
+        {
+            char a = 'A' + j;
+            uint32_t flag = (uint32_t)1 << j;
+            uint32_t bits_clz = (uint32_t)__builtin_ctzl(flag);
+            uint32_t bits_ffs = (uint32_t)(ffs(flag) - 1);
+            char c = CHAR_FROM_FORMAT_FLAG(flag);
+            
+            snprintf(buf, NUMEL(buf), "%c %lu %lu %lu %c", a, j, bits_clz, bits_ffs, c);
+            VCP_SendLine(buf);
+        }
+    }
     else
     {
         VCP_SendLine(txtUnknownSubcommand);
@@ -1261,6 +1330,12 @@ static void Console_Debug(uint32_t argc, char **argv)
 void Console_Init(void)
 {
     Console_InitHelp();
+    
+    format_spec = FORMAT_FLAG_ASCII | 
+            FORMAT_FLAG_POLAR | 
+            FORMAT_FLAG_FLOAT | 
+            FORMAT_FLAG_HEADER | 
+            FORMAT_FLAG_SPACE;
 }
 
 /**
