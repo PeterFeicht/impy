@@ -705,12 +705,68 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     VCP_CommandFinish();
 }
 
+/**
+ * Processes the 'board measure' command. This command finishes immediately.
+ * 
+ * @param argc Number of arguments
+ * @param argv Array of arguments
+ */
 static void Console_BoardMeasure(uint32_t argc, char **argv)
 {
     // Arguments: port, freq
-
-    // TODO implement 'board measure'
-    VCP_SendLine(txtNotImplemented);
+    AD5933_ImpedancePolar result;
+    Board_Error ok;
+    uint32_t port;
+    uint32_t freq;
+    const char *end;
+    char buf[64];
+    
+    if(argc != 3)
+    {
+        VCP_SendLine(txtErrArgNum);
+        VCP_CommandFinish();
+        return;
+    }
+    
+    port = IntFromSiString(argv[1], &end);
+    // Uncomment if PORT_MIN is greater than 0
+    if(end == NULL || /*port < PORT_MIN ||*/ port > PORT_MAX)
+    {
+        VCP_SendString(txtInvalidValue);
+        VCP_SendLine("port");
+        VCP_CommandFinish();
+        return;
+    }
+    
+    freq = IntFromSiString(argv[2], &end);
+    if(end == NULL || freq < FREQ_MIN || freq > FREQ_MAX)
+    {
+        VCP_SendString(txtInvalidValue);
+        VCP_SendLine("freq");
+        VCP_CommandFinish();
+        return;
+    }
+    
+    ok = Board_MeasureSingleFrequency((uint8_t)port, freq, &result);
+    
+    switch(ok)
+    {
+        case BOARD_OK:
+            VCP_SendString(txtImpedance);
+            // XXX 64 bytes on the stack is a bit much, maybe use dynamic allocation?
+            snprintf(buf, NUMEL(buf), "%g < %g", result.Magnitude, result.Angle);
+            VCP_SendLine(buf);
+            break;
+            
+        case BOARD_BUSY:
+            VCP_SendLine(txtBoardBusy);
+            break;
+            
+        default:
+            // Should not happen
+            break;
+    }
+    
     VCP_CommandFinish();
 }
 
