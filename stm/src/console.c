@@ -1276,7 +1276,7 @@ static void Console_Help(uint32_t argc, char **argv)
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_Debug(uint32_t argc, char **argv)
+static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
 {
     if(argc == 1)
     {
@@ -1284,6 +1284,7 @@ static void Console_Debug(uint32_t argc, char **argv)
         return;
     }
     
+#ifdef DEBUG
     if(strcmp(argv[1], "send") == 0)
     {
         VCP_SendString("this is a test string\r\n");
@@ -1318,6 +1319,9 @@ static void Console_Debug(uint32_t argc, char **argv)
     {
         VCP_SendLine(txtUnknownSubcommand);
     }
+#else
+    VCP_SendLine("This is a release build, no debug code compiled in.");
+#endif
 
     VCP_CommandFinish();
 }
