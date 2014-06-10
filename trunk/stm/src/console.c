@@ -740,7 +740,8 @@ static void Console_BoardMeasure(uint32_t argc, char **argv)
     uint32_t port;
     uint32_t freq;
     const char *end;
-    char buf[64];
+    char *buf;
+    const uint32_t buflen = 64;
     
     if(argc != 3)
     {
@@ -774,9 +775,17 @@ static void Console_BoardMeasure(uint32_t argc, char **argv)
     {
         case BOARD_OK:
             VCP_SendString(txtImpedance);
-            // XXX 64 bytes on the stack is a bit much, maybe use dynamic allocation?
-            snprintf(buf, NUMEL(buf), "%g < %g", result.Magnitude, result.Angle);
-            VCP_SendLine(buf);
+            buf = malloc(buflen);
+            if(buf != NULL)
+            {
+                snprintf(buf, buflen, "%g < %g", result.Magnitude, result.Angle);
+                VCP_SendLine(buf);
+                free(buf);
+            }
+            else
+            {
+                VCP_SendLine("PANIC!");
+            }
             break;
             
         case BOARD_BUSY:
