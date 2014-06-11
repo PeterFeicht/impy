@@ -392,7 +392,7 @@ void Board_GetStatus(Board_Status *result)
  * @param count Pointer to a variable receiving the number of points in the buffer
  * @return Pointer to the data buffer
  */
-AD5933_ImpedancePolar* Board_GetDataPolar(uint32_t *count)
+const AD5933_ImpedancePolar* Board_GetDataPolar(uint32_t *count)
 {
     if(!convertedPolar)
     {
