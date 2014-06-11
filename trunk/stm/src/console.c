@@ -495,6 +495,19 @@ static void Console_BoardGet(uint32_t argc, char **argv)
             VCP_SendLine(VCP_GetEcho() ? txtEnabled : txtDisabled);
             break;
             
+        case CON_ARG_SET_FEEDBACK:
+            if(autorange)
+            {
+                VCP_SendLine(txtGetOnlyWhenAutorangeDisabled);
+            }
+            else
+            {
+                AD5933_RangeSettings *range = Board_GetRangeSettings();
+                SiStringFromInt(buf, NUMEL(buf), range->Feedback_Value);
+                VCP_SendLine(buf);
+            }
+            break;
+            
         case CON_ARG_SET_FORMAT:
             memset(buf, 0, NUMEL(buf));
             uint8_t pos = 0;
@@ -900,6 +913,18 @@ static void Console_BoardSet(uint32_t argc, char **argv)
                 
             case CON_ARG_SET_ECHO:
                 VCP_SetEcho(flag == CON_FLAG_ON);
+                break;
+                
+            case CON_ARG_SET_FEEDBACK:
+                if(autorange)
+                {
+                    VCP_SendString(txtSetOnlyWhenAutorangeDisabled);
+                    VCP_SendLine(arg->arg);
+                }
+                else
+                {
+                    ok = Board_SetFeedback(intval);
+                }
                 break;
                 
             case CON_ARG_SET_FORMAT:
