@@ -274,6 +274,46 @@ Board_Error Board_SetAutorange(uint8_t enable)
 }
 
 /**
+ * Sets the value of the current feedback resistor in Ohms.
+ * 
+ * @param ohms the value of the resistor in Ohms
+ * @return {@link Board_Error} code
+ */
+Board_Error Board_SetFeedback(uint32_t ohms)
+{
+    AD5933_Status status = AD5933_GetStatus();
+    if(status != AD_FINISH && status != AD_IDLE)
+    {
+        return BOARD_BUSY;
+    }
+    
+    static const uint32_t feedbackValues[] = {
+        AD5933_FEEDBACK_PORT_0, AD5933_FEEDBACK_PORT_1, AD5933_FEEDBACK_PORT_2, AD5933_FEEDBACK_PORT_3,
+        AD5933_FEEDBACK_PORT_4, AD5933_FEEDBACK_PORT_5, AD5933_FEEDBACK_PORT_6, AD5933_FEEDBACK_PORT_7
+    };
+    
+    if(!autorange)
+    {
+        uint32_t fb = 0;
+        for(uint32_t j = 0; j < NUMEL(feedbackValues); j++)
+        {
+            if(ohms == feedbackValues[j])
+            {
+                fb = feedbackValues[j];
+                break;
+            }
+        }
+        if(!fb)
+        {
+            return BOARD_ERROR;
+        }
+        range.Feedback_Value = fb;
+    }
+    
+    return BOARD_OK;
+}
+
+/**
  * Gets the current start frequency used for a sweep.
  */
 uint32_t Board_GetStartFreq(void)
