@@ -100,6 +100,7 @@ Board_Error Board_SetSettlingCycles(uint16_t cycles, uint8_t multiplier);
 Board_Error Board_SetVoltageRange(uint16_t voltage);
 Board_Error Board_SetPGA(uint8_t enable);
 Board_Error Board_SetAutorange(uint8_t enable);
+Board_Error Board_SetFeedback(uint32_t ohms);
 
 uint32_t Board_GetStartFreq(void);
 uint32_t Board_GetStopFreq(void);
