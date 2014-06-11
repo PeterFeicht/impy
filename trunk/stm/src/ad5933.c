@@ -603,17 +603,11 @@ float AD5933_GetPhase(AD5933_ImpedanceData *data, AD5933_GainFactor *gain)
     
     // Make sure the corrected result is in the range of -pi to pi
     if(phase > M_PI)
-    {
-        return phase - 2 * M_PI;
-    }
+        return phase - M_TWOPI;
     else if(phase < -M_PI)
-    {
-        return phase + 2 * M_PI;
-    }
+        return phase + M_TWOPI;
     else
-    {
         return phase;
-    }
 }
 
 /**
@@ -642,7 +636,7 @@ void AD5933_ConvertPolarToCartesian(AD5933_ImpedancePolar *polar, AD5933_Impedan
  * Gets the corresponding voltage in mV for a voltage range register value (one of the {@link AD5933_VOLTAGE} values).
  * 
  * @param reg The voltage range register value
- * @return The corresponding output voltage in mV
+ * @return The corresponding output voltage in mV, or {@code 0} for invalid values
  */
 uint16_t AD5933_GetVoltageFromRegister(uint16_t reg)
 {
