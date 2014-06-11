@@ -85,6 +85,7 @@ static uint8_t Console_CallProcessor(uint32_t argc, char **argv, const Console_C
 static const Console_Arg* Console_GetArg(char *arg, const Console_Arg *args, uint32_t count);
 static char* Console_GetArgValue(char *arg);
 static Console_FlagValue Console_GetFlag(const char *str);
+static uint32_t Console_FormatSpecFromString(const char *str);
 // Command line processors
 static void Console_Board(uint32_t argc, char **argv);
 static void Console_BoardCalibrate(uint32_t argc, char **argv);
@@ -413,6 +414,61 @@ static Console_FlagValue Console_GetFlag(const char *str)
     {
         return CON_FLAG_INVALID;
     }
+}
+
+/**
+ * Extract format flags from the specified string.
+ * 
+ * For example, for the string <i>BHP</i> the return value would be an integer with bits {@code FORMAT_FLAG_BINARY},
+ * {@code FORMAT_FLAG_HEADER} and {@code FORMAT_FLAG_POLAR} set.
+ * The return value for the string <i>AHP</i>, however, would be {@code 0}, since the specification for separator
+ * character and number format are missing.
+ * 
+ * @param str Pointer to a zero terminated string
+ * @return Format flags on success, {@code 0} otherwise
+ */
+static uint32_t Console_FormatSpecFromString(const char *str)
+{
+    uint32_t flags = 0;
+    
+    if(str == NULL)
+    {
+        return 0;
+    }
+    
+    // Set flags for all specified characters
+    for(const char *c = str; *c; c++)
+    {
+        if(!IS_FORMAT_FLAG(*c))
+        {
+            flags = 0;
+            break;
+        }
+        flags |= FORMAT_FLAG_FROM_CHAR(*c);
+    }
+    
+    // Instead of bailing out we could set defaults for missing flags
+    if(!flags || (flags & FORMAT_MASK_UNKNOWN) ||
+            !IS_POWER_OF_TWO(flags & FORMAT_MASK_COORDINATES))
+    {
+        return 0;
+    }
+    
+    switch(flags & FORMAT_MASK_ENCODING)
+    {
+        case FORMAT_FLAG_ASCII:
+            if(IS_POWER_OF_TWO(flags & FORMAT_MASK_NUMBERS) &&
+                    IS_POWER_OF_TWO(flags & FORMAT_MASK_SEPARATOR))
+            {
+                return flags;
+            }
+            break;
+            
+        case FORMAT_FLAG_BINARY:
+            return flags;
+    }
+    
+    return 0;
 }
 
 /**
@@ -928,41 +984,14 @@ static void Console_BoardSet(uint32_t argc, char **argv)
                 break;
                 
             case CON_ARG_SET_FORMAT:
-                intval = 0;
-                // Set flags for all specified characters
-                for(const char *c = value; *c; c++)
+                intval = Console_FormatSpecFromString(value);
+                if(intval != 0)
                 {
-                    if(!IS_FORMAT_FLAG(*c))
-                    {
-                        intval = 0;
-                        break;
-                    }
-                    intval |= FORMAT_FLAG_FROM_CHAR(*c);
+                    format_spec = intval;
                 }
-                // Instead of bailing out we could set defaults for missing flags
-                if(!intval || (intval & FORMAT_MASK_UNKNOWN) ||
-                        !IS_POWER_OF_TWO(intval & FORMAT_MASK_COORDINATES))
+                else
                 {
                     ok = BOARD_ERROR;
-                    break;
-                }
-                switch(intval & FORMAT_MASK_ENCODING)
-                {
-                    case FORMAT_FLAG_ASCII:
-                        if(IS_POWER_OF_TWO(intval & FORMAT_MASK_NUMBERS) &&
-                                IS_POWER_OF_TWO(intval & FORMAT_MASK_SEPARATOR))
-                        {
-                            format_spec = intval;
-                        }
-                        break;
-                        
-                    case FORMAT_FLAG_BINARY:
-                        format_spec = intval;
-                        break;
-                        
-                    default:
-                        ok = BOARD_ERROR;
-                        break;
                 }
                 break;
                 
