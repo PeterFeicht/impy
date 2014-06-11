@@ -5,10 +5,10 @@ Below you will find all commands currently understood, they are all case
 sensitive. Most settings will be saved in memory on-board.
 
 Commands:
-  board set [--start=FREQ] [--stop=FREQ] [--steps=NUM]
-  board set [--settl=CYCLES] [--voltage=RANGE] [--gain=(on|off)]
+  board set [--start=FREQ] [--stop=FREQ] [--steps=NUM] [--settl=CYCLES]
+  board set [--voltage=RANGE] [--gain=(on|off)] [--feedback=OHMS]
   board set [--format=FMT] [--autorange=(on|off)] [--echo=(on|off)]
-  board (info | get <option>)
+  board (info | get <option> | calibrate <ohms>)
   board (start <port> | stop | status | temp | measure <port> <freq>)
   board read [--format=FMT]
   eth set [--dhcp=(on|off)] [--ip=IP]
@@ -28,6 +28,8 @@ Options:
   --voltage         Set the output voltage range in mV [default: 1000]
                     See 'help voltage' for valid values
   --gain            Enable or disable the x5 input gain stage [default: off]
+  --feedback        Set the value of the I-U feedback resistor [default: 1000]
+                    For valid values see 'board info'
   --format          Set the output format of measurement data [default: APFHS]
                     For possible formats see 'help format'
   --autorange       Enable or disable auto-ranging [default: on]
@@ -39,6 +41,8 @@ Commands:
   set           Set option(s) to specified value(s)
   get           Print current value of specified option
   info          Print status information for the whole board
+  calibrate     Perform a calibration with the specified resistor value
+                For more information see 'help calibrate'
   start         Start a frequency sweep on specified port
                 For the valid port range see 'board info'
   stop          Stop a running frequency sweep
@@ -102,6 +106,9 @@ The specified voltage needs to be one of the four AD5933 voltage ranges,
 divided by the possible attenuations.
 
 help autorange:
+  TODO
+
+help calibrate:
   TODO
 
 help echo:
