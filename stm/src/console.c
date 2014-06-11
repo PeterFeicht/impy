@@ -21,6 +21,7 @@ typedef enum
     CON_ARG_READ_FORMAT,
     CON_ARG_SET_AUTORANGE,
     CON_ARG_SET_ECHO,
+    CON_ARG_SET_FEEDBACK,
     CON_ARG_SET_FORMAT,
     CON_ARG_SET_GAIN,
     CON_ARG_SET_SETTL,
@@ -86,6 +87,7 @@ static char* Console_GetArgValue(char *arg);
 static Console_FlagValue Console_GetFlag(const char *str);
 // Command line processors
 static void Console_Board(uint32_t argc, char **argv);
+static void Console_BoardCalibrate(uint32_t argc, char **argv);
 static void Console_BoardGet(uint32_t argc, char **argv);
 static void Console_BoardInfo(uint32_t argc, char **argv);
 static void Console_BoardMeasure(uint32_t argc, char **argv);
@@ -124,6 +126,7 @@ static Console_HelpEntry txtHelpTopics[] = {
     { "settl", NULL },
     { "voltage", NULL },
     { "autorange", NULL },
+    { "calibrate", NULL },
     { "echo", NULL }
 };
 // Those are the top level commands, subcommands are called from their respective processing functions
@@ -142,6 +145,7 @@ static const Console_Arg argsBoardSet[] = {
     { "settl", CON_ARG_SET_SETTL, CON_STRING },
     { "voltage", CON_ARG_SET_VOLTAGE, CON_INT },
     { "gain", CON_ARG_SET_GAIN, CON_FLAG },
+    { "feedback", CON_ARG_SET_FEEDBACK, CON_INT },
     { "format", CON_ARG_SET_FORMAT, CON_STRING },
     { "autorange", CON_ARG_SET_AUTORANGE, CON_FLAG },
     { "echo", CON_ARG_SET_ECHO, CON_FLAG }
@@ -423,6 +427,7 @@ static void Console_Board(uint32_t argc, char **argv)
         { "set", Console_BoardSet },
         { "get", Console_BoardGet },
         { "info", Console_BoardInfo },
+        { "calibrate", Console_BoardCalibrate },
         { "start", Console_BoardStart },
         { "stop", Console_BoardStop },
         { "status", Console_BoardStatus },
@@ -441,6 +446,13 @@ static void Console_Board(uint32_t argc, char **argv)
         VCP_SendLine(txtUnknownSubcommand);
         VCP_CommandFinish();
     }
+}
+
+static void Console_BoardCalibrate(uint32_t argc, char **argv)
+{
+    // TODO implement 'board calibrate'
+    VCP_SendLine(txtNotImplemented);
+    VCP_CommandFinish();
 }
 
 /**
