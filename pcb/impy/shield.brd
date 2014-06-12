@@ -157,9 +157,9 @@ Peter Feichtinger 2014</text>
 <text x="-19.3675" y="11.1125" size="1.6764" layer="51" font="vector" align="top-left">mini Impedance Spectrometer
 Peter Feichtinger 2014</text>
 <text x="-19.3675" y="5.08" size="1.6764" layer="51" font="vector" align="top-left">REV 1.0</text>
-<text x="47.3075" y="69.215" size="1.27" layer="51" ratio="10" align="bottom-center">User</text>
-<text x="60.6425" y="69.215" size="1.27" layer="51" ratio="10" align="bottom-center">Reset</text>
-<text x="83.5025" y="70.1675" size="1.27" layer="51" ratio="10" align="bottom-center">I2C</text>
+<text x="47.3075" y="68.2625" size="1.27" layer="51" ratio="10" align="bottom-center">User</text>
+<text x="60.6425" y="68.2625" size="1.27" layer="51" ratio="10" align="bottom-center">Reset</text>
+<text x="83.5025" y="69.5325" size="1.27" layer="51" ratio="10" align="bottom-center">I2C</text>
 <text x="90.4875" y="34.29" size="1.27" layer="51" ratio="10" rot="R90" align="bottom-center">Force</text>
 <text x="87.9475" y="34.29" size="1.27" layer="51" ratio="10" rot="R90" align="bottom-center">Sense</text>
 <text x="77.47" y="37.7825" size="1.27" layer="51" ratio="10">Sense</text>
