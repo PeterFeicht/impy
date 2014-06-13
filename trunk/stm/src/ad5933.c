@@ -16,7 +16,7 @@ static HAL_StatusTypeDef AD5933_Write24(uint16_t MemAddress, uint32_t value);
 static HAL_StatusTypeDef AD5933_Read16(uint16_t MemAddress, uint16_t *destination);
 static uint8_t AD5933_ReadStatus();
 static uint32_t AD5933_CalcFrequencyReg(uint32_t freq);
-static AD5933_Error AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_t freq_start, uint32_t freq_step,
+static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, uint32_t freq_start, uint32_t freq_step,
         uint16_t num_incr, uint16_t settl);
 
 // Private variables ----------------------------------------------------------
@@ -126,7 +126,7 @@ static uint32_t AD5933_CalcFrequencyReg(uint32_t freq)
  * @param settl Settling time register value
  * @return {@link AD5933_Error} code
  */
-static AD5933_Error AD5933_StartMeasurement(AD5933_RangeSettings *range, uint32_t freq_start, uint32_t freq_step,
+static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, uint32_t freq_start, uint32_t freq_step,
         uint16_t num_incr, uint16_t settl)
 {
     uint16_t data;
@@ -314,7 +314,8 @@ AD5933_Error AD5933_Reset(void)
  *               number of samples)
  * @return {@link AD5933_Error} code
  */
-AD5933_Error AD5933_MeasureImpedance(AD5933_Sweep *sweep, AD5933_RangeSettings *range, AD5933_ImpedanceData *buffer)
+AD5933_Error AD5933_MeasureImpedance(const AD5933_Sweep *sweep, const AD5933_RangeSettings *range,
+        AD5933_ImpedanceData *buffer)
 {
     uint16_t data;
     AD5933_Error ret;
@@ -392,7 +393,7 @@ AD5933_Error AD5933_MeasureTemperature(float *destination)
  * @param range The specifications for PGA gain, voltage range, external attenuation and feedback resistor
  * @return {@link AD5933_Error} code
  */
-AD5933_Error AD5933_Calibrate(AD5933_GainFactorData *data, AD5933_RangeSettings *range)
+AD5933_Error AD5933_Calibrate(AD5933_GainFactorData *data, const AD5933_RangeSettings *range)
 {
     uint32_t freq_step = 10;
     AD5933_Error ret;
@@ -532,7 +533,7 @@ void AD5933_TIM_PeriodElapsedCallback(void)
  * @param data The measurement data to calculate the gain factor from
  * @param gf Pointer to a gain factor structure to be populated
  */
-void AD5933_CalculateGainFactor(AD5933_GainFactorData *data, AD5933_GainFactor *gf)
+void AD5933_CalculateGainFactor(const AD5933_GainFactorData *data, AD5933_GainFactor *gf)
 {
     // Gain factor is calculated by 1/(Magnitude * Impedance), with Magnitude being sqrt(Real^2 + Imag^2)
     float magnitude = hypotf(data->real1, data->imag1);
@@ -568,7 +569,7 @@ void AD5933_CalculateGainFactor(AD5933_GainFactorData *data, AD5933_GainFactor *
  * @param gain Gain factor structure to use
  * @return The magnitude of the impedance in Ohms
  */
-float AD5933_GetMagnitude(AD5933_ImpedanceData *data, AD5933_GainFactor *gain)
+float AD5933_GetMagnitude(const AD5933_ImpedanceData *data, const AD5933_GainFactor *gain)
 {
     // Actual impedance is calculated by 1/(Magnitude * Gain Factor), with Magnitude being sqrt(Real^2 + Imag^2)
     float magnitude = hypotf(data->Real, data->Imag);
@@ -589,7 +590,7 @@ float AD5933_GetMagnitude(AD5933_ImpedanceData *data, AD5933_GainFactor *gain)
  * @param gain Gain factor structure to use
  * @return The phase in radians (in the range of -pi to +pi)
  */
-float AD5933_GetPhase(AD5933_ImpedanceData *data, AD5933_GainFactor *gain)
+float AD5933_GetPhase(const AD5933_ImpedanceData *data, const AD5933_GainFactor *gain)
 {
     float phase = atan2f(data->Imag, data->Real);
     float phase_2point = gain->phaseOffset;
@@ -616,7 +617,7 @@ float AD5933_GetPhase(AD5933_ImpedanceData *data, AD5933_GainFactor *gain)
  * @param polar Pointer to a polar impedance structure
  * @param cart Pointer to a Cartesian structure to be populated
  */
-void AD5933_ConvertPolarToCartesian(AD5933_ImpedancePolar *polar, AD5933_ImpedanceCartesian *cart)
+void AD5933_ConvertPolarToCartesian(const AD5933_ImpedancePolar *polar, AD5933_ImpedanceCartesian *cart)
 {
     float real;
     float imag;

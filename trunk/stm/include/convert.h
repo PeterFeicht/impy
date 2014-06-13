@@ -62,9 +62,9 @@ typedef struct
                                        FORMAT_FLAG_HEADER))
 
 // Exported functions ---------------------------------------------------------
-uint32_t Convert_FormatSpecFromString(char *str);
+uint32_t Convert_FormatSpecFromString(const char *str);
 uint32_t Convert_FormatSpecToString(char *buf, uint32_t length, uint32_t format);
-Buffer Convert_ConvertPolar(uint32_t format, AD5933_ImpedancePolar *data, uint32_t count);
+Buffer Convert_ConvertPolar(uint32_t format, const AD5933_ImpedancePolar *data, uint32_t count);
 
 void FreeBuffer(Buffer *buffer);
 
