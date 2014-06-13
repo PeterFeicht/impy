@@ -1,6 +1,6 @@
 /**
  * @file    strings_en.h
- * @author  Peter
+ * @author  Peter Feichtinger
  * @date    06.06.2014
  * @brief   Defines user interface strings in English.
  */

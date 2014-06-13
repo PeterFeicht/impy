@@ -1,6 +1,6 @@
 /**
  * @file    console.c
- * @author  Peter
+ * @author  Peter Feichtinger
  * @date    16.05.2014
  * @brief   This file contains the definition of the console interface.
  */

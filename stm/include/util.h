@@ -1,6 +1,6 @@
 /**
  * @file    util.h
- * @author  Peter
+ * @author  Peter Feichtinger
  * @date    06.06.2014
  * @brief   Header file for the utility functions.
  */
