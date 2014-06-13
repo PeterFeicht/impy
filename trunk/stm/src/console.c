@@ -1371,12 +1371,14 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
 #ifdef DEBUG
     if(strcmp(argv[1], "send") == 0)
     {
+        // Send some strings to test how the VCP copes with multiple calls in close succession
         VCP_SendString("this is a test string\r\n");
         VCP_SendString("second SendString call with a string that is longer than before.\r\n");
         VCP_SendString("short line\r\n");
     }
     else if(strcmp(argv[1], "echo") == 0)
     {
+        // Echo back all received arguments
         for(uint32_t j = 2; j < argc; j++)
         {
             VCP_SendLine(argv[j]);
@@ -1384,6 +1386,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
     }
     else if(strcmp(argv[1], "char-from-flag") == 0)
     {
+        // Test what functions to use for getting the set bit in an integer
         char buf[16];
         
         VCP_SendLine("expected bits clz ffs CHAR_FROM_FORMAT_FLAG");
@@ -1401,6 +1404,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
     }
     else if(strcmp(argv[1], "printf-float") == 0)
     {
+        // Test the number format of floating point numbers
         char *buf;
         uint32_t size = 100;
         buf = malloc(size);
@@ -1426,6 +1430,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
     }
     else if(strcmp(argv[1], "malloc") == 0)
     {
+        // Test how much memory can be allocated and whether an out of memory error is handled by malloc
         const uint32_t len = 81;        // String buffer length
         const uint32_t length = 400;    // Length of buffer pointer array
         const uint32_t size = 500;      // Size of allocated buffers
@@ -1475,6 +1480,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
     }
     else if(strcmp(argv[1], "leak") == 0)
     {
+        // Leak a specified amount of memory
         if(argc == 3)
         {
             const char *end;
