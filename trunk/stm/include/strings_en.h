@@ -49,6 +49,9 @@ const char *txtFrequencyRange = "The possible frequency range in Hz is ";
 // board measure
 const char *txtBoardBusy = "Another measurement is currently running.";
 const char *txtImpedance = "Impedance (polar): ";
+// board read
+const char *txtNoReadWhileBusy = "Data can only be read after the measurement is finished.";
+const char *txtOutOfMemory = "Not enough memory to send all data, try binary format or use fewer points.";
 
 // Words ----------------------------------------------------------------------
 const char *txtEnabled = "enabled";
