@@ -411,4 +411,19 @@ Buffer Convert_ConvertPolar(uint32_t format, AD5933_ImpedancePolar *data, uint32
     }
 }
 
+/**
+ * Frees the memory allocated for the specified buffer and sets its values to zero.
+ * 
+ * @param buffer Pointer to the buffer to free
+ */
+void FreeBuffer(Buffer *buffer)
+{
+    if(buffer == NULL)
+        return;
+    
+    free(buffer->data);
+    buffer->data = NULL;
+    buffer->size = 0;
+}
+
 // ----------------------------------------------------------------------------
