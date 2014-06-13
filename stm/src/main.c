@@ -25,11 +25,12 @@ static uint32_t stopFreq;
 static uint8_t port;
 static uint8_t autorange;
 
+// XXX should we allocate buffers dynamically?
 static AD5933_ImpedanceData bufData[AD5933_MAX_NUM_INCREMENTS + 1];
 static AD5933_ImpedancePolar bufPolar[AD5933_MAX_NUM_INCREMENTS + 1];
 static uint8_t convertedPolar = 0;
 static uint8_t interrupted = 0;
-static uint8_t pointCount = 0;
+static uint32_t pointCount = 0;
 
 // Private functions ----------------------------------------------------------
 static void SetDefaults(void)
@@ -396,7 +397,7 @@ const AD5933_ImpedancePolar* Board_GetDataPolar(uint32_t *count)
 {
     if(!convertedPolar)
     {
-        for(int j = 0; j < pointCount; j++)
+        for(uint32_t j = 0; j < pointCount; j++)
         {
             bufPolar[j].Frequency = bufData[j].Frequency;
             bufPolar[j].Magnitude = AD5933_GetMagnitude(&bufData[j], &gainFactor);
