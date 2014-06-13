@@ -11,6 +11,7 @@
 #include "console.h"
 #include "main.h"
 #include "util.h"
+#include "convert.h"
 // Pull in support function needed for float formatting with printf
 __ASM (".global _printf_float");
 
@@ -470,6 +471,8 @@ static uint32_t Console_FormatSpecFromString(const char *str)
     
     return 0;
 }
+
+// Command processing functions -----------------------------------------------
 
 /**
  * Calls the appropriate subcommand processing function for {@code board} commands.
