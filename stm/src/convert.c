@@ -15,8 +15,8 @@
 __ASM (".global _printf_float");
 
 // Private function prototypes ------------------------------------------------
-Buffer Convert_PolarAscii(uint32_t format, AD5933_ImpedancePolar *data, uint32_t count);
-Buffer Convert_PolarBinary(uint32_t format, AD5933_ImpedancePolar *data, uint32_t count);
+Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *data, uint32_t count);
+Buffer Convert_PolarBinary(uint32_t format, const AD5933_ImpedancePolar *data, uint32_t count);
 
 // Private variables ----------------------------------------------------------
 // These strings don't get localized for easier parsing
@@ -36,7 +36,7 @@ static const char *txtImaginary = "Imaginary";
  * @param count Number of elements in array
  * @return Buffer with converted data
  */
-Buffer Convert_PolarAscii(uint32_t format, AD5933_ImpedancePolar *data, uint32_t count)
+Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *data, uint32_t count)
 {
     uint32_t alloc = 0;
     void *buffer;
@@ -199,7 +199,7 @@ Buffer Convert_PolarAscii(uint32_t format, AD5933_ImpedancePolar *data, uint32_t
  * @param count Number of elements in array
  * @return Buffer with converted data
  */
-Buffer Convert_PolarBinary(uint32_t format, AD5933_ImpedancePolar *data, uint32_t count)
+Buffer Convert_PolarBinary(uint32_t format, const AD5933_ImpedancePolar *data, uint32_t count)
 {
     uint32_t alloc = 0;
     void *buffer;
@@ -286,7 +286,7 @@ Buffer Convert_PolarBinary(uint32_t format, AD5933_ImpedancePolar *data, uint32_
  * @param str Pointer to a zero terminated string
  * @return Format flags on success, {@code 0} otherwise
  */
-uint32_t Convert_FormatSpecFromString(char *str)
+uint32_t Convert_FormatSpecFromString(const char *str)
 {
     uint32_t flags = 0;
     
@@ -388,7 +388,7 @@ uint32_t Convert_FormatSpecToString(char *buf, uint32_t length, uint32_t format)
  * @param count Number of elements in data array
  * @return A buffer structure with the converted data
  */
-Buffer Convert_ConvertPolar(uint32_t format, AD5933_ImpedancePolar *data, uint32_t count)
+Buffer Convert_ConvertPolar(uint32_t format, const AD5933_ImpedancePolar *data, uint32_t count)
 {
     Buffer null = {
         .data = NULL,
