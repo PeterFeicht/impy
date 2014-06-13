@@ -120,7 +120,7 @@ uint32_t Convert_FormatSpecToString(char *buf, uint32_t length, uint32_t format)
     
     if(format & FORMAT_FLAG_HEADER)
     {
-        buf[pos++] = 'H';
+        buf[pos++] = CHAR_FROM_FORMAT_FLAG(format & FORMAT_FLAG_HEADER);
     }
     
     return pos;
