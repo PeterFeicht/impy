@@ -1,6 +1,6 @@
 /**
  * @file    util.c
- * @author  Peter
+ * @author  Peter Feichtinger
  * @date    06.06.2014
  * @brief   This file contains utility functions for things like converting strings to numbers and such.
  */
