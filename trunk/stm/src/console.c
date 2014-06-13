@@ -1358,6 +1358,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
 {
     if(argc == 1)
     {
+        VCP_SendLine("send, char-from-flag, printf-float, malloc, leak");
         VCP_CommandFinish();
         return;
     }
