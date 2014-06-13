@@ -115,6 +115,10 @@ static void Console_Debug(uint32_t argc, char **argv);
 // Private variables ----------------------------------------------------------
 static char *arguments[CON_MAX_ARGUMENTS];
 static uint32_t format_spec;
+static Buffer board_read_data = {
+    .data = NULL,
+    .size = 0
+};
 
 // Console definition
 extern char helptext_start;
@@ -816,9 +820,80 @@ static void Console_BoardRead(uint32_t argc, char **argv)
     static const Console_Arg args[] = {
         { "format", CON_ARG_READ_FORMAT, CON_STRING }
     };
+    
+    uint32_t format = format_spec;
+    const AD5933_ImpedancePolar *data;
+    uint32_t count;
+    
+    // In case data from the previous command has not been deallocated, do so now
+    FreeBuffer(&board_read_data);
+    
+    // Check status, we also allow for incomplete data to be retrieved (status == AD_IDLE)
+    AD5933_Status status = AD5933_GetStatus();
+    if(status != AD_FINISH && status != AD_IDLE)
+    {
+        VCP_SendLine(txtNoReadWhileBusy);
+        VCP_CommandFinish();
+        return;
+    }
+    
+    // Process additional arguments, if any
+    for(uint32_t j = 1; j < argc; j++)
+    {
+        const Console_Arg *arg = Console_GetArg(argv[j], args, NUMEL(args));
+        char *value = Console_GetArgValue(argv[j]);
+        
+        uint32_t intval = 0;
+        
+        if(arg == NULL)
+        {
+            // Complain about unknown arguments and bail out
+            VCP_SendLine(txtUnknownOption);
+            VCP_SendLine(argv[j]);
+            VCP_CommandFinish();
+            return;
+        }
+        
+        switch(arg->id)
+        {
+            case CON_ARG_READ_FORMAT:
+                intval = Convert_FormatSpecFromString(value);
+                if(intval != 0)
+                {
+                    format = intval;
+                }
+                else
+                {
+                    VCP_SendString(txtInvalidValue);
+                    VCP_SendLine(arg->arg);
+                    VCP_CommandFinish();
+                    return;
+                }
+                break;
+                
+            default:
+                // Should not happen, means that a defined argument has no switch case
+                VCP_SendLine(txtNotImplemented);
+                VCP_SendLine(arg->arg);
+                VCP_CommandFinish();
+                return;
+        }
+    }
+    
+    // Get and assemble data to be sent
+    data = Board_GetDataPolar(&count);
+    board_read_data = Convert_ConvertPolar(format, data, count);
+    
+    if(board_read_data.data != NULL)
+    {
+        VCP_SendBuffer((uint8_t *)board_read_data.data, board_read_data.size);
+        VCP_Flush();
+    }
+    else
+    {
+        VCP_SendLine(txtOutOfMemory);
+    }
 
-    // TODO implement 'board read'
-    VCP_SendLine(txtNotImplemented);
     VCP_CommandFinish();
 }
 
