@@ -66,6 +66,8 @@ uint32_t Convert_FormatSpecFromString(char *str);
 uint32_t Convert_FormatSpecToString(char *buf, uint32_t length, uint32_t format);
 Buffer Convert_ConvertPolar(uint32_t format, AD5933_ImpedancePolar *data, uint32_t count);
 
+void FreeBuffer(Buffer *buffer);
+
 // ----------------------------------------------------------------------------
 
 #endif /* CONVERT_H_ */
