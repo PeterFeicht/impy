@@ -15,8 +15,8 @@
 __ASM (".global _printf_float");
 
 // Private function prototypes ------------------------------------------------
-Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *data, uint32_t count);
-Buffer Convert_PolarBinary(uint32_t format, const AD5933_ImpedancePolar *data, uint32_t count);
+static Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *data, uint32_t count);
+static Buffer Convert_PolarBinary(uint32_t format, const AD5933_ImpedancePolar *data, uint32_t count);
 
 // Private variables ----------------------------------------------------------
 // These strings don't get localized for easier parsing
@@ -36,7 +36,7 @@ static const char *txtImaginary = "Imaginary";
  * @param count Number of elements in array
  * @return Buffer with converted data
  */
-Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *data, uint32_t count)
+static Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *data, uint32_t count)
 {
     uint32_t alloc = 0;
     void *buffer;
@@ -199,7 +199,7 @@ Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *data, ui
  * @param count Number of elements in array
  * @return Buffer with converted data
  */
-Buffer Convert_PolarBinary(uint32_t format, const AD5933_ImpedancePolar *data, uint32_t count)
+static Buffer Convert_PolarBinary(uint32_t format, const AD5933_ImpedancePolar *data, uint32_t count)
 {
     uint32_t alloc = 0;
     void *buffer;
