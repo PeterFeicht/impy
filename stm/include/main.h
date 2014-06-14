@@ -111,11 +111,13 @@ uint8_t Board_GetAutorange(void);
 
 void Board_GetStatus(Board_Status *result);
 const AD5933_ImpedancePolar* Board_GetDataPolar(uint32_t *count);
+const AD5933_ImpedanceData* Board_GetDataRaw(uint32_t *count);
 Board_Error Board_StartSweep(uint8_t port);
 Board_Error Board_StopSweep(void);
 uint8_t Board_GetPort(void);
 Board_Error Board_MeasureSingleFrequency(uint8_t port, uint32_t freq, AD5933_ImpedancePolar *result);
 float Board_MeasureTemperature(Board_TemperatureSource what);
+Board_Error Board_Calibrate(uint32_t ohms);
 
 
 // ----------------------------------------------------------------------------
