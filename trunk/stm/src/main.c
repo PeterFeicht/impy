@@ -16,6 +16,7 @@ static void SetDefaults(void);
 USBD_HandleTypeDef hUsbDevice;
 I2C_HandleTypeDef hi2c1;
 SPI_HandleTypeDef hspi3;
+TIM_HandleTypeDef htim10;
 
 // AD5933 driver values
 static AD5933_Sweep sweep;
