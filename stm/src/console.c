@@ -887,7 +887,6 @@ static void Console_BoardRead(uint32_t argc, char **argv)
     if(board_read_data.data != NULL)
     {
         VCP_SendBuffer((uint8_t *)board_read_data.data, board_read_data.size);
-        VCP_Flush();
     }
     else
     {
@@ -1535,7 +1534,6 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
             if(noleak.data != NULL)
             {
                 VCP_SendBuffer(noleak.data, noleak.size);
-                VCP_Flush();
             }
             else
             {
