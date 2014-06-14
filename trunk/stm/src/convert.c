@@ -209,7 +209,7 @@ static Buffer Convert_PolarBinary(uint32_t format, const AD5933_ImpedancePolar *
             alloc = count * sizeof(AD5933_ImpedanceCartesian);
             break;
     }
-    alloc += (format & FORMAT_FLAG_HEADER ? sizeof(count) : 0);
+    alloc += (format & FORMAT_FLAG_HEADER ? 4 : 0);
     
     buffer = malloc(alloc);
     if(buffer == NULL)
@@ -218,11 +218,11 @@ static Buffer Convert_PolarBinary(uint32_t format, const AD5933_ImpedancePolar *
     if(format & FORMAT_FLAG_HEADER)
     {
 #ifdef __ARMEB__
-        *((uint32_t *)buffer) = count;
+        *((uint32_t *)buffer) = alloc - 4;
 #else
-        *((uint32_t *)buffer) = __REV(count);
+        *((uint32_t *)buffer) = __REV(alloc - 4);
 #endif
-        size += sizeof(count);
+        size += 4;
     }
     
     switch(format & FORMAT_MASK_COORDINATES)
