@@ -525,7 +525,7 @@ Board_Error Board_Calibrate(uint32_t ohms)
     if(!autorange)
     {
         uint8_t cal = 0;
-        for(uint32_t j = 0; j < NUMEL(calibrationValues); j++)
+        for(uint32_t j = 0; j < NUMEL(calibrationValues) && calibrationValues[j]; j++)
         {
             if(ohms == calibrationValues[j])
             {
