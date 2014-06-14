@@ -173,7 +173,7 @@ static Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *d
     
     if(size < alloc - 100)
     {
-        realloc(buffer, size);
+        buffer = realloc(buffer, size);
     }
     
     ret.data = buffer;
