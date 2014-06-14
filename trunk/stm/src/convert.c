@@ -135,12 +135,7 @@ static Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *d
                         uint32_t magnitude = *((uint32_t *)(&data[j].Magnitude));
                         uint32_t angle = *((uint32_t *)(&data[j].Angle));
                         size += snprintf((char *)(buffer + size), alloc - size, "%.8lx%c%.8lx%c%.8lx\r\n",
-#ifdef __ARMEB__
                                 data[j].Frequency, separator, magnitude, separator, angle);
-#else
-                               // TODO reverse float byte order if necessary
-                               __REV(data[j].Frequency), separator, magnitude, separator, angle);
-#endif
                     }
                     break;
             }
@@ -169,12 +164,7 @@ static Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *d
                         uint32_t real = *((uint32_t *)(&tmp.Real));
                         uint32_t imag = *((uint32_t *)(&tmp.Imag));
                         size += snprintf((char *)(buffer + size), alloc - size, "%.8lx%c%.8lx%c%.8lx\r\n",
-#ifdef __ARMEB__
                                 data[j].Frequency, separator, real, separator, imag);
-#else
-                                // TODO reverse float byte order if necessary
-                                __REV(data[j].Frequency), separator, real, separator, imag);
-#endif
                     }
                     break;
             }
