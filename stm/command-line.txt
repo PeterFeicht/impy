@@ -83,11 +83,23 @@ help format:
 Measurement data can be transferred in a number of different formats,
 depending on how the data will be processed. Possible format specifications
 consist of several format flags combined:
-  A/B     ASCII or binary transfer (MSB first)
+  A/B     ASCII or binary transfer
   C/P     Cartesian (real and imaginary parts) or polar (magnitude and angle)
-  H       Print a header line (ASCII) or transfer byte count (binary, 2 bytes)
+  H       Print a header line (ASCII) or transfer byte count (binary)
   F/X     ASCII only: formatted floating point or raw hexadecimal
   S/T/D   ASCII only: values separated by space, tab or comma
+Note that polar representation is the native format (and therefore faster).
+
+Binary format: data is sent in big endian binary (MSB is sent first).
+  If the H flag is set, the number of bytes is sent as a 32 bit unsigned
+  integer. The frequency is also a 32 bit unsigned integer. Magnitude and angle
+  or real and imaginary part are transferred as single precision floating point
+  values (32 bits).
+
+ASCII format: data is sent in human readable form, one line per record.
+  The separator character between frequency and magnitude/angle or
+  real/imaginary part can be set with the S, T and D flags. After the last
+  record, two line breaks are sent to signal the end of transmission.
 
 help settl:
 The number of settling cycles determines how many excitation cycles are output
