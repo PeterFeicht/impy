@@ -20,7 +20,9 @@ __ASM (".global _printf_float");
 typedef enum
 {
     CON_ARG_INVALID = 0,
+    // board read
     CON_ARG_READ_FORMAT,
+    // board set/get
     CON_ARG_SET_AUTORANGE,
     CON_ARG_SET_ECHO,
     CON_ARG_SET_FEEDBACK,
@@ -31,6 +33,7 @@ typedef enum
     CON_ARG_SET_STEPS,
     CON_ARG_SET_STOP,
     CON_ARG_SET_VOLTAGE,
+    // eth set
     CON_ARG_SET_DHCP,
     CON_ARG_SET_IP
 } Console_ArgID;
@@ -637,7 +640,7 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     };
     
     VCP_SendString(txtPortsAvailable);
-    snprintf(buf, NUMEL(buf), "%u", PORT_MAX - PORT_MIN + 1);
+    snprintf(buf, NUMEL(buf), "(out) %u", PORT_MAX - PORT_MIN + 1);
     VCP_SendString(buf);
     VCP_SendString(" (");
     snprintf(buf, NUMEL(buf), "%u", PORT_MIN);
@@ -648,13 +651,20 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     VCP_SendLine(")");
     
     VCP_SendString(txtFrequencyRange);
+    VCP_SendString("(frq) ");
     SiStringFromInt(buf, NUMEL(buf), FREQ_MIN);
     VCP_SendString(buf);
     VCP_SendString("..");
     SiStringFromInt(buf, NUMEL(buf), FREQ_MAX);
     VCP_SendLine(buf);
     
+    VCP_SendString(txtMaxNumIncrements);
+    VCP_SendString("(inc) ");
+    SiStringFromInt(buf, NUMEL(buf), AD5933_MAX_NUM_INCREMENTS);
+    VCP_SendLine(buf);
+    
     VCP_SendString(txtAttenuationsAvailable);
+    VCP_SendString("(att) ");
     for(uint32_t j = 0; j < NUMEL(attenuations) && attenuations[j]; j++)
     {
         SiStringFromInt(buf, NUMEL(buf), attenuations[j]);
@@ -664,6 +674,7 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     VCP_SendLine(NULL);
     
     VCP_SendString(txtFeedbackResistorValues);
+    VCP_SendString("(rfb) ");
     for(uint32_t j = 0; j < NUMEL(feedbackValues) && feedbackValues[j]; j++)
     {
         SiStringFromInt(buf, NUMEL(buf), feedbackValues[j]);
@@ -673,6 +684,7 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     VCP_SendLine(NULL);
     
     VCP_SendString(txtCalibrationValues);
+    VCP_SendString("(rca) ");
     for(uint32_t j = 0; j < NUMEL(calibrationValues) && calibrationValues[j]; j++)
     {
         SiStringFromInt(buf, NUMEL(buf), calibrationValues[j]);
