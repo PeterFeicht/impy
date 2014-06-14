@@ -461,8 +461,39 @@ static void Console_Board(uint32_t argc, char **argv)
 
 static void Console_BoardCalibrate(uint32_t argc, char **argv)
 {
-    // TODO implement 'board calibrate'
-    VCP_SendLine(txtNotImplemented);
+    // Arguments: ohms
+    Board_Error err;
+    const char *end;
+    uint32_t ohms;
+    
+    if(argc != 2)
+    {
+        VCP_SendLine(txtErrArgNum);
+        VCP_CommandFinish();
+        return;
+    }
+    
+    ohms = IntFromSiString(argv[1], &end);
+    if(end == NULL)
+    {
+        VCP_SendString(txtInvalidValue);
+        VCP_SendLine("ohms");
+    }
+
+    err = Board_Calibrate(ohms);
+    switch(err)
+    {
+        case BOARD_OK:
+            VCP_SendLine(txtOK);
+            break;
+        case BOARD_BUSY:
+            VCP_SendLine(txtBoardBusy);
+            break;
+        case BOARD_ERROR:
+            VCP_SendLine(txtWrongCalibValue);
+            break;
+    }
+    
     VCP_CommandFinish();
 }
 
