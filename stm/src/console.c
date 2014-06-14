@@ -1364,7 +1364,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
     
     if(argc == 1)
     {
-        VCP_SendLine("send, char-from-flag, printf-float, malloc, leak");
+        VCP_SendLine("send, echo, char-from-flag, printf-float, malloc, leak, read, usb-paksize");
         VCP_CommandFinish();
         return;
     }
@@ -1544,6 +1544,11 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
         {
             VCP_SendLine("Invalid format specifier.");
         }
+    }
+    else if(strcmp(argv[1], "usb-paksize") == 0)
+    {
+        static const char *txtTest = "This is a string with 64 bytes of data to be sent over the VCP..";
+        VCP_SendBuffer((uint8_t *)txtTest, strlen(txtTest));
     }
     else
     {
