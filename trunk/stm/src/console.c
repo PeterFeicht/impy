@@ -8,6 +8,7 @@
 // Includes -------------------------------------------------------------------
 #include <string.h>
 #include <math.h>
+#include <unistd.h>
 #include "console.h"
 #include "main.h"
 #include "util.h"
@@ -1364,7 +1365,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
     
     if(argc == 1)
     {
-        VCP_SendLine("send, echo, char-from-flag, printf-float, malloc, leak, read, usb-paksize");
+        VCP_SendLine("send, echo, char-from-flag, printf-float, malloc, leak, read, usb-paksize, heap");
         VCP_CommandFinish();
         return;
     }
@@ -1549,6 +1550,21 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
     {
         static const char *txtTest = "This is a string with 64 bytes of data to be sent over the VCP..";
         VCP_SendBuffer((uint8_t *)txtTest, strlen(txtTest));
+    }
+    else if(strcmp(argv[1], "heap") == 0)
+    {
+        // Print information about the heap
+        extern char _Heap_Begin;
+        extern char _Heap_Limit;
+        char buf[80];
+        void *brk = sbrk(0);
+        
+        snprintf(buf, NUMEL(buf), "Heap begin: %p, Heap limit: %p (size = %lu)\r\n",
+                &_Heap_Begin, &_Heap_Limit, (uint32_t)(&_Heap_Limit - &_Heap_Begin));
+        VCP_SendString(buf);
+        snprintf(buf, NUMEL(buf), "Current break: %p\r\nFree bytes: %lu\r\n",
+                brk, (uint32_t)((void *)&_Heap_Limit - brk));
+        VCP_SendString(buf);
     }
     else
     {
