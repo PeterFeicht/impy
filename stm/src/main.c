@@ -504,4 +504,63 @@ float Board_MeasureTemperature(Board_TemperatureSource what)
     return temp;
 }
 
+/**
+ * Initiates a calibration measurement with the specified calibration resistor.
+ * 
+ * @param ohms Calibration resistor value in Ohms, must be one of the {@link CAL_PORT} values.
+ * @return {@link Board_Error} code
+ */
+Board_Error Board_Calibrate(uint32_t ohms)
+{
+    AD5933_Status status = AD5933_GetStatus();
+    if(status != AD_FINISH && status != AD_IDLE)
+    {
+        return BOARD_BUSY;
+    }
+    
+    static const uint32_t calibrationValues[] = {
+        CAL_PORT_10, CAL_PORT_11, CAL_PORT_12, CAL_PORT_13, CAL_PORT_14, CAL_PORT_15
+    };
+    
+    if(!autorange)
+    {
+        uint8_t cal = 0;
+        for(uint32_t j = 0; j < NUMEL(calibrationValues); j++)
+        {
+            if(ohms == calibrationValues[j])
+            {
+                cal = PORT_MAX + j + 1;
+                gainData.impedance = calibrationValues[j];
+                break;
+            }
+        }
+        if(!cal)
+        {
+            return BOARD_ERROR;
+        }
+        
+        // Set calibration frequencies midway between center and start/stop frequency
+        gainData.is_2point = 1;
+        gainData.freq1 = sweep.Start_Freq + ((stopFreq - sweep.Start_Freq) >> 2);
+        gainData.freq2 = stopFreq - ((stopFreq - sweep.Start_Freq) >> 2);
+        if(gainData.freq1 == gainData.freq2)
+        {
+            gainData.freq1 = sweep.Start_Freq;
+            gainData.freq2 = stopFreq;
+        }
+        
+        // TODO set output mux
+        
+        AD5933_Calibrate(&gainData, &range);
+        // TODO use callback
+        while(AD5933_GetStatus() == AD_CALIBRATE)
+        {
+            HAL_Delay(1);
+        }
+        AD5933_CalculateGainFactor(&gainData, &gainFactor);
+    }
+    
+    return BOARD_OK;
+}
+
 // ----------------------------------------------------------------------------
