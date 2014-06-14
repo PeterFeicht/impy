@@ -409,6 +409,18 @@ const AD5933_ImpedancePolar* Board_GetDataPolar(uint32_t *count)
     return &bufPolar[0];
 }
 
+/**
+ * Gets a pointer to the raw measurement data.
+ * 
+ * @param count Pointer to a variable receiving the number of points in the buffer
+ * @return Pointer to the data buffer
+ */
+const AD5933_ImpedanceData* Board_GetDataRaw(uint32_t *count)
+{
+    *count = pointCount;
+    return &bufData[0];
+}
+
 // TODO Board_Error Board_StartSweep(uint8_t port)
 
 /**
