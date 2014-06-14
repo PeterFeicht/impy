@@ -53,6 +53,8 @@ const char *txtImpedance = "Impedance (polar): ";
 // board read
 const char *txtNoReadWhileBusy = "Data can only be read after the measurement is finished.";
 const char *txtOutOfMemory = "Not enough memory to send all data, try binary format or use fewer points.";
+// board calibrate
+const char *txtWrongCalibValue = "Unknown resistor value, see 'board info' for possible values.";
 
 // Words ----------------------------------------------------------------------
 const char *txtEnabled = "enabled";
