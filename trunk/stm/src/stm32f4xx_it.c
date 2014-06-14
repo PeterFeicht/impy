@@ -13,6 +13,7 @@
 // External variables ---------------------------------------------------------
 extern PCD_HandleTypeDef hpcd_FS;
 extern I2C_HandleTypeDef hi2c1;
+extern SPI_HandleTypeDef hspi3;
 
 // Functions ------------------------------------------------------------------
 
@@ -94,6 +95,15 @@ void I2C1_EV_IRQHandler(void)
 {
     HAL_NVIC_ClearPendingIRQ(I2C1_EV_IRQn);
     HAL_I2C_EV_IRQHandler(&hi2c1);
+}
+
+/**
+* This function handles SPI3 global interrupt.
+*/
+void SPI3_IRQHandler(void)
+{
+  HAL_NVIC_ClearPendingIRQ(SPI3_IRQn);
+  HAL_SPI_IRQHandler(&hspi3);
 }
 
 /**
