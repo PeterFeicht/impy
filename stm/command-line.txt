@@ -60,19 +60,20 @@ can be sent to disable echo without the command itself being echoed.
 
 ----
 help eth:
-TODO
+TODO Ethernet interface is not implemented yet.
 
-Options:
+Commands:
   set --dhcp    Enable or disable automatic IP configuration [default: on]
   set --ip      Manually set an IP address in the format 192.168.2.1/24
+                Note that this has no effect if DHCP is enabled
   status        Print Ethernet interface status information
   enable        Enable Ethernet interface [default: enabled]
   disable       Disable Ethernet interface
 
 help usb:
-TODO
+TODO USB host is not implemented yet.
 
-Options:
+Commands:
   status    Print USB status information
   info      Print USB device information, if a device is plugged in
   eject     Unmount a USB device before unplugging
@@ -118,7 +119,7 @@ The specified voltage needs to be one of the four AD5933 voltage ranges,
 divided by the possible attenuations.
 
 help autorange:
-  TODO
+  TODO Autoranging is not implemented yet.
 
 help calibrate:
   TODO
