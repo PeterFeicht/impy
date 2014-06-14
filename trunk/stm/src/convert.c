@@ -161,8 +161,8 @@ static Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *d
                         AD5933_ImpedanceCartesian tmp;
                         AD5933_ConvertPolarToCartesian(&data[j], &tmp);
                         
-                        uint32_t real = *((uint32_t *)(&tmp.Real));
-                        uint32_t imag = *((uint32_t *)(&tmp.Imag));
+                        uint32_t real = *((uint32_t *)&tmp.Real);
+                        uint32_t imag = *((uint32_t *)&tmp.Imag);
                         size += snprintf((char *)(buffer + size), alloc - size, "%.8lx%c%.8lx%c%.8lx\r\n",
                                 data[j].Frequency, separator, real, separator, imag);
                     }
@@ -236,9 +236,8 @@ static Buffer Convert_PolarBinary(uint32_t format, const AD5933_ImpedancePolar *
             {
                 AD5933_ImpedancePolar *tmp = (AD5933_ImpedancePolar *)(buffer + size);
                 tmp->Frequency = __REV(data[j].Frequency);
-                // TODO determine if we need to reverse float byte order or not
-                tmp->Magnitude = data[j].Magnitude;
-                tmp->Angle = data[j].Angle;
+                *((uint32_t *)&tmp->Magnitude) = __REV(*((uint32_t *)&data[j].Magnitude));
+                *((uint32_t *)&tmp->Angle) = __REV(*((uint32_t *)&data[j].Angle));
                 size += sizeof(AD5933_ImpedancePolar);
             }
 #endif
@@ -251,7 +250,8 @@ static Buffer Convert_PolarBinary(uint32_t format, const AD5933_ImpedancePolar *
                 AD5933_ConvertPolarToCartesian(&data[j], tmp);
 #ifndef __ARMEB__
                 tmp->Frequency = __REV(data[j].Frequency);
-                // TODO determine if we need to reverse float byte order or not
+                *((uint32_t *)&tmp->Real) = __REV(*((uint32_t *)&tmp->Real));
+                *((uint32_t *)&tmp->Imag) = __REV(*((uint32_t *)&tmp->Imag));
 #endif
                 size += sizeof(AD5933_ImpedanceCartesian);
             }
