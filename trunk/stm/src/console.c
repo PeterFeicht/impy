@@ -1408,7 +1408,8 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
     
     if(argc == 1)
     {
-        VCP_SendLine("send, echo, char-from-flag, printf-float, malloc, leak, read, usb-paksize, heap");
+        VCP_SendLine("send, echo, char-from-flag, printf-float, malloc, leak, read, usb-paksize, heap,");
+        VCP_SendLine("tim");
         VCP_CommandFinish();
         return;
     }
@@ -1591,6 +1592,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
     }
     else if(strcmp(argv[1], "usb-paksize") == 0)
     {
+        // Test VCP with multiples of USB packet size
         static const char *txtTest = "This is a string with 64 bytes of data to be sent over the VCP..";
         static const char *txtTest2 = "This is an even longer text that should hold 128 bytes, which is exactly two packet sizes, to test the failure with two packets.";
         VCP_SendBuffer((uint8_t *)(argc == 2 ? txtTest : txtTest2), strlen(argc == 2 ? txtTest : txtTest2));
@@ -1609,6 +1611,29 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
         snprintf(buf, NUMEL(buf), "Current break: %p\r\nFree bytes: %lu\r\n",
                 brk, (uint32_t)((void *)&_Heap_Limit - brk));
         VCP_SendString(buf);
+    }
+    else if(strcmp(argv[1], "tim") == 0)
+    {
+        // Enable or disable TIM10 OC output
+        if(argc != 3)
+        {
+            VCP_SendLine(txtErrArgNum);
+        }
+        else
+        {
+            Console_FlagValue flag = Console_GetFlag(argv[2]);
+            switch (flag) {
+                case CON_FLAG_ON:
+                    HAL_TIM_OC_Start(&htim10, TIM_CHANNEL_1);
+                    break;
+                case CON_FLAG_OFF:
+                    HAL_TIM_OC_Stop(&htim10, TIM_CHANNEL_1);
+                    break;
+                default:
+                    // Ignore
+                    break;
+            }
+        }
     }
     else
     {
