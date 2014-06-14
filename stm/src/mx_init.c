@@ -7,6 +7,7 @@
 
 // Includes -------------------------------------------------------------------
 #include "mx_init.h"
+#include "main.h"
 
 // Private function prototypes ------------------------------------------------
 static void MX_GPIO_Init(void);
@@ -42,6 +43,16 @@ void SystemClock_Config(void)
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
     RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
     HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3);
+    
+#if defined(BOARD_HAS_ETHERNET) && BOARD_HAS_ETHERNET == 1
+    // Configure PLLI2S used for the Ethernet RMII clock and MCO2 output
+    RCC_PeriphCLKInitTypeDef PeriphClkInitStruct;
+    PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_I2S;
+    PeriphClkInitStruct.PLLI2S.PLLI2SN = 200;
+    PeriphClkInitStruct.PLLI2S.PLLI2SR = 4;
+    HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct);
+    HAL_RCC_MCOConfig(RCC_MCO2, RCC_MCO2SOURCE_PLLI2SCLK, RCC_MCODIV_1);
+#endif
 }
 
 /**
@@ -100,7 +111,7 @@ static void MX_SPI3_Init(void)
  * 
  * TIM10 is the low speed AD5933 clock source and generates a clock signal of 167.6kHz on PB10.
  */
-void MX_TIM10_Init(void)
+static void MX_TIM10_Init(void)
 {
     TIM_OC_InitTypeDef sConfigOC;
     
@@ -141,25 +152,6 @@ static void MX_GPIO_Init(void)
     __GPIOH_CLK_ENABLE();
     
     /*
-     * CS for MEMS (out): PE3
-     */
-    GPIO_InitStruct.Pin = GPIO_PIN_3;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
-    HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
-    
-    /*
-     * USB Power Switch (out): PC0 >high
-     */
-    GPIO_InitStruct.Pin = GPIO_PIN_0;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
-    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, 1);
-    
-    /*
      * Button (in): PA0
      * USB ID (in): PA10
      */
@@ -177,33 +169,42 @@ static void MX_GPIO_Init(void)
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
     
     /*
-     * LEDs (out):
-     *  PD12: LED4 green
-     *  PD13: LED3 orange
-     *  PD14: LED5 red
-     *  PD15: LED6 blue
+     * Feedback Mux Select (out): PB4 PB5 PB7
      */
-    GPIO_InitStruct.Pin = GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15;
+    GPIO_InitStruct.Pin = GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_7;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
-    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
     
     /*
-     * USB Overcurrent (in): PD5
+     * USB Power Switch (out): PC0 >high
+     * Main Power Switch (out): PC15 >low
      */
-    GPIO_InitStruct.Pin = GPIO_PIN_5;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pin = GPIO_PIN_0;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
-    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+    GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
+    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_SET);
     
     /*
-     * MEMS Interrupts (in): PE0 PE1
+     * Ethernet Clock (out): PC9
+     *  (analog) if no Ethernet is fitted
      */
-    GPIO_InitStruct.Pin = GPIO_PIN_0 | GPIO_PIN_1;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+#if defined(BOARD_HAS_ETHERNET) && BOARD_HAS_ETHERNET == 1
+    GPIO_InitStruct.Pin = GPIO_PIN_9;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
-    HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+    GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF0_MCO;
+    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+#else
+    GPIO_InitStruct.Pin = GPIO_PIN_9;
+    GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+#endif
     
     /*
      * SPI3 slave select pins (out): >high
@@ -217,6 +218,63 @@ static void MX_GPIO_Init(void)
     GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
     HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
     GPIOD->BSRRL = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2;
+    
+    /*
+     * USB Overcurrent (in): PD5
+     */
+    GPIO_InitStruct.Pin = GPIO_PIN_5;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+    
+    /*
+     * USBH Power Switch (out): PD8
+     * LEDs (out):
+     *  PD12: LED4 green
+     *  PD13: LED3 orange
+     *  PD14: LED5 red
+     *  PD15: LED6 blue
+     */
+    GPIO_InitStruct.Pin = GPIO_PIN_8 | GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
+    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+    
+    /*
+     * USBH Overcurrent (in): PD9
+     */
+    GPIO_InitStruct.Pin = GPIO_PIN_9;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+    
+    /*
+     * MEMS Interrupts (in): PE0 PE1
+     */
+    GPIO_InitStruct.Pin = GPIO_PIN_0 | GPIO_PIN_1;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+    
+    /*
+     * DC Jack detect (in): PE2
+     */
+    GPIO_InitStruct.Pin = GPIO_PIN_2;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+    
+    /*
+     * CS for MEMS (out): PE3
+     * DC Offset Switch (out): PE4
+     * Attenuation Mux Select (out): PE5 PE6
+     */
+    GPIO_InitStruct.Pin = GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
+    HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 }
 
 /**
