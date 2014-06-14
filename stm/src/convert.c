@@ -60,6 +60,8 @@ static Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *d
             alloc = count * (8 + 1 + 8 + 1 + 8 + 2) + 1;
             break;
     }
+    // Second line break at end of transmission
+    alloc += 2;
     
     if(format & FORMAT_FLAG_HEADER)
     {
@@ -170,6 +172,9 @@ static Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *d
             }
             break;
     }
+    // Second line break at end of transmission
+    *((char *)(buffer + size++)) = '\r';
+    *((char *)(buffer + size++)) = '\n';
     
     if(size < alloc - 100)
     {
