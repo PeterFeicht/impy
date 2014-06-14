@@ -73,7 +73,7 @@ static int8_t VCP_Init(void)
 {
     USBD_VCP_SetTxBuffer(&hUsbDevice, VCPTxBuffer, 0);
     USBD_VCP_SetRxBuffer(&hUsbDevice, VCPRxBuffer);
-    *VCP_cmdline = 0;
+    VCP_cmdline[0] = 0;
     
     return USBD_OK;
 }
@@ -457,6 +457,12 @@ void VCP_Flush(void)
 {
     uint32_t buffsize;
     
+    // Don't do anything if transfer in progress
+    if(((USBD_VCP_HandleTypeDef *)hUsbDevice.pClassData)->TxState)
+    {
+        return;
+    }
+    
     // Send buffered data before external buffer
     if(VCPTxBufStart != VCPTxBufEnd)
     {
@@ -470,7 +476,6 @@ void VCP_Flush(void)
         }
         
         USBD_VCP_SetTxBuffer(&hUsbDevice, VCPTxBuffer + VCPTxBufStart, buffsize);
-        
         if(USBD_VCP_TransmitPacket(&hUsbDevice) == USBD_OK)
         {
             VCPTxBufStart += buffsize;
