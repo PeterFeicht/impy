@@ -1549,7 +1549,8 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
     else if(strcmp(argv[1], "usb-paksize") == 0)
     {
         static const char *txtTest = "This is a string with 64 bytes of data to be sent over the VCP..";
-        VCP_SendBuffer((uint8_t *)txtTest, strlen(txtTest));
+        static const char *txtTest2 = "This is an even longer text that should hold 128 bytes, which is exactly two packet sizes, to test the failure with two packets.";
+        VCP_SendBuffer((uint8_t *)(argc == 2 ? txtTest : txtTest2), strlen(argc == 2 ? txtTest : txtTest2));
     }
     else if(strcmp(argv[1], "heap") == 0)
     {
