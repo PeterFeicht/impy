@@ -20,6 +20,7 @@
 extern USBD_HandleTypeDef hUsbDevice;
 extern I2C_HandleTypeDef hi2c1;
 extern SPI_HandleTypeDef hspi3;
+extern TIM_HandleTypeDef htim10;
 
 // Exported functions ---------------------------------------------------------
 void MX_Init(void);
