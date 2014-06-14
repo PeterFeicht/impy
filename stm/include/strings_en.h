@@ -45,7 +45,8 @@ const char *txtFeedbackResistorValues = "Feedback resistor values: ";
 const char *txtCalibrationValues = "Calibration resistor values: ";
 const char *txtNotInstalled = " not installed.";
 const char *txtNoMemory = "\r\nNo external memory installed.";
-const char *txtFrequencyRange = "The possible frequency range in Hz is ";
+const char *txtFrequencyRange = "Possible frequency range in Hz: ";
+const char *txtMaxNumIncrements = "Maximum number of frequency increments: ";
 // board measure
 const char *txtBoardBusy = "Another measurement is currently running.";
 const char *txtImpedance = "Impedance (polar): ";
