@@ -1361,6 +1361,8 @@ static void Console_Help(uint32_t argc, char **argv)
  */
 static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
 {
+    static Buffer noleak = { NULL, 0 };
+    
     if(argc == 1)
     {
         VCP_SendLine("send, char-from-flag, printf-float, malloc, leak");
@@ -1501,6 +1503,48 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
         else
         {
             VCP_SendLine(txtErrArgNum);
+        }
+    }
+    else if(strcmp(argv[1], "read") == 0)
+    {
+        // Generate some impedance data and send it with an optionally specified format
+        uint32_t format = format_spec;
+        static const AD5933_ImpedancePolar data[] = {
+            { 5000, 1.56789e4f, 0.321f },   // 1.4878e4 + 4.94694e3 j
+            { 6000, 1.5699e4f, 0.33f },     // 1.48519e4 + 5.08715e3 j
+            { 7000, 1.7e4f, 0.34f },        // 1.60268e4 + 5.66928e3 j
+            { 8000, 1.6543e4f, 0.352f },    // 1.55287e4 + 5.70363e3 j
+            { 9000, 1.5432109e4f, 0.361f }  // 1.44374e4 + 5.45077e3 j
+        };
+        
+        FreeBuffer(&noleak);
+        
+        if(argc == 3)
+        {
+            if(strcmp(argv[2], "free") == 0)
+            {
+                VCP_CommandFinish();
+                return;
+            }
+            format = Convert_FormatSpecFromString(argv[2]);
+        }
+        
+        if(format)
+        {
+            noleak = Convert_ConvertPolar(format, data, NUMEL(data));
+            if(noleak.data != NULL)
+            {
+                VCP_SendBuffer(noleak.data, noleak.size);
+                VCP_Flush();
+            }
+            else
+            {
+                VCP_SendLine(txtOutOfMemory);
+            }
+        }
+        else
+        {
+            VCP_SendLine("Invalid format specifier.");
         }
     }
     else
