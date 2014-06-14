@@ -55,4 +55,51 @@ void HAL_I2C_MspDeInit(I2C_HandleTypeDef* hi2c)
     }
 }
 
+/**
+ * Initializes the SPI MSP.
+ * 
+ * @param hspi SPI handle
+ */
+void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
+{
+    GPIO_InitTypeDef GPIO_InitStruct;
+    if(hspi->Instance == SPI3)
+    {
+        __SPI3_CLK_ENABLE();
+        
+        /*
+         * GPIO configuration:
+         *  PC10: SPI3_SCK
+         *  PC11: SPI3_MISO
+         *  PC12: SPI3_MOSI
+         */
+        GPIO_InitStruct.Pin = GPIO_PIN_10 | GPIO_PIN_11 | GPIO_PIN_12;
+        GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+        GPIO_InitStruct.Pull = GPIO_NOPULL;
+        GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
+        GPIO_InitStruct.Alternate = GPIO_AF6_SPI3;
+        HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+        
+        // Set SPI interrupt to the lowest priority
+        HAL_NVIC_SetPriority(SPI3_IRQn, 7, 0);
+        HAL_NVIC_EnableIRQ(SPI3_IRQn);
+    }
+}
+
+/**
+ * De-initializes the SPI MSP.
+ * 
+ * @param hspi SPI handle
+ */
+void HAL_SPI_MspDeInit(SPI_HandleTypeDef* hspi)
+{
+    if(hspi->Instance == SPI3)
+    {
+        __SPI3_CLK_DISABLE();
+        HAL_GPIO_DeInit(GPIOD, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2);
+        HAL_GPIO_DeInit(GPIOC, GPIO_PIN_10 | GPIO_PIN_11 | GPIO_PIN_12);
+        HAL_NVIC_DisableIRQ(SPI3_IRQn);
+    }
+}
+
 // ----------------------------------------------------------------------------
