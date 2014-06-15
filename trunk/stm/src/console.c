@@ -204,7 +204,8 @@ static void Console_InitHelp(void)
         
         for(uint32_t j = 0; j < NUMEL(txtHelpTopics); j++)
         {
-            if(strncmp(help, txtHelpTopics[j].cmd, tmp - help) == 0)
+            uint32_t len = max(strlen(txtHelpTopics[j].cmd), tmp - help);
+            if(strncmp(help, txtHelpTopics[j].cmd, len) == 0)
             {
                 prev = &txtHelpTopics[j].text;
                 prev->data = tmp + 3 /* ':' + line break */;
@@ -302,7 +303,8 @@ static const Console_Arg* Console_GetArg(const char *arg, const Console_Arg *arg
     
     for(uint32_t j = 0; j < count; j++)
     {
-        if(strncmp(arg, args[j].arg, strlen(args[j].arg)) == 0)
+        uint32_t len = max(strlen(args[j].arg), strchrnul(arg, '=') - arg);
+        if(strncmp(arg, args[j].arg, len) == 0)
         {
             return &args[j];
         }
