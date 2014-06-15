@@ -211,15 +211,6 @@ static void MX_GPIO_Init(void)
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
     
     /*
-     * Feedback Mux Select (out): PB4 PB5 PB7
-     */
-    GPIO_InitStruct.Pin = GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_7;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-    
-    /*
      * USB Power Switch (out): PC0 >high
      * Main Power Switch (out): PC15 >low
      */
@@ -303,10 +294,8 @@ static void MX_GPIO_Init(void)
     
     /*
      * CS for MEMS (out): PE3
-     * DC Offset Switch (out): PE4
-     * Attenuation Mux Select (out): PE5 PE6
      */
-    GPIO_InitStruct.Pin = GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6;
+    GPIO_InitStruct.Pin = GPIO_PIN_3;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
