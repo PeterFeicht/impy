@@ -112,7 +112,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 // Exported functions ---------------------------------------------------------
 
-// Timer callback:
 // TODO implement calibration
 
 /**
@@ -590,7 +589,10 @@ Board_Error Board_Calibrate(uint32_t ohms)
             gainData.freq2 = stopFreq;
         }
         
-        // FIXME set output mux
+        cal = cal & AD725_MASK_PORT;
+        HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_RESET);
+        HAL_SPI_Transmit(&hspi3, &cal, 1, BOARD_SPI_TIMEOUT);
+        HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_SET);
         
         AD5933_Calibrate(&gainData, &range);
         // TODO use callback
