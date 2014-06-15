@@ -90,7 +90,7 @@ typedef struct
  * @defgroup BOARD_SPI_SS_GPIO SPI Slave Select GPIO Definition
  * @{
  */
-#define BOARD_SPI_SS_GPIO_PORT          PORTD
+#define BOARD_SPI_SS_GPIO_PORT          GPIOD
 #define BOARD_SPI_SS_GPIO_FLASH         GPIO_PIN_0
 #define BOARD_SPI_SS_GPIO_SRAM          GPIO_PIN_1
 #define BOARD_SPI_SS_GPIO_MUX           GPIO_PIN_2
