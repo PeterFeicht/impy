@@ -77,14 +77,14 @@ typedef enum
 
 typedef struct
 {
-    char *arg;              //!< Name of this argument
+    const char *arg;        //!< Name of this argument
     Console_ArgID id;       //!< ID of this argument
     Console_ArgType type;   //!< Type of this argument
 } Console_Arg;
 
 typedef struct
 {
-    char *cmd;                      //!< Command name
+    const char *cmd;                //!< Command name
     Console_CommandFunc handler;    //!< Pointer to the function that processes this command
 } Console_Command;
 
@@ -92,8 +92,8 @@ typedef struct
 static void Console_InitHelp(void);
 static uint32_t Console_GetArguments(char *cmdline);
 static uint8_t Console_CallProcessor(uint32_t argc, char **argv, const Console_Command *cmds, uint32_t count);
-static const Console_Arg* Console_GetArg(char *arg, const Console_Arg *args, uint32_t count);
-static char* Console_GetArgValue(char *arg);
+static const Console_Arg* Console_GetArg(const char *arg, const Console_Arg *args, uint32_t count);
+static const char* Console_GetArgValue(const char *arg);
 static Console_FlagValue Console_GetFlag(const char *str);
 // Command line processors
 static void Console_Board(uint32_t argc, char **argv);
@@ -291,55 +291,40 @@ static uint8_t Console_CallProcessor(uint32_t argc, char **argv, const Console_C
  * @param count The number of arguments in the array
  * @return Pointer to the argument structure, or {@code NULL} if none was found
  */
-static const Console_Arg* Console_GetArg(char *arg, const Console_Arg *args, uint32_t count)
+static const Console_Arg* Console_GetArg(const char *arg, const Console_Arg *args, uint32_t count)
 {
     // If we need support for single letter arguments, this is the place to add it
-    char term;
-    char *end;
-    const Console_Arg *ret = NULL;
-    
-    if(arg[0] != '-' || arg[0] != '-')
+    if(arg[0] != '-' || arg[1] != '-')
     {
         return NULL;
     }
-    
     arg += 2;
-    end = arg;
-    while(*end != 0 && *end != '=')
-    {
-        end++;
-    }
-    term = *end;
-    *end = 0;
     
     for(uint32_t j = 0; j < count; j++)
     {
-        if(strcmp(arg, args[j].arg) == 0)
+        if(strncmp(arg, args[j].arg, strlen(args[j].arg)) == 0)
         {
-            ret = &args[j];
-            break;
+            return &args[j];
         }
     }
     
-    *end = term;
-    return ret;
+    return NULL;
 }
 
 /**
  * Gets the value of an argument, that is the string after the equals sign.
  * 
  * @param arg The argument to get the value from
- * @return Pointer to the substring containing the value, or {@code NULL} in case of an error
+ * @return Pointer to the substring containing the value (can be empty), or {@code NULL} in case there is no value
  */
-static char* Console_GetArgValue(char *arg)
+static const char* Console_GetArgValue(const char *arg)
 {
-    char *val;
     if(arg[0] != '-' || arg[0] != '-')
     {
         return NULL;
     }
     
-    val = strchr(arg + 2, '=');
+    const char *val = strchr(arg + 2, '=');
     return (val != NULL ? val + 1 : NULL);
 }
 
@@ -833,7 +818,7 @@ static void Console_BoardRead(uint32_t argc, char **argv)
     for(uint32_t j = 1; j < argc; j++)
     {
         const Console_Arg *arg = Console_GetArg(argv[j], args, NUMEL(args));
-        char *value = Console_GetArgValue(argv[j]);
+        const char *value = Console_GetArgValue(argv[j]);
         
         uint32_t intval = 0;
         
@@ -909,7 +894,7 @@ static void Console_BoardSet(uint32_t argc, char **argv)
     for(uint32_t j = 1; j < argc; j++)
     {
         const Console_Arg *arg = Console_GetArg(argv[j], argsBoardSet, NUMEL(argsBoardSet));
-        char *value = Console_GetArgValue(argv[j]);
+        const char *value = Console_GetArgValue(argv[j]);
         
         Console_FlagValue flag = CON_FLAG_INVALID;
         uint32_t intval = 0;
