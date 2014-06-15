@@ -13,6 +13,7 @@
 static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_SPI3_Init(void);
+static void MX_TIM3_Init(void);
 static void MX_TIM10_Init(void);
 static void MX_USB_DEVICE_Init(void);
 
@@ -63,6 +64,7 @@ void MX_Init()
     MX_GPIO_Init();
     MX_I2C1_Init();
     MX_SPI3_Init();
+    MX_TIM3_Init();
     MX_TIM10_Init();
     MX_USB_DEVICE_Init();
 }
@@ -132,6 +134,21 @@ static void MX_TIM10_Init(void)
     sConfigOC.OCNIdleState = 0;
     sConfigOC.OCIdleState = 0;
     HAL_TIM_OC_ConfigChannel(&htim10, &sConfigOC, TIM_CHANNEL_1);
+}
+
+/**
+ * Initialize TIM3.
+ * 
+ * TIM3 generates a periodic interrupt used by the AD5933 driver.
+ */
+static void MX_TIM3_Init(void)
+{
+    htim3.Instance = TIM3;
+    htim3.Init.Prescaler = 60 - 1;
+    htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+    htim3.Init.Period = TIM3_INTERVAL - 1;
+    htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+    HAL_TIM_Base_Init(&htim3);
 }
 
 /**

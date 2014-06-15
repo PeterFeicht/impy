@@ -14,6 +14,7 @@
 extern PCD_HandleTypeDef hpcd_FS;
 extern I2C_HandleTypeDef hi2c1;
 extern SPI_HandleTypeDef hspi3;
+extern TIM_HandleTypeDef htim3;
 
 // Functions ------------------------------------------------------------------
 
@@ -65,7 +66,7 @@ void prvGetRegistersFromStack(uint32_t *pulFaultStackAddress)
  * This fault handler calls the function {@link prvGetRegistersFromStack} to get register values from the stack and be
  * able to see their values in the debugger.
  */
-void  __attribute__((naked)) HardFault_Handler(void)
+void __attribute__((naked)) HardFault_Handler(void)
 {
     __asm volatile
     (
@@ -93,17 +94,26 @@ void SysTick_Handler(void)
  */
 void I2C1_EV_IRQHandler(void)
 {
-    HAL_NVIC_ClearPendingIRQ(I2C1_EV_IRQn);
+    NVIC_ClearPendingIRQ(I2C1_EV_IRQn);
     HAL_I2C_EV_IRQHandler(&hi2c1);
 }
 
 /**
-* This function handles SPI3 global interrupt.
-*/
+ * This function handles SPI3 global interrupt.
+ */
 void SPI3_IRQHandler(void)
 {
-  HAL_NVIC_ClearPendingIRQ(SPI3_IRQn);
-  HAL_SPI_IRQHandler(&hspi3);
+    NVIC_ClearPendingIRQ(SPI3_IRQn);
+    HAL_SPI_IRQHandler(&hspi3);
+}
+
+/**
+ * This function handles TIM3 global interrupt.
+ */
+void TIM3_IRQHandler(void)
+{
+    NVIC_ClearPendingIRQ(TIM3_IRQn);
+    HAL_TIM_IRQHandler(&htim3);
 }
 
 /**
@@ -111,7 +121,7 @@ void SPI3_IRQHandler(void)
  */
 void OTG_FS_IRQHandler(void)
 {
-    HAL_NVIC_ClearPendingIRQ(OTG_FS_IRQn);
+    NVIC_ClearPendingIRQ(OTG_FS_IRQn);
     HAL_PCD_IRQHandler(&hpcd_FS);
 }
 

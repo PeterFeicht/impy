@@ -16,6 +16,7 @@ static void SetDefaults(void);
 USBD_HandleTypeDef hUsbDevice;
 I2C_HandleTypeDef hi2c1;
 SPI_HandleTypeDef hspi3;
+TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim10;
 
 // AD5933 driver values
@@ -55,7 +56,7 @@ static void SetDefaults(void)
     autorange = 0;
 }
 
-// ----- main() ---------------------------------------------------------------
+// main and Interrupt handlers ------------------------------------------------
 
 // Sample pragmas to cope with warnings. Please note the related line at
 // the end of this function, used to pop the compiler diagnostics status.
@@ -71,6 +72,9 @@ int main(int argc, char* argv[])
     SetDefaults();
     // TODO read settings from EEPROM
     
+    // Start timer for periodic interrupt generation
+    HAL_TIM_Base_Start_IT(&htim3);
+    
     while(1)
     {
         // Do stuff.
@@ -81,10 +85,22 @@ int main(int argc, char* argv[])
 
 #pragma GCC diagnostic pop
 
+/**
+ * Calls the appropriate functions for timer period interrupts.
+ * 
+ * @param htim Timer handle
+ */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+    if(htim->Instance == TIM3)
+    {
+        AD5933_Status status = AD5933_TimerCallback();
+    }
+}
+
 // Exported functions ---------------------------------------------------------
 
 // Timer callback:
-// TODO call AD5933 callback
 // TODO set point count when measurement finishes
 // TODO implement calibration
 
@@ -563,7 +579,7 @@ Board_Error Board_Calibrate(uint32_t ohms)
             gainData.freq2 = stopFreq;
         }
         
-        // TODO set output mux
+        // FIXME set output mux
         
         AD5933_Calibrate(&gainData, &range);
         // TODO use callback
