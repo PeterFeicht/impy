@@ -432,8 +432,10 @@ AD5933_Error AD5933_Calibrate(AD5933_GainFactorData *data, const AD5933_RangeSet
 
 /**
  * This function should be called periodically to update measurement data and driver status.
+ * 
+ * @return The (new) AD5933 status
  */
-void AD5933_TIM_PeriodElapsedCallback(void)
+AD5933_Status AD5933_TimerCallback(void)
 {
     uint16_t data;
     uint8_t  dev_status;
@@ -444,7 +446,7 @@ void AD5933_TIM_PeriodElapsedCallback(void)
         case AD_UNINIT:
         case AD_IDLE:
         case AD_FINISH:
-            return;
+            break;
             
         case AD_MEASURE_TEMP:
             if(AD5933_ReadStatus() & AD5933_STATUS_VALID_TEMP)
@@ -518,6 +520,8 @@ void AD5933_TIM_PeriodElapsedCallback(void)
             }
             break;
     }
+    
+    return status;
 }
 
 /**
