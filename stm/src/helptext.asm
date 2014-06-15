@@ -8,7 +8,7 @@
  * doesn't notice that.
  */
  
-    .section .data.helptext_start
+    .section .text.helptext
     .global helptext_start
 helptext_start:
     .incbin "../command-line.txt"
@@ -16,7 +16,3 @@ helptext_start:
     .global helptext_end
 helptext_end:
     .byte 0
-    
-    .global helptext_size
-helptext_size:
-    .int helptext_end - helptext_start
