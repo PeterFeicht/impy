@@ -92,16 +92,27 @@ int main(int argc, char* argv[])
  */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
+    static AD5933_Status prevStatus = AD_UNINIT;
+    
     if(htim->Instance == TIM3)
     {
         AD5933_Status status = AD5933_TimerCallback();
+        if(prevStatus != status)
+        {
+            if(status == AD_FINISH)
+            {
+                pointCount = AD5933_GetSweepCount();
+                interrupted = 0;
+                convertedPolar = 0;
+            }
+        }
+        prevStatus = status;
     }
 }
 
 // Exported functions ---------------------------------------------------------
 
 // Timer callback:
-// TODO set point count when measurement finishes
 // TODO implement calibration
 
 /**
