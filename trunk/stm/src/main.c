@@ -570,7 +570,7 @@ Board_Error Board_Calibrate(uint32_t ohms)
         {
             if(ohms == calibrationValues[j])
             {
-                cal = PORT_MAX + j + 1;
+                cal = CAL_PORT_MIN + j;
                 gainData.impedance = calibrationValues[j];
                 break;
             }
