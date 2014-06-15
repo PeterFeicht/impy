@@ -56,6 +56,11 @@ typedef struct
 #define PORT_MAX        9
 
 /**
+ * The first calibration port number
+ */
+#define CAL_PORT_MIN    10
+
+/**
  * The minimum frequency that can be measured.
  */
 #define FREQ_MIN        100
