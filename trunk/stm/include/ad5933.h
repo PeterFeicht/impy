@@ -487,7 +487,7 @@ AD5933_Error AD5933_MeasureImpedance(const AD5933_Sweep *sweep, const AD5933_Ran
 uint16_t AD5933_GetSweepCount(void);
 AD5933_Error AD5933_MeasureTemperature(float *destination);
 AD5933_Error AD5933_Calibrate(AD5933_GainFactorData *data, const AD5933_RangeSettings *range);
-void AD5933_TIM_PeriodElapsedCallback(void);
+AD5933_Status AD5933_TimerCallback(void);
 
 void AD5933_CalculateGainFactor(const AD5933_GainFactorData *data, AD5933_GainFactor *gf);
 float AD5933_GetMagnitude(const AD5933_ImpedanceData *data, const AD5933_GainFactor *gain);
