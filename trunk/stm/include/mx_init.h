@@ -16,10 +16,14 @@
 #include "usbd_desc.h"
 #include "usbd_vcp_if.h"
 
+// Constants ------------------------------------------------------------------
+#define TIM3_INTERVAL               4000    //!< TIM3 interrupt interval in µs
+
 // External variables ---------------------------------------------------------
 extern USBD_HandleTypeDef hUsbDevice;
 extern I2C_HandleTypeDef hi2c1;
 extern SPI_HandleTypeDef hspi3;
+extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim10;
 
 // Exported functions ---------------------------------------------------------

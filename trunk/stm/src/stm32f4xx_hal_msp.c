@@ -36,7 +36,7 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* hi2c)
         
         // Set I2C interrupt to the lowest priority
         HAL_NVIC_SetPriority(I2C1_EV_IRQn, 7, 0);
-        HAL_NVIC_EnableIRQ(I2C1_EV_IRQn);
+        NVIC_EnableIRQ(I2C1_EV_IRQn);
     }
 }
 
@@ -51,7 +51,7 @@ void HAL_I2C_MspDeInit(I2C_HandleTypeDef* hi2c)
     {
         __I2C1_CLK_DISABLE();
         HAL_GPIO_DeInit(GPIOB, GPIO_PIN_6 | GPIO_PIN_9);
-        HAL_NVIC_DisableIRQ(I2C1_EV_IRQn);
+        NVIC_DisableIRQ(I2C1_EV_IRQn);
     }
 }
 
@@ -82,7 +82,7 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
         
         // Set SPI interrupt to the lowest priority
         HAL_NVIC_SetPriority(SPI3_IRQn, 7, 0);
-        HAL_NVIC_EnableIRQ(SPI3_IRQn);
+        NVIC_EnableIRQ(SPI3_IRQn);
     }
 }
 
@@ -98,19 +98,25 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef* hspi)
         __SPI3_CLK_DISABLE();
         HAL_GPIO_DeInit(GPIOD, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2);
         HAL_GPIO_DeInit(GPIOC, GPIO_PIN_10 | GPIO_PIN_11 | GPIO_PIN_12);
-        HAL_NVIC_DisableIRQ(SPI3_IRQn);
+        NVIC_DisableIRQ(SPI3_IRQn);
     }
 }
 
 /**
  * Initializes the TIM MSP.
  * 
- * @param htim_base TIM handle
+ * @param htim TIM handle
  */
-void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim_base)
+void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim)
 {
     GPIO_InitTypeDef GPIO_InitStruct;
-    if(htim_base->Instance == TIM10)
+    if(htim->Instance == TIM3)
+    {
+        __TIM3_CLK_ENABLE();
+        HAL_NVIC_SetPriority(TIM3_IRQn, 7, 0);
+        NVIC_EnableIRQ(TIM3_IRQn);
+    }
+    else if(htim->Instance == TIM10)
     {
         __TIM10_CLK_ENABLE();
         
@@ -130,11 +136,16 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim_base)
 /**
  * De-initializes the TIM MSP.
  * 
- * @param htim_base TIM handle
+ * @param htim TIM handle
  */
-void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* htim_base)
+void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* htim)
 {
-    if(htim_base->Instance == TIM10)
+    if(htim->Instance == TIM3)
+    {
+        __TIM3_CLK_DISABLE();
+        NVIC_DisableIRQ(TIM3_IRQn);
+    }
+    else if(htim->Instance == TIM10)
     {
         __TIM10_CLK_DISABLE();
         HAL_GPIO_DeInit(GPIOB, GPIO_PIN_8);
