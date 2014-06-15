@@ -47,8 +47,14 @@ typedef enum
 
 typedef struct
 {
-    char *cmd;          //!< The command the help text is for
-    char *text;         //!< The help text
+    const char *data;
+    uint32_t length;
+} String;
+
+typedef struct
+{
+    const char *cmd;    //!< The command the help text is for
+    String text;        //!< The help text
 } Console_HelpEntry;
 
 /**
@@ -84,7 +90,6 @@ typedef struct
 
 // Private function prototypes ------------------------------------------------
 static void Console_InitHelp(void);
-static uint8_t Console_AddHelpTopic(char *help);
 static uint32_t Console_GetArguments(char *cmdline);
 static uint8_t Console_CallProcessor(uint32_t argc, char **argv, const Console_Command *cmds, uint32_t count);
 static const Console_Arg* Console_GetArg(char *arg, const Console_Arg *args, uint32_t count);
@@ -125,18 +130,20 @@ static Buffer board_read_data = {
 };
 
 // Console definition
-extern char helptext_start;
-static char *txtHelp;
+extern const char helptext_start;
+extern const char helptext_end;
+static String strHelp;
 // All help topics from command-line.txt need to be added here
+#define TOPIC(X)    { X, { NULL, 0 } }
 static Console_HelpEntry txtHelpTopics[] = {
-    { "eth", NULL },
-    { "usb", NULL },
-    { "format", NULL },
-    { "settl", NULL },
-    { "voltage", NULL },
-    { "autorange", NULL },
-    { "calibrate", NULL },
-    { "echo", NULL }
+    TOPIC("eth"),
+    TOPIC("usb"),
+    TOPIC("format"),
+    TOPIC("settl"),
+    TOPIC("voltage"),
+    TOPIC("autorange"),
+    TOPIC("calibrate"),
+    TOPIC("echo"),
 };
 // Those are the top level commands, subcommands are called from their respective processing functions
 static const Console_Command commands[] = {
@@ -166,110 +173,51 @@ static const Console_Arg argsBoardSet[] = {
 // Private functions ----------------------------------------------------------
 
 /**
- * Cuts the help string after the usage message and fills the help topics array.
+ * Sets the main help string and fills the help topics array.
  */
 static void Console_InitHelp(void)
 {
-    uint8_t dashes = 0;
-    uint8_t newline = 0;
-    char *help;
+    // This text is at the beginning of a help topic start line
+    static const char *topic = "\r\nhelp ";
+    uint32_t topicLen = strlen(topic);
+    const char *help;
+    String *prev = NULL;
     
-    txtHelp = &helptext_start;
+    // Set usage message
+    strHelp.data = &helptext_start;
+    help = strstr(strHelp.data, "----");
+    strHelp.length = help - strHelp.data;
     
-    // Find end of usage message (terminated by four dashes)
-    for(help = txtHelp; *help; help++)
+    // Look for specific help messages
+    while((help = strstr(help, topic)) != NULL)
     {
-        if(*help == '-')
+        if(prev != NULL)
         {
-            dashes++;
-            
-            if(dashes == 4)
+            prev->length = help - prev->data + 2;
+            prev = NULL;
+        }
+        
+        help += topicLen;
+        const char *tmp = strchr(help, ':');
+        if(tmp == NULL)
+            break;
+        
+        for(uint32_t j = 0; j < NUMEL(txtHelpTopics); j++)
+        {
+            if(strncmp(help, txtHelpTopics[j].cmd, tmp - help) == 0)
             {
-                *(help - 3) = 0;
-                help++;
+                prev = &txtHelpTopics[j].text;
+                prev->data = tmp + 3 /* ':' + line break */;
                 break;
             }
         }
-        else
-        {
-            dashes = 0;
-        }
+        // Here we could check for prev == NULL and warn about help topics without declaration in txtHelpTopics
     }
-    
-    // Look for specific help messages
-    while(*help)
+    // Terminate the last topic found
+    if(prev != NULL)
     {
-        if(*help == '\n' || *help == '\r')
-        {
-            newline = 1;
-            help++;
-        }
-        
-        if(newline && *help == 'h')
-        {
-            // TODO avoid writing to help text so it can be moved from RAM to Flash memory
-            if(Console_AddHelpTopic(help) == 0)
-            {
-                *help = 0;
-            }
-        }
-        help++;
+        prev->length = &helptext_end - prev->data;
     }
-}
-
-/**
- * Adds a new help topic to the list, if present.
- * 
- * Help topics are designated by {@code help TOPIC:} at the beginning of a line in the {@code command-line.txt} file.
- * 
- * @param help Pointer to a new line in the help text that may contain a help topic
- * @return {@code 0} if a help topic was added, nonzero value on error
- */
-static uint8_t Console_AddHelpTopic(char *help)
-{
-    // This text is at the beginning of a help topic start line
-    static const char txt[] = "help ";
-    char *cmd;
-    char *tmp;
-    
-    for(uint32_t j = 0; txt[j] != 0; j++)
-    {
-        if(*help == 0 || *help != txt[j])
-        {
-            return 1;
-        }
-        help++;
-    }
-    // What comes after the 'help ' text is the command name
-    cmd = help;
-    
-    tmp = strchr(help, ':');
-    if(tmp == NULL)
-    {
-        return 2;
-    }
-    // Terminate command name for comparison
-    *tmp = 0;
-    for(help = tmp + 1; *help == '\r' || *help == '\n'; help++);
-    if(*help == 0)
-    {
-        return 3;
-    }
-    
-    // Look for command in topic list
-    for(uint32_t j = 0; j < NUMEL(txtHelpTopics); j++)
-    {
-        if(strcmp(cmd, txtHelpTopics[j].cmd) == 0)
-        {
-            txtHelpTopics[j].text = help;
-            *tmp = '.';
-            return 0;
-        }
-    }
-    
-    // Should not happen, means that command-line.txt contains help for an unknown command
-    *tmp = '!';
-    return 4;
 }
 
 /**
@@ -1364,25 +1312,29 @@ static void Console_UsbWrite(uint32_t argc, char **argv)
  */
 static void Console_Help(uint32_t argc, char **argv)
 {
-    uint32_t j;
+    Console_HelpEntry *topic = NULL;
     
     switch(argc)
     {
         case 1:
             // Command without arguments, print usage
-            VCP_SendBuffer((uint8_t *)txtHelp, strlen(txtHelp));
+            VCP_SendBuffer((uint8_t *)strHelp.data, strHelp.length);
             break;
         case 2:
             // Command with topic, look for help message
-            for(j = 0; j < NUMEL(txtHelpTopics); j++)
+            for(uint32_t j = 0; j < NUMEL(txtHelpTopics); j++)
             {
                 if(strcmp(argv[1], txtHelpTopics[j].cmd) == 0)
                 {
-                    VCP_SendBuffer((uint8_t *)txtHelpTopics[j].text, strlen(txtHelpTopics[j].text));
+                    topic = &txtHelpTopics[j];
                     break;
                 }
             }
-            if(j == NUMEL(txtHelpTopics))
+            if(topic != NULL)
+            {
+                VCP_SendBuffer((const uint8_t *)topic->text.data, topic->text.length);
+            }
+            else
             {
                 VCP_SendLine(txtUnknownTopic);
             }

@@ -131,3 +131,4 @@ scripts or programs, this may be undesirable. Therefore, the echoing can be
 disabled either completely (board set --echo=off) or just for single lines, by
 preceding them with an '@' character.
 If echo is disabled globally, the '@' character has no effect and is ignored.
+
