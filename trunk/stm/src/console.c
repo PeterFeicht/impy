@@ -1164,7 +1164,7 @@ static void Console_BoardTemp(uint32_t argc, char **argv __attribute__((unused))
     if(argc == 1)
     {
         float temp = Board_MeasureTemperature(TEMP_AD5933);
-        snprintf(buf, NUMEL(buf), "%.1f °C", temp);
+        snprintf(buf, NUMEL(buf), "%.1f %cC", temp, '\xB0' /* Degree symbol in ISO 8859-1 and -15 */); 
         VCP_SendLine(buf);
     }
     else
