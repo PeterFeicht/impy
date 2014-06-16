@@ -53,8 +53,8 @@ void HAL_PCD_MspInit(PCD_HandleTypeDef *hpcd)
         
         __USB_OTG_FS_CLK_ENABLE();
         
-        // Set USBFS Interrupt to the lowest priority
-        HAL_NVIC_SetPriority(OTG_FS_IRQn, 7, 0);
+        // Set USBFS Interrupt to a low priority
+        HAL_NVIC_SetPriority(OTG_FS_IRQn, 13, 0);
         HAL_NVIC_EnableIRQ(OTG_FS_IRQn);
     }
     
