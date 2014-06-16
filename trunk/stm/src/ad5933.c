@@ -85,7 +85,9 @@ static HAL_StatusTypeDef AD5933_Read16(uint16_t MemAddress, uint16_t *destinatio
     uint16_t tmp;
     HAL_StatusTypeDef ret =
             HAL_I2C_Mem_Read(i2cHandle, AD5933_ADDR, MemAddress, 1, (uint8_t *)&tmp, 2, AD5933_I2C_TIMEOUT);
-#ifndef __ARMEB__
+#ifdef __ARMEB__
+    *destination = tmp;
+#else
     *destination = __REV16(tmp);
 #endif
     return ret;
@@ -100,7 +102,7 @@ static uint8_t AD5933_ReadStatus()
 {
     uint8_t data = 0;
     
-    return HAL_I2C_Mem_Read(i2cHandle, AD5933_ADDR, AD5933_STATUS_ADDR, 1, &data, 1, AD5933_I2C_TIMEOUT);
+    HAL_I2C_Mem_Read(i2cHandle, AD5933_ADDR, AD5933_STATUS_ADDR, 1, &data, 1, AD5933_I2C_TIMEOUT);
     return data;
 }
 
@@ -439,7 +441,6 @@ AD5933_Status AD5933_TimerCallback(void)
 {
     uint16_t data;
     uint8_t  dev_status;
-    AD5933_ImpedanceData *buf;
     
     switch(status)
     {
@@ -469,7 +470,7 @@ AD5933_Status AD5933_TimerCallback(void)
             dev_status = AD5933_ReadStatus();
             if(dev_status & AD5933_STATUS_VALID_IMPEDANCE)
             {
-                buf = pBuffer + sweep_count;
+                AD5933_ImpedanceData *buf = pBuffer + sweep_count;
                 
                 // Read data and save it
                 AD5933_Read16(AD5933_REAL_H_ADDR, (uint16_t *)&buf->Real);
