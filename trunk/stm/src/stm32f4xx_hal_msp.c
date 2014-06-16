@@ -35,7 +35,7 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* hi2c)
         HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
         
         // Set I2C interrupt to the lowest priority
-        HAL_NVIC_SetPriority(I2C1_EV_IRQn, 7, 0);
+        HAL_NVIC_SetPriority(I2C1_EV_IRQn, 10, 0);
         NVIC_EnableIRQ(I2C1_EV_IRQn);
     }
 }
@@ -81,7 +81,7 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
         HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
         
         // Set SPI interrupt to the lowest priority
-        HAL_NVIC_SetPriority(SPI3_IRQn, 7, 0);
+        HAL_NVIC_SetPriority(SPI3_IRQn, 10, 0);
         NVIC_EnableIRQ(SPI3_IRQn);
     }
 }
