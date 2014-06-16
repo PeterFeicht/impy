@@ -68,6 +68,9 @@ void __initialize_hardware(void)
     
     // Configure the system clock
     SystemClock_Config();
+    
+    // Set SysTick priority higher than HAL_Init does to avoid conflicts
+    HAL_NVIC_SetPriority(SysTick_IRQn, 3, 0);
 }
 
 // ----------------------------------------------------------------------------
