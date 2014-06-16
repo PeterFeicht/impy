@@ -46,6 +46,15 @@ typedef struct
 #define LED_RED                         GPIO_PIN_14
 #define LED_BLUE                        GPIO_PIN_15
 
+#define BUTTON_PORT						GPIOA					//!< User button GPIO port
+#define BUTTON_PIN						GPIO_PIN_0				//!< User button GPIO pin (active high)
+
+#define SWITCH_MAIN_PORT				GPIOB					//!< Main power switch (Icc) GPIO port
+#define SWITCH_MAIN_PIN					GPIO_PIN_10				//!< Main power switch (Icc) GPIO pin (active high)
+
+#define SWITCH_USB_PORT					GPIOD					//!< USB host power switch GPIO port
+#define SWITCH_USB_PIN					GPIO_PIN_8				//!< USB host power switch GPIO pin (active high)
+
 /**
  * The minimum port number that can be used for measurements.
  */
