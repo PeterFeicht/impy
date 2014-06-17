@@ -231,7 +231,7 @@ static void MX_GPIO_Init(void)
      * USB Power Switch (out): PC0 >high
      * Main Power Switch (out): PC15 >low
      */
-    GPIO_InitStruct.Pin = GPIO_PIN_0;
+    GPIO_InitStruct.Pin = GPIO_PIN_0 | GPIO_PIN_15;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
