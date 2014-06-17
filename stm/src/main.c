@@ -35,27 +35,6 @@ static uint8_t convertedPolar = 0;
 static uint8_t interrupted = 0;
 static uint32_t pointCount = 0;
 
-// Private functions ----------------------------------------------------------
-static void SetDefaults(void)
-{
-    sweep.Num_Increments = 50;
-    sweep.Start_Freq = 1000;
-    stopFreq = 100000;
-    sweep.Freq_Increment = (stopFreq - sweep.Start_Freq) / sweep.Num_Increments;
-    sweep.Settling_Cycles = 16;
-    sweep.Settling_Mult = AD5933_SETTL_MULT_1;
-    
-    range.PGA_Gain = AD5933_GAIN_1;
-    range.Voltage_Range = AD5933_VOLTAGE_1;
-    range.Attenuation = 1;
-    range.Feedback_Value = 1000;
-    
-    gainData.impedance = 0;
-    
-    // TODO enable autorange by default
-    autorange = 0;
-}
-
 // main and Interrupt handlers ------------------------------------------------
 
 // Sample pragmas to cope with warnings. Please note the related line at
@@ -71,6 +50,13 @@ int main(int argc, char* argv[])
     Console_Init();
     SetDefaults();
     // TODO read settings from EEPROM
+    
+    // Initialize AD5933 drver if user button is pressed during reset
+    if(HAL_GPIO_ReadPin(BUTTON_PORT, BUTTON_PIN) == GPIO_PIN_SET)
+    {
+        HAL_GPIO_WritePin(LED_PORT, LED_ORANGE, GPIO_PIN_SET);
+        AD5933_Init(&hi2c1);
+    }
     
     // Start timer for periodic interrupt generation
     HAL_TIM_Base_Start_IT(&htim3);
@@ -108,6 +94,27 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         }
         prevStatus = status;
     }
+}
+
+// Private functions ----------------------------------------------------------
+static void SetDefaults(void)
+{
+    sweep.Num_Increments = 50;
+    sweep.Start_Freq = 1000;
+    stopFreq = 100000;
+    sweep.Freq_Increment = (stopFreq - sweep.Start_Freq) / sweep.Num_Increments;
+    sweep.Settling_Cycles = 16;
+    sweep.Settling_Mult = AD5933_SETTL_MULT_1;
+    
+    range.PGA_Gain = AD5933_GAIN_1;
+    range.Voltage_Range = AD5933_VOLTAGE_1;
+    range.Attenuation = 1;
+    range.Feedback_Value = 1000;
+    
+    gainData.impedance = 0;
+    
+    // TODO enable autorange by default
+    autorange = 0;
 }
 
 // Exported functions ---------------------------------------------------------
