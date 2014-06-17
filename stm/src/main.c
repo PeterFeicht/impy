@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
     SetDefaults();
     // TODO read settings from EEPROM
     
-    // Initialize AD5933 drver if user button is pressed during reset
+    // TODO always initialize AD5933 driver once stable
     if(HAL_GPIO_ReadPin(BUTTON_PORT, BUTTON_PIN) == GPIO_PIN_SET)
     {
         HAL_GPIO_WritePin(LED_PORT, LED_ORANGE, GPIO_PIN_SET);
@@ -438,6 +438,7 @@ const AD5933_ImpedancePolar* Board_GetDataPolar(uint32_t *count)
             bufPolar[j].Magnitude = AD5933_GetMagnitude(&bufData[j], &gainFactor);
             bufPolar[j].Angle = AD5933_GetPhase(&bufData[j], &gainFactor);
         }
+        convertedPolar = 1;
     }
     
     *count = pointCount;
@@ -456,7 +457,30 @@ const AD5933_ImpedanceData* Board_GetDataRaw(uint32_t *count)
     return &bufData[0];
 }
 
-// TODO Board_Error Board_StartSweep(uint8_t port)
+/**
+ * Initiates a frequency sweep on the specified port.
+ * 
+ * @param port Port number for the sweep, needs to be in the range {@link PORT_MIN} to {@link PORT_MAX}
+ * @return {@link Board_Error} code
+ */
+Board_Error Board_StartSweep(uint8_t port)
+{
+    AD5933_Status status = AD5933_GetStatus();
+    if(status != AD_FINISH && status != AD_IDLE)
+    {
+        return BOARD_BUSY;
+    }
+    // Uncomment if PORT_MIN is greater than 0
+    if(/*port < PORT_MIN ||*/ port > PORT_MAX)
+    {
+        return BOARD_ERROR;
+    }
+    
+    // TODO implement autorange
+    sweep.Freq_Increment = (stopFreq - sweep.Start_Freq) / sweep.Num_Increments;
+    AD5933_Error ok = AD5933_MeasureImpedance(&sweep, &range, &bufData[0]);
+    return (ok == AD_OK ? BOARD_OK : BOARD_ERROR);
+}
 
 /**
  * Stops a currently running frequency measurement, if any.
