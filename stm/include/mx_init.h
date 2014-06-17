@@ -17,7 +17,7 @@
 #include "usbd_vcp_if.h"
 
 // Constants ------------------------------------------------------------------
-#define TIM3_INTERVAL               4000    //!< TIM3 interrupt interval in µs
+#define TIM3_INTERVAL               2000    //!< TIM3 interrupt interval in µs
 
 // External variables ---------------------------------------------------------
 extern USBD_HandleTypeDef hUsbDevice;
