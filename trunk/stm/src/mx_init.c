@@ -229,14 +229,14 @@ static void MX_GPIO_Init(void)
     
     /*
      * USB Power Switch (out): PC0 >high
-     * Main Power Switch (out): PC15 >low
+     * Main Power Switch (out): PC15 >high
      */
     GPIO_InitStruct.Pin = GPIO_PIN_0 | GPIO_PIN_15;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_SET);
+    GPIOC->BSRRL = GPIO_PIN_0 | GPIO_PIN_15;
     
 #if defined(BOARD_HAS_ETHERNET) && BOARD_HAS_ETHERNET == 1
     /*
