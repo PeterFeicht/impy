@@ -14,55 +14,55 @@
 
 // Console strings ------------------------------------------------------------
 // XXX Maybe there should be some kind of error code prefix for parsing by PC software
-const char *txtErrArgNum = "Wrong number of arguments.";
-const char *txtErrNoSubcommand = "Missing command, type 'help' for possible commands.";
-const char *txtUnknownTopic = "Unknown help topic, type 'help' for possible commands.";
-const char *txtUnknownCommand = "Unknown command.";
-const char *txtUnknownSubcommand = "Unknown subcommand.";
-const char *txtNotImplemented = "Not yet implemented.";
-const char *txtUnknownOption = "Unknown option.";
+const char* const txtErrArgNum = "Wrong number of arguments.";
+const char* const txtErrNoSubcommand = "Missing command, type 'help' for possible commands.";
+const char* const txtUnknownTopic = "Unknown help topic, type 'help' for possible commands.";
+const char* const txtUnknownCommand = "Unknown command.";
+const char* const txtUnknownSubcommand = "Unknown subcommand.";
+const char* const txtNotImplemented = "Not yet implemented.";
+const char* const txtUnknownOption = "Unknown option.";
 // board get, board set
-const char *txtInvalidValue = "Invalid value for this argument: ";
-const char *txtSetOnlyWhenIdle = "This value cannot be set while a sweep is running: ";
-const char *txtEffectiveNextSweep = "Autorange setting will take effect on the next sweep.";
-const char *txtSetOnlyWhenAutorangeDisabled = "This value can only be set when autoranging is disabled: ";
-const char *txtGetOnlyWhenAutorangeDisabled = "This value can only be read when autoranging is disabled.";
+const char* const txtInvalidValue = "Invalid value for this argument: ";
+const char* const txtSetOnlyWhenIdle = "This value cannot be set while a sweep is running: ";
+const char* const txtEffectiveNextSweep = "Autorange setting will take effect on the next sweep.";
+const char* const txtSetOnlyWhenAutorangeDisabled = "This value can only be set when autoranging is disabled: ";
+const char* const txtGetOnlyWhenAutorangeDisabled = "This value can only be read when autoranging is disabled.";
 // board status
-const char *txtAdStatusUnknown = "Unknown AD5933 driver status, something went wrong.";
-const char *txtAdStatusSweep = "Impedance measurement is running, points measured: ";
-const char *txtAdStatusTemp = "Temperature measurement is running.";
-const char *txtAdStatusIdle = "No measurement is running.";
-const char *txtAdStatusFinish = "Measurement finished, points measured: ";
-const char *txtAdStatusCalibrate = "Calibration measurement is running.";
-const char *txtAutorangeStatus = "Autoranging is ";
-const char *txtLastInterrupted = "The last measurement was interrupted.";
+const char* const txtAdStatusUnknown = "Unknown AD5933 driver status, something went wrong.";
+const char* const txtAdStatusSweep = "Impedance measurement is running, points measured: ";
+const char* const txtAdStatusTemp = "Temperature measurement is running.";
+const char* const txtAdStatusIdle = "No measurement is running.";
+const char* const txtAdStatusFinish = "Measurement finished, points measured: ";
+const char* const txtAdStatusCalibrate = "Calibration measurement is running.";
+const char* const txtAutorangeStatus = "Autoranging is ";
+const char* const txtLastInterrupted = "The last measurement was interrupted.";
 // board info
-const char *txtAdStatus = "AD5933 driver status: ";
-const char *txtAdStatusMeasureImpedance = "Impedance measurement is running.";
-const char *txtPortsAvailable = "Ports available for measurements: ";
-const char *txtAttenuationsAvailable = "Possible voltage attenuation factors: ";
-const char *txtFeedbackResistorValues = "Feedback resistor values: ";
-const char *txtCalibrationValues = "Calibration resistor values: ";
-const char *txtNotInstalled = " not installed.";
-const char *txtNoMemory = "\r\nNo external memory installed.";
-const char *txtFrequencyRange = "Possible frequency range in Hz: ";
-const char *txtMaxNumIncrements = "Maximum number of frequency increments: ";
+const char* const txtAdStatus = "AD5933 driver status: ";
+const char* const txtAdStatusMeasureImpedance = "Impedance measurement is running.";
+const char* const txtPortsAvailable = "Ports available for measurements: ";
+const char* const txtAttenuationsAvailable = "Possible voltage attenuation factors: ";
+const char* const txtFeedbackResistorValues = "Feedback resistor values: ";
+const char* const txtCalibrationValues = "Calibration resistor values: ";
+const char* const txtNotInstalled = " not installed.";
+const char* const txtNoMemory = "\r\nNo external memory installed.";
+const char* const txtFrequencyRange = "Possible frequency range in Hz: ";
+const char* const txtMaxNumIncrements = "Maximum number of frequency increments: ";
 // board measure
-const char *txtBoardBusy = "Another measurement is currently running.";
-const char *txtImpedance = "Impedance (polar): ";
+const char* const txtBoardBusy = "Another measurement is currently running.";
+const char* const txtImpedance = "Impedance (polar): ";
 // board read
-const char *txtNoReadWhileBusy = "Data can only be read after the measurement is finished.";
-const char *txtOutOfMemory = "Not enough memory to send all data, try binary format or use fewer points.";
+const char* const txtNoReadWhileBusy = "Data can only be read after the measurement is finished.";
+const char* const txtOutOfMemory = "Not enough memory to send all data, try binary format or use fewer points.";
 // board calibrate
-const char *txtWrongCalibValue = "Unknown resistor value, see 'board info' for possible values.";
+const char* const txtWrongCalibValue = "Unknown resistor value, see 'board info' for possible values.";
 
 // Words ----------------------------------------------------------------------
-const char *txtEnabled = "enabled";
-const char *txtDisabled = "disabled";
-const char *txtOn = "on";
-const char *txtOff = "off";
-const char *txtOf = " of ";
-const char *txtOK = "OK";
+const char* const txtEnabled = "enabled";
+const char* const txtDisabled = "disabled";
+const char* const txtOn = "on";
+const char* const txtOff = "off";
+const char* const txtOf = " of ";
+const char* const txtOK = "OK";
 
 // ----------------------------------------------------------------------------
 
