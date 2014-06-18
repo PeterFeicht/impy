@@ -35,6 +35,8 @@ typedef struct
     uint16_t totalPoints;       //!< The number of frequency steps to be measured
     uint8_t autorange;          //!< Whether autoranging is enabled
     uint8_t interrupted;        //!< Whether the last measurement was interrupted (false if a measurement is running)
+    uint8_t validGainFactor;    //!< Whether a valid gain factor for the current range settings is present
+    uint8_t validData;          //!< Whether valid measurement data is present
 } Board_Status;
 
 // Constants ------------------------------------------------------------------
