@@ -8,8 +8,9 @@ Commands:
   board set [--start=FREQ] [--stop=FREQ] [--steps=NUM] [--settl=CYCLES]
   board set [--voltage=RANGE] [--gain=(on|off)] [--feedback=OHMS]
   board set [--format=FMT] [--autorange=(on|off)] [--echo=(on|off)]
-  board (info | get <option> | calibrate <ohms>)
-  board (start <port> | stop | status | temp | measure <port> <freq>)
+  board get (<option> | all)
+  board (info | temp | calibrate <ohms>)
+  board (start <port> | stop | status | measure <port> <freq>)
   board read [--format=FMT]
   eth set [--dhcp=(on|off)] [--ip=IP]
   eth (status | enable | disable)
@@ -39,15 +40,15 @@ Options:
 
 Commands:
   set           Set option(s) to specified value(s)
-  get           Print current value of specified option
+  get           Print current value of specified option, or all options
   info          Print status information for the whole board
+  temp          Measure and print the AD5933 chip temperature
   calibrate     Perform a calibration with the specified resistor value
                 For more information see 'help calibrate'
   start         Start a frequency sweep on specified port
                 For the valid port range see 'board info'
-  stop          Stop a running frequency sweep
+  stop          Stop a running frequency sweep (also reset the AD5933)
   status        Print measurement status information
-  temp          Measure and print the AD5933 chip temperature
   measure       Measure and print a single frequency point on specified port
   read          Transfer measurement data (with optional format specification)
                 For possible formats see 'help format'
