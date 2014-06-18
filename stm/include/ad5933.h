@@ -447,9 +447,9 @@ typedef struct
  * These are the command codes that need to be sent for the respective transaction.
  * @{
  */
-#define AD5933_CMD_SET_ADDRESS              ((uint8_t)0xA0)     //!< Set address pointer command code
-#define AD5933_CMD_BLOCK_WRITE              ((uint8_t)0xA1)     //!< Block write command code
-#define AD5933_CMD_BLOCK_READ               ((uint8_t)0xB0)     //!< Block read command code
+#define AD5933_CMD_SET_ADDRESS              ((uint8_t)0xB0)     //!< Set address pointer command code
+#define AD5933_CMD_BLOCK_WRITE              ((uint8_t)0xA0)     //!< Block write command code
+#define AD5933_CMD_BLOCK_READ               ((uint8_t)0xA1)     //!< Block read command code
 /** @} */
 
 /**
