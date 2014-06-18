@@ -244,7 +244,11 @@ AD5933_Status AD5933_GetStatus(void)
  */
 uint8_t AD5933_IsBusy(void)
 {
-    return (status != AD_FINISH && status != AD_IDLE);
+    AD5933_Status tmp = status;
+    return (tmp != AD_FINISH_CALIB &&
+            tmp != AD_FINISH_TEMP &&
+            tmp != AD_FINISH_IMPEDANCE &&
+            tmp != AD_IDLE);
 }
 
 /**
@@ -256,6 +260,7 @@ uint8_t AD5933_IsBusy(void)
 AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c)
 {
     GPIO_InitTypeDef init;
+    uint16_t data;
     
     if(i2c == NULL)
     {
@@ -286,9 +291,12 @@ AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c)
     HAL_GPIO_Init(AD5933_COUPLING_GPIO_PORT, &init);
     
     i2cHandle = i2c;
-    status = AD_IDLE;
     HAL_Delay(5);
-    AD5933_Reset();
+    // Reset first (low byte) and then power down (high byte)
+    data = AD5933_FUNCTION_POWER_DOWN | AD5933_CTRL_RESET;
+    AD5933_Write8(AD5933_CTRL_L_ADDR, LOBYTE(data));
+    AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
+    status = AD_IDLE;
     
     return AD_OK;
 }
@@ -334,7 +342,7 @@ AD5933_Error AD5933_MeasureImpedance(const AD5933_Sweep *sweep, const AD5933_Ran
     {
         return AD_ERROR;
     }
-    if(status != AD_IDLE && status != AD_FINISH)
+    if(AD5933_IsBusy())
     {
         return AD_BUSY;
     }
@@ -380,7 +388,7 @@ AD5933_Error AD5933_MeasureTemperature(float *destination)
     {
         return AD_ERROR;
     }
-    if(status != AD_IDLE && status != AD_FINISH)
+    if(AD5933_IsBusy())
     {
         return AD_BUSY;
     }
@@ -412,7 +420,7 @@ AD5933_Error AD5933_Calibrate(AD5933_GainFactorData *data, const AD5933_RangeSet
     {
         return AD_ERROR;
     }
-    if(status != AD_IDLE && status != AD_FINISH)
+    if(AD5933_IsBusy())
     {
         return AD_BUSY;
     }
@@ -450,11 +458,14 @@ AD5933_Status AD5933_TimerCallback(void)
     uint16_t data;
     uint8_t  dev_status;
     
+    // TODO handle autoranging
     switch(status)
     {
         case AD_UNINIT:
         case AD_IDLE:
-        case AD_FINISH:
+        case AD_FINISH_CALIB:
+        case AD_FINISH_TEMP:
+        case AD_FINISH_IMPEDANCE:
             break;
             
         case AD_MEASURE_TEMP:
@@ -470,7 +481,7 @@ AD5933_Status AD5933_TimerCallback(void)
                 {
                     *pTemperature = data / 32.0f;
                 }
-                status = AD_FINISH;
+                status = AD_FINISH_TEMP;
             }
             break;
             
@@ -489,7 +500,7 @@ AD5933_Status AD5933_TimerCallback(void)
                 // Finish or measure next step
                 if(dev_status & AD5933_STATUS_SWEEP_COMPLETE)
                 {
-                    status = AD_FINISH;
+                    status = AD_FINISH_IMPEDANCE;
                 }
                 else
                 {
@@ -516,7 +527,7 @@ AD5933_Status AD5933_TimerCallback(void)
                     }
                     else
                     {
-                        status = AD_FINISH;
+                        status = AD_FINISH_CALIB;
                     }
                 }
                 else
@@ -524,7 +535,7 @@ AD5933_Status AD5933_TimerCallback(void)
                     // Second point, read data and finish
                     AD5933_Read16(AD5933_REAL_H_ADDR, (uint16_t *)&pGainData->real2);
                     AD5933_Read16(AD5933_IMAG_H_ADDR, (uint16_t *)&pGainData->imag2);
-                    status = AD_FINISH;
+                    status = AD_FINISH_CALIB;
                 }
             }
             break;

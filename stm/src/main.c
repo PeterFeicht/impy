@@ -85,7 +85,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         AD5933_Status status = AD5933_TimerCallback();
         if(prevStatus != status)
         {
-            if(status == AD_FINISH)
+            if(status == AD_FINISH_IMPEDANCE)
             {
                 pointCount = AD5933_GetSweepCount();
                 interrupted = 0;
@@ -480,13 +480,14 @@ Board_Error Board_StartSweep(uint8_t port)
 }
 
 /**
- * Stops a currently running frequency measurement, if any.
+ * Stops a currently running frequency measurement, if any. Always resets the AD5933.
  * 
  * @return {@link BOARD_OK}
  */
 Board_Error Board_StopSweep(void)
 {
-    interrupted = (AD5933_GetStatus() == AD_MEASURE_IMPEDANCE);
+    AD5933_Status status = AD5933_GetStatus();
+    interrupted = (status == AD_MEASURE_IMPEDANCE || status == AD_MEASURE_IMPEDANCE_AUTORANGE);
     AD5933_Reset();
     return BOARD_OK;
 }
@@ -527,7 +528,7 @@ Board_Error Board_MeasureSingleFrequency(uint8_t port, uint32_t freq, AD5933_Imp
     
     // TODO implement autorange
     AD5933_MeasureImpedance(&sw, &range, &buffer);
-    while(AD5933_GetStatus() != AD_FINISH)
+    while(AD5933_GetStatus() != AD_FINISH_IMPEDANCE)
     {
         HAL_Delay(2);
     }
