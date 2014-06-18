@@ -1047,12 +1047,50 @@ static void Console_BoardSet(uint32_t argc, char **argv)
     VCP_CommandFinish();
 }
 
+/**
+ * Processes the 'board start' command. This command finishes immediately.
+ * 
+ * @param argc Number of arguments
+ * @param argv Array of arguments
+ */
 static void Console_BoardStart(uint32_t argc, char **argv)
 {
     // Arguments: port
+    Board_Error ok;
+    uint32_t port;
+    const char *end;
+    
+    if(argc != 2)
+    {
+        VCP_SendLine(txtErrArgNum);
+        VCP_CommandFinish();
+        return;
+    }
+    
+    port = IntFromSiString(argv[1], &end);
+    // Uncomment if PORT_MIN is greater than 0
+    if(end == NULL || /*port < PORT_MIN ||*/ port > PORT_MAX)
+    {
+        VCP_SendString(txtInvalidValue);
+        VCP_SendLine("port");
+        VCP_CommandFinish();
+        return;
+    }
 
-    // TODO implement 'board start'
-    VCP_SendLine(txtNotImplemented);
+    ok = Board_StartSweep(port);
+    switch(ok)
+    {
+        case BOARD_OK:
+            VCP_SendLine(txtOK);
+            break;
+        case BOARD_BUSY:
+            VCP_SendLine(txtBoardBusy);
+            break;
+        case BOARD_ERROR:
+            VCP_SendLine(txtOops);
+            break;
+    }
+    
     VCP_CommandFinish();
 }
 
