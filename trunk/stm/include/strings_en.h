@@ -21,6 +21,7 @@ const char* const txtUnknownCommand = "Unknown command.";
 const char* const txtUnknownSubcommand = "Unknown subcommand.";
 const char* const txtNotImplemented = "Not yet implemented.";
 const char* const txtUnknownOption = "Unknown option: ";
+const char* const txtOops = "An unknown error occurred, panic.";
 // board get, board set
 const char* const txtInvalidValue = "Invalid value for this argument: ";
 const char* const txtSetOnlyWhenIdle = "This value cannot be set while a sweep is running: ";
