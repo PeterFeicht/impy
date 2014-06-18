@@ -9,12 +9,8 @@
 
 // Includes -------------------------------------------------------------------
 #include "stm32f4xx_hal.h"
-
-// External variables ---------------------------------------------------------
-extern PCD_HandleTypeDef hpcd_FS;
-extern I2C_HandleTypeDef hi2c1;
-extern SPI_HandleTypeDef hspi3;
-extern TIM_HandleTypeDef htim3;
+#include "main.h"
+#include "usbd_conf.h"
 
 // Functions ------------------------------------------------------------------
 
