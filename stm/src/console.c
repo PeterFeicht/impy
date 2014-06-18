@@ -1459,7 +1459,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
     if(argc == 1)
     {
         VCP_SendLine("send, echo, char-from-flag, printf-float, malloc, leak, read, usb-paksize, heap,");
-        VCP_SendLine("tim, mux");
+        VCP_SendLine("tim, mux, ad-i2c");
         VCP_CommandFinish();
         return;
     }
@@ -1718,6 +1718,73 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
                 VCP_SendLine("Unknown port.");
             }
         }
+    }
+    else if(strcmp(argv[1], "ad-i2c") == 0)
+    {
+        // Test AD5933 I2C communication by writing to a register and reading the value back.
+        extern I2C_HandleTypeDef hi2c1;
+        const char* const timeout = "I2C Timeout: ";
+        const char* const ackfail = "ACK failure: ";
+        const uint8_t ad = ((uint8_t)(0x0D << 1));
+        uint8_t addr = 0x82;
+        const uint8_t cmdSet = 0xB0;
+        const uint8_t cmdWrite = 0xA0;
+        const uint8_t cmdRead = 0xA1;
+        const uint32_t value = 0xBAC0F5;
+        const uint8_t bytes = 3;
+        uint8_t data[5];
+        uint32_t read;
+        char buf[16];
+        HAL_StatusTypeDef ret;
+        
+        ret = HAL_I2C_Mem_Write(&hi2c1, ad, cmdSet, 1, &addr, 1, 200);      // Set address
+        if(ret == HAL_TIMEOUT || ret == HAL_ERROR)
+        {
+            VCP_SendString(ret == HAL_TIMEOUT ? timeout : ackfail);
+            VCP_SendLine("set write address");
+        }
+        
+        data[0] = cmdWrite;
+        data[1] = bytes;
+        data[2] = (uint8_t)((value >> 16) & 0xFF);
+        data[3] = (uint8_t)((value >> 8) & 0xFF);
+        data[4] = (uint8_t)(value & 0xFF);
+        ret = HAL_I2C_Master_Transmit(&hi2c1, ad, data, sizeof(data), 200);
+        if(ret == HAL_TIMEOUT || ret == HAL_ERROR)
+        {
+            VCP_SendString(ret == HAL_TIMEOUT ? timeout : ackfail);
+            VCP_SendLine("write data");
+        }
+        
+        VCP_SendString("Data written: ");
+        snprintf(buf, NUMEL(buf), "%.6lx", value);
+        VCP_SendLine(buf);
+
+        ret = HAL_I2C_Mem_Write(&hi2c1, ad, cmdSet, 1, &addr, 1, 200);      // Set address
+        if(ret == HAL_TIMEOUT || ret == HAL_ERROR)
+        {
+            VCP_SendString(ret == HAL_TIMEOUT ? timeout : ackfail);
+            VCP_SendLine("set read address");
+        }
+        
+        *((uint32_t *)data) = 0;
+        ret = HAL_I2C_Mem_Read(
+                &hi2c1, ad, ((uint16_t)cmdRead << 8) | bytes, I2C_MEMADD_SIZE_16BIT, &data[1], bytes, 200);
+        if(ret == HAL_TIMEOUT || ret == HAL_ERROR)
+        {
+            VCP_SendString(ret == HAL_TIMEOUT ? timeout : ackfail);
+            VCP_SendLine("read data");
+        }
+        
+#ifdef __ARMEB__
+        read = *((uint32_t *)data);
+#else
+        read = __REV(*((uint32_t *)data));
+#endif
+        
+        VCP_SendString("Data read:    ");
+        snprintf(buf, NUMEL(buf), "%.6lx", read);
+        VCP_SendLine(buf);
     }
     else
     {
