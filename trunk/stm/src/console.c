@@ -536,7 +536,8 @@ static void Console_BoardGet(uint32_t argc, char **argv)
             break;
             
         default:
-            VCP_SendLine(txtUnknownOption);
+            VCP_SendString(txtUnknownOption);
+            VCP_SendLine(argv[1]);
             break;
     }
     
@@ -827,7 +828,7 @@ static void Console_BoardRead(uint32_t argc, char **argv)
         if(arg == NULL)
         {
             // Complain about unknown arguments and bail out
-            VCP_SendLine(txtUnknownOption);
+            VCP_SendString(txtUnknownOption);
             VCP_SendLine(argv[j]);
             VCP_CommandFinish();
             return;
@@ -904,7 +905,7 @@ static void Console_BoardSet(uint32_t argc, char **argv)
         if(arg == NULL)
         {
             // Complain about unknown arguments but ignore otherwise
-            VCP_SendLine(txtUnknownOption);
+            VCP_SendString(txtUnknownOption);
             VCP_SendLine(argv[j]);
             continue;
         }
