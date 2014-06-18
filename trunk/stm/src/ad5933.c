@@ -500,7 +500,7 @@ AD5933_Status AD5933_TimerCallback(void)
             break;
             
         case AD_CALIBRATE:
-            if(AD5933_GetStatus() & AD5933_STATUS_VALID_IMPEDANCE)
+            if(AD5933_ReadStatus() & AD5933_STATUS_VALID_IMPEDANCE)
             {
                 if(sweep_count == 0)
                 {
