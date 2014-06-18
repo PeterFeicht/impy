@@ -576,13 +576,16 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     switch(AD5933_GetStatus())
     {
         case AD_IDLE:
-        case AD_FINISH:
+        case AD_FINISH_CALIB:
+        case AD_FINISH_TEMP:
+        case AD_FINISH_IMPEDANCE:
             temp = txtAdStatusIdle;
             break;
         case AD_MEASURE_TEMP:
             temp = txtAdStatusTemp;
             break;
         case AD_MEASURE_IMPEDANCE:
+        case AD_MEASURE_IMPEDANCE_AUTORANGE:
             temp = txtAdStatusMeasureImpedance;
             break;
         case AD_CALIBRATE:
@@ -1117,6 +1120,7 @@ static void Console_BoardStatus(uint32_t argc, char **argv __attribute__((unused
     switch(status.ad_status)
     {
         case AD_MEASURE_IMPEDANCE:
+        case AD_MEASURE_IMPEDANCE_AUTORANGE:
             // Point count
             VCP_SendString(txtAdStatusSweep);
             snprintf(buf, NUMEL(buf), "%u", status.point);
@@ -1131,6 +1135,8 @@ static void Console_BoardStatus(uint32_t argc, char **argv __attribute__((unused
             break;
             
         case AD_IDLE:
+        case AD_FINISH_TEMP:
+        case AD_FINISH_CALIB:
             VCP_SendLine(txtAdStatusIdle);
             if(status.interrupted)
             {
@@ -1138,8 +1144,8 @@ static void Console_BoardStatus(uint32_t argc, char **argv __attribute__((unused
             }
             break;
             
-        case AD_FINISH:
-            VCP_SendString(txtAdStatusFinish);
+        case AD_FINISH_IMPEDANCE:
+            VCP_SendString(txtAdStatusFinishImpedance);
             snprintf(buf, NUMEL(buf), "%u", status.point);
             VCP_SendLine(buf);
             break;
@@ -1171,7 +1177,8 @@ static void Console_BoardStop(uint32_t argc, char **argv __attribute__((unused))
 {
     if(argc == 1)
     {
-        if(AD5933_GetStatus() == AD_MEASURE_IMPEDANCE)
+        AD5933_Status status = AD5933_GetStatus();
+        if(status == AD_MEASURE_IMPEDANCE || status == AD_MEASURE_IMPEDANCE_AUTORANGE)
         {
             Board_StopSweep();
             VCP_SendLine(txtOK);

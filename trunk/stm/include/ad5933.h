@@ -15,12 +15,15 @@
 // Exported type definitions --------------------------------------------------
 typedef enum
 {
-    AD_UNINIT = 0,          //!< Driver has not been initialized
-    AD_IDLE,                //!< Driver has been initialized and is ready to start a measurement
-    AD_FINISH,              //!< Driver has finished with a measurement
-    AD_CALIBRATE,           //!< Driver is doing a calibration measurement
-    AD_MEASURE_TEMP,        //!< Driver is doing a temperature measurement
-    AD_MEASURE_IMPEDANCE    //!< Driver is doing an impedance measurement
+    AD_UNINIT = 0,                  //!< Driver has not been initialized
+    AD_IDLE,                        //!< Driver has been initialized and is ready to start a measurement
+    AD_FINISH_TEMP,                 //!< Driver has finished with a temperature measurement
+    AD_FINISH_CALIB,                //!< Driver has finished with a calibration measurement
+    AD_FINISH_IMPEDANCE,            //!< Driver has finished with an impedance measurement
+    AD_CALIBRATE,                   //!< Driver is doing a calibration measurement
+    AD_MEASURE_TEMP,                //!< Driver is doing a temperature measurement
+    AD_MEASURE_IMPEDANCE,           //!< Driver is doing an impedance measurement
+    AD_MEASURE_IMPEDANCE_AUTORANGE  //!< Driver is doing an impedance measurement with autoranging
 } AD5933_Status;
 
 typedef enum
