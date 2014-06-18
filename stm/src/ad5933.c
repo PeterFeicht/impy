@@ -10,10 +10,11 @@
 #include "ad5933.h"
 
 // Private function prototypes ------------------------------------------------
-static HAL_StatusTypeDef AD5933_Write8(uint16_t MemAddress, uint8_t value);
-static HAL_StatusTypeDef AD5933_Write16(uint16_t MemAddress, uint16_t value);
-static HAL_StatusTypeDef AD5933_Write24(uint16_t MemAddress, uint32_t value);
-static HAL_StatusTypeDef AD5933_Read16(uint16_t MemAddress, uint16_t *destination);
+static HAL_StatusTypeDef AD5933_SetAddress(uint8_t MemAddress);
+static HAL_StatusTypeDef AD5933_Write8(uint8_t MemAddress, uint8_t value);
+static HAL_StatusTypeDef AD5933_Write16(uint8_t MemAddress, uint16_t value);
+static HAL_StatusTypeDef AD5933_Write24(uint8_t MemAddress, uint32_t value);
+static HAL_StatusTypeDef AD5933_Read16(uint8_t MemAddress, uint16_t *destination);
 static uint8_t AD5933_ReadStatus();
 static uint32_t AD5933_CalcFrequencyReg(uint32_t freq);
 static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, uint32_t freq_start, uint32_t freq_step,
@@ -32,15 +33,26 @@ static AD5933_GainFactorData *pGainData;
 // Private functions ----------------------------------------------------------
 
 /**
+ * Sets the AD5933 address pointer to the specified address.
+ * 
+ * @param MemAddress The address to set
+ * @return HAL status code
+ */
+static HAL_StatusTypeDef AD5933_SetAddress(uint8_t MemAddress)
+{
+    return HAL_I2C_Mem_Write(i2cHandle, AD5933_ADDR, AD5933_CMD_SET_ADDRESS, 1, &MemAddress, 1, AD5933_I2C_TIMEOUT);
+}
+
+/**
  * Writes an 8-bit value to a AD5933 device register.
  * 
  * @param MemAddress Register address to write to
  * @param value Value to write
- * @returnHAL status code
+ * @return HAL status code
  */
-static HAL_StatusTypeDef AD5933_Write8(uint16_t MemAddress, uint8_t value)
+static HAL_StatusTypeDef AD5933_Write8(uint8_t MemAddress, uint8_t value)
 {
-    return HAL_I2C_Mem_Write(i2cHandle, AD5933_ADDR, MemAddress, 1, (uint8_t *)&value, 1, AD5933_I2C_TIMEOUT);
+    return HAL_I2C_Mem_Write(i2cHandle, AD5933_ADDR, MemAddress, 1, &value, 1, AD5933_I2C_TIMEOUT);
 }
 
 /**
@@ -48,14 +60,24 @@ static HAL_StatusTypeDef AD5933_Write8(uint16_t MemAddress, uint8_t value)
  * 
  * @param MemAddress Register address to write to
  * @param value Value to write
- * @returnHAL status code
+ * @return HAL status code
  */
-static HAL_StatusTypeDef AD5933_Write16(uint16_t MemAddress, uint16_t value)
+static HAL_StatusTypeDef AD5933_Write16(uint8_t MemAddress, uint16_t value)
 {
-#ifndef __ARMEB__
-    value = __REV16(value);
-#endif
-    return HAL_I2C_Mem_Write(i2cHandle, AD5933_ADDR, MemAddress, 1, (uint8_t *)&value, 2, AD5933_I2C_TIMEOUT);
+    HAL_StatusTypeDef ret = AD5933_SetAddress(MemAddress);
+    if(ret != HAL_OK)
+    {
+        return ret;
+    }
+    
+    // AD5933 block write operation: transfer block write command, byte count and data
+    uint8_t data[4];
+    data[0] = AD5933_CMD_BLOCK_WRITE;
+    data[1] = 2;
+    data[2] = HIBYTE(value);
+    data[3] = LOBYTE(value);
+    
+    return HAL_I2C_Master_Transmit(i2cHandle, AD5933_ADDR, data, sizeof(data), AD5933_I2C_TIMEOUT);
 }
 
 /**
@@ -63,14 +85,25 @@ static HAL_StatusTypeDef AD5933_Write16(uint16_t MemAddress, uint16_t value)
  * 
  * @param MemAddress Register address to write to
  * @param value Value to write
- * @returnHAL status code
+ * @return HAL status code
  */
-static HAL_StatusTypeDef AD5933_Write24(uint16_t MemAddress, uint32_t value)
+static HAL_StatusTypeDef AD5933_Write24(uint8_t MemAddress, uint32_t value)
 {
-#ifndef __ARMEB__
-    value = __REV(value);
-#endif
-    return HAL_I2C_Mem_Write(i2cHandle, AD5933_ADDR, MemAddress, 1, (uint8_t *)&value + 1, 3, AD5933_I2C_TIMEOUT);
+    HAL_StatusTypeDef ret = AD5933_SetAddress(MemAddress);
+    if(ret != HAL_OK)
+    {
+        return ret;
+    }
+    
+    // AD5933 block write operation: transfer block write command, byte count and data
+    uint8_t data[5];
+    data[0] = AD5933_CMD_BLOCK_WRITE;
+    data[1] = 3;
+    data[2] = (uint8_t)((value >> 16) & 0xFF);
+    data[3] = (uint8_t)((value >> 8) & 0xFF);
+    data[4] = (uint8_t)(value & 0xFF);
+    
+    return HAL_I2C_Master_Transmit(i2cHandle, AD5933_ADDR, data, sizeof(data), AD5933_I2C_TIMEOUT);
 }
 
 /**
@@ -80,11 +113,18 @@ static HAL_StatusTypeDef AD5933_Write24(uint16_t MemAddress, uint32_t value)
  * @param destination The address where the value is written to
  * @return HAL status code
  */
-static HAL_StatusTypeDef AD5933_Read16(uint16_t MemAddress, uint16_t *destination)
+static HAL_StatusTypeDef AD5933_Read16(uint8_t MemAddress, uint16_t *destination)
 {
-    uint16_t tmp;
-    HAL_StatusTypeDef ret =
-            HAL_I2C_Mem_Read(i2cHandle, AD5933_ADDR, MemAddress, 1, (uint8_t *)&tmp, 2, AD5933_I2C_TIMEOUT);
+    HAL_StatusTypeDef ret = AD5933_SetAddress(MemAddress);
+    if(ret != HAL_OK)
+    {
+        return ret;
+    }
+    
+    // AD5933 block read operation: transfer block read command and byte count, after start condition read data
+    uint16_t tmp = 0;
+    uint16_t cmd = ((uint16_t)AD5933_CMD_BLOCK_READ << 8) | 2;
+    ret = HAL_I2C_Mem_Read(i2cHandle, AD5933_ADDR, cmd, I2C_MEMADD_SIZE_16BIT, (uint8_t *)&tmp, 2, AD5933_I2C_TIMEOUT);
 #ifdef __ARMEB__
     *destination = tmp;
 #else
@@ -102,7 +142,8 @@ static uint8_t AD5933_ReadStatus()
 {
     uint8_t data = 0;
     
-    HAL_I2C_Mem_Read(i2cHandle, AD5933_ADDR, AD5933_STATUS_ADDR, 1, &data, 1, AD5933_I2C_TIMEOUT);
+    AD5933_SetAddress(AD5933_STATUS_ADDR);
+    HAL_I2C_Master_Receive(i2cHandle, AD5933_ADDR, &data, 1, AD5933_I2C_TIMEOUT);
     return data;
 }
 
