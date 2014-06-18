@@ -1348,7 +1348,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
     if(argc == 1)
     {
         VCP_SendLine("send, echo, char-from-flag, printf-float, malloc, leak, read, usb-paksize, heap,");
-        VCP_SendLine("tim");
+        VCP_SendLine("tim, mux");
         VCP_CommandFinish();
         return;
     }
@@ -1571,6 +1571,40 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
                 default:
                     // Ignore
                     break;
+            }
+        }
+    }
+    else if(strcmp(argv[1], "mux") == 0)
+    {
+        // Set output mux port, or disable
+        if(argc != 3)
+        {
+            VCP_SendLine(txtErrArgNum);
+        }
+        else
+        {
+            const char *end;
+            uint8_t port = IntFromSiString(argv[2], &end);
+            
+            if(strcmp(argv[2], "off") == 0)
+            {
+                port = AD725_CHIP_ENABLE_NOT;
+                HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_RESET);
+                HAL_SPI_Transmit(&hspi3, &port, 1, BOARD_SPI_TIMEOUT);
+                HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_SET);
+                VCP_SendLine("Switched off.");
+            }
+            else if(end != NULL && port <= PORT_MAX)
+            {
+                port &= AD725_MASK_PORT;
+                HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_RESET);
+                HAL_SPI_Transmit(&hspi3, &port, 1, BOARD_SPI_TIMEOUT);
+                HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_SET);
+                VCP_SendLine("Port set.");
+            }
+            else
+            {
+                VCP_SendLine("Unknown port.");
             }
         }
     }
