@@ -23,19 +23,20 @@ TIM_HandleTypeDef htim10;
 // AD5933 driver values
 static AD5933_Sweep sweep;
 static AD5933_RangeSettings range;
-static AD5933_GainFactorData gainData;
-static AD5933_GainFactor gainFactor;
 static uint32_t stopFreq;
-static uint8_t port;
-static uint8_t autorange;
+static uint8_t lastPort;
+static uint8_t autorange;       // Whether autoranging should be enabled for the next sweep
 
 // XXX should we allocate buffers dynamically?
 static AD5933_ImpedanceData bufData[AD5933_MAX_NUM_INCREMENTS + 1];
 static uint8_t validData = 0;
 static AD5933_ImpedancePolar bufPolar[AD5933_MAX_NUM_INCREMENTS + 1];
 static uint8_t validPolar = 0;
-static uint8_t interrupted = 0;
+static AD5933_GainFactor dataGainFactor;    // Gain factor for valid raw data
 static uint32_t pointCount = 0;
+static uint8_t interrupted = 0;
+static AD5933_GainFactor gainFactor;        // Current gain factor, could have changed since the measurement finished
+static uint8_t validGain = 0;               // Whether gainFactor is valid for the current sweep parameters
 
 // main and Interrupt handlers ------------------------------------------------
 
@@ -105,6 +106,7 @@ static void Handle_TIM3_PeriodElapsed(void)
             {
                 validData = 1;
                 validPolar = 0;
+                dataGainFactor = gainFactor;
             }
             else if(prevStatus == AD_MEASURE_IMPEDANCE_AUTORANGE)
             {
@@ -131,15 +133,11 @@ static void SetDefaults(void)
     range.Attenuation = 1;
     range.Feedback_Value = 1000;
     
-    gainData.impedance = 0;
-    
     // TODO enable autorange by default
     autorange = 0;
 }
 
 // Exported functions ---------------------------------------------------------
-
-// TODO implement calibration
 
 /**
  * Sets the start frequency used for a sweep.
@@ -160,6 +158,7 @@ Board_Error Board_SetStartFreq(uint32_t freq)
     }
     
     sweep.Start_Freq = freq;
+    validGain = 0;
     return BOARD_OK;
 }
 
@@ -182,6 +181,7 @@ Board_Error Board_SetStopFreq(uint32_t freq)
     }
     
     stopFreq = freq;
+    validGain = 0;
     return BOARD_OK;
 }
 
@@ -282,6 +282,7 @@ Board_Error Board_SetVoltageRange(uint16_t voltage)
             {
                 range.Attenuation = attenuations[j];
                 range.Voltage_Range = voltage_values[k];
+                validGain = 0;
                 return BOARD_OK;
             }
         }
@@ -306,6 +307,7 @@ Board_Error Board_SetPGA(uint8_t enable)
     if(!autorange)
     {
         range.PGA_Gain = (enable ? AD5933_GAIN_5 : AD5933_GAIN_1);
+        validGain = 0;
     }
     
     return BOARD_OK;
@@ -357,6 +359,7 @@ Board_Error Board_SetFeedback(uint32_t ohms)
             return BOARD_ERROR;
         }
         range.Feedback_Value = fb;
+        validGain = 0;
     }
     
     return BOARD_OK;
@@ -434,6 +437,8 @@ void Board_GetStatus(Board_Status *result)
     result->point = AD5933_GetSweepCount();
     result->totalPoints = sweep.Num_Increments;
     result->interrupted = interrupted;
+    result->validGainFactor = validGain;
+    result->validData = validData || validPolar;
     
     switch(result->ad_status)
     {
@@ -464,8 +469,8 @@ const AD5933_ImpedancePolar* Board_GetDataPolar(uint32_t *count)
             for(uint32_t j = 0; j < pointCount; j++)
             {
                 bufPolar[j].Frequency = bufData[j].Frequency;
-                bufPolar[j].Magnitude = AD5933_GetMagnitude(&bufData[j], &gainFactor);
-                bufPolar[j].Angle = AD5933_GetPhase(&bufData[j], &gainFactor);
+                bufPolar[j].Magnitude = AD5933_GetMagnitude(&bufData[j], &dataGainFactor);
+                bufPolar[j].Angle = AD5933_GetPhase(&bufData[j], &dataGainFactor);
             }
             validPolar = 1;
         }
@@ -514,7 +519,7 @@ Board_Error Board_StartSweep(uint8_t port)
         return BOARD_BUSY;
     }
     // Uncomment if PORT_MIN is greater than 0
-    if(/*port < PORT_MIN ||*/ port > PORT_MAX)
+    if(/*port < PORT_MIN ||*/ port > PORT_MAX || (!validGain && !autorange))
     {
         return BOARD_ERROR;
     }
@@ -532,6 +537,7 @@ Board_Error Board_StartSweep(uint8_t port)
         validPolar = 0;
         validData = 0;
         interrupted = 0;
+        lastPort = port;
         return BOARD_OK;
     }
     else
@@ -554,6 +560,7 @@ Board_Error Board_StopSweep(void)
     {
         interrupted = 1;
         validData = 1;
+        dataGainFactor = gainFactor;
     }
     else if(status == AD_MEASURE_IMPEDANCE_AUTORANGE)
     {
@@ -570,7 +577,7 @@ Board_Error Board_StopSweep(void)
  */
 uint8_t Board_GetPort(void)
 {
-    return port;
+    return lastPort;
 }
 
 /**
@@ -588,7 +595,8 @@ Board_Error Board_MeasureSingleFrequency(uint8_t port, uint32_t freq, AD5933_Imp
         return BOARD_BUSY;
     }
     // Uncomment if PORT_MIN is greater than 0
-    if(freq < FREQ_MIN || freq > FREQ_MAX || /*port < PORT_MIN ||*/ port > PORT_MAX || result == NULL)
+    if(freq < FREQ_MIN || freq > FREQ_MAX || /*port < PORT_MIN ||*/ port > PORT_MAX || result == NULL ||
+            (!validGain && !autorange))
     {
         return BOARD_ERROR;
     }
@@ -664,6 +672,7 @@ Board_Error Board_Calibrate(uint32_t ohms)
     
     if(!autorange)
     {
+        AD5933_GainFactorData gainData;
         uint8_t cal = 0;
         for(uint32_t j = 0; j < NUMEL(calibrationValues) && calibrationValues[j]; j++)
         {
@@ -703,6 +712,7 @@ Board_Error Board_Calibrate(uint32_t ohms)
             HAL_Delay(1);
         }
         AD5933_CalculateGainFactor(&gainData, &gainFactor);
+        validGain = 1;
     }
     
     return BOARD_OK;
