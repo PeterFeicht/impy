@@ -475,6 +475,11 @@ Board_Error Board_StartSweep(uint8_t port)
     {
         return BOARD_ERROR;
     }
+
+    // Set output mux
+    HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_RESET);
+    HAL_SPI_Transmit(&hspi3, &port, 1, BOARD_SPI_TIMEOUT);
+    HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_SET);
     
     // TODO implement autorange
     sweep.Freq_Increment = (stopFreq - sweep.Start_Freq) / sweep.Num_Increments;
