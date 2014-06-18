@@ -130,6 +130,13 @@ typedef struct
 // Uncomment if the USB host port is fitted
 //#define BOARD_HAS_USBH                  1
 
+// Exported variables ---------------------------------------------------------
+extern USBD_HandleTypeDef hUsbDevice;
+extern I2C_HandleTypeDef hi2c1;
+extern SPI_HandleTypeDef hspi3;
+extern TIM_HandleTypeDef htim3;
+extern TIM_HandleTypeDef htim10;
+
 // Exported functions ---------------------------------------------------------
 Board_Error Board_SetStartFreq(uint32_t freq);
 Board_Error Board_SetStopFreq(uint32_t freq);

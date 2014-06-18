@@ -57,6 +57,9 @@
 #define USBD_DbgLog(...)
 #endif
 
+// Exported variables ---------------------------------------------------------
+extern PCD_HandleTypeDef hpcd_FS;
+
 // ----------------------------------------------------------------------------
 
 #endif /* USBD_CONF_H_ */

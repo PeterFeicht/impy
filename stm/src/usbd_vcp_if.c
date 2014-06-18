@@ -43,9 +43,6 @@ static uint8_t VCP_cmdline[MAX_CMDLINE_LENGTH + 1];
 // Whether the current command is still busy and input should be ignored
 static uint8_t cmd_busy = 0;
 
-// USB device handle in main.c
-extern USBD_HandleTypeDef hUsbDevice;
-
 // Private function prototypes ------------------------------------------------
 static int8_t VCP_Init     (void);
 static int8_t VCP_DeInit   (void);
