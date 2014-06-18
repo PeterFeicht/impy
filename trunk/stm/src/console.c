@@ -809,8 +809,7 @@ static void Console_BoardRead(uint32_t argc, char **argv)
     FreeBuffer(&board_read_data);
     
     // Check status, we also allow for incomplete data to be retrieved (status == AD_IDLE)
-    AD5933_Status status = AD5933_GetStatus();
-    if(status != AD_FINISH && status != AD_IDLE)
+    if(AD5933_IsBusy())
     {
         VCP_SendLine(txtNoReadWhileBusy);
         VCP_CommandFinish();
@@ -944,8 +943,7 @@ static void Console_BoardSet(uint32_t argc, char **argv)
         {
             case CON_ARG_SET_AUTORANGE:
                 Board_SetAutorange(flag == CON_FLAG_ON);
-                AD5933_Status status = AD5933_GetStatus();
-                if(status != AD_FINISH && status != AD_IDLE)
+                if(AD5933_IsBusy())
                 {
                     VCP_SendLine(txtEffectiveNextSweep);
                 }
