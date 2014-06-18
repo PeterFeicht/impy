@@ -130,8 +130,7 @@ static void SetDefaults(void)
  */
 Board_Error Board_SetStartFreq(uint32_t freq)
 {
-    AD5933_Status status = AD5933_GetStatus();
-    if(status != AD_FINISH && status != AD_IDLE)
+    if(AD5933_IsBusy())
     {
         return BOARD_BUSY;
     }
@@ -153,8 +152,7 @@ Board_Error Board_SetStartFreq(uint32_t freq)
  */
 Board_Error Board_SetStopFreq(uint32_t freq)
 {
-    AD5933_Status status = AD5933_GetStatus();
-    if(status != AD_FINISH && status != AD_IDLE)
+    if(AD5933_IsBusy())
     {
         return BOARD_BUSY;
     }
@@ -177,8 +175,7 @@ Board_Error Board_SetStopFreq(uint32_t freq)
  */
 Board_Error Board_SetFreqSteps(uint16_t steps)
 {
-    AD5933_Status status = AD5933_GetStatus();
-    if(status != AD_FINISH && status != AD_IDLE)
+    if(AD5933_IsBusy())
     {
         return BOARD_BUSY;
     }
@@ -202,8 +199,7 @@ Board_Error Board_SetFreqSteps(uint16_t steps)
  */
 Board_Error Board_SetSettlingCycles(uint16_t cycles, uint8_t multiplier)
 {
-    AD5933_Status status = AD5933_GetStatus();
-    if(status != AD_FINISH && status != AD_IDLE)
+    if(AD5933_IsBusy())
     {
         return BOARD_BUSY;
     }
@@ -241,8 +237,7 @@ Board_Error Board_SetSettlingCycles(uint16_t cycles, uint8_t multiplier)
  */
 Board_Error Board_SetVoltageRange(uint16_t voltage)
 {
-    AD5933_Status status = AD5933_GetStatus();
-    if(status != AD_FINISH && status != AD_IDLE)
+    if(AD5933_IsBusy())
     {
         return BOARD_BUSY;
     }
@@ -283,8 +278,7 @@ Board_Error Board_SetVoltageRange(uint16_t voltage)
  */
 Board_Error Board_SetPGA(uint8_t enable)
 {
-    AD5933_Status status = AD5933_GetStatus();
-    if(status != AD_FINISH && status != AD_IDLE)
+    if(AD5933_IsBusy())
     {
         return BOARD_BUSY;
     }
@@ -317,8 +311,7 @@ Board_Error Board_SetAutorange(uint8_t enable)
  */
 Board_Error Board_SetFeedback(uint32_t ohms)
 {
-    AD5933_Status status = AD5933_GetStatus();
-    if(status != AD_FINISH && status != AD_IDLE)
+    if(AD5933_IsBusy())
     {
         return BOARD_BUSY;
     }
@@ -465,8 +458,7 @@ const AD5933_ImpedanceData* Board_GetDataRaw(uint32_t *count)
  */
 Board_Error Board_StartSweep(uint8_t port)
 {
-    AD5933_Status status = AD5933_GetStatus();
-    if(status != AD_FINISH && status != AD_IDLE)
+    if(AD5933_IsBusy())
     {
         return BOARD_BUSY;
     }
@@ -517,8 +509,7 @@ uint8_t Board_GetPort(void)
  */
 Board_Error Board_MeasureSingleFrequency(uint8_t port, uint32_t freq, AD5933_ImpedancePolar *result)
 {
-    AD5933_Status status = AD5933_GetStatus();
-    if(status != AD_FINISH && status != AD_IDLE)
+    if(AD5933_IsBusy())
     {
         return BOARD_BUSY;
     }
@@ -588,8 +579,7 @@ float Board_MeasureTemperature(Board_TemperatureSource what)
  */
 Board_Error Board_Calibrate(uint32_t ohms)
 {
-    AD5933_Status status = AD5933_GetStatus();
-    if(status != AD_FINISH && status != AD_IDLE)
+    if(AD5933_IsBusy())
     {
         return BOARD_BUSY;
     }
