@@ -11,6 +11,7 @@
 
 // Private function prototypes ------------------------------------------------
 static void SetDefaults(void);
+static void Handle_TIM3_PeriodElapsed(void);
 
 // Variables ------------------------------------------------------------------
 USBD_HandleTypeDef hUsbDevice;
@@ -30,8 +31,9 @@ static uint8_t autorange;
 
 // XXX should we allocate buffers dynamically?
 static AD5933_ImpedanceData bufData[AD5933_MAX_NUM_INCREMENTS + 1];
+static uint8_t validData = 0;
 static AD5933_ImpedancePolar bufPolar[AD5933_MAX_NUM_INCREMENTS + 1];
-static uint8_t convertedPolar = 0;
+static uint8_t validPolar = 0;
 static uint8_t interrupted = 0;
 static uint32_t pointCount = 0;
 
@@ -78,22 +80,40 @@ int main(int argc, char* argv[])
  */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-    static AD5933_Status prevStatus = AD_UNINIT;
-    
     if(htim->Instance == TIM3)
     {
-        AD5933_Status status = AD5933_TimerCallback();
-        if(prevStatus != status)
+        Handle_TIM3_PeriodElapsed();
+    }
+}
+
+/**
+ * Handles TIM3 period elapsed event.
+ */
+static void Handle_TIM3_PeriodElapsed(void)
+{
+    static AD5933_Status prevStatus = AD_UNINIT;
+
+    AD5933_Status status = AD5933_TimerCallback();
+    if(prevStatus != status)
+    {
+        if(status == AD_FINISH_IMPEDANCE)
         {
-            if(status == AD_FINISH_IMPEDANCE)
+            pointCount = AD5933_GetSweepCount();
+            interrupted = 0;
+            
+            if(prevStatus == AD_MEASURE_IMPEDANCE)
             {
-                pointCount = AD5933_GetSweepCount();
-                interrupted = 0;
-                convertedPolar = 0;
+                validData = 1;
+                validPolar = 0;
+            }
+            else if(prevStatus == AD_MEASURE_IMPEDANCE_AUTORANGE)
+            {
+                validData = 0;
+                validPolar = 1;
             }
         }
-        prevStatus = status;
     }
+    prevStatus = status;
 }
 
 // Private functions ----------------------------------------------------------
@@ -208,7 +228,6 @@ Board_Error Board_SetSettlingCycles(uint16_t cycles, uint8_t multiplier)
         return BOARD_ERROR;
     }
     
-    sweep.Settling_Cycles = cycles;
     switch(multiplier)
     {
         case 1:
@@ -223,6 +242,7 @@ Board_Error Board_SetSettlingCycles(uint16_t cycles, uint8_t multiplier)
         default:
             return BOARD_ERROR;
     }
+    sweep.Settling_Cycles = cycles;
     
     return BOARD_OK;
 }
@@ -393,6 +413,9 @@ uint16_t Board_GetSettlingCycles(void)
 /**
  * Gets whether autoranging is enabled or not.
  * 
+ * Note that the value of an active sweep can be different if it has been set since the sweep has started.
+ * To get the value for the active sweep, use {@link  Board_GetStatus}.
+ * 
  * @return {@code 0} if autoranging is disabled, a nonzero value otherwise
  */
 uint8_t Board_GetAutorange(void)
@@ -411,27 +434,47 @@ void Board_GetStatus(Board_Status *result)
     result->point = AD5933_GetSweepCount();
     result->totalPoints = sweep.Num_Increments;
     result->interrupted = interrupted;
-    // FIXME return value for current sweep if running
-    result->autorange = autorange;
+    
+    switch(result->ad_status)
+    {
+        case AD_MEASURE_IMPEDANCE:
+            result->autorange = 0;
+            break;
+        case AD_MEASURE_IMPEDANCE_AUTORANGE:
+            result->autorange = 1;
+            break;
+        default:
+            result->autorange = autorange;
+            break;
+    }
 }
 
 /**
  * Gets a pointer to the converted measurement data in polar format.
  * 
  * @param count Pointer to a variable receiving the number of points in the buffer
- * @return Pointer to the data buffer
+ * @return Pointer to the data buffer, or {@code NULL} if no data is available
  */
 const AD5933_ImpedancePolar* Board_GetDataPolar(uint32_t *count)
 {
-    if(!convertedPolar)
+    if(!validPolar)
     {
-        for(uint32_t j = 0; j < pointCount; j++)
+        if(validData)
         {
-            bufPolar[j].Frequency = bufData[j].Frequency;
-            bufPolar[j].Magnitude = AD5933_GetMagnitude(&bufData[j], &gainFactor);
-            bufPolar[j].Angle = AD5933_GetPhase(&bufData[j], &gainFactor);
+            for(uint32_t j = 0; j < pointCount; j++)
+            {
+                bufPolar[j].Frequency = bufData[j].Frequency;
+                bufPolar[j].Magnitude = AD5933_GetMagnitude(&bufData[j], &gainFactor);
+                bufPolar[j].Angle = AD5933_GetPhase(&bufData[j], &gainFactor);
+            }
+            validPolar = 1;
         }
-        convertedPolar = 1;
+        else
+        {
+            // Neither raw nor polar data, nothing to return
+            *count = 0;
+            return NULL;
+        }
     }
     
     *count = pointCount;
@@ -442,12 +485,20 @@ const AD5933_ImpedancePolar* Board_GetDataPolar(uint32_t *count)
  * Gets a pointer to the raw measurement data.
  * 
  * @param count Pointer to a variable receiving the number of points in the buffer
- * @return Pointer to the data buffer
+ * @return Pointer to the data buffer, or {@code NULL} if no raw data is available
  */
 const AD5933_ImpedanceData* Board_GetDataRaw(uint32_t *count)
 {
-    *count = pointCount;
-    return &bufData[0];
+    if(validData)
+    {
+        *count = pointCount;
+        return &bufData[0];
+    }
+    else
+    {
+        *count = 0;
+        return NULL;
+    }
 }
 
 /**
@@ -475,19 +526,41 @@ Board_Error Board_StartSweep(uint8_t port)
     
     // TODO implement autorange
     sweep.Freq_Increment = (stopFreq - sweep.Start_Freq) / sweep.Num_Increments;
-    AD5933_Error ok = AD5933_MeasureImpedance(&sweep, &range, &bufData[0]);
-    return (ok == AD_OK ? BOARD_OK : BOARD_ERROR);
+    
+    if(AD5933_MeasureImpedance(&sweep, &range, &bufData[0]) == AD_OK)
+    {
+        validPolar = 0;
+        validData = 0;
+        interrupted = 0;
+        return BOARD_OK;
+    }
+    else
+    {
+        return BOARD_ERROR;
+    }
 }
 
 /**
  * Stops a currently running frequency measurement, if any. Always resets the AD5933.
+ * 
+ * When no measurement is running, this function can be used to switch off the AD5933 so no output signal is generated.
  * 
  * @return {@link BOARD_OK}
  */
 Board_Error Board_StopSweep(void)
 {
     AD5933_Status status = AD5933_GetStatus();
-    interrupted = (status == AD_MEASURE_IMPEDANCE || status == AD_MEASURE_IMPEDANCE_AUTORANGE);
+    if(status == AD_MEASURE_IMPEDANCE)
+    {
+        interrupted = 1;
+        validData = 1;
+    }
+    else if(status == AD_MEASURE_IMPEDANCE_AUTORANGE)
+    {
+        interrupted = 1;
+        validPolar = 1;
+    }
+    
     AD5933_Reset();
     return BOARD_OK;
 }
@@ -612,10 +685,12 @@ Board_Error Board_Calibrate(uint32_t ohms)
         gainData.freq2 = stopFreq - ((stopFreq - sweep.Start_Freq) >> 2);
         if(gainData.freq1 == gainData.freq2)
         {
+            // In the unlikely case that start and stop frequency are really close together, use those instead
             gainData.freq1 = sweep.Start_Freq;
             gainData.freq2 = stopFreq;
         }
         
+        // Set output mux
         cal = cal & AD725_MASK_PORT;
         HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_RESET);
         HAL_SPI_Transmit(&hspi3, &cal, 1, BOARD_SPI_TIMEOUT);
