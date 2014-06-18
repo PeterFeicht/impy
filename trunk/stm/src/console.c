@@ -108,18 +108,22 @@ static void Console_BoardStatus(uint32_t argc, char **argv);
 static void Console_BoardStop(uint32_t argc, char **argv);
 static void Console_BoardTemp(uint32_t argc, char **argv);
 static void Console_Eth(uint32_t argc, char **argv);
+static void Console_Usb(uint32_t argc, char **argv);
+static void Console_Help(uint32_t argc, char **argv);
+static void Console_Debug(uint32_t argc, char **argv);
+#if defined(BOARD_HAS_ETHERNET) && BOARD_HAS_ETHERNET == 1
 static void Console_EthDisable(uint32_t argc, char **argv);
 static void Console_EthEnable(uint32_t argc, char **argv);
 static void Console_EthSet(uint32_t argc, char **argv);
 static void Console_EthStatus(uint32_t argc, char **argv);
-static void Console_Usb(uint32_t argc, char **argv);
+#endif
+#if defined(BOARD_HAS_USBH) && BOARD_HAS_USBH == 1
 static void Console_UsbEject(uint32_t argc, char **argv);
 static void Console_UsbInfo(uint32_t argc, char **argv);
 static void Console_UsbLs(uint32_t argc, char **argv);
 static void Console_UsbStatus(uint32_t argc, char **argv);
 static void Console_UsbWrite(uint32_t argc, char **argv);
-static void Console_Help(uint32_t argc, char **argv);
-static void Console_Debug(uint32_t argc, char **argv);
+#endif
 
 // Private variables ----------------------------------------------------------
 static char *arguments[CON_MAX_ARGUMENTS];
@@ -711,7 +715,8 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     // TODO print USB info
     VCP_SendLine(txtNotImplemented);
 #else
-    VCP_SendString("\r\nUSB");
+    VCP_SendString(NULL);
+    VCP_SendString(txtUSB);
     VCP_SendLine(txtNotInstalled);
 #endif
     
@@ -721,7 +726,8 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     // TODO print Ethernet info
     VCP_SendLine(txtNotImplemented);
 #else
-    VCP_SendString("\r\nEthernet");
+    VCP_SendLine(NULL);
+    VCP_SendString(txtEthernet);
     VCP_SendLine(txtNotInstalled);
 #endif
     
@@ -737,7 +743,8 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     // TODO print EEPROM info
     VCP_SendLine(txtNotImplemented);
 #elif defined(MEMORY_FLAG)
-    VCP_SendString("\r\nEEPROM");
+    VCP_SendLine(NULL);
+    VCP_SendString(txtEEPROM);
     VCP_SendLine(txtNotInstalled);
 #endif
     
@@ -746,7 +753,8 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     // TODO print SRAM info
     VCP_SendLine(txtNotImplemented);
 #elif defined(MEMORY_FLAG)
-    VCP_SendString("\r\nSRAM");
+    VCP_SendLine(NULL);
+    VCP_SendString(txtSRAM);
     VCP_SendLine(txtNotInstalled);
 #endif
     
@@ -755,7 +763,8 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     // TODO print Flash info
     VCP_SendLine(txtNotImplemented);
 #elif defined(MEMORY_FLAG)
-    VCP_SendString("\r\nFlash");
+    VCP_SendLine(NULL);
+    VCP_SendString(txtFlash);
     VCP_SendLine(txtNotInstalled);
 #endif
     
@@ -1267,8 +1276,9 @@ static void Console_BoardTemp(uint32_t argc, char **argv __attribute__((unused))
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_Eth(uint32_t argc, char **argv)
+static void Console_Eth(uint32_t argc __attribute__((unused)), char **argv __attribute__((unused)))
 {
+#if defined(BOARD_HAS_ETHERNET) && BOARD_HAS_ETHERNET == 1
     static const Console_Command cmds[] = {
         { "set", Console_EthSet },
         { "status", Console_EthStatus },
@@ -1286,8 +1296,14 @@ static void Console_Eth(uint32_t argc, char **argv)
         VCP_SendLine(txtUnknownSubcommand);
         VCP_CommandFinish();
     }
+#else
+    VCP_SendString(txtEthernet);
+    VCP_SendLine(txtNotInstalled);
+    VCP_CommandFinish();
+#endif
 }
 
+#if defined(BOARD_HAS_ETHERNET) && BOARD_HAS_ETHERNET == 1
 static void Console_EthDisable(uint32_t argc, char **argv)
 {
     VCP_SendLine(txtNotImplemented);
@@ -1316,6 +1332,7 @@ static void Console_EthStatus(uint32_t argc, char **argv)
     VCP_SendLine(txtNotImplemented);
     VCP_CommandFinish();
 }
+#endif
 
 /**
  * Calls the appropriate subcommand processing function for {@code usb} commands.
@@ -1323,8 +1340,9 @@ static void Console_EthStatus(uint32_t argc, char **argv)
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_Usb(uint32_t argc, char **argv)
+static void Console_Usb(uint32_t argc __attribute__((unused)), char **argv __attribute__((unused)))
 {
+#if defined(BOARD_HAS_USBH) && BOARD_HAS_USBH == 1
     static const Console_Command cmds[] = {
         { "status", Console_UsbStatus },
         { "info", Console_UsbInfo },
@@ -1343,8 +1361,14 @@ static void Console_Usb(uint32_t argc, char **argv)
         VCP_SendLine(txtUnknownSubcommand);
         VCP_CommandFinish();
     }
+#else
+    VCP_SendString(txtUSB);
+    VCP_SendLine(txtNotInstalled);
+    VCP_CommandFinish();
+#endif
 }
 
+#if defined(BOARD_HAS_USBH) && BOARD_HAS_USBH == 1
 static void Console_UsbEject(uint32_t argc, char **argv)
 {
     VCP_SendLine(txtNotImplemented);
@@ -1376,6 +1400,7 @@ static void Console_UsbWrite(uint32_t argc, char **argv)
     VCP_SendLine(txtNotImplemented);
     VCP_CommandFinish();
 }
+#endif
 
 /**
  * Processes the {@code help} command.
