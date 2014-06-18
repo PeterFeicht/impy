@@ -480,6 +480,7 @@ typedef struct
 // Exported functions ---------------------------------------------------------
 
 AD5933_Status AD5933_GetStatus(void);
+uint8_t AD5933_IsBusy(void);
 AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c);
 AD5933_Error AD5933_Reset(void);
 AD5933_Error AD5933_MeasureImpedance(const AD5933_Sweep *sweep, const AD5933_RangeSettings *range,
