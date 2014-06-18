@@ -34,7 +34,7 @@ typedef struct
     uint16_t point;             //!< If a measurement is running, the number of data points already measured
     uint16_t totalPoints;       //!< The number of frequency steps to be measured
     uint8_t autorange;          //!< Whether autoranging is enabled
-    uint8_t interrupted;        //!< Indicates whether the last measurement was interrupted
+    uint8_t interrupted;        //!< Whether the last measurement was interrupted (false if a measurement is running)
 } Board_Status;
 
 // Constants ------------------------------------------------------------------
