@@ -536,8 +536,50 @@ static void Console_BoardGet(uint32_t argc, char **argv)
             break;
             
         default:
-            VCP_SendString(txtUnknownOption);
-            VCP_SendLine(argv[1]);
+            if(strcmp(argv[1], "all") == 0)
+            {
+                // Send all relevant options, suitable for parsing
+                VCP_SendString("start=");
+                snprintf(buf, sizeof(buf), "%lu", Board_GetStartFreq());
+                VCP_SendLine(buf);
+                
+                VCP_SendString("steps=");
+                snprintf(buf, sizeof(buf), "%u", Board_GetFreqSteps());
+                VCP_SendLine(buf);
+                
+                VCP_SendString("stop=");
+                snprintf(buf, sizeof(buf), "%lu", Board_GetStopFreq());
+                VCP_SendLine(buf);
+                
+                VCP_SendString("settl=");
+                snprintf(buf, sizeof(buf), "%u", Board_GetSettlingCycles());
+                VCP_SendLine(buf);
+                
+                VCP_SendString("autorange=");
+                VCP_SendLine(autorange ? txtEnabled : txtDisabled);
+                
+                if(!autorange)
+                {
+                    AD5933_RangeSettings *range = Board_GetRangeSettings();
+                    
+                    VCP_SendString("gain=");
+                    VCP_SendLine(range->PGA_Gain == AD5933_GAIN_5 ? txtEnabled : txtDisabled);
+                    
+                    VCP_SendString("voltage=");
+                    uint16_t voltage = AD5933_GetVoltageFromRegister(range->Voltage_Range);
+                    snprintf(buf, sizeof(buf), "%u", voltage / range->Attenuation);
+                    VCP_SendLine(buf);
+                    
+                    VCP_SendString("feedback=");
+                    snprintf(buf, sizeof(buf), "%lu", range->Feedback_Value);
+                    VCP_SendLine(buf);
+                }
+            }
+            else
+            {
+                VCP_SendString(txtUnknownOption);
+                VCP_SendLine(argv[1]);
+            }
             break;
     }
     
