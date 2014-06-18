@@ -1594,7 +1594,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
                 HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_SET);
                 VCP_SendLine("Switched off.");
             }
-            else if(end != NULL && port <= PORT_MAX)
+            else if(end != NULL && port <= 15)
             {
                 port &= AD725_MASK_PORT;
                 HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_RESET);
