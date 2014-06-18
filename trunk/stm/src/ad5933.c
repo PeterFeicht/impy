@@ -240,6 +240,14 @@ AD5933_Status AD5933_GetStatus(void)
 }
 
 /**
+ * Gets a value indicating whether the driver is busy or can start a new measurement.
+ */
+uint8_t AD5933_IsBusy(void)
+{
+    return (status != AD_FINISH && status != AD_IDLE);
+}
+
+/**
  * Initializes the driver with the specified I2C handle for communication.
  * 
  * @param i2c Pointer to an I2C handle structure that is to be used for communication with the AD5933
