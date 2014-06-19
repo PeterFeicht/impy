@@ -22,6 +22,8 @@ typedef enum
     CON_ARG_INVALID = 0,
     // board read
     CON_ARG_READ_FORMAT,
+    CON_ARG_READ_RAW,
+    CON_ARG_READ_GAIN,
     // board set/get
     CON_ARG_SET_AUTORANGE,
     CON_ARG_SET_ECHO,
@@ -136,7 +138,10 @@ static Buffer board_read_data = {
 // Console definition
 extern const char helptext_start;
 extern const char helptext_end;
-static String strHelp;
+static String strHelp = {
+    .data = NULL,
+    .length = 0
+};
 // All help topics from command-line.txt need to be added here
 #define TOPIC(X)    { X, { NULL, 0 } }
 static Console_HelpEntry txtHelpTopics[] = {
@@ -186,6 +191,12 @@ static void Console_InitHelp(void)
     uint32_t topicLen = strlen(topic);
     const char *help;
     String *prev = NULL;
+    
+    if(strHelp.data != NULL)
+    {
+        // If Console_Init is called repeatedly, just do nothing.
+        return;
+    }
     
     // Set usage message
     strHelp.data = &helptext_start;
@@ -852,12 +863,17 @@ static void Console_BoardMeasure(uint32_t argc, char **argv)
 static void Console_BoardRead(uint32_t argc, char **argv)
 {
     static const Console_Arg args[] = {
-        { "format", CON_ARG_READ_FORMAT, CON_STRING }
+        { "format", CON_ARG_READ_FORMAT, CON_STRING },
+        { "raw", CON_ARG_READ_RAW, CON_FLAG },
+        { "gain", CON_ARG_READ_GAIN, CON_FLAG }
     };
     
     uint32_t format = format_spec;
     const AD5933_ImpedancePolar *data;
+    const AD5933_GainFactor *gain;
+    const AD5933_ImpedanceData *raw;
     uint32_t count;
+    Console_ArgID mode = CON_ARG_INVALID;
     
     // In case data from the previous command has not been deallocated, do so now
     FreeBuffer(&board_read_data);
@@ -904,6 +920,17 @@ static void Console_BoardRead(uint32_t argc, char **argv)
                 }
                 break;
                 
+            case CON_ARG_READ_GAIN:
+            case CON_ARG_READ_RAW:
+                if(mode != CON_ARG_INVALID)
+                {
+                    VCP_SendLine(txtOnlyOneArg);
+                    VCP_CommandFinish();
+                    return;
+                }
+                mode = arg->id;
+                break;
+                
             default:
                 // Should not happen, means that a defined argument has no switch case
                 VCP_SendLine(txtNotImplemented);
@@ -913,18 +940,67 @@ static void Console_BoardRead(uint32_t argc, char **argv)
         }
     }
     
-    // Get and assemble data to be sent
-    data = Board_GetDataPolar(&count);
-    board_read_data = Convert_ConvertPolar(format, data, count);
+    switch(mode)
+    {
+        default:
+            // Get and assemble data to be sent
+            data = Board_GetDataPolar(&count);
+            if(data == NULL)
+            {
+                VCP_SendLine(txtNoData);
+                break;
+            }
+            
+            board_read_data = Convert_ConvertPolar(format, data, count);
+            if(board_read_data.data != NULL)
+            {
+                VCP_SendBuffer((uint8_t *)board_read_data.data, board_read_data.size);
+            }
+            else
+            {
+                VCP_SendLine(txtOutOfMemory);
+            }
+            break;
+            
+        case CON_ARG_READ_GAIN:
+            gain = Board_GetGainFactor();
+            if(gain == NULL)
+            {
+                VCP_SendLine(txtNotCalibrated);
+                break;
+            }
+
+            board_read_data = Convert_ConvertGainFactor(gain);
+            if(board_read_data.data != NULL)
+            {
+                VCP_SendBuffer((uint8_t *)board_read_data.data, board_read_data.size);
+            }
+            else
+            {
+                VCP_SendLine(txtOutOfMemory);
+            }
+            break;
+            
+        case CON_ARG_READ_RAW:
+            raw = Board_GetDataRaw(&count);
+            if(raw == NULL)
+            {
+                VCP_SendLine(txtNoData);
+                break;
+            }
+
+            board_read_data = Convert_ConvertRaw(format, raw, count);
+            if(board_read_data.data != NULL)
+            {
+                VCP_SendBuffer((uint8_t *)board_read_data.data, board_read_data.size);
+            }
+            else
+            {
+                VCP_SendLine(txtOutOfMemory);
+            }
+            break;
+    }
     
-    if(board_read_data.data != NULL)
-    {
-        VCP_SendBuffer((uint8_t *)board_read_data.data, board_read_data.size);
-    }
-    else
-    {
-        VCP_SendLine(txtOutOfMemory);
-    }
 
     VCP_CommandFinish();
 }

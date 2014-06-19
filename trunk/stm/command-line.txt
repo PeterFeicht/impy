@@ -11,7 +11,7 @@ Commands:
   board get (<option> | all)
   board (info | temp | calibrate <ohms>)
   board (start <port> | stop | status | measure <port> <freq>)
-  board read [--format=FMT]
+  board read [--format=FMT] [( --raw | --gain)]
   eth set [--dhcp=(on|off)] [--ip=IP]
   eth (status | enable | disable)
   usb (status | info | eject | write <file> | ls)
@@ -37,6 +37,10 @@ Options:
                     For more information see 'help autorange'
   --echo            Enable or disable echo of received characters [default: on]
                     For more information see 'help echo'
+  --raw             Transfer raw measurement data as received from the AD5933
+                    This cannot be used if autoranging was used
+  --gain            Transfer the calibrated gain factor for converting raw data
+                    This is always transferred as formatted floating point text
 
 Commands:
   set           Set option(s) to specified value(s)
