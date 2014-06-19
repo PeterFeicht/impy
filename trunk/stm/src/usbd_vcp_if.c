@@ -401,13 +401,12 @@ uint32_t VCP_SendString(const char *str)
  */
 uint32_t VCP_SendLine(const char *str)
 {
-    static const char *linebreak = "\r\n";
     uint32_t sent = 0;
     if(str != NULL)
     {
         sent += VCP_SendString(str);
     }
-    sent += VCP_SendString(linebreak);
+    sent += VCP_SendString("\r\n");
     return sent;
 }
 
@@ -484,14 +483,31 @@ void VCP_Flush(void)
     }
     else if(VCPTxExternalBuf != NULL)
     {
-        USBD_VCP_SetTxBuffer(&hUsbDevice, (uint8_t *)VCPTxExternalBuf, (uint16_t)VCPTxExternalLen);
+        USBD_VCP_SetTxBuffer(&hUsbDevice, (uint8_t *)VCPTxExternalBuf, (uint16_t)(VCPTxExternalLen & 0xFFFF));
         if(USBD_VCP_TransmitPacket(&hUsbDevice) == USBD_OK)
         {
-            VCPTxExternalBuf = NULL;
+            if(VCPTxExternalLen & ~0xFFFF)
+            {
+                // Buffer is larger than 64KB and needs to be sent using multiple transmissions
+                VCPTxExternalLen -= 0xFFFF;
+                VCPTxExternalBuf += 0xFFFF;
+            }
+            else
+            {
+                VCPTxExternalBuf = NULL;
+            }
         }
     }
     
     return;
+}
+
+/**
+ * Gets whether an external buffer is waiting to be transmitted.
+ */
+uint8_t VCP_IsExternalBufferPending(void)
+{
+    return VCPTxExternalBuf != NULL;
 }
 
 // ----------------------------------------------------------------------------
