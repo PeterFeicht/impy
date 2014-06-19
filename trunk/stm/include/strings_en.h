@@ -37,6 +37,10 @@ const char* const txtAdStatusFinishImpedance = "Impedance measurement finished, 
 const char* const txtAdStatusCalibrate = "Calibration measurement is running.";
 const char* const txtAutorangeStatus = "Autoranging is ";
 const char* const txtLastInterrupted = "The last measurement was interrupted.";
+const char* const txtValidData = "Measurement data can be read.";
+const char* const txtNoData = "No measurement data is present.";
+const char* const txtValidGain = "Calibration finished, measurement can be started.";
+const char* const txtNoGain = "Calibration needed before measurement can be started.";
 // board info
 const char* const txtAdStatus = "AD5933 driver status: ";
 const char* const txtAdStatusMeasureImpedance = "Impedance measurement is running.";

@@ -1193,12 +1193,16 @@ static void Console_BoardStatus(uint32_t argc, char **argv __attribute__((unused
             {
                 VCP_SendLine(txtLastInterrupted);
             }
+            VCP_SendLine(status.validData ? txtValidData : txtNoData);
+            VCP_SendLine(status.validGainFactor ? txtValidGain : txtNoGain);
             break;
             
         case AD_FINISH_IMPEDANCE:
             VCP_SendString(txtAdStatusFinishImpedance);
             snprintf(buf, NUMEL(buf), "%u", status.point);
             VCP_SendLine(buf);
+            VCP_SendLine(status.validData ? txtValidData : txtNoData);
+            VCP_SendLine(status.validGainFactor ? txtValidGain : txtNoGain);
             break;
             
         case AD_MEASURE_TEMP:
