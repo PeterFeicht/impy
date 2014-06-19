@@ -345,7 +345,7 @@ static Buffer Convert_RawAscii(uint32_t format, const AD5933_ImpedanceData *data
         case FORMAT_FLAG_FLOAT:
             for(uint32_t j = 0; j < count; j++)
             {
-                size += snprintf(buffer + size, alloc - size, "%lu%c%u%c%u\r\n",
+                size += snprintf(buffer + size, alloc - size, "%lu%c%hi%c%hi\r\n",
                         data[j].Frequency, separator, data[j].Real, separator, data[j].Imag);
             }
             break;
@@ -355,7 +355,7 @@ static Buffer Convert_RawAscii(uint32_t format, const AD5933_ImpedanceData *data
             {
                 uint16_t real = *((uint16_t *)&data[j].Real);
                 uint16_t imag = *((uint16_t *)&data[j].Imag);
-                size += snprintf(buffer + size, alloc - size, "%.8lx%c%.4x%c%.4x\r\n",
+                size += snprintf(buffer + size, alloc - size, "%.8lx%c%.4hx%c%.4hx\r\n",
                         data[j].Frequency, separator, real, separator, imag);
             }
             break;
