@@ -54,12 +54,7 @@ int main(int argc, char* argv[])
     SetDefaults();
     // TODO read settings from EEPROM
     
-    // TODO always initialize AD5933 driver once stable
-    if(HAL_GPIO_ReadPin(BUTTON_PORT, BUTTON_PIN) == GPIO_PIN_SET)
-    {
-        HAL_GPIO_WritePin(LED_PORT, LED_ORANGE, GPIO_PIN_SET);
-        AD5933_Init(&hi2c1);
-    }
+    AD5933_Init(&hi2c1);
     
     // Start timer for periodic interrupt generation
     HAL_TIM_Base_Start_IT(&htim3);
@@ -124,7 +119,6 @@ static void SetDefaults(void)
     sweep.Num_Increments = 50;
     sweep.Start_Freq = 1000;
     stopFreq = 100000;
-    sweep.Freq_Increment = (stopFreq - sweep.Start_Freq) / sweep.Num_Increments;
     sweep.Settling_Cycles = 16;
     sweep.Settling_Mult = AD5933_SETTL_MULT_1;
     
@@ -135,6 +129,11 @@ static void SetDefaults(void)
     
     // TODO enable autorange by default
     autorange = 0;
+    validData = 0;
+    validPolar = 0;
+    validGain = 0;
+    pointCount = 0;
+    interrupted = 0;
 }
 
 // Exported functions ---------------------------------------------------------
@@ -455,6 +454,21 @@ void Board_GetStatus(Board_Status *result)
 }
 
 /**
+ * Resets the board to a known state. This should be made accessible to the user, so that after a potentially wrong
+ * configuration (whatever <i>wrong</i> may be), a known state that is documented can easily be restored.
+ * 
+ * Things to consider:
+ *  + Saved configuration in the EEPROM is ignored
+ *  + Running measurements are stopped, AD5933 is reset
+ */
+void Board_Reset(void)
+{
+    SetDefaults();
+    Console_Init();
+    AD5933_Reset();
+}
+
+/**
  * Gets a pointer to the converted measurement data in polar format.
  * 
  * @param count Pointer to a variable receiving the number of points in the buffer
@@ -550,7 +564,7 @@ Board_Error Board_StartSweep(uint8_t port)
     HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_SET);
     
     // TODO implement autorange
-    sweep.Freq_Increment = (stopFreq - sweep.Start_Freq) / sweep.Num_Increments;
+    sweep.Freq_Increment = (stopFreq - sweep.Start_Freq) / (sweep.Num_Increments != 0 ? sweep.Num_Increments : 1);
     
     if(AD5933_MeasureImpedance(&sweep, &range, &bufData[0]) == AD_OK)
     {
@@ -621,22 +635,22 @@ Board_Error Board_MeasureSingleFrequency(uint8_t port, uint32_t freq, AD5933_Imp
         return BOARD_ERROR;
     }
     
-    AD5933_ImpedanceData buffer;
+    // AD5933 cannot measure a single frequency, make room for two
+    AD5933_ImpedanceData buffer[2];
     AD5933_Sweep sw = sweep;
     sw.Start_Freq = freq;
-    // TODO determine value
-    sw.Num_Increments = 0;
+    sw.Num_Increments = 1;
     
     // TODO implement autorange
-    AD5933_MeasureImpedance(&sw, &range, &buffer);
+    AD5933_MeasureImpedance(&sw, &range, &buffer[0]);
     while(AD5933_GetStatus() != AD_FINISH_IMPEDANCE)
     {
         HAL_Delay(2);
     }
     
     result->Frequency = freq;
-    result->Magnitude = AD5933_GetMagnitude(&buffer, &gainFactor);
-    result->Angle = AD5933_GetPhase(&buffer, &gainFactor);
+    result->Magnitude = AD5933_GetMagnitude(&buffer[0], &gainFactor);
+    result->Angle = AD5933_GetPhase(&buffer[0], &gainFactor);
     
     return BOARD_OK;
 }

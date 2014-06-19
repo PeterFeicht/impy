@@ -157,6 +157,7 @@ AD5933_RangeSettings* Board_GetRangeSettings(void);
 uint8_t Board_GetAutorange(void);
 
 void Board_GetStatus(Board_Status *result);
+void Board_Reset(void);
 const AD5933_ImpedancePolar* Board_GetDataPolar(uint32_t *count);
 const AD5933_ImpedanceData* Board_GetDataRaw(uint32_t *count);
 const AD5933_GainFactor* Board_GetGainFactor(void);
