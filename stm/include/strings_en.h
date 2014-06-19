@@ -21,6 +21,7 @@ const char* const txtUnknownCommand = "Unknown command.";
 const char* const txtUnknownSubcommand = "Unknown subcommand.";
 const char* const txtNotImplemented = "Not yet implemented.";
 const char* const txtUnknownOption = "Unknown option: ";
+const char* const txtOnlyOneArg = "Only one of the options can be used at a time.";
 const char* const txtOops = "An unknown error occurred, panic.";
 // board get, board set
 const char* const txtInvalidValue = "Invalid value for this argument: ";
@@ -63,6 +64,7 @@ const char* const txtImpedance = "Impedance (polar): ";
 // board read
 const char* const txtNoReadWhileBusy = "Data can only be read after the measurement is finished.";
 const char* const txtOutOfMemory = "Not enough memory to send all data, try binary format or use fewer points.";
+const char* const txtNotCalibrated = "Calibration not performed.";
 // board calibrate
 const char* const txtWrongCalibValue = "Unknown resistor value, see 'board info' for possible values.";
 
