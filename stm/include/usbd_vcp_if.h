@@ -30,6 +30,7 @@ uint32_t VCP_SendString(const char *str);
 uint32_t VCP_SendLine(const char *str);
 uint32_t VCP_SendBuffer(const uint8_t *buf, uint32_t len);
 void VCP_Flush(void);
+uint8_t VCP_IsExternalBufferPending(void);
 
 // ----------------------------------------------------------------------------
 
