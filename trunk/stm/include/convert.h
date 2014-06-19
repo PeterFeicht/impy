@@ -66,6 +66,7 @@ uint32_t Convert_FormatSpecFromString(const char *str);
 uint32_t Convert_FormatSpecToString(char *buf, uint32_t length, uint32_t format);
 Buffer Convert_ConvertPolar(uint32_t format, const AD5933_ImpedancePolar *data, uint32_t count);
 Buffer Convert_ConvertRaw(uint32_t format, const AD5933_ImpedanceData *data, uint32_t count);
+Buffer Convert_ConvertGainFactor(const AD5933_GainFactor *gain);
 
 void FreeBuffer(Buffer *buffer);
 

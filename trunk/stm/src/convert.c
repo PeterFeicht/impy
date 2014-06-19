@@ -567,7 +567,7 @@ Buffer Convert_ConvertPolar(uint32_t format, const AD5933_ImpedancePolar *data, 
 }
 
 /**
- * Converts raw impedance data accroding to the format specified.
+ * Converts raw impedance data according to the format specified.
  * 
  * The buffer for the resulting data is obtained by {@code malloc} and can thus be {@code free}d when no longer needed.
  * If the required amount of memory cannot be allocated, a buffer containing a {@code NULL} pointer is returned.
@@ -598,6 +598,71 @@ Buffer Convert_ConvertRaw(uint32_t format, const AD5933_ImpedanceData *data, uin
         default:
             return null;
     }
+}
+
+/**
+ * Converts a gain factor to formatted floating point text suitable for parsing.
+ * 
+ * The buffer for the resulting data is obtained by {@code malloc} and can thus be {@code free}d when no longer needed.
+ * If the required amount of memory cannot be allocated, a buffer containing a {@code NULL} pointer is returned.
+ * 
+ * @param gain Pointer to the gain factor to convert
+ * @return A buffer structure with the converted gain factor
+ */
+Buffer Convert_ConvertGainFactor(const AD5933_GainFactor *gain)
+{
+    static const char* const point = "%s point gain factor\r\n";
+    static const char* const freq1 = "freq1=%g\r\n";
+    static const char* const offset = "offset=%g\r\n";
+    static const char* const slope = "slope=%g\r\n";
+    static const char* const phaseOffset = "phaseOffset=%g\r\n";
+    static const char* const phaseSlope = "phaseSlope=%g\r\n";
+    
+    uint32_t alloc = 0;
+    void *buffer;
+    uint32_t size = 0;
+    Buffer ret = {
+        .data = NULL,
+        .size = 0
+    };
+    
+    if(gain == NULL)
+    {
+        return ret;
+    }
+    
+    alloc += strlen(point) + strlen(freq1) + strlen(offset) + strlen(phaseOffset);
+    if(gain->is_2point)
+    {
+        alloc += strlen(slope) + strlen(phaseSlope);
+        alloc += 50 /* 5 floats */;
+    }
+    else
+    {
+        alloc += 30 /* 3 floats */;
+    }
+    // Line break at end of transmission + word space + terminating 0
+    alloc += 2 + 2 + 1;
+    
+    buffer = malloc(alloc);
+    if(buffer == NULL)
+        return ret;
+    
+    size += snprintf(buffer + size, alloc - size, point, (gain->is_2point ? "Two" : "One"));
+    size += snprintf(buffer + size, alloc - size, freq1, gain->freq1);
+    size += snprintf(buffer + size, alloc - size, offset, gain->offset);
+    if(gain->is_2point)
+        size += snprintf(buffer + size, alloc - size, slope, gain->slope);
+    size += snprintf(buffer + size, alloc - size, phaseOffset, gain->phaseOffset);
+    if(gain->is_2point)
+        size += snprintf(buffer + size, alloc - size, phaseSlope, gain->phaseSlope);
+    // Second line break at end of transmission
+    *((char *)(buffer + size++)) = '\r';
+    *((char *)(buffer + size++)) = '\n';
+
+    ret.data = buffer;
+    ret.size = size;
+    return ret;
 }
 
 /**
