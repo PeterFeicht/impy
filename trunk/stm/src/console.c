@@ -841,8 +841,8 @@ static void Console_BoardMeasure(uint32_t argc, char **argv)
             VCP_SendLine(txtBoardBusy);
             break;
             
-        default:
-            // Should not happen
+        case BOARD_ERROR:
+            VCP_SendLine(txtNoGain);
             break;
     }
     
@@ -1139,7 +1139,7 @@ static void Console_BoardStart(uint32_t argc, char **argv)
             VCP_SendLine(txtBoardBusy);
             break;
         case BOARD_ERROR:
-            VCP_SendLine(txtOops);
+            VCP_SendLine(txtNoGain);
             break;
     }
     
