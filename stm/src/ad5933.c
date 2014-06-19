@@ -23,12 +23,23 @@ static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, u
 // Private variables ----------------------------------------------------------
 static volatile AD5933_Status status = AD_UNINIT;
 static I2C_HandleTypeDef *i2cHandle = NULL;
-static float *pTemperature = NULL;
-static AD5933_ImpedanceData *pBuffer;
-static AD5933_Sweep sweep_spec;
-static AD5933_RangeSettings range_spec;
-static volatile uint16_t sweep_count;
+static AD5933_Sweep sweep_spec;             //!< Local copy of the sweep specification
+static AD5933_RangeSettings range_spec;     //!< Local copy of the range specification
+static volatile uint16_t sweep_count;       //!< Variable to keep track of the number of measured points
+static volatile uint16_t wait_coupl;        //!< Time to wait for coupling capacitor to charge, or 0 to not wait
+static volatile uint32_t wait_tick;         //!< SysTick value where we started waiting
+/**
+ * Pointer to buffer that receives the result of a running calibration measurement
+ */
 static AD5933_GainFactorData *pGainData;
+/**
+ * Pointer to variable that receives the result of a running temperature measurement
+ */
+static float *pTemperature = NULL;
+/**
+ * Pointer to buffer that receives the results of a running frequency sweep
+ */
+static AD5933_ImpedanceData *pBuffer;
 
 // Private functions ----------------------------------------------------------
 
@@ -256,17 +267,12 @@ static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, u
     data = AD5933_FUNCTION_INIT_FREQ | range->PGA_Gain | range->Voltage_Range;
     AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
     
-    // Charge coupling capacitor, this is always needed, assuming the output was previously switched off
-    HAL_GPIO_WritePin(AD5933_COUPLING_GPIO_PORT, AD5933_COUPLING_GPIO_PIN, RESET);
-    // FIXME 400ms delay is a little crazy, use interrupts
-    HAL_Delay(AD5933_COUPLING_TAU * 4);
-    HAL_GPIO_WritePin(AD5933_COUPLING_GPIO_PORT, AD5933_COUPLING_GPIO_PIN, SET);
+    // Start charging coupling capacitor, this is always needed, assuming the output was previously switched off
+    HAL_GPIO_WritePin(AD5933_COUPLING_GPIO_PORT, AD5933_COUPLING_GPIO_PIN, GPIO_PIN_RESET);
+    wait_coupl = AD5933_COUPLING_TAU * 4;
+    wait_tick = HAL_GetTick();
+
     range_spec = *range;
-    
-    // Start sweep
-    data = AD5933_FUNCTION_START_SWEEP | range->PGA_Gain | range->Voltage_Range;
-    AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
-    
     return AD_OK;
 }
 
@@ -498,6 +504,29 @@ AD5933_Status AD5933_TimerCallback(void)
 {
     uint16_t data;
     uint8_t  dev_status;
+    
+    switch(status)
+    {
+        case AD_MEASURE_IMPEDANCE:
+        case AD_MEASURE_IMPEDANCE_AUTORANGE:
+        case AD_CALIBRATE:
+            if(wait_coupl)
+            {
+                if(HAL_GetTick() - wait_tick > wait_coupl)
+                {
+                    wait_coupl = 0;
+                    HAL_GPIO_WritePin(AD5933_COUPLING_GPIO_PORT, AD5933_COUPLING_GPIO_PIN, GPIO_PIN_SET);
+                    
+                    // Start sweep
+                    data = AD5933_FUNCTION_START_SWEEP | range_spec.PGA_Gain | range_spec.Voltage_Range;
+                    AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
+                }
+                return status;
+            }
+            break;
+        default:
+            break;
+    }
     
     // TODO handle autoranging
     switch(status)
