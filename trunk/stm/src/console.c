@@ -589,6 +589,8 @@ static void Console_BoardGet(uint32_t argc, char **argv)
                     snprintf(buf, NUMEL(buf), "%lu", range->Feedback_Value);
                     VCP_SendLine(buf);
                 }
+                
+                VCP_SendLine(NULL);
             }
             else
             {
@@ -985,7 +987,7 @@ static void Console_BoardRead(uint32_t argc, char **argv)
             raw = Board_GetDataRaw(&count);
             if(raw == NULL)
             {
-                VCP_SendLine(txtNoData);
+                VCP_SendLine(txtNoRawData);
                 break;
             }
 
