@@ -159,6 +159,7 @@ uint8_t Board_GetAutorange(void);
 void Board_GetStatus(Board_Status *result);
 const AD5933_ImpedancePolar* Board_GetDataPolar(uint32_t *count);
 const AD5933_ImpedanceData* Board_GetDataRaw(uint32_t *count);
+const AD5933_GainFactor* Board_GetGainFactor(void);
 Board_Error Board_StartSweep(uint8_t port);
 Board_Error Board_StopSweep(void);
 uint8_t Board_GetPort(void);
