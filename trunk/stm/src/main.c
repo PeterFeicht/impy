@@ -507,6 +507,26 @@ const AD5933_ImpedanceData* Board_GetDataRaw(uint32_t *count)
 }
 
 /**
+ * Gets a pointer to the calibrated gain factor.
+ * 
+ * Note that a gain factor is only valid when no range settings (voltage range, feedback resistor, etc.) have
+ * been changed since a calibration was performed.
+ * 
+ * @return Pointer to gain factor, or {@code NULL} if calibration has not been performed
+ */
+const AD5933_GainFactor* Board_GetGainFactor(void)
+{
+    if(validGain)
+    {
+        return &gainFactor;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+/**
  * Initiates a frequency sweep on the specified port.
  * 
  * @param port Port number for the sweep, needs to be in the range {@link PORT_MIN} to {@link PORT_MAX}
