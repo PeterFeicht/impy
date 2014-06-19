@@ -373,6 +373,9 @@ AD5933_Error AD5933_Reset(void)
 /**
  * Initiates a frequency sweep over the specified range with the specified output buffer.
  * 
+ * Note that if the number of frequency increments in {@code sweep} is zero, two points are measured regardless
+ * because the AD5933 insists on doing so.
+ * 
  * @param sweep The specifications to use for the sweep
  * @param range The specifications for PGA gain, voltage range, external attenuation and feedback resistor
  * @param buffer Pointer to a buffer where measurement data is written (needs to be large enough for the specified
@@ -394,9 +397,8 @@ AD5933_Error AD5933_MeasureImpedance(const AD5933_Sweep *sweep, const AD5933_Ran
         return AD_BUSY;
     }
     
-    // Check for out of range values
-    // TODO maybe allow 0 increments to measure a single frequency (depends on AD5933 interpretation of the value)
-    if(sweep->Freq_Increment == 0 || sweep->Num_Increments > AD5933_MAX_NUM_INCREMENTS || sweep->Num_Increments == 0)
+    // Although a frequency increment of 0 would be valid for the AD5933, it doesn't make much sense
+    if(sweep->Freq_Increment == 0 || sweep->Num_Increments > AD5933_MAX_NUM_INCREMENTS)
     {
         return AD_ERROR;
     }
