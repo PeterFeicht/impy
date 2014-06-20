@@ -19,8 +19,6 @@
 // Constants ------------------------------------------------------------------
 #define TIM3_INTERVAL               2000    //!< TIM3 interrupt interval in µs
 
-#define TIM10_CLOCK_CHANNEL         TIM_CHANNEL_1   //!< TIM10 channel for AD5933 low speed clock
-
 // Exported functions ---------------------------------------------------------
 void MX_Init(void);
 

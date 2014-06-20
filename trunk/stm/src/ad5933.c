@@ -180,7 +180,7 @@ static uint8_t AD5933_ReadStatus()
 static uint32_t AD5933_CalcFrequencyReg(uint32_t freq)
 {
     uint64_t tmp = (1 << 27) * 4 * (uint64_t)freq;
-    return (uint32_t)(tmp / AD5933_CLK_FREQ);
+    return (uint32_t)(tmp / AD5933_CLK_FREQ_INT);
 }
 
 /**

@@ -116,9 +116,20 @@ typedef struct
 #define AD5933_I2C_TIMEOUT                  0x200
 
 /**
- * Internal clock frequency of the AD5933 (16.776MHz)
+ * @defgroup AD5933_CLK Clock Source Configuration
+ * @{
  */
-#define AD5933_CLK_FREQ                     0xFFFB40
+#define AD5933_CLK_FREQ_INT                 0xFFFB40        //!< Internal clock frequency of the AD5933 (16.776MHz)
+#define AD5933_CLK_FREQ_EXT_L               0x00411A        //!< External low speed clock frequency (16.666kHz)
+#define AD5933_CLK_FREQ_EXT_M               0x028B0A        //!< External medium speed clock frequency (166.666kHz)
+#define AD5933_CLK_FREQ_EXT_H               0x196E6A        //!< External high speed clock frequency (1.666MHz)
+
+#define AD5933_CLK_TIM_HANDLE               (htim10)        //!< Timer handle for external clock generation
+#define AD5933_CLK_TIM_CHANNEL              TIM_CHANNEL_1   //!< Timer channel for extrenal clock generation
+#define AD5933_CLK_PSC_L                    99              //!< Timer prescaler value for low speed clock
+#define AD5933_CLK_PSC_M                    9               //!< Timer prescaler value for medium speed clock
+#define AD5933_CLK_PSC_H                    0               //!< Timer prescaler value for high speed clock
+/** @} */
 
 /**
  * Time constant of the coupling capacitor-discharge resistor RC network in ms.
