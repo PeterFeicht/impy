@@ -372,6 +372,10 @@ AD5933_Error AD5933_Reset(void)
     AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
     status = AD_IDLE;
     
+#ifdef AD5933_LED_USE
+    HAL_GPIO_WritePin(AD5933_LED_GPIO_PORT, AD5933_LED_GPIO_PIN, GPIO_PIN_RESET);
+#endif
+    
     return AD_OK;
 }
 
@@ -418,6 +422,10 @@ AD5933_Error AD5933_MeasureImpedance(const AD5933_Sweep *sweep, const AD5933_Ran
     if(ret != AD_ERROR)
     {
         status = AD_MEASURE_IMPEDANCE;
+        
+#ifdef AD5933_LED_USE
+        HAL_GPIO_WritePin(AD5933_LED_GPIO_PORT, AD5933_LED_GPIO_PIN, GPIO_PIN_SET);
+#endif
     }
     return ret;
 }
@@ -577,6 +585,10 @@ AD5933_Status AD5933_TimerCallback(void)
                 if(dev_status & AD5933_STATUS_SWEEP_COMPLETE)
                 {
                     status = AD_FINISH_IMPEDANCE;
+                    
+#ifdef AD5933_LED_USE
+                    HAL_GPIO_WritePin(AD5933_LED_GPIO_PORT, AD5933_LED_GPIO_PIN, GPIO_PIN_RESET);
+#endif
                 }
                 else
                 {
