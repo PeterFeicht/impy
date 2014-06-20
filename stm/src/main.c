@@ -478,7 +478,7 @@ void Board_Standby(void)
     HAL_SPI_Transmit(&hspi3, &data, 1, BOARD_SPI_TIMEOUT);
     HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_SET);
     
-    HAL_TIM_OC_Stop(&htim10, TIM10_CLOCK_CHANNEL);
+    HAL_TIM_OC_Stop(&htim10, AD5933_CLK_TIM_CHANNEL);
     AD5933_Reset();
 }
 
