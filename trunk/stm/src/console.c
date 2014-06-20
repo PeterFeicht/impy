@@ -105,6 +105,7 @@ static void Console_BoardInfo(uint32_t argc, char **argv);
 static void Console_BoardMeasure(uint32_t argc, char **argv);
 static void Console_BoardRead(uint32_t argc, char **argv);
 static void Console_BoardSet(uint32_t argc, char **argv);
+static void Console_BoardStandby(uint32_t argc, char **argv);
 static void Console_BoardStart(uint32_t argc, char **argv);
 static void Console_BoardStatus(uint32_t argc, char **argv);
 static void Console_BoardStop(uint32_t argc, char **argv);
@@ -394,6 +395,7 @@ static void Console_Board(uint32_t argc, char **argv)
         { "status", Console_BoardStatus },
         { "temp", Console_BoardTemp },
         { "measure", Console_BoardMeasure },
+        { "standby", Console_BoardStandby },
         { "read", Console_BoardRead }
     };
     
@@ -624,7 +626,7 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     
     if(argc != 1)
     {
-        VCP_SendLine(txtErrArgNum);
+        VCP_SendLine(txtErrNoArgs);
         VCP_CommandFinish();
         return;
     }
@@ -728,7 +730,7 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     // TODO print USB info
     VCP_SendLine(txtNotImplemented);
 #else
-    VCP_SendString(NULL);
+    VCP_SendLine(NULL);
     VCP_SendString(txtUSB);
     VCP_SendLine(txtNotInstalled);
 #endif
@@ -1178,6 +1180,28 @@ static void Console_BoardSet(uint32_t argc, char **argv)
 }
 
 /**
+ * Processes the 'board standby' command. This command finishes immediately.
+ * 
+ * @param argc Number of arguments
+ * @param argv Array of arguments
+ */
+static void Console_BoardStandby(uint32_t argc, char **argv)
+{
+    char buf[16];
+    
+    if(argc == 1)
+    {
+        Board_Standby();
+    }
+    else
+    {
+        VCP_SendLine(txtErrNoArgs);
+    }
+    
+    VCP_CommandFinish();
+}
+
+/**
  * Processes the 'board start' command. This command finishes immediately.
  * 
  * @param argc Number of arguments
@@ -1240,7 +1264,7 @@ static void Console_BoardStatus(uint32_t argc, char **argv __attribute__((unused
     
     if(argc != 1)
     {
-        VCP_SendLine(txtErrArgNum);
+        VCP_SendLine(txtErrNoArgs);
         VCP_CommandFinish();
         return;
     }
@@ -1323,7 +1347,7 @@ static void Console_BoardStop(uint32_t argc, char **argv __attribute__((unused))
     }
     else
     {
-        VCP_SendLine(txtErrArgNum);
+        VCP_SendLine(txtErrNoArgs);
     }
     VCP_CommandFinish();
 }

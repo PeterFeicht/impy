@@ -10,7 +10,7 @@ Commands:
   board set [--format=FMT] [--autorange=(on|off)] [--echo=(on|off)]
   board get (<option> | all)
   board (info | temp | calibrate <ohms>)
-  board (start <port> | stop | status | measure <port> <freq>)
+  board (start <port> | stop | status | measure <port> <freq> | standby)
   board read [--format=FMT] [( --raw | --gain)]
   eth set [--dhcp=(on|off)] [--ip=IP]
   eth (status | enable | disable)
@@ -54,6 +54,7 @@ Commands:
   stop          Stop a running frequency sweep (also reset the AD5933)
   status        Print measurement status information
   measure       Measure and print a single frequency point on specified port
+  standby       Put the AD5933 in standby mode and disconnect output ports
   read          Transfer measurement data (with optional format specification)
                 For possible formats see 'help format'
 
