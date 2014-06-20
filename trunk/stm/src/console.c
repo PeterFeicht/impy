@@ -1185,10 +1185,8 @@ static void Console_BoardSet(uint32_t argc, char **argv)
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_BoardStandby(uint32_t argc, char **argv)
+static void Console_BoardStandby(uint32_t argc, char **argv __attribute__((unused)))
 {
-    char buf[16];
-    
     if(argc == 1)
     {
         Board_Standby();
@@ -1805,7 +1803,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
             
             if(strcmp(argv[2], "off") == 0)
             {
-                port = AD725_CHIP_ENABLE_NOT;
+                port = ADG725_CHIP_ENABLE_NOT;
                 HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_RESET);
                 HAL_SPI_Transmit(&hspi3, &port, 1, BOARD_SPI_TIMEOUT);
                 HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_SET);
@@ -1813,7 +1811,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
             }
             else if(end != NULL && port <= 15)
             {
-                port &= AD725_MASK_PORT;
+                port &= ADG725_MASK_PORT;
                 HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_RESET);
                 HAL_SPI_Transmit(&hspi3, &port, 1, BOARD_SPI_TIMEOUT);
                 HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_SET);
