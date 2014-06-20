@@ -15,6 +15,7 @@ static HAL_StatusTypeDef AD5933_Write8(uint8_t MemAddress, uint8_t value);
 static HAL_StatusTypeDef AD5933_Write16(uint8_t MemAddress, uint16_t value);
 static HAL_StatusTypeDef AD5933_Write24(uint8_t MemAddress, uint32_t value);
 static HAL_StatusTypeDef AD5933_Read16(uint8_t MemAddress, uint16_t *destination);
+static HAL_StatusTypeDef AD5933_WriteFunction(uint16_t code);
 static uint8_t AD5933_ReadStatus();
 static uint32_t AD5933_CalcFrequencyReg(uint32_t freq);
 static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, uint32_t freq_start, uint32_t freq_step,
@@ -145,6 +146,18 @@ static HAL_StatusTypeDef AD5933_Read16(uint8_t MemAddress, uint16_t *destination
 }
 
 /**
+ * Writes the specified function code to the control register, together with the current range settings.
+ * 
+ * @param code One of the {@link AD5933_FUNCTION} codes
+ * @return HAL status code
+ */
+static HAL_StatusTypeDef AD5933_WriteFunction(uint16_t code)
+{
+    uint16_t data = code | range_spec.Voltage_Range | range_spec.PGA_Gain;
+    return AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
+}
+
+/**
  * Reads the status register from the AD5933 device.
  * 
  * @return Contents of the status register
@@ -183,7 +196,6 @@ static uint32_t AD5933_CalcFrequencyReg(uint32_t freq)
 static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, uint32_t freq_start, uint32_t freq_step,
         uint16_t num_incr, uint16_t settl)
 {
-    uint16_t data;
     uint8_t portAtt = 0;
     uint8_t portFb = 0;
     uint8_t j;
@@ -252,10 +264,9 @@ static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, u
     HAL_GPIO_WritePin(AD5933_FEEDBACK_GPIO_PORT, AD5933_FEEDBACK_GPIO_0, ((portFb & (1 << 0)) ? SET : RESET));
     HAL_GPIO_WritePin(AD5933_FEEDBACK_GPIO_PORT, AD5933_FEEDBACK_GPIO_1, ((portFb & (1 << 1)) ? SET : RESET));
     HAL_GPIO_WritePin(AD5933_FEEDBACK_GPIO_PORT, AD5933_FEEDBACK_GPIO_2, ((portFb & (1 << 2)) ? SET : RESET));
-    
-    // Put device in standby and send range settings
-    data = AD5933_FUNCTION_STANDBY | range->PGA_Gain | range->Voltage_Range;
-    AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
+
+    range_spec = *range;
+    AD5933_WriteFunction(AD5933_FUNCTION_STANDBY);
     
     // Send sweep parameters
     AD5933_Write24(AD5933_START_FREQ_H_ADDR, start_reg);
@@ -264,15 +275,13 @@ static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, u
     AD5933_Write16(AD5933_SETTL_H_ADDR, settl);
     
     // Switch output on
-    data = AD5933_FUNCTION_INIT_FREQ | range->PGA_Gain | range->Voltage_Range;
-    AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
+    AD5933_WriteFunction(AD5933_FUNCTION_INIT_FREQ);
     
     // Start charging coupling capacitor, this is always needed, assuming the output was previously switched off
     HAL_GPIO_WritePin(AD5933_COUPLING_GPIO_PORT, AD5933_COUPLING_GPIO_PIN, GPIO_PIN_RESET);
     wait_coupl = AD5933_COUPLING_TAU * 4;
     wait_tick = HAL_GetTick();
 
-    range_spec = *range;
     return AD_OK;
 }
 
@@ -307,7 +316,6 @@ uint8_t AD5933_IsBusy(void)
 AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c)
 {
     GPIO_InitTypeDef init;
-    uint16_t data;
     
     if(i2c == NULL)
     {
@@ -336,13 +344,11 @@ AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c)
     init.Pull = GPIO_NOPULL;
     AD5933_COUPLING_GPIO_CLK_EN();
     HAL_GPIO_Init(AD5933_COUPLING_GPIO_PORT, &init);
+    HAL_GPIO_WritePin(AD5933_COUPLING_GPIO_PORT, AD5933_COUPLING_GPIO_PIN, GPIO_PIN_SET);
     
     i2cHandle = i2c;
     HAL_Delay(5);
-    // Reset first (low byte) and then power down (high byte)
-    data = AD5933_FUNCTION_POWER_DOWN | AD5933_CTRL_RESET;
-    AD5933_Write8(AD5933_CTRL_L_ADDR, LOBYTE(data));
-    AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
+    AD5933_Write8(AD5933_CTRL_L_ADDR, LOBYTE(AD5933_CTRL_RESET));
     status = AD_IDLE;
     
     return AD_OK;
@@ -355,14 +361,13 @@ AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c)
  */
 AD5933_Error AD5933_Reset(void)
 {
-    uint16_t data = AD5933_FUNCTION_POWER_DOWN | AD5933_CTRL_RESET;
-    
     if(status == AD_UNINIT)
     {
         return AD_ERROR;
     }
     
-    // Reset first (low byte) and then power down (high byte)
+    // Reset first (low byte) and then put in standby mode
+    uint16_t data = AD5933_FUNCTION_STANDBY | AD5933_CTRL_RESET;
     AD5933_Write8(AD5933_CTRL_L_ADDR, LOBYTE(data));
     AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
     status = AD_IDLE;
@@ -444,7 +449,7 @@ AD5933_Error AD5933_MeasureTemperature(float *destination)
     
     pTemperature = destination;
     *pTemperature = NAN;
-    AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(AD5933_FUNCTION_MEASURE_TEMP));
+    AD5933_WriteFunction(AD5933_FUNCTION_MEASURE_TEMP);
     status = AD_MEASURE_TEMP;
     
     return AD_OK;
@@ -488,7 +493,7 @@ AD5933_Error AD5933_Calibrate(AD5933_GainFactorData *data, const AD5933_RangeSet
     }
     
     // Number of increments doesn't really matter, we check sweep_count in the callback anyway
-    ret = AD5933_StartMeasurement(range, data->freq1, freq_step, 2, 10);
+    ret = AD5933_StartMeasurement(range, data->freq1, freq_step, 1, 10);
     
     if(ret != AD_ERROR)
     {
@@ -520,8 +525,7 @@ AD5933_Status AD5933_TimerCallback(void)
                     HAL_GPIO_WritePin(AD5933_COUPLING_GPIO_PORT, AD5933_COUPLING_GPIO_PIN, GPIO_PIN_SET);
                     
                     // Start sweep
-                    data = AD5933_FUNCTION_START_SWEEP | range_spec.PGA_Gain | range_spec.Voltage_Range;
-                    AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
+                    AD5933_WriteFunction(AD5933_FUNCTION_START_SWEEP);
                 }
                 return status;
             }
@@ -576,8 +580,7 @@ AD5933_Status AD5933_TimerCallback(void)
                 }
                 else
                 {
-                    data = AD5933_FUNCTION_INCREMENT_FREQ | range_spec.PGA_Gain | range_spec.Voltage_Range;
-                    AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
+                    AD5933_WriteFunction(AD5933_FUNCTION_INCREMENT_FREQ);
                 }
             }
             break;
@@ -593,8 +596,7 @@ AD5933_Status AD5933_TimerCallback(void)
                     
                     if(pGainData->is_2point)
                     {
-                        data = AD5933_FUNCTION_INCREMENT_FREQ | range_spec.PGA_Gain | range_spec.Voltage_Range;
-                        AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
+                        AD5933_WriteFunction(AD5933_FUNCTION_INCREMENT_FREQ);
                         sweep_count++;
                     }
                     else
