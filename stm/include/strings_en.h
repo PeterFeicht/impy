@@ -15,6 +15,7 @@
 // Console strings ------------------------------------------------------------
 // XXX Maybe there should be some kind of error code prefix for parsing by PC software
 const char* const txtErrArgNum = "Wrong number of arguments.";
+const char* const txtErrNoArgs = "No arguments expected.";
 const char* const txtErrNoSubcommand = "Missing command, type 'help' for possible commands.";
 const char* const txtUnknownTopic = "Unknown help topic, type 'help' for possible commands.";
 const char* const txtUnknownCommand = "Unknown command.";
