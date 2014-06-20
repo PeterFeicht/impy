@@ -465,6 +465,20 @@ void Board_Reset(void)
 {
     SetDefaults();
     Console_Init();
+    Board_Standby();
+}
+
+/**
+ * Puts the AD5933 in standby mode, switches off the low speed clock and disconnects the output ports.
+ */
+void Board_Standby(void)
+{
+    uint8_t data = AD725_CHIP_ENABLE_NOT;
+    HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_RESET);
+    HAL_SPI_Transmit(&hspi3, &data, 1, BOARD_SPI_TIMEOUT);
+    HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_SET);
+    
+    HAL_TIM_OC_Stop(&htim10, TIM10_CLOCK_CHANNEL);
     AD5933_Reset();
 }
 
@@ -581,7 +595,7 @@ Board_Error Board_StartSweep(uint8_t port)
 }
 
 /**
- * Stops a currently running frequency measurement, if any. Always resets the AD5933.
+ * Stops a currently running frequency measurement, if any. Always resets the AD5933 and disconnects output ports.
  * 
  * When no measurement is running, this function can be used to switch off the AD5933 so no output signal is generated.
  * 
@@ -602,7 +616,7 @@ Board_Error Board_StopSweep(void)
         validPolar = 1;
     }
     
-    AD5933_Reset();
+    Board_Standby();
     return BOARD_OK;
 }
 
