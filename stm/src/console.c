@@ -1768,6 +1768,9 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
     }
     else if(strcmp(argv[1], "tim") == 0)
     {
+        const char *end;
+        uint32_t intval;
+        
         // Enable or disable TIM10 OC output
         if(argc != 3)
         {
@@ -1784,7 +1787,12 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
                     HAL_TIM_OC_Stop(&htim10, TIM_CHANNEL_1);
                     break;
                 default:
-                    // Ignore
+                    intval = IntFromSiString(argv[2], &end);
+                    if(end != NULL && intval < 0xFFFF)
+                    {
+                        HAL_TIM_OC_Stop(&htim10, TIM_CHANNEL_1);
+                        htim10.Instance->PSC = intval;
+                    }
                     break;
             }
         }
