@@ -182,6 +182,19 @@ typedef struct
 #define AD5933_FEEDBACK_GPIO_2              GPIO_PIN_5
 /** @} */
 
+/**
+ * @defgroup AD5933_LED Measurement Notification LED GPIO Definition
+ * 
+ * If {@code AD5933_LED_USE} is defined, the specified pin is set high when a sweep is started and reset when it
+ * finishes. It can be used to notify the user about a running measurement.
+ * The GPIO pin needs to be configured externally.
+ * @{ 
+ */
+#define AD5933_LED_USE
+#define AD5933_LED_GPIO_PORT                GPIOD
+#define AD5933_LED_GPIO_PIN                 GPIO_PIN_12
+/** @} */
+
 /*****************************************************************************
  *                              REGISTER MAPPING                             *
  *****************************************************************************/
