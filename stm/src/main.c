@@ -473,7 +473,7 @@ void Board_Reset(void)
  */
 void Board_Standby(void)
 {
-    uint8_t data = AD725_CHIP_ENABLE_NOT;
+    uint8_t data = ADG725_CHIP_ENABLE_NOT;
     HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_RESET);
     HAL_SPI_Transmit(&hspi3, &data, 1, BOARD_SPI_TIMEOUT);
     HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_SET);
@@ -748,7 +748,7 @@ Board_Error Board_Calibrate(uint32_t ohms)
         }
         
         // Set output mux
-        cal = cal & AD725_MASK_PORT;
+        cal = cal & ADG725_MASK_PORT;
         HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_RESET);
         HAL_SPI_Transmit(&hspi3, &cal, 1, BOARD_SPI_TIMEOUT);
         HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_SET);

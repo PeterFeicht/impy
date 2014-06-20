@@ -108,13 +108,13 @@ typedef struct
 /** @} */
 
 /**
- * @defgroup AD725 Communication Definition for the AD725
+ * @defgroup ADG725 Communication Definition for the ADG725
  * @{
  */
-#define AD725_MASK_PORT                 ((uint8_t)0x0F)
-#define AD725_CHIP_ENABLE_NOT           ((uint8_t)0x80)
-#define AD725_CHIP_CSA_NOT              ((uint8_t)0x40)
-#define AD725_CHIP_CSB_NOT              ((uint8_t)0x20)
+#define ADG725_MASK_PORT                ((uint8_t)0x0F)
+#define ADG725_CHIP_ENABLE_NOT          ((uint8_t)0x80)
+#define ADG725_CHIP_CSA_NOT             ((uint8_t)0x40)
+#define ADG725_CHIP_CSB_NOT             ((uint8_t)0x20)
 /** @} */
 
 // Uncomment if the EEPROM is fitted
