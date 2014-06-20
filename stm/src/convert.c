@@ -435,8 +435,6 @@ static Buffer Convert_RawBinary(uint32_t format, const AD5933_ImpedanceData *dat
  * 
  * For example, for the string <i>BHP</i> the return value would be an integer with bits {@code FORMAT_FLAG_BINARY},
  * {@code FORMAT_FLAG_HEADER} and {@code FORMAT_FLAG_POLAR} set.
- * The return value for the string <i>AHP</i>, however, would be {@code 0}, since the specification for separator
- * character and number format are missing ({@code 0} is not a valid format specifier).
  * 
  * @param str Pointer to a zero terminated string
  * @return Format flags on success, {@code 0} otherwise
@@ -461,9 +459,12 @@ uint32_t Convert_FormatSpecFromString(const char *str)
         flags |= FORMAT_FLAG_FROM_CHAR(*c);
     }
     
-    // Instead of bailing out we could set defaults for missing flags
-    if(!flags || (flags & FORMAT_MASK_UNKNOWN) ||
-            !IS_POWER_OF_TWO(flags & FORMAT_MASK_COORDINATES))
+    if((flags & FORMAT_MASK_COORDINATES) == 0)
+    {
+        flags |= FORMAT_DEFAULT_COORDINATES;
+    }
+    
+    if((flags & FORMAT_MASK_UNKNOWN) || !IS_POWER_OF_TWO(flags & FORMAT_MASK_COORDINATES))
     {
         return 0;
     }
@@ -471,6 +472,15 @@ uint32_t Convert_FormatSpecFromString(const char *str)
     switch(flags & FORMAT_MASK_ENCODING)
     {
         case FORMAT_FLAG_ASCII:
+            if((flags & FORMAT_MASK_NUMBERS) == 0)
+            {
+                flags |= FORMAT_DEFAULT_NUMBERS;
+            }
+            if((flags & FORMAT_MASK_SEPARATOR) == 0)
+            {
+                flags |= FORMAT_DEFAULT_SEPARATOR;
+            }
+            
             if(IS_POWER_OF_TWO(flags & FORMAT_MASK_NUMBERS) &&
                     IS_POWER_OF_TWO(flags & FORMAT_MASK_SEPARATOR))
             {
