@@ -17,7 +17,7 @@ static HAL_StatusTypeDef AD5933_Write24(uint8_t MemAddress, uint32_t value);
 static HAL_StatusTypeDef AD5933_Read16(uint8_t MemAddress, uint16_t *destination);
 static HAL_StatusTypeDef AD5933_WriteFunction(uint16_t code);
 static uint8_t AD5933_ReadStatus();
-static uint32_t AD5933_CalcFrequencyReg(uint32_t freq);
+static uint32_t AD5933_CalcFrequencyReg(uint32_t freq, uint32_t clock);
 static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, uint32_t freq_start, uint32_t freq_step,
         uint16_t num_incr, uint16_t settl);
 
@@ -172,15 +172,16 @@ static uint8_t AD5933_ReadStatus()
 }
 
 /**
- * Calculates the frequency register value corresponding to the specified frequency at internal clock frequency.
+ * Calculates the frequency register value corresponding to the specified output and clock frequencies.
  * 
- * @param freq The frequency to calculate the register value for
+ * @param freq The output frequency to calculate the register value for
+ * @param clock The clock frequency used for the AD5933
  * @return The value that can be written to the device register
  */
-static uint32_t AD5933_CalcFrequencyReg(uint32_t freq)
+static uint32_t AD5933_CalcFrequencyReg(uint32_t freq, uint32_t clock)
 {
     uint64_t tmp = (1 << 27) * 4 * (uint64_t)freq;
-    return (uint32_t)(tmp / AD5933_CLK_FREQ_INT);
+    return (uint32_t)(tmp / clock);
 }
 
 /**
@@ -251,8 +252,8 @@ static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, u
     
     // Calculate and check register values
     // TODO use external clock if necessary
-    start_reg = AD5933_CalcFrequencyReg(freq_start);
-    step_reg = AD5933_CalcFrequencyReg(freq_step);
+    start_reg = AD5933_CalcFrequencyReg(freq_start, AD5933_CLK_FREQ_INT);
+    step_reg = AD5933_CalcFrequencyReg(freq_step, AD5933_CLK_FREQ_INT);
     if(start_reg < AD5933_MIN_FREQ || (start_reg + step_reg * num_incr) > AD5933_MAX_FREQ)
     {
         return AD_ERROR;
