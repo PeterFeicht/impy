@@ -61,6 +61,11 @@ typedef struct
                                        FORMAT_MASK_SEPARATOR | \
                                        FORMAT_FLAG_HEADER))
 
+// Default flag values when missing
+#define FORMAT_DEFAULT_COORDINATES  FORMAT_FLAG_POLAR
+#define FORMAT_DEFAULT_NUMBERS      FORMAT_FLAG_FLOAT
+#define FORMAT_DEFAULT_SEPARATOR    FORMAT_FLAG_SPACE
+
 // Exported functions ---------------------------------------------------------
 uint32_t Convert_FormatSpecFromString(const char *str);
 uint32_t Convert_FormatSpecToString(char *buf, uint32_t length, uint32_t format);
