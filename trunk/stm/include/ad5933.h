@@ -40,6 +40,7 @@ typedef struct
     uint16_t Num_Increments;    //!< Number of frequency points for the sweep
     uint16_t Settling_Cycles;   //!< Number of settling cycles before a measurement
     uint16_t Settling_Mult;     //!< Settling time multiplier (one of the {@link AD5933_SETTL_MULT} values)
+    uint16_t Averages;          //!< The number of averages for each frequency point
 } AD5933_Sweep;
 
 typedef struct
@@ -114,6 +115,11 @@ typedef struct
  * Timeout in ms for I2C communication
  */
 #define AD5933_I2C_TIMEOUT                  0x200
+
+/**
+ * The number of averages per frequency point used for calibration measurements
+ */
+#define AD5933_CALIB_AVERAGES               16
 
 /**
  * @defgroup AD5933_CLK Clock Source Configuration
