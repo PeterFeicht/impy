@@ -26,6 +26,7 @@ typedef enum
     CON_ARG_READ_GAIN,
     // board set/get
     CON_ARG_SET_AUTORANGE,
+    CON_ARG_SET_AVG,
     CON_ARG_SET_ECHO,
     CON_ARG_SET_FEEDBACK,
     CON_ARG_SET_FORMAT,
@@ -173,6 +174,7 @@ static const Console_Arg argsBoardSet[] = {
     { "voltage", CON_ARG_SET_VOLTAGE, CON_INT },
     { "gain", CON_ARG_SET_GAIN, CON_FLAG },
     { "feedback", CON_ARG_SET_FEEDBACK, CON_INT },
+    { "avg", CON_ARG_SET_AVG, CON_INT },
     { "format", CON_ARG_SET_FORMAT, CON_STRING },
     { "autorange", CON_ARG_SET_AUTORANGE, CON_FLAG },
     { "echo", CON_ARG_SET_ECHO, CON_FLAG }
@@ -485,6 +487,11 @@ static void Console_BoardGet(uint32_t argc, char **argv)
             VCP_SendLine(autorange ? txtEnabled : txtDisabled);
             break;
             
+        case CON_ARG_SET_AVG:
+            snprintf(buf, NUMEL(buf), "%u", Board_GetAverages());
+            VCP_SendLine(buf);
+            break;
+            
         case CON_ARG_SET_ECHO:
             // Well, do you see what you're typing or not?
             VCP_SendLine(VCP_GetEcho() ? txtEnabled : txtDisabled);
@@ -497,7 +504,7 @@ static void Console_BoardGet(uint32_t argc, char **argv)
             }
             else
             {
-                AD5933_RangeSettings *range = Board_GetRangeSettings();
+                const AD5933_RangeSettings *range = Board_GetRangeSettings();
                 SiStringFromInt(buf, NUMEL(buf), range->Feedback_Value);
                 VCP_SendLine(buf);
             }
@@ -546,7 +553,7 @@ static void Console_BoardGet(uint32_t argc, char **argv)
             }
             else
             {
-                AD5933_RangeSettings *range = Board_GetRangeSettings();
+                const AD5933_RangeSettings *range = Board_GetRangeSettings();
                 uint16_t voltage = AD5933_GetVoltageFromRegister(range->Voltage_Range);
                 snprintf(buf, NUMEL(buf), "%u", voltage / range->Attenuation);
                 VCP_SendLine(buf);
@@ -573,12 +580,16 @@ static void Console_BoardGet(uint32_t argc, char **argv)
                 snprintf(buf, NUMEL(buf), "%u", Board_GetSettlingCycles());
                 VCP_SendLine(buf);
                 
+                VCP_SendString("avg=");
+                snprintf(buf, NUMEL(buf), "%u", Board_GetAverages());
+                VCP_SendLine(buf);
+                
                 VCP_SendString("autorange=");
                 VCP_SendLine(autorange ? txtEnabled : txtDisabled);
                 
                 if(!autorange)
                 {
-                    AD5933_RangeSettings *range = Board_GetRangeSettings();
+                    const AD5933_RangeSettings *range = Board_GetRangeSettings();
                     
                     VCP_SendString("gain=");
                     VCP_SendLine(range->PGA_Gain == AD5933_GAIN_5 ? txtEnabled : txtDisabled);
@@ -1081,6 +1092,17 @@ static void Console_BoardSet(uint32_t argc, char **argv)
                 if(AD5933_IsBusy())
                 {
                     VCP_SendLine(txtEffectiveNextSweep);
+                }
+                break;
+                
+            case CON_ARG_SET_AVG:
+                if((intval & ~0xFFFF) == 0)
+                {
+                    ok = Board_SetAverages(intval);
+                }
+                else
+                {
+                    ok = BOARD_ERROR;
                 }
                 break;
                 
