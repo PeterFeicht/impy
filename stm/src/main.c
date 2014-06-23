@@ -413,7 +413,7 @@ uint16_t Board_GetFreqSteps(void)
 /**
  * Gets the current range settings.
  */
-AD5933_RangeSettings* Board_GetRangeSettings(void)
+const AD5933_RangeSettings* Board_GetRangeSettings(void)
 {
     return &range;
 }

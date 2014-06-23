@@ -154,7 +154,7 @@ uint32_t Board_GetStartFreq(void);
 uint32_t Board_GetStopFreq(void);
 uint16_t Board_GetFreqSteps(void);
 uint16_t Board_GetSettlingCycles(void);
-AD5933_RangeSettings* Board_GetRangeSettings(void);
+const AD5933_RangeSettings* Board_GetRangeSettings(void);
 uint8_t Board_GetAutorange(void);
 uint16_t Board_GetAverages(void);
 
