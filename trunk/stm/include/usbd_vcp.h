@@ -41,7 +41,7 @@
 #define CDC_SEND_BREAK                      0x23
 
 // Uncomment to let the VCP configuration be bus powered with 500mA maximum power draw.
-//#define VCP_BUS_POWERED
+#define VCP_BUS_POWERED
 
 // Exported type definitions --------------------------------------------------
 typedef struct
