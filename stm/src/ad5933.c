@@ -27,6 +27,9 @@ static I2C_HandleTypeDef *i2cHandle = NULL;
 static AD5933_Sweep sweep_spec;             //!< Local copy of the sweep specification
 static AD5933_RangeSettings range_spec;     //!< Local copy of the range specification
 static volatile uint16_t sweep_count;       //!< Variable to keep track of the number of measured points
+static volatile uint16_t avg_count;         //!< Variable to keep track of the averages recorded
+static volatile int32_t sum_real;           //!< Sum of the real values for averaging
+static volatile int32_t sum_imag;           //!< Sum of the imaginary values for averaging
 static volatile uint16_t wait_coupl;        //!< Time to wait for coupling capacitor to charge, or 0 to not wait
 static volatile uint32_t wait_tick;         //!< SysTick value where we started waiting
 /**
@@ -265,8 +268,12 @@ static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, u
     HAL_GPIO_WritePin(AD5933_FEEDBACK_GPIO_PORT, AD5933_FEEDBACK_GPIO_0, ((portFb & (1 << 0)) ? SET : RESET));
     HAL_GPIO_WritePin(AD5933_FEEDBACK_GPIO_PORT, AD5933_FEEDBACK_GPIO_1, ((portFb & (1 << 1)) ? SET : RESET));
     HAL_GPIO_WritePin(AD5933_FEEDBACK_GPIO_PORT, AD5933_FEEDBACK_GPIO_2, ((portFb & (1 << 2)) ? SET : RESET));
-
+    
     range_spec = *range;
+    sweep_count = 0;
+    avg_count = 0;
+    sum_real = 0;
+    sum_imag = 0;
     AD5933_WriteFunction(AD5933_FUNCTION_STANDBY);
     
     // Send sweep parameters
@@ -415,7 +422,6 @@ AD5933_Error AD5933_MeasureImpedance(const AD5933_Sweep *sweep, const AD5933_Ran
     
     pBuffer = buffer;
     sweep_spec = *sweep;
-    sweep_count = 0;
     
     data = sweep->Settling_Cycles | sweep->Settling_Mult;
     ret = AD5933_StartMeasurement(range, sweep->Start_Freq, sweep->Freq_Increment, sweep->Num_Increments, data);
@@ -489,7 +495,6 @@ AD5933_Error AD5933_Calibrate(AD5933_GainFactorData *data, const AD5933_RangeSet
     }
     
     pGainData = data;
-    sweep_count = 0;
     
     if(data->is_2point)
     {
@@ -574,55 +579,87 @@ AD5933_Status AD5933_TimerCallback(void)
             dev_status = AD5933_ReadStatus();
             if(dev_status & AD5933_STATUS_VALID_IMPEDANCE)
             {
-                AD5933_ImpedanceData *buf = pBuffer + sweep_count;
-                
-                // Read data and save it
-                AD5933_Read16(AD5933_REAL_H_ADDR, (uint16_t *)&buf->Real);
-                AD5933_Read16(AD5933_IMAG_H_ADDR, (uint16_t *)&buf->Imag);
-                buf->Frequency = sweep_spec.Start_Freq + sweep_count * sweep_spec.Freq_Increment;
-                sweep_count++;
-                
-                // Finish or measure next step
-                if(dev_status & AD5933_STATUS_SWEEP_COMPLETE)
+                if(avg_count < sweep_spec.Averages)
                 {
-                    status = AD_FINISH_IMPEDANCE;
-                    
-#ifdef AD5933_LED_USE
-                    HAL_GPIO_WritePin(AD5933_LED_GPIO_PORT, AD5933_LED_GPIO_PIN, GPIO_PIN_RESET);
-#endif
+                    // Need more averages
+                    int16_t tmp_real, tmp_imag;
+                    AD5933_Read16(AD5933_REAL_H_ADDR, (uint16_t *)&tmp_real);
+                    AD5933_Read16(AD5933_IMAG_H_ADDR, (uint16_t *)&tmp_imag);
+                    sum_real += tmp_real;
+                    sum_imag += tmp_imag;
+                    avg_count++;
                 }
-                else
+                if(avg_count == sweep_spec.Averages)
                 {
-                    AD5933_WriteFunction(AD5933_FUNCTION_INCREMENT_FREQ);
+                    // Finished with frequency point, save average to result buffer
+                    AD5933_ImpedanceData *buf = pBuffer + sweep_count;
+                    buf->Real = sum_real / sweep_spec.Averages;
+                    buf->Imag = sum_imag / sweep_spec.Averages;
+                    buf->Frequency = sweep_spec.Start_Freq + sweep_count * sweep_spec.Freq_Increment;
+                    sweep_count++;
+                    
+                    // Finish or measure next step
+                    if(dev_status & AD5933_STATUS_SWEEP_COMPLETE)
+                    {
+                        status = AD_FINISH_IMPEDANCE;
+                        
+#ifdef AD5933_LED_USE
+                        HAL_GPIO_WritePin(AD5933_LED_GPIO_PORT, AD5933_LED_GPIO_PIN, GPIO_PIN_RESET);
+#endif
+                    }
+                    else
+                    {
+                        AD5933_WriteFunction(AD5933_FUNCTION_INCREMENT_FREQ);
+                        avg_count = 0;
+                        sum_real = 0;
+                        sum_imag = 0;
+                    }
                 }
             }
             break;
             
         case AD_CALIBRATE:
+            // TODO averaging for calibration measurement
             if(AD5933_ReadStatus() & AD5933_STATUS_VALID_IMPEDANCE)
             {
-                if(sweep_count == 0)
+                if(avg_count < AD5933_CALIB_AVERAGES)
                 {
-                    // First point, read data and do second point if necessary
-                    AD5933_Read16(AD5933_REAL_H_ADDR, (uint16_t *)&pGainData->real1);
-                    AD5933_Read16(AD5933_IMAG_H_ADDR, (uint16_t *)&pGainData->imag1);
-                    
-                    if(pGainData->is_2point)
+                    // Need more averages
+                    int16_t tmp_real, tmp_imag;
+                    AD5933_Read16(AD5933_REAL_H_ADDR, (uint16_t *)&tmp_real);
+                    AD5933_Read16(AD5933_IMAG_H_ADDR, (uint16_t *)&tmp_imag);
+                    sum_real += tmp_real;
+                    sum_imag += tmp_imag;
+                    avg_count++;
+                }
+                if(avg_count == AD5933_CALIB_AVERAGES)
+                {
+                    if(sweep_count == 0)
                     {
-                        AD5933_WriteFunction(AD5933_FUNCTION_INCREMENT_FREQ);
-                        sweep_count++;
+                        // First point finished, save average and do second point if necessary
+                        pGainData->real1 = sum_real / AD5933_CALIB_AVERAGES;
+                        pGainData->imag1 = sum_imag / AD5933_CALIB_AVERAGES;
+                        
+                        if(pGainData->is_2point)
+                        {
+                            AD5933_WriteFunction(AD5933_FUNCTION_INCREMENT_FREQ);
+                            sweep_count++;
+                            avg_count = 0;
+                            sum_real = 0;
+                            sum_imag = 0;
+                        }
+                        else
+                        {
+                            status = AD_FINISH_CALIB;
+                        }
                     }
                     else
                     {
+                        // Second point finished, save average and finish
+                        pGainData->real2 = sum_real / AD5933_CALIB_AVERAGES;
+                        pGainData->imag2 = sum_imag / AD5933_CALIB_AVERAGES;
                         status = AD_FINISH_CALIB;
                     }
-                }
-                else
-                {
-                    // Second point, read data and finish
-                    AD5933_Read16(AD5933_REAL_H_ADDR, (uint16_t *)&pGainData->real2);
-                    AD5933_Read16(AD5933_IMAG_H_ADDR, (uint16_t *)&pGainData->imag2);
-                    status = AD_FINISH_CALIB;
                 }
             }
             break;
