@@ -7,6 +7,7 @@ sensitive. Most settings will be saved in memory on-board.
 Commands:
   board set [--start=FREQ] [--stop=FREQ] [--steps=NUM] [--settl=CYCLES]
   board set [--voltage=RANGE] [--gain=(on|off)] [--feedback=OHMS]
+  board set [--avg=NUM]
   board set [--format=FMT] [--autorange=(on|off)] [--echo=(on|off)]
   board get (<option> | all)
   board (info | temp | calibrate <ohms>)
@@ -61,6 +62,8 @@ stop options appear on the command line.
   --gain            Enable or disable the x5 input gain stage [default: off]
   --feedback        Set the value of the I-U feedback resistor [default: 1000]
                     For valid values see 'board info'
+  --avg             Set the number of averages for each point [default: 1]
+                    The valid range is 1..65535
   --format          Set the output format of measurement data [default: APFHS]
                     For possible formats see 'help format'
   --autorange       Enable or disable auto-ranging [default: on]
