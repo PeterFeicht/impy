@@ -146,6 +146,7 @@ static String strHelp = {
 // All help topics from command-line.txt need to be added here
 #define TOPIC(X)    { X, { NULL, 0 } }
 static Console_HelpEntry txtHelpTopics[] = {
+    TOPIC("options"),
     TOPIC("eth"),
     TOPIC("usb"),
     TOPIC("format"),
