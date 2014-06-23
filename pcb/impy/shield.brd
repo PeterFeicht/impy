@@ -3097,10 +3097,10 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <attribute name="NAME" x="48.7975" y="54.245" size="1.27" layer="25" rot="R90"/>
 <attribute name="VALUE" x="47.498" y="52.0065" size="0.0254" layer="27"/>
 </element>
-<element name="TP11" library="testpad" package="P1-13" value="TPPAD1-13" x="61.9125" y="66.9925" smashed="yes">
-<attribute name="TP_SIGNAL_NAME" value="AGND" x="60.0075" y="64.135" size="1" layer="37"/>
-<attribute name="NAME" x="59.96" y="63.915" size="1.27" layer="25"/>
-<attribute name="VALUE" x="61.1505" y="65.9765" size="0.0254" layer="27"/>
+<element name="TP11" library="testpad" package="P1-13" value="TPPAD1-13" x="68.58" y="66.9925" smashed="yes">
+<attribute name="TP_SIGNAL_NAME" value="AGND" x="66.675" y="64.135" size="1" layer="37"/>
+<attribute name="NAME" x="66.6275" y="63.915" size="1.27" layer="25"/>
+<attribute name="VALUE" x="67.818" y="65.9765" size="0.0254" layer="27"/>
 </element>
 <element name="TP13" library="testpad" package="TP20R" value="TPTP20R" x="46.99" y="15.875" smashed="yes">
 <attribute name="TP_SIGNAL_NAME" value="USBH_VBUS" x="42.8625" y="17.78" size="1" layer="37"/>
