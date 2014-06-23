@@ -10009,7 +10009,7 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <part name="P+9" library="supply1" deviceset="VCC" device=""/>
 <part name="R16" library="rcl" deviceset="R-EU_" device="R0603" value="2k2"/>
 <part name="R17" library="rcl" deviceset="R-EU_" device="R0603" value="2k2"/>
-<part name="C26" library="rcl" deviceset="C-EU" device="C0603" value="10u"/>
+<part name="C26" library="rcl" deviceset="C-EU" device="C0603" value="1n"/>
 <part name="AGND4" library="supply1" deviceset="AGND" device=""/>
 <part name="AGND5" library="supply1" deviceset="AGND" device=""/>
 <part name="P+11" library="supply1" deviceset="VCC/2" device=""/>
