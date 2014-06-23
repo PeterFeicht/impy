@@ -17,12 +17,42 @@ Commands:
   usb (status | info | eject | write <file> | ls)
   help [<topic>]
 
-Options:
+Commands:
+  set           Set option(s) to specified value(s)
+  get           Print current value of specified option, or all options
+  info          Print information for the whole board
+  temp          Measure and print the AD5933 chip temperature
+  calibrate     Perform a calibration with the specified resistor value
+                For more information see 'help calibrate'
+  start         Start a frequency sweep on specified port
+                For the valid port range see 'board info'
+  stop          Stop a running frequency sweep (also reset the AD5933)
+  status        Print measurement status information
+  measure       Measure and print a single frequency point on specified port
+  standby       Put the AD5933 in standby mode and disconnect output ports
+  read          Transfer measurement data (with optional format specification)
+                For possible formats see 'help format'
+
+For detailed description of options see 'help options'.
+See 'help eth' and 'help usb' for Ethernet and USB commands, respectively.
+
+When a command is preceded by an '@' character, echo is disabled for this line.
+This is useful for non-interactive communication, where '@board set --echo=off'
+can be sent to disable echo without the command itself being echoed.
+
+----
+help options:
+Options for 'board set' and 'board get' commands:
   --start           Set the start frequency of a sweep in Hz [default: 1000]
                     For the valid range see 'board info'
   --stop            Set the stop frequency of a sweep in Hz [default: 100000]
                     For the valid range see 'board info'
-  --steps           Set the number of frequency points in a sweep [default: 50]
+Note that when setting start and stop frequency in a single command, an error
+can occur when the new start frequency is equal to or higher than the previous
+stop frequency. In this case you need to change the order in which start and
+stop options appear on the command line.
+  --steps           Set the number of frequency steps in a sweep, that is the
+                    number of times the frequency is incremented [default: 50]
                     The valid range is 1..511
   --settl           Set the number of settling cycles [default: 16]
                     See 'help settl' for valid values
@@ -37,34 +67,14 @@ Options:
                     For more information see 'help autorange'
   --echo            Enable or disable echo of received characters [default: on]
                     For more information see 'help echo'
+
+Options for 'board read' command:
+  --format          Set the format for a single transfer only
   --raw             Transfer raw measurement data as received from the AD5933
                     This cannot be used if autoranging was used
   --gain            Transfer the calibrated gain factor for converting raw data
                     This is always transferred as formatted floating point text
 
-Commands:
-  set           Set option(s) to specified value(s)
-  get           Print current value of specified option, or all options
-  info          Print status information for the whole board
-  temp          Measure and print the AD5933 chip temperature
-  calibrate     Perform a calibration with the specified resistor value
-                For more information see 'help calibrate'
-  start         Start a frequency sweep on specified port
-                For the valid port range see 'board info'
-  stop          Stop a running frequency sweep (also reset the AD5933)
-  status        Print measurement status information
-  measure       Measure and print a single frequency point on specified port
-  standby       Put the AD5933 in standby mode and disconnect output ports
-  read          Transfer measurement data (with optional format specification)
-                For possible formats see 'help format'
-
-See 'help eth' and 'help usb' for Ethernet and USB commands, respectively.
-
-When a command is preceded by an '@' character, echo is disabled for this line.
-This is useful for non-interactive communication, where '@board set --echo=off'
-can be sent to disable echo without the command itself being echoed.
-
-----
 help eth:
 TODO Ethernet interface is not implemented yet.
 
@@ -111,7 +121,7 @@ ASCII format: data is sent in human readable form, one line per record.
 help settl:
 The number of settling cycles determines how many excitation cycles are output
 before an impedance conversion is made. The valid range is 0..511 and can be
-extended by 2 or 4 times by specifying a multiplier like 'x2'.
+extended 2 or 4 times by specifying a multiplier like 'x2'.
 Valid values would be '20' or '40x2', but not '512' (use '256x2' instead).
 
 help voltage:
