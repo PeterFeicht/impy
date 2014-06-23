@@ -148,6 +148,7 @@ Board_Error Board_SetVoltageRange(uint16_t voltage);
 Board_Error Board_SetPGA(uint8_t enable);
 Board_Error Board_SetAutorange(uint8_t enable);
 Board_Error Board_SetFeedback(uint32_t ohms);
+Board_Error Board_SetAverages(uint16_t value);
 
 uint32_t Board_GetStartFreq(void);
 uint32_t Board_GetStopFreq(void);
@@ -155,6 +156,7 @@ uint16_t Board_GetFreqSteps(void);
 uint16_t Board_GetSettlingCycles(void);
 AD5933_RangeSettings* Board_GetRangeSettings(void);
 uint8_t Board_GetAutorange(void);
+uint16_t Board_GetAverages(void);
 
 void Board_GetStatus(Board_Status *result);
 void Board_Reset(void);

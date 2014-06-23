@@ -121,6 +121,7 @@ static void SetDefaults(void)
     stopFreq = 100000;
     sweep.Settling_Cycles = 16;
     sweep.Settling_Mult = AD5933_SETTL_MULT_1;
+    sweep.Averages = 1;
     
     range.PGA_Gain = AD5933_GAIN_1;
     range.Voltage_Range = AD5933_VOLTAGE_1;
@@ -365,6 +366,27 @@ Board_Error Board_SetFeedback(uint32_t ohms)
 }
 
 /**
+ * Sets the number of averages for each frequency point.
+ * 
+ * @param value the number of averages, a value of {@code 1} means no averaging is performed
+ * @return {@link Board_Error} code
+ */
+Board_Error Board_SetAverages(uint16_t value)
+{
+    if(AD5933_IsBusy())
+    {
+        return BOARD_BUSY;
+    }
+    if(value == 0)
+    {
+        return BOARD_ERROR;
+    }
+    
+    sweep.Averages = value;
+    return BOARD_OK;
+}
+
+/**
  * Gets the current start frequency used for a sweep.
  */
 uint32_t Board_GetStartFreq(void)
@@ -423,6 +445,14 @@ uint16_t Board_GetSettlingCycles(void)
 uint8_t Board_GetAutorange(void)
 {
     return autorange;
+}
+
+/**
+ * Gets the current number of averages for each frequency point.
+ */
+uint16_t Board_GetAverages(void)
+{
+    return sweep.Averages;
 }
 
 /**
