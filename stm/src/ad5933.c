@@ -685,7 +685,7 @@ AD5933_Status AD5933_TimerCallback(void)
  */
 void AD5933_CalculateGainFactor(const AD5933_GainFactorData *data, AD5933_GainFactor *gf)
 {
-    // Gain factor is calculated by 1/(Magnitude * Impedance), with Magnitude being sqrt(Real^2 + Imag^2)
+    // Gain factor is calculated by (Magnitude * Impedance), with Magnitude being sqrt(Real^2 + Imag^2)
     float magnitude = hypotf(data->real1, data->imag1);
     float gain2;
     // System phase can be directly calculated from real and imaginary parts
@@ -693,13 +693,13 @@ void AD5933_CalculateGainFactor(const AD5933_GainFactorData *data, AD5933_GainFa
     
     gf->is_2point = data->is_2point;
     gf->freq1 = data->freq1;
-    gf->offset = 1.0f / (magnitude * (float)data->impedance);
+    gf->offset = magnitude * (float)data->impedance;
     gf->phaseOffset = phase;
     
     if(data->is_2point)
     {
         magnitude = hypotf(data->real2, data->imag2);
-        gain2 = 1.0f / (magnitude * (float)data->impedance);
+        gain2 = magnitude * (float)data->impedance;
         gf->slope = (gain2 - gf->offset) / (float)(data->freq2 - data->freq1);
         
         phase = atan2f((float)data->imag2, (float)data->real2);
@@ -721,7 +721,7 @@ void AD5933_CalculateGainFactor(const AD5933_GainFactorData *data, AD5933_GainFa
  */
 float AD5933_GetMagnitude(const AD5933_ImpedanceData *data, const AD5933_GainFactor *gain)
 {
-    // Actual impedance is calculated by 1/(Magnitude * Gain Factor), with Magnitude being sqrt(Real^2 + Imag^2)
+    // Actual impedance is calculated by (Gain Factor / Magnitude), with Magnitude being sqrt(Real^2 + Imag^2)
     float magnitude = hypotf(data->Real, data->Imag);
     float gain_2point = gain->offset;
     
@@ -730,7 +730,7 @@ float AD5933_GetMagnitude(const AD5933_ImpedanceData *data, const AD5933_GainFac
         gain_2point += gain->slope * (data->Frequency - gain->freq1);
     }
     
-    return 1.0f / (gain_2point * magnitude);
+    return gain_2point / magnitude;
 }
 
 /**
