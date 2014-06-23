@@ -579,16 +579,13 @@ AD5933_Status AD5933_TimerCallback(void)
             dev_status = AD5933_ReadStatus();
             if(dev_status & AD5933_STATUS_VALID_IMPEDANCE)
             {
-                if(avg_count < sweep_spec.Averages)
-                {
-                    // Need more averages
-                    int16_t tmp_real, tmp_imag;
-                    AD5933_Read16(AD5933_REAL_H_ADDR, (uint16_t *)&tmp_real);
-                    AD5933_Read16(AD5933_IMAG_H_ADDR, (uint16_t *)&tmp_imag);
-                    sum_real += tmp_real;
-                    sum_imag += tmp_imag;
-                    avg_count++;
-                }
+                int16_t tmp_real, tmp_imag;
+                AD5933_Read16(AD5933_REAL_H_ADDR, (uint16_t *)&tmp_real);
+                AD5933_Read16(AD5933_IMAG_H_ADDR, (uint16_t *)&tmp_imag);
+                sum_real += tmp_real;
+                sum_imag += tmp_imag;
+                avg_count++;
+                
                 if(avg_count == sweep_spec.Averages)
                 {
                     // Finished with frequency point, save average to result buffer
@@ -626,16 +623,13 @@ AD5933_Status AD5933_TimerCallback(void)
             // TODO averaging for calibration measurement
             if(AD5933_ReadStatus() & AD5933_STATUS_VALID_IMPEDANCE)
             {
-                if(avg_count < AD5933_CALIB_AVERAGES)
-                {
-                    // Need more averages
-                    int16_t tmp_real, tmp_imag;
-                    AD5933_Read16(AD5933_REAL_H_ADDR, (uint16_t *)&tmp_real);
-                    AD5933_Read16(AD5933_IMAG_H_ADDR, (uint16_t *)&tmp_imag);
-                    sum_real += tmp_real;
-                    sum_imag += tmp_imag;
-                    avg_count++;
-                }
+                int16_t tmp_real, tmp_imag;
+                AD5933_Read16(AD5933_REAL_H_ADDR, (uint16_t *)&tmp_real);
+                AD5933_Read16(AD5933_IMAG_H_ADDR, (uint16_t *)&tmp_imag);
+                sum_real += tmp_real;
+                sum_imag += tmp_imag;
+                avg_count++;
+                
                 if(avg_count == AD5933_CALIB_AVERAGES)
                 {
                     if(sweep_count == 0)
