@@ -1941,11 +1941,7 @@ void Console_Init(void)
 {
     Console_InitHelp();
     
-    format_spec = FORMAT_FLAG_ASCII | 
-            FORMAT_FLAG_POLAR | 
-            FORMAT_FLAG_FLOAT | 
-            FORMAT_FLAG_HEADER | 
-            FORMAT_FLAG_SPACE;
+    format_spec = FORMAT_DEFAULT;
 }
 
 /**

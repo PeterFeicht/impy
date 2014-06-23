@@ -65,6 +65,11 @@ typedef struct
 #define FORMAT_DEFAULT_COORDINATES  FORMAT_FLAG_POLAR
 #define FORMAT_DEFAULT_NUMBERS      FORMAT_FLAG_FLOAT
 #define FORMAT_DEFAULT_SEPARATOR    FORMAT_FLAG_SPACE
+#define FORMAT_DEFAULT              (FORMAT_FLAG_ASCII | \
+                                     FORMAT_FLAG_HEADER | \
+                                     FORMAT_DEFAULT_COORDINATES | \
+                                     FORMAT_DEFAULT_NUMBERS | \
+                                     FORMAT_DEFAULT_SEPARATOR)
 
 // Exported functions ---------------------------------------------------------
 uint32_t Convert_FormatSpecFromString(const char *str);
