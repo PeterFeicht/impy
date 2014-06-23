@@ -615,6 +615,10 @@ AD5933_Status AD5933_TimerCallback(void)
                         sum_imag = 0;
                     }
                 }
+                else
+                {
+                    AD5933_WriteFunction(AD5933_FUNCTION_REPEAT_FREQ);
+                }
             }
             break;
             
@@ -660,6 +664,10 @@ AD5933_Status AD5933_TimerCallback(void)
                         pGainData->imag2 = sum_imag / AD5933_CALIB_AVERAGES;
                         status = AD_FINISH_CALIB;
                     }
+                }
+                else
+                {
+                    AD5933_WriteFunction(AD5933_FUNCTION_REPEAT_FREQ);
                 }
             }
             break;
