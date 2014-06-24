@@ -30,6 +30,8 @@ static uint32_t AD5933_CalcFrequencyReg(uint32_t freq, uint32_t clock);
 static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, uint32_t freq_start, uint32_t freq_step,
         uint16_t num_incr, uint16_t settl);
 static void AD5933_SetClock(uint32_t freq_start, uint32_t freq_step);
+static uint8_t AD5933_NeedClockChange(uint32_t freq);
+static void AD5933_DoClockChange(uint32_t freq_start, uint32_t freq_step, uint32_t increments);
 static AD5933_Status AD5933_CallbackTemp(void);
 static AD5933_Status AD5933_CallbackImpedance(void);
 static AD5933_Status AD5933_CallbackCalibrate(void);
@@ -40,13 +42,17 @@ static I2C_HandleTypeDef *i2cHandle = NULL;
 static TIM_HandleTypeDef *timHandle = NULL;
 static AD5933_Sweep sweep_spec;             //!< Local copy of the sweep specification
 static AD5933_RangeSettings range_spec;     //!< Local copy of the range specification
-static AD5933_ClockSource clk_source;       //!< Current clock source to determine if a change is needed during a sweep
 static volatile uint16_t sweep_count;       //!< Variable to keep track of the number of measured points
+static volatile uint32_t sweep_freq;        //!< Variable to keep track of the current frequency
 static volatile uint16_t avg_count;         //!< Variable to keep track of the averages recorded
 static volatile int32_t sum_real;           //!< Sum of the real values for averaging
 static volatile int32_t sum_imag;           //!< Sum of the imaginary values for averaging
 static volatile uint16_t wait_coupl;        //!< Time to wait for coupling capacitor to charge, or 0 to not wait
 static volatile uint32_t wait_tick;         //!< SysTick value where we started waiting
+/**
+ * Current clock source to determine if a change is needed during a sweep
+ */
+static volatile AD5933_ClockSource clk_source;
 /**
  * Pointer to buffer that receives the result of a running calibration measurement
  */
@@ -280,6 +286,7 @@ static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, u
     
     range_spec = *range;
     sweep_count = 0;
+    sweep_freq = freq_start;
     avg_count = 0;
     sum_real = 0;
     sum_imag = 0;
@@ -356,6 +363,60 @@ static void AD5933_SetClock(uint32_t freq_start, uint32_t freq_step)
 }
 
 /**
+ * Determines if the AD5933 clock source needs to be changed to measure the specified frequency.
+ * 
+ * @param freq The frequency that should be measured
+ * @return {@code 0} if no change is required, nonzero value otherwise
+ */
+static uint8_t AD5933_NeedClockChange(uint32_t freq)
+{
+    assert_param(freq >= AD5933_FREQ_MIN);
+    
+    if(freq >= AD5933_CLK_LIM_INT)
+    {
+        return clk_source != AD_INTERNAL;
+    }
+    else if(freq >= AD5933_CLK_LIM_EXT_H)
+    {
+        return clk_source != AD_EXT_H;
+    }
+    else if(freq >= AD5933_CLK_LIM_EXT_M)
+    {
+        return clk_source != AD_EXT_M;
+    }
+    else // freq >= AD5933_CLK_LIM_EXT_L
+    {
+        return clk_source != AD_EXT_L;
+    }
+}
+
+/**
+ * Changes the AD5933 clock source and sets the specified start frequency and number of increments.
+ * 
+ * A clock change is a new sweep to the AD5933, so the start frequency and number of increments needs to be set again
+ * to the new values.
+ * 
+ * @param freq_start The new start frequency, that is the next frequency to be measured
+ * @param freq_step The frequency step
+ * @param increments The new number of increments, this is the total number less the number of already measured steps
+ */
+static void AD5933_DoClockChange(uint32_t freq_start, uint32_t freq_step, uint32_t increments)
+{
+    /*
+     * For a clock change we need to set new values for almost everything, but we don't need to charge
+     * the coupling capacitor, so that's a plus:
+     *  + Set the frequency registers, obviously
+     *  + Set the number of increments, since to the AD5933 we're starting a new sweep
+     *  + Start a new sweep
+     */
+    AD5933_WriteFunction(AD5933_FUNCTION_STANDBY);
+    AD5933_SetClock(freq_start, freq_step);
+    AD5933_Write16(AD5933_NUM_INCR_H_ADDR, increments);
+    AD5933_WriteFunction(AD5933_FUNCTION_INIT_FREQ);
+    AD5933_WriteFunction(AD5933_FUNCTION_START_SWEEP);
+}
+
+/**
  * Timer callback when measuring temperature.
  * 
  * @return The (new) AD5933 status
@@ -405,8 +466,9 @@ static AD5933_Status AD5933_CallbackImpedance(void)
             AD5933_ImpedanceData *buf = pBuffer + sweep_count;
             buf->Real = sum_real / sweep_spec.Averages;
             buf->Imag = sum_imag / sweep_spec.Averages;
-            buf->Frequency = sweep_spec.Start_Freq + sweep_count * sweep_spec.Freq_Increment;
+            buf->Frequency = sweep_freq;
             sweep_count++;
+            sweep_freq += sweep_spec.Freq_Increment;
             
             // Finish or measure next step
             if(dev_status & AD5933_STATUS_SWEEP_COMPLETE)
@@ -418,7 +480,15 @@ static AD5933_Status AD5933_CallbackImpedance(void)
             }
             else
             {
-                AD5933_WriteFunction(AD5933_FUNCTION_INCREMENT_FREQ);
+                if(AD5933_NeedClockChange(sweep_freq))
+                {
+                    AD5933_DoClockChange(sweep_freq, sweep_spec.Freq_Increment,
+                            sweep_spec.Num_Increments - sweep_count);
+                }
+                else
+                {
+                    AD5933_WriteFunction(AD5933_FUNCTION_INCREMENT_FREQ);
+                }
                 avg_count = 0;
                 sum_real = 0;
                 sum_imag = 0;
@@ -459,7 +529,15 @@ static AD5933_Status AD5933_CallbackCalibrate(void)
                 
                 if(pGainData->is_2point)
                 {
-                    AD5933_WriteFunction(AD5933_FUNCTION_INCREMENT_FREQ);
+                    if(AD5933_NeedClockChange(pGainData->freq2))
+                    {
+                        AD5933_DoClockChange(pGainData->freq2, 10, 1);
+                    }
+                    else
+                    {
+                        AD5933_WriteFunction(AD5933_FUNCTION_INCREMENT_FREQ);
+                    }
+                    
                     sweep_count++;
                     avg_count = 0;
                     sum_real = 0;
