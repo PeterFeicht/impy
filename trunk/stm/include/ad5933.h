@@ -122,12 +122,12 @@ typedef struct
 #define AD5933_CALIB_AVERAGES               16
 
 /**
- * Maximum sweep frequency.
+ * Maximum sweep frequency
  */
 #define AD5933_FREQ_MAX                     100000
 
 /**
- * Minimum sweep frequency.
+ * Minimum sweep frequency
  */
 #define AD5933_FREQ_MIN                     10
 
@@ -145,8 +145,7 @@ typedef struct
 #define AD5933_CLK_LIM_EXT_M                100             //!< Lowest sweep frequency for medium speed external clock
 #define AD5933_CLK_LIM_EXT_L                10              //!< Lowest sweep frequency for low speed external clock
 
-#define AD5933_CLK_TIM_HANDLE               (htim10)        //!< Timer handle for external clock generation
-#define AD5933_CLK_TIM_CHANNEL              TIM_CHANNEL_1   //!< Timer channel for extrenal clock generation
+#define AD5933_CLK_TIM_CHANNEL              TIM_CHANNEL_1   //!< Timer channel for external clock generation
 #define AD5933_CLK_PSC_H                    0               //!< Timer prescaler value for high speed clock
 #define AD5933_CLK_PSC_M                    9               //!< Timer prescaler value for medium speed clock
 #define AD5933_CLK_PSC_L                    99              //!< Timer prescaler value for low speed clock
@@ -540,7 +539,7 @@ typedef struct
 
 AD5933_Status AD5933_GetStatus(void);
 uint8_t AD5933_IsBusy(void);
-AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c);
+AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c, TIM_HandleTypeDef *tim);
 AD5933_Error AD5933_Reset(void);
 AD5933_Error AD5933_MeasureImpedance(const AD5933_Sweep *sweep, const AD5933_RangeSettings *range,
         AD5933_ImpedanceData *buffer);
