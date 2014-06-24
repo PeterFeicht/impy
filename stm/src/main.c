@@ -151,7 +151,7 @@ Board_Error Board_SetStartFreq(uint32_t freq)
     {
         return BOARD_BUSY;
     }
-    if(freq < FREQ_MIN || freq > FREQ_MAX || freq >= stopFreq)
+    if(freq < AD5933_FREQ_MIN || freq > AD5933_FREQ_MAX || freq >= stopFreq)
     {
         return BOARD_ERROR;
     }
@@ -174,7 +174,7 @@ Board_Error Board_SetStopFreq(uint32_t freq)
     {
         return BOARD_BUSY;
     }
-    if(freq < FREQ_MIN || freq > FREQ_MAX || freq <= sweep.Start_Freq)
+    if(freq < AD5933_FREQ_MIN || freq > AD5933_FREQ_MAX || freq <= sweep.Start_Freq)
     {
         return BOARD_ERROR;
     }
@@ -672,7 +672,7 @@ Board_Error Board_MeasureSingleFrequency(uint8_t port, uint32_t freq, AD5933_Imp
         return BOARD_BUSY;
     }
     // Uncomment if PORT_MIN is greater than 0
-    if(freq < FREQ_MIN || freq > FREQ_MAX || /*port < PORT_MIN ||*/ port > PORT_MAX || result == NULL ||
+    if(freq < AD5933_FREQ_MIN || freq > AD5933_FREQ_MAX || /*port < PORT_MIN ||*/ port > PORT_MAX || result == NULL ||
             (!validGain && !autorange))
     {
         return BOARD_ERROR;

@@ -697,10 +697,10 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     
     VCP_SendString(txtFrequencyRange);
     VCP_SendString("(frq) ");
-    SiStringFromInt(buf, NUMEL(buf), FREQ_MIN);
+    SiStringFromInt(buf, NUMEL(buf), AD5933_FREQ_MIN);
     VCP_SendString(buf);
     VCP_SendString("..");
-    SiStringFromInt(buf, NUMEL(buf), FREQ_MAX);
+    SiStringFromInt(buf, NUMEL(buf), AD5933_FREQ_MAX);
     VCP_SendLine(buf);
     
     VCP_SendString(txtMaxNumIncrements);
@@ -839,7 +839,7 @@ static void Console_BoardMeasure(uint32_t argc, char **argv)
     }
     
     freq = IntFromSiString(argv[2], &end);
-    if(end == NULL || freq < FREQ_MIN || freq > FREQ_MAX)
+    if(end == NULL || freq < AD5933_FREQ_MIN || freq > AD5933_FREQ_MAX)
     {
         VCP_SendString(txtInvalidValue);
         VCP_SendLine("freq");

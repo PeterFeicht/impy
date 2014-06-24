@@ -122,6 +122,16 @@ typedef struct
 #define AD5933_CALIB_AVERAGES               16
 
 /**
+ * Maximum sweep frequency.
+ */
+#define AD5933_FREQ_MAX                     100000
+
+/**
+ * Minimum sweep frequency.
+ */
+#define AD5933_FREQ_MIN                     10
+
+/**
  * @defgroup AD5933_CLK Clock Source Configuration
  * @{
  */
