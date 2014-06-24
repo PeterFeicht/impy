@@ -117,7 +117,7 @@ static void Handle_TIM3_PeriodElapsed(void)
 static void SetDefaults(void)
 {
     sweep.Num_Increments = 50;
-    sweep.Start_Freq = 1000;
+    sweep.Start_Freq = 10000;
     stopFreq = 100000;
     sweep.Settling_Cycles = 16;
     sweep.Settling_Mult = AD5933_SETTL_MULT_1;
@@ -126,9 +126,8 @@ static void SetDefaults(void)
     range.PGA_Gain = AD5933_GAIN_1;
     range.Voltage_Range = AD5933_VOLTAGE_1;
     range.Attenuation = 1;
-    range.Feedback_Value = 1000;
+    range.Feedback_Value = 10000;
     
-    // TODO enable autorange by default
     autorange = 0;
     validData = 0;
     validPolar = 0;

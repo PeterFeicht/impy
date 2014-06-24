@@ -44,9 +44,9 @@ can be sent to disable echo without the command itself being echoed.
 ----
 help options:
 Options for 'board set' and 'board get' commands:
-  --start           Set the start frequency of a sweep in Hz [default: 1000]
+  --start           Set the start frequency of a sweep in Hz [default: 10k]
                     For the valid range see 'board info'
-  --stop            Set the stop frequency of a sweep in Hz [default: 100000]
+  --stop            Set the stop frequency of a sweep in Hz [default: 100k]
                     For the valid range see 'board info'
 Note that when setting start and stop frequency in a single command, an error
 can occur when the new start frequency is equal to or higher than the previous
@@ -60,13 +60,13 @@ stop options appear on the command line.
   --voltage         Set the output voltage range in mV [default: 1000]
                     See 'help voltage' for valid values
   --gain            Enable or disable the x5 input gain stage [default: off]
-  --feedback        Set the value of the I-U feedback resistor [default: 1000]
+  --feedback        Set the value of the I-U feedback resistor [default: 10k]
                     For valid values see 'board info'
   --avg             Set the number of averages for each point [default: 1]
                     The valid range is 1..65535
   --format          Set the output format of measurement data [default: APFHS]
                     For possible formats see 'help format'
-  --autorange       Enable or disable auto-ranging [default: on]
+  --autorange       Enable or disable auto-ranging [default: off]
                     For more information see 'help autorange'
   --echo            Enable or disable echo of received characters [default: on]
                     For more information see 'help echo'
