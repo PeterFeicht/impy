@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
     SetDefaults();
     // TODO read settings from EEPROM
     
-    AD5933_Init(&hi2c1);
+    AD5933_Init(&hi2c1, &htim10);
     
     // Start timer for periodic interrupt generation
     HAL_TIM_Base_Start_IT(&htim3);

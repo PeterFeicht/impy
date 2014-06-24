@@ -27,6 +27,7 @@ static AD5933_Status AD5933_CallbackCalibrate(void);
 // Private variables ----------------------------------------------------------
 static volatile AD5933_Status status = AD_UNINIT;
 static I2C_HandleTypeDef *i2cHandle = NULL;
+static TIM_HandleTypeDef *timHandle = NULL;
 static AD5933_Sweep sweep_spec;             //!< Local copy of the sweep specification
 static AD5933_RangeSettings range_spec;     //!< Local copy of the range specification
 static volatile uint16_t sweep_count;       //!< Variable to keep track of the number of measured points
@@ -454,13 +455,14 @@ uint8_t AD5933_IsBusy(void)
  * Initializes the driver with the specified I2C handle for communication.
  * 
  * @param i2c Pointer to an I2C handle structure that is to be used for communication with the AD5933
+ * @param tim Pointer to a timer handle structure that is to be used for the external clock source
  * @return {@link AD5933_Error} code
  */
-AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c)
+AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c, TIM_HandleTypeDef *tim)
 {
     GPIO_InitTypeDef init;
     
-    if(i2c == NULL)
+    if(i2c == NULL || tim == NULL)
     {
         return AD_ERROR;
     }
