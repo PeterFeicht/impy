@@ -10105,6 +10105,10 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <part name="P+37" library="supply1" deviceset="VCC" device=""/>
 <part name="AGND17" library="supply1" deviceset="AGND" device=""/>
 <part name="R20" library="rcl" deviceset="R-EU_" device="R0603" value="10"/>
+<part name="R12" library="rcl" deviceset="R-EU_" device="R0603" value="3k9"/>
+<part name="R21" library="rcl" deviceset="R-EU_" device="R0603" value="3k9"/>
+<part name="P+38" library="supply1" deviceset="VCC" device=""/>
+<part name="P+39" library="supply1" deviceset="VCC" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -10229,6 +10233,10 @@ AGND - Analog ground</text>
 <instance part="P+35" gate="VCC" x="256.54" y="15.24"/>
 <instance part="AGND8" gate="VR1" x="256.54" y="-5.08" rot="MR0"/>
 <instance part="AGND9" gate="VR1" x="256.54" y="17.78" rot="MR0"/>
+<instance part="R12" gate="G$1" x="200.66" y="73.66" rot="R90"/>
+<instance part="R21" gate="G$1" x="210.82" y="73.66" rot="R90"/>
+<instance part="P+38" gate="VCC" x="200.66" y="86.36"/>
+<instance part="P+39" gate="VCC" x="210.82" y="86.36"/>
 </instances>
 <busses>
 </busses>
@@ -10513,12 +10521,22 @@ AGND - Analog ground</text>
 <wire x1="78.74" y1="58.42" x2="86.36" y2="58.42" width="0.1524" layer="91"/>
 <label x="86.36" y="58.42" size="1.778" layer="95"/>
 </segment>
+<segment>
+<pinref part="R21" gate="G$1" pin="1"/>
+<wire x1="210.82" y1="68.58" x2="210.82" y2="63.5" width="0.1524" layer="91"/>
+<label x="210.82" y="63.5" size="1.778" layer="95" rot="R270"/>
+</segment>
 </net>
 <net name="PB6" class="0">
 <segment>
 <pinref part="JP2" gate="A" pin="23"/>
 <wire x1="71.12" y1="53.34" x2="63.5" y2="53.34" width="0.1524" layer="91"/>
 <label x="63.5" y="53.34" size="1.778" layer="95" rot="R180"/>
+</segment>
+<segment>
+<pinref part="R12" gate="G$1" pin="1"/>
+<wire x1="200.66" y1="68.58" x2="200.66" y2="63.5" width="0.1524" layer="91"/>
+<label x="200.66" y="63.5" size="1.778" layer="95" rot="R270"/>
 </segment>
 </net>
 <net name="USB_P" class="0">
@@ -10702,6 +10720,16 @@ AGND - Analog ground</text>
 <wire x1="256.54" y1="10.16" x2="256.54" y2="12.7" width="0.1524" layer="91"/>
 <wire x1="251.46" y1="10.16" x2="256.54" y2="10.16" width="0.1524" layer="91"/>
 <junction x="256.54" y="10.16"/>
+</segment>
+<segment>
+<pinref part="R12" gate="G$1" pin="2"/>
+<pinref part="P+38" gate="VCC" pin="VCC"/>
+<wire x1="200.66" y1="78.74" x2="200.66" y2="83.82" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="R21" gate="G$1" pin="2"/>
+<pinref part="P+39" gate="VCC" pin="VCC"/>
+<wire x1="210.82" y1="78.74" x2="210.82" y2="83.82" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="AGND" class="1">
