@@ -20,6 +20,9 @@ static uint8_t AD5933_ReadStatus();
 static uint32_t AD5933_CalcFrequencyReg(uint32_t freq, uint32_t clock);
 static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, uint32_t freq_start, uint32_t freq_step,
         uint16_t num_incr, uint16_t settl);
+static AD5933_Status AD5933_CallbackTemp(void);
+static AD5933_Status AD5933_CallbackImpedance(void);
+static AD5933_Status AD5933_CallbackCalibrate(void);
 
 // Private variables ----------------------------------------------------------
 static volatile AD5933_Status status = AD_UNINIT;
@@ -293,6 +296,138 @@ static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, u
     return AD_OK;
 }
 
+/**
+ * Timer callback when measuring temperature.
+ * 
+ * @return The (new) AD5933 status
+ */
+static AD5933_Status AD5933_CallbackTemp(void)
+{
+    if(AD5933_ReadStatus() & AD5933_STATUS_VALID_TEMP)
+    {
+        uint16_t data;
+        AD5933_Read16(AD5933_TEMP_H_ADDR, &data);
+        // Convert data to temperature value
+        if(data & AD5933_TEMP_SIGN_BIT)
+        {
+            *pTemperature = ((int16_t)data - (1 << 14)) / 32.0f;
+        }
+        else
+        {
+            *pTemperature = data / 32.0f;
+        }
+        status = AD_FINISH_TEMP;
+    }
+    
+    return status;
+}
+
+/**
+ * Timer callback when measuring impedance.
+ * 
+ * @return The (new) AD5933 status
+ */
+static AD5933_Status AD5933_CallbackImpedance(void)
+{
+    uint8_t dev_status = AD5933_ReadStatus();
+    
+    if(dev_status & AD5933_STATUS_VALID_IMPEDANCE)
+    {
+        int16_t tmp_real, tmp_imag;
+        AD5933_Read16(AD5933_REAL_H_ADDR, (uint16_t *)&tmp_real);
+        AD5933_Read16(AD5933_IMAG_H_ADDR, (uint16_t *)&tmp_imag);
+        sum_real += tmp_real;
+        sum_imag += tmp_imag;
+        avg_count++;
+        
+        if(avg_count == sweep_spec.Averages)
+        {
+            // Finished with frequency point, save average to result buffer
+            AD5933_ImpedanceData *buf = pBuffer + sweep_count;
+            buf->Real = sum_real / sweep_spec.Averages;
+            buf->Imag = sum_imag / sweep_spec.Averages;
+            buf->Frequency = sweep_spec.Start_Freq + sweep_count * sweep_spec.Freq_Increment;
+            sweep_count++;
+            
+            // Finish or measure next step
+            if(dev_status & AD5933_STATUS_SWEEP_COMPLETE)
+            {
+                status = AD_FINISH_IMPEDANCE;
+#ifdef AD5933_LED_USE
+                HAL_GPIO_WritePin(AD5933_LED_GPIO_PORT, AD5933_LED_GPIO_PIN, GPIO_PIN_RESET);
+#endif
+            }
+            else
+            {
+                AD5933_WriteFunction(AD5933_FUNCTION_INCREMENT_FREQ);
+                avg_count = 0;
+                sum_real = 0;
+                sum_imag = 0;
+            }
+        }
+        else
+        {
+            AD5933_WriteFunction(AD5933_FUNCTION_REPEAT_FREQ);
+        }
+    }
+    
+    return status;
+}
+
+/**
+ * Timer callback when calibrating.
+ * 
+ * @return The (new) AD5933 status
+ */
+static AD5933_Status AD5933_CallbackCalibrate(void)
+{
+    if(AD5933_ReadStatus() & AD5933_STATUS_VALID_IMPEDANCE)
+    {
+        int16_t tmp_real, tmp_imag;
+        AD5933_Read16(AD5933_REAL_H_ADDR, (uint16_t *)&tmp_real);
+        AD5933_Read16(AD5933_IMAG_H_ADDR, (uint16_t *)&tmp_imag);
+        sum_real += tmp_real;
+        sum_imag += tmp_imag;
+        avg_count++;
+        
+        if(avg_count == AD5933_CALIB_AVERAGES)
+        {
+            if(sweep_count == 0)
+            {
+                // First point finished, save average and do second point if necessary
+                pGainData->real1 = sum_real / AD5933_CALIB_AVERAGES;
+                pGainData->imag1 = sum_imag / AD5933_CALIB_AVERAGES;
+                
+                if(pGainData->is_2point)
+                {
+                    AD5933_WriteFunction(AD5933_FUNCTION_INCREMENT_FREQ);
+                    sweep_count++;
+                    avg_count = 0;
+                    sum_real = 0;
+                    sum_imag = 0;
+                }
+                else
+                {
+                    status = AD_FINISH_CALIB;
+                }
+            }
+            else
+            {
+                // Second point finished, save average and finish
+                pGainData->real2 = sum_real / AD5933_CALIB_AVERAGES;
+                pGainData->imag2 = sum_imag / AD5933_CALIB_AVERAGES;
+                status = AD_FINISH_CALIB;
+            }
+        }
+        else
+        {
+            AD5933_WriteFunction(AD5933_FUNCTION_REPEAT_FREQ);
+        }
+    }
+    
+    return status;
+}
+
 // Exported functions ---------------------------------------------------------
 
 /**
@@ -523,9 +658,6 @@ AD5933_Error AD5933_Calibrate(AD5933_GainFactorData *data, const AD5933_RangeSet
  */
 AD5933_Status AD5933_TimerCallback(void)
 {
-    uint16_t data;
-    uint8_t  dev_status;
-    
     switch(status)
     {
         case AD_MEASURE_IMPEDANCE:
@@ -559,112 +691,13 @@ AD5933_Status AD5933_TimerCallback(void)
             break;
             
         case AD_MEASURE_TEMP:
-            if(AD5933_ReadStatus() & AD5933_STATUS_VALID_TEMP)
-            {
-                AD5933_Read16(AD5933_TEMP_H_ADDR, &data);
-                // Convert data to temperature value
-                if(data & AD5933_TEMP_SIGN_BIT)
-                {
-                    *pTemperature = ((int16_t)data - (1 << 14)) / 32.0f;
-                }
-                else
-                {
-                    *pTemperature = data / 32.0f;
-                }
-                status = AD_FINISH_TEMP;
-            }
-            break;
+            return AD5933_CallbackTemp();
             
         case AD_MEASURE_IMPEDANCE:
-            dev_status = AD5933_ReadStatus();
-            if(dev_status & AD5933_STATUS_VALID_IMPEDANCE)
-            {
-                int16_t tmp_real, tmp_imag;
-                AD5933_Read16(AD5933_REAL_H_ADDR, (uint16_t *)&tmp_real);
-                AD5933_Read16(AD5933_IMAG_H_ADDR, (uint16_t *)&tmp_imag);
-                sum_real += tmp_real;
-                sum_imag += tmp_imag;
-                avg_count++;
-                
-                if(avg_count == sweep_spec.Averages)
-                {
-                    // Finished with frequency point, save average to result buffer
-                    AD5933_ImpedanceData *buf = pBuffer + sweep_count;
-                    buf->Real = sum_real / sweep_spec.Averages;
-                    buf->Imag = sum_imag / sweep_spec.Averages;
-                    buf->Frequency = sweep_spec.Start_Freq + sweep_count * sweep_spec.Freq_Increment;
-                    sweep_count++;
-                    
-                    // Finish or measure next step
-                    if(dev_status & AD5933_STATUS_SWEEP_COMPLETE)
-                    {
-                        status = AD_FINISH_IMPEDANCE;
-                        
-#ifdef AD5933_LED_USE
-                        HAL_GPIO_WritePin(AD5933_LED_GPIO_PORT, AD5933_LED_GPIO_PIN, GPIO_PIN_RESET);
-#endif
-                    }
-                    else
-                    {
-                        AD5933_WriteFunction(AD5933_FUNCTION_INCREMENT_FREQ);
-                        avg_count = 0;
-                        sum_real = 0;
-                        sum_imag = 0;
-                    }
-                }
-                else
-                {
-                    AD5933_WriteFunction(AD5933_FUNCTION_REPEAT_FREQ);
-                }
-            }
-            break;
+            return AD5933_CallbackImpedance();
             
         case AD_CALIBRATE:
-            // TODO averaging for calibration measurement
-            if(AD5933_ReadStatus() & AD5933_STATUS_VALID_IMPEDANCE)
-            {
-                int16_t tmp_real, tmp_imag;
-                AD5933_Read16(AD5933_REAL_H_ADDR, (uint16_t *)&tmp_real);
-                AD5933_Read16(AD5933_IMAG_H_ADDR, (uint16_t *)&tmp_imag);
-                sum_real += tmp_real;
-                sum_imag += tmp_imag;
-                avg_count++;
-                
-                if(avg_count == AD5933_CALIB_AVERAGES)
-                {
-                    if(sweep_count == 0)
-                    {
-                        // First point finished, save average and do second point if necessary
-                        pGainData->real1 = sum_real / AD5933_CALIB_AVERAGES;
-                        pGainData->imag1 = sum_imag / AD5933_CALIB_AVERAGES;
-                        
-                        if(pGainData->is_2point)
-                        {
-                            AD5933_WriteFunction(AD5933_FUNCTION_INCREMENT_FREQ);
-                            sweep_count++;
-                            avg_count = 0;
-                            sum_real = 0;
-                            sum_imag = 0;
-                        }
-                        else
-                        {
-                            status = AD_FINISH_CALIB;
-                        }
-                    }
-                    else
-                    {
-                        // Second point finished, save average and finish
-                        pGainData->real2 = sum_real / AD5933_CALIB_AVERAGES;
-                        pGainData->imag2 = sum_imag / AD5933_CALIB_AVERAGES;
-                        status = AD_FINISH_CALIB;
-                    }
-                }
-                else
-                {
-                    AD5933_WriteFunction(AD5933_FUNCTION_REPEAT_FREQ);
-                }
-            }
-            break;
+            return AD5933_CallbackCalibrate();
     }
     
     return status;
