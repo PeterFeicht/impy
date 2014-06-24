@@ -126,15 +126,20 @@ typedef struct
  * @{
  */
 #define AD5933_CLK_FREQ_INT                 0xFFFB40        //!< Internal clock frequency of the AD5933 (16.776MHz)
-#define AD5933_CLK_FREQ_EXT_L               0x00411A        //!< External low speed clock frequency (16.666kHz)
-#define AD5933_CLK_FREQ_EXT_M               0x028B0A        //!< External medium speed clock frequency (166.666kHz)
 #define AD5933_CLK_FREQ_EXT_H               0x196E6A        //!< External high speed clock frequency (1.666MHz)
+#define AD5933_CLK_FREQ_EXT_M               0x028B0A        //!< External medium speed clock frequency (166.666kHz)
+#define AD5933_CLK_FREQ_EXT_L               0x00411A        //!< External low speed clock frequency (16.666kHz)
+
+#define AD5933_CLK_LIM_INT                  10000           //!< Lowest sweep frequency for internal clock
+#define AD5933_CLK_LIM_EXT_H                1000            //!< Lowest sweep frequency for high speed external clock
+#define AD5933_CLK_LIM_EXT_M                100             //!< Lowest sweep frequency for medium speed external clock
+#define AD5933_CLK_LIM_EXT_L                10              //!< Lowest sweep frequency for low speed external clock
 
 #define AD5933_CLK_TIM_HANDLE               (htim10)        //!< Timer handle for external clock generation
 #define AD5933_CLK_TIM_CHANNEL              TIM_CHANNEL_1   //!< Timer channel for extrenal clock generation
-#define AD5933_CLK_PSC_L                    99              //!< Timer prescaler value for low speed clock
-#define AD5933_CLK_PSC_M                    9               //!< Timer prescaler value for medium speed clock
 #define AD5933_CLK_PSC_H                    0               //!< Timer prescaler value for high speed clock
+#define AD5933_CLK_PSC_M                    9               //!< Timer prescaler value for medium speed clock
+#define AD5933_CLK_PSC_L                    99              //!< Timer prescaler value for low speed clock
 /** @} */
 
 /**
