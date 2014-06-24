@@ -9,6 +9,15 @@
 #include <math.h>
 #include "ad5933.h"
 
+// Private type definitions ---------------------------------------------------
+typedef enum
+{
+    AD_INTERNAL,
+    AD_EXT_H,
+    AD_EXT_M,
+    AD_EXT_L
+} AD5933_ClockSource;
+
 // Private function prototypes ------------------------------------------------
 static HAL_StatusTypeDef AD5933_SetAddress(uint8_t MemAddress);
 static HAL_StatusTypeDef AD5933_Write8(uint8_t MemAddress, uint8_t value);
@@ -20,6 +29,7 @@ static uint8_t AD5933_ReadStatus();
 static uint32_t AD5933_CalcFrequencyReg(uint32_t freq, uint32_t clock);
 static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, uint32_t freq_start, uint32_t freq_step,
         uint16_t num_incr, uint16_t settl);
+static void AD5933_SetClock(uint32_t freq_start, uint32_t freq_step);
 static AD5933_Status AD5933_CallbackTemp(void);
 static AD5933_Status AD5933_CallbackImpedance(void);
 static AD5933_Status AD5933_CallbackCalibrate(void);
@@ -30,6 +40,7 @@ static I2C_HandleTypeDef *i2cHandle = NULL;
 static TIM_HandleTypeDef *timHandle = NULL;
 static AD5933_Sweep sweep_spec;             //!< Local copy of the sweep specification
 static AD5933_RangeSettings range_spec;     //!< Local copy of the range specification
+static AD5933_ClockSource clk_source;       //!< Current clock source to determine if a change is needed during a sweep
 static volatile uint16_t sweep_count;       //!< Variable to keep track of the number of measured points
 static volatile uint16_t avg_count;         //!< Variable to keep track of the averages recorded
 static volatile int32_t sum_real;           //!< Sum of the real values for averaging
@@ -207,8 +218,6 @@ static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, u
     uint8_t portAtt = 0;
     uint8_t portFb = 0;
     uint8_t j;
-    uint32_t start_reg;
-    uint32_t step_reg;
     
     static const uint16_t attenuation[] = {
         AD5933_ATTENUATION_PORT_0,
@@ -257,11 +266,7 @@ static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, u
         return AD_ERROR;
     }
     
-    // Calculate and check register values
-    // TODO use external clock if necessary
-    start_reg = AD5933_CalcFrequencyReg(freq_start, AD5933_CLK_FREQ_INT);
-    step_reg = AD5933_CalcFrequencyReg(freq_step, AD5933_CLK_FREQ_INT);
-    if(start_reg < AD5933_MIN_FREQ || (start_reg + step_reg * num_incr) > AD5933_MAX_FREQ)
+    if(freq_start < AD5933_FREQ_MIN || (freq_start + freq_step * num_incr) > AD5933_FREQ_MAX)
     {
         return AD_ERROR;
     }
@@ -280,9 +285,8 @@ static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, u
     sum_imag = 0;
     AD5933_WriteFunction(AD5933_FUNCTION_STANDBY);
     
-    // Send sweep parameters
-    AD5933_Write24(AD5933_START_FREQ_H_ADDR, start_reg);
-    AD5933_Write24(AD5933_FREQ_INCR_H_ADDR, step_reg);
+    // Send sweep parameters and set clock
+    AD5933_SetClock(freq_start, freq_step);
     AD5933_Write16(AD5933_NUM_INCR_H_ADDR, num_incr);
     AD5933_Write16(AD5933_SETTL_H_ADDR, settl);
     
@@ -295,6 +299,60 @@ static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, u
     wait_tick = HAL_GetTick();
 
     return AD_OK;
+}
+
+/**
+ * Sets the clock needed for the specified frequency and programs the AD5933 registers.
+ * 
+ * @param freq_start The start frequency, this will determine the clock range needed
+ * @param freq_step The frequency step
+ */
+static void AD5933_SetClock(uint32_t freq_start, uint32_t freq_step)
+{
+    uint32_t clk;
+    uint8_t ctrl;
+    
+    assert_param(freq_start >= AD5933_FREQ_MIN);
+    
+    if(freq_start >= AD5933_CLK_LIM_INT)
+    {
+        // Internal clock can be used
+        HAL_TIM_OC_Stop(timHandle, AD5933_CLK_TIM_CHANNEL);
+        clk = AD5933_CLK_FREQ_INT;
+        ctrl = AD5933_CLOCK_INTERNAL;
+        clk_source = AD_INTERNAL;
+    }
+    else
+    {
+        uint16_t psc;
+        if(freq_start >= AD5933_CLK_LIM_EXT_H)
+        {
+            psc = AD5933_CLK_PSC_H;
+            clk = AD5933_CLK_FREQ_EXT_H;
+            clk_source = AD_EXT_H;
+        }
+        else if(freq_start >= AD5933_CLK_LIM_EXT_M)
+        {
+            psc = AD5933_CLK_PSC_M;
+            clk = AD5933_CLK_FREQ_EXT_M;
+            clk_source = AD_EXT_M;
+        }
+        else
+        {
+            psc = AD5933_CLK_PSC_L;
+            clk = AD5933_CLK_FREQ_EXT_L;
+            clk_source = AD_EXT_L;
+        }
+        
+        HAL_TIM_OC_Stop(timHandle, AD5933_CLK_TIM_CHANNEL);
+        timHandle->Instance->PSC = psc;
+        HAL_TIM_OC_Start(timHandle, AD5933_CLK_TIM_CHANNEL);
+        ctrl = AD5933_CLOCK_EXTERNAL;
+    }
+    
+    AD5933_Write8(AD5933_CTRL_L_ADDR, ctrl);
+    AD5933_Write24(AD5933_START_FREQ_H_ADDR, AD5933_CalcFrequencyReg(freq_start, clk));
+    AD5933_Write24(AD5933_FREQ_INCR_H_ADDR, AD5933_CalcFrequencyReg(freq_step, clk));
 }
 
 /**
@@ -492,6 +550,7 @@ AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c, TIM_HandleTypeDef *tim)
     HAL_GPIO_WritePin(AD5933_COUPLING_GPIO_PORT, AD5933_COUPLING_GPIO_PIN, GPIO_PIN_SET);
     
     i2cHandle = i2c;
+    timHandle = tim;
     HAL_Delay(5);
     AD5933_Write8(AD5933_CTRL_L_ADDR, LOBYTE(AD5933_CTRL_RESET));
     status = AD_IDLE;
