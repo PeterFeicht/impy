@@ -138,8 +138,6 @@ static Buffer board_read_data = {
 };
 
 // Console definition
-extern const char helptext_start;
-extern const char helptext_end;
 static String strHelp = {
     .data = NULL,
     .length = 0
@@ -190,6 +188,10 @@ static const Console_Arg argsBoardSet[] = {
  */
 static void Console_InitHelp(void)
 {
+    // Defined in helptext.asm
+    extern const char helptext_start;
+    extern const char helptext_end;
+    
     // This text is at the beginning of a help topic start line
     static const char *topic = "\r\nhelp ";
     uint32_t topicLen = strlen(topic);
