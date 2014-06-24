@@ -3120,6 +3120,14 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <attribute name="NAME" x="44.7675" y="48.5775" size="1.27" layer="25" rot="R90"/>
 <attribute name="VALUE" x="44.7675" y="48.5775" size="1.27" layer="27" rot="R90"/>
 </element>
+<element name="R12" library="rcl" package="R0603" value="3k9" x="14.605" y="38.4175" smashed="yes" rot="R90">
+<attribute name="NAME" x="15.24" y="40.3225" size="1.27" layer="25" rot="R90"/>
+<attribute name="VALUE" x="15.24" y="40.3225" size="1.27" layer="27" rot="R90"/>
+</element>
+<element name="R21" library="rcl" package="R0603" value="3k9" x="16.8275" y="38.4175" smashed="yes" rot="R90">
+<attribute name="NAME" x="17.4625" y="40.3225" size="1.27" layer="25" rot="R90"/>
+<attribute name="VALUE" x="17.4625" y="40.3225" size="1.27" layer="27" rot="R90"/>
+</element>
 </elements>
 <signals>
 <signal name="VDD" class="1">
@@ -3477,8 +3485,6 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <via x="21.59" y="39.37" extent="1-16" drill="0.8" shape="octagon"/>
 <wire x1="21.59" y1="39.37" x2="19.05" y2="36.83" width="0.3556" layer="16"/>
 <via x="19.05" y="36.83" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="19.05" y1="36.83" x2="17.5225" y2="35.3025" width="0.3556" layer="1"/>
-<wire x1="17.5225" y1="35.3025" x2="15.875" y2="35.3025" width="0.3556" layer="1"/>
 <wire x1="39.0525" y1="44.7675" x2="39.3325" y2="45.0475" width="0.254" layer="1"/>
 <wire x1="39.3325" y1="45.0475" x2="39.3325" y2="46.5625" width="0.254" layer="1"/>
 <wire x1="39.3325" y1="46.5625" x2="39.3325" y2="49.25" width="0.254" layer="1"/>
@@ -3487,6 +3493,11 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="42.545" y1="53.975" x2="41.275" y2="52.705" width="0.3556" layer="16"/>
 <wire x1="39.0525" y1="51.435" x2="40.3225" y2="52.705" width="0.254" layer="1"/>
 <wire x1="40.3225" y1="52.705" x2="41.275" y2="52.705" width="0.254" layer="1"/>
+<contactref element="R21" pad="1"/>
+<wire x1="16.8275" y1="37.5675" x2="18.3125" y2="37.5675" width="0.3556" layer="1"/>
+<wire x1="18.3125" y1="37.5675" x2="19.05" y2="36.83" width="0.3556" layer="1"/>
+<wire x1="15.875" y1="35.3025" x2="15.875" y2="36.615" width="0.3556" layer="1"/>
+<wire x1="15.875" y1="36.615" x2="16.8275" y2="37.5675" width="0.3556" layer="1"/>
 </signal>
 <signal name="PB6">
 <contactref element="JP2" pad="23"/>
@@ -3520,6 +3531,8 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="38.6825" y1="46.5625" x2="38.6825" y2="48.9475" width="0.254" layer="1"/>
 <wire x1="38.6825" y1="48.9475" x2="38.4175" y2="49.2125" width="0.254" layer="1"/>
 <wire x1="41.275" y1="55.5625" x2="41.275" y2="54.61" width="0.3556" layer="16"/>
+<contactref element="R12" pad="1"/>
+<wire x1="14.605" y1="37.5675" x2="14.605" y2="35.3025" width="0.3556" layer="1"/>
 </signal>
 <signal name="USB_P">
 <contactref element="JP1" pad="39"/>
@@ -3994,6 +4007,8 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="44.60875" y1="53.18125" x2="46.0375" y2="54.61" width="0.9144" layer="1"/>
 <wire x1="46.355" y1="50.9975" x2="46.355" y2="51.435" width="0.3556" layer="1"/>
 <wire x1="46.355" y1="51.435" x2="44.60875" y2="53.18125" width="0.3556" layer="1"/>
+<contactref element="R12" pad="2"/>
+<contactref element="R21" pad="2"/>
 </signal>
 <signal name="AGND" class="1">
 <contactref element="SJ1" pad="1"/>
@@ -6439,19 +6454,19 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <approved hash="19,1,babb581640579657"/>
 <approved hash="19,1,b2a27c2d819d2ee8"/>
 <approved hash="19,1,ac44e29e0009b6c8"/>
-<approved hash="19,1,ca96123a0590ea6b"/>
 <approved hash="19,1,c2b406d119b9e2f5"/>
-<approved hash="19,1,c93e186f8c3c69c0"/>
 <approved hash="19,1,d22c0c8683c572f4"/>
+<approved hash="19,1,c93e186f8c3c69c0"/>
+<approved hash="19,1,ca96123a0590ea6b"/>
 <approved hash="5,1,d38fc585c3b89210"/>
 <approved hash="5,1,cc6071170f46b230"/>
 <approved hash="5,1,7ccda28582c942e5"/>
 <approved hash="5,1,0e6804c3423c8eb3"/>
 <approved hash="5,1,10c2acf25221ee93"/>
-<approved hash="5,1,b31301d8e33cf042"/>
-<approved hash="5,1,1dbdfc8b29b43fa0"/>
 <approved hash="5,1,6fb0d57db651ace0"/>
 <approved hash="5,1,c8d0b24d277e2405"/>
+<approved hash="5,1,b31301d8e33cf042"/>
+<approved hash="5,1,1dbdfc8b29b43fa0"/>
 <approved hash="5,1,55a25fc35f759686"/>
 <approved hash="5,1,83c011be535a6091"/>
 <approved hash="5,1,60cda6c5b678c012"/>
@@ -6471,22 +6486,22 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <approved hash="5,1,3fb2de8b2db43baf"/>
 <approved hash="5,1,dba93dc3574a6cba"/>
 <approved hash="5,1,adcb0fb54d514e9a"/>
-<approved hash="5,1,31bf2dbf9b7d9919"/>
 <approved hash="5,1,01bf2b5681bf2019"/>
+<approved hash="5,1,31bf2dbf9b7d9919"/>
 <approved hash="5,1,7169dad819f41239"/>
-<approved hash="5,1,2e6831be2f49f059"/>
-<approved hash="5,1,d8b901be2f49f6e9"/>
-<approved hash="5,1,65d91f4d237e200c"/>
 <approved hash="5,1,041adba8257bfa4b"/>
 <approved hash="5,1,b0b4518b2db43ba9"/>
+<approved hash="5,1,d8b901be2f49f6e9"/>
+<approved hash="5,1,2e6831be2f49f059"/>
+<approved hash="5,1,65d91f4d237e200c"/>
 <approved hash="4,1,3f63b1b090285374"/>
 <approved hash="4,1,d39e3f9525e615a3"/>
 <approved hash="4,1,43f6198d4266d7cb"/>
-<approved hash="4,1,2c2dd52bde561141"/>
-<approved hash="4,1,dd48dace55099541"/>
-<approved hash="4,1,7a07b765595c0129"/>
 <approved hash="4,1,a1d661ce243fda13"/>
 <approved hash="4,1,0a2b5e6dbf637778"/>
+<approved hash="4,1,2c2dd52bde561141"/>
+<approved hash="4,1,7a07b765595c0129"/>
+<approved hash="4,1,dd48dace55099541"/>
 <approved hash="6,1,b369fabc5ff6da63"/>
 <approved hash="6,1,bca1cbb36286d9d4"/>
 <approved hash="6,1,870b801398139f0b"/>
