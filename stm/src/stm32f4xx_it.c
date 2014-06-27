@@ -26,7 +26,7 @@ void prvGetRegistersFromStack(uint32_t *pulFaultStackAddress)
     /*
      * These are volatile to try and prevent the compiler/linker optimizing them
      * away as the variables never actually get used.  If the debugger won't show
-     * the values of the variables, make them global my moving their declaration
+     * the values of the variables, make them global by moving their declaration
      * outside of this function.
      */
     volatile uint32_t r0;
@@ -51,7 +51,8 @@ void prvGetRegistersFromStack(uint32_t *pulFaultStackAddress)
     // When the following line is hit, the variables contain the register values.
     while(1)
     {
-        
+        for(uint32_t delay = 1; delay & 0x3FFFFF; delay++);
+        LED_PORT->ODR ^= LED_RED;
     }
 }
 #pragma GCC diagnostic pop
