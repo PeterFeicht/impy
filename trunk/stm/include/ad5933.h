@@ -74,24 +74,31 @@ typedef struct
 
 typedef struct
 {
-    uint32_t impedance;     //!< Impedance used for the gain factor calibration
-    uint32_t freq1;         //!< Frequency of the first calibration point
-    int16_t  real1;         //!< Real part for the first calibration point
-    int16_t  imag1;         //!< Imaginary part for the first calibration point
-    uint32_t freq2;         //!< Frequency of the second calibration point
-    int16_t  real2;         //!< Real part for the second calibration point
-    int16_t  imag2;         //!< Imaginary part for the second calibration point
-    uint8_t  is_2point;     //!< Whether this is single or two point calibration data
+    uint32_t impedance;     //!< Impedance for the calibration
+    uint32_t freq1;         //!< Lower frequency of the range that should be calibrated
+    uint32_t freq2;         //!< Upper frequency of the range that should be calibrated
+    uint8_t  is_2point;     //!< Whether a two point calibration should be performed
+} AD5933_CalibrationSpec;
+
+#define AD5933_NUM_CLOCKS   4
+typedef struct
+{
+    uint32_t impedance;                             //!< Impedance used for the gain factor calibration
+    AD5933_ImpedanceData point1[AD5933_NUM_CLOCKS]; //!< Calibration data for the first point in the clock ranges
+    AD5933_ImpedanceData point2[AD5933_NUM_CLOCKS]; //!< Calibration data for the second point in the clock ranges
+    uint8_t is_2point;                              //!< Whether this is single or two point calibration data
 } AD5933_GainFactorData;
 
 typedef struct
 {
-    float   freq1;          //!< Frequency of the first calibration point
-    float   offset;         //!< Calculated gain factor at first frequency
-    float   slope;          //!< Calculated gain factor slope for a two point calibration
-    float   phaseOffset;    //!< Calculated system phase at first frequency
-    float   phaseSlope;     //!< Calculated system phase slope for a two point calibration
-    uint8_t is_2point;      //!< Whether this is single or two point gain factor data
+    struct {
+        float freq1;                //!< Frequency of the first calibration point, will be NaN for an unused point
+        float offset;               //!< Calculated gain factor at first frequency
+        float slope;                //!< Calculated gain factor slope for a two point calibration
+        float phaseOffset;          //!< Calculated system phase at first frequency
+        float phaseSlope;           //!< Calculated system phase slope for a two point calibration
+    } ranges[AD5933_NUM_CLOCKS];    //!< Gain factor values for the different clock ranges
+    uint8_t is_2point;              //!< Whether this is single or two point gain factor data
 } AD5933_GainFactor;
 
 // Macros ---------------------------------------------------------------------
@@ -531,7 +538,8 @@ AD5933_Error AD5933_MeasureImpedance(const AD5933_Sweep *sweep, const AD5933_Ran
         AD5933_ImpedanceData *buffer);
 uint16_t AD5933_GetSweepCount(void);
 AD5933_Error AD5933_MeasureTemperature(float *destination);
-AD5933_Error AD5933_Calibrate(AD5933_GainFactorData *data, const AD5933_RangeSettings *range);
+AD5933_Error AD5933_Calibrate(const AD5933_CalibrationSpec *cal, const AD5933_RangeSettings *range,
+        AD5933_GainFactorData *data);
 AD5933_Status AD5933_TimerCallback(void);
 
 void AD5933_CalculateGainFactor(const AD5933_GainFactorData *data, AD5933_GainFactor *gf);
