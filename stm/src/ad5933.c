@@ -12,10 +12,10 @@
 // Private type definitions ---------------------------------------------------
 typedef enum
 {
-    AD_INTERNAL,
-    AD_EXT_H,
-    AD_EXT_M,
-    AD_EXT_L
+    AD_INTERNAL = 3,    //!< Internal clock
+    AD_EXT_H = 2,       //!< External high speed clock (~1.666MHz)
+    AD_EXT_M = 1,       //!< External medium speed clock (~166.666kHz)
+    AD_EXT_L = 0        //!< External low speed clock (~16.666kHz)
 } AD5933_ClockSource;
 
 // Private function prototypes ------------------------------------------------
@@ -30,6 +30,7 @@ static uint32_t AD5933_CalcFrequencyReg(uint32_t freq, uint32_t clock);
 static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, uint32_t freq_start, uint32_t freq_step,
         uint16_t num_incr, uint16_t settl);
 static void AD5933_SetClock(uint32_t freq_start, uint32_t freq_step);
+static AD5933_ClockSource AD5933_GetClockSource(uint32_t freq);
 static uint8_t AD5933_NeedClockChange(uint32_t freq);
 static void AD5933_DoClockChange(uint32_t freq_start, uint32_t freq_step, uint32_t increments);
 static AD5933_Status AD5933_CallbackTemp(void);
@@ -363,6 +364,34 @@ static void AD5933_SetClock(uint32_t freq_start, uint32_t freq_step)
 }
 
 /**
+ * Determines the clock source needed for the specified frequency.
+ * 
+ * @param freq The frequency
+ * @return The clock source needed to measure the frequency
+ */
+static AD5933_ClockSource AD5933_GetClockSource(uint32_t freq)
+{
+    assert_param(freq >= AD5933_FREQ_MIN);
+    
+    if(freq >= AD5933_CLK_LIM_INT)
+    {
+        return AD_INTERNAL;
+    }
+    else if(freq >= AD5933_CLK_LIM_EXT_H)
+    {
+        return AD_EXT_H;
+    }
+    else if(freq >= AD5933_CLK_LIM_EXT_M)
+    {
+        return AD_EXT_M;
+    }
+    else // freq >= AD5933_CLK_LIM_EXT_L
+    {
+        return AD_EXT_L;
+    }
+}
+
+/**
  * Determines if the AD5933 clock source needs to be changed to measure the specified frequency.
  * 
  * @param freq The frequency that should be measured
@@ -372,22 +401,7 @@ static uint8_t AD5933_NeedClockChange(uint32_t freq)
 {
     assert_param(freq >= AD5933_FREQ_MIN);
     
-    if(freq >= AD5933_CLK_LIM_INT)
-    {
-        return clk_source != AD_INTERNAL;
-    }
-    else if(freq >= AD5933_CLK_LIM_EXT_H)
-    {
-        return clk_source != AD_EXT_H;
-    }
-    else if(freq >= AD5933_CLK_LIM_EXT_M)
-    {
-        return clk_source != AD_EXT_M;
-    }
-    else // freq >= AD5933_CLK_LIM_EXT_L
-    {
-        return clk_source != AD_EXT_L;
-    }
+    return clk_source != AD5933_GetClockSource(freq);
 }
 
 /**
@@ -413,6 +427,8 @@ static void AD5933_DoClockChange(uint32_t freq_start, uint32_t freq_step, uint32
     AD5933_SetClock(freq_start, freq_step);
     AD5933_Write16(AD5933_NUM_INCR_H_ADDR, increments);
     AD5933_WriteFunction(AD5933_FUNCTION_INIT_FREQ);
+    // Sometimes the AD5933 will lock up, waiting here seems to prevent this
+    HAL_Delay(5);
     AD5933_WriteFunction(AD5933_FUNCTION_START_SWEEP);
 }
 
@@ -510,7 +526,9 @@ static AD5933_Status AD5933_CallbackImpedance(void)
  */
 static AD5933_Status AD5933_CallbackCalibrate(void)
 {
-    if(AD5933_ReadStatus() & AD5933_STATUS_VALID_IMPEDANCE)
+    uint8_t dev_status = AD5933_ReadStatus();
+    
+    if(dev_status & AD5933_STATUS_VALID_IMPEDANCE)
     {
         int16_t tmp_real, tmp_imag;
         AD5933_Read16(AD5933_REAL_H_ADDR, (uint16_t *)&tmp_real);
@@ -521,38 +539,45 @@ static AD5933_Status AD5933_CallbackCalibrate(void)
         
         if(avg_count == AD5933_CALIB_AVERAGES)
         {
-            if(sweep_count == 0)
+            uint32_t range = sweep_count;
+            if(dev_status & AD5933_STATUS_SWEEP_COMPLETE)
             {
-                // First point finished, save average and do second point if necessary
-                pGainData->real1 = sum_real / AD5933_CALIB_AVERAGES;
-                pGainData->imag1 = sum_imag / AD5933_CALIB_AVERAGES;
-                
-                if(pGainData->is_2point)
-                {
-                    if(AD5933_NeedClockChange(pGainData->freq2))
-                    {
-                        AD5933_DoClockChange(pGainData->freq2, 10, 1);
-                    }
-                    else
-                    {
-                        AD5933_WriteFunction(AD5933_FUNCTION_INCREMENT_FREQ);
-                    }
-                    
-                    sweep_count++;
-                    avg_count = 0;
-                    sum_real = 0;
-                    sum_imag = 0;
-                }
-                else
-                {
-                    status = AD_FINISH_CALIB;
-                }
+                // Second point measured
+                pGainData->point2[range].Real = sum_real / AD5933_CALIB_AVERAGES;
+                pGainData->point2[range].Imag = sum_imag / AD5933_CALIB_AVERAGES;
             }
             else
             {
-                // Second point finished, save average and finish
-                pGainData->real2 = sum_real / AD5933_CALIB_AVERAGES;
-                pGainData->imag2 = sum_imag / AD5933_CALIB_AVERAGES;
+                // First point measured
+                pGainData->point1[range].Real = sum_real / AD5933_CALIB_AVERAGES;
+                pGainData->point1[range].Imag = sum_imag / AD5933_CALIB_AVERAGES;
+                
+                if(pGainData->is_2point)
+                {
+                    AD5933_WriteFunction(AD5933_FUNCTION_INCREMENT_FREQ);
+                    avg_count = 0;
+                    sum_real = 0;
+                    sum_imag = 0;
+                    return status;
+                }
+            }
+            
+            // Current clock range finished, check for next one
+            sweep_count = ++range;
+            if(range < AD5933_NUM_CLOCKS && pGainData->point1[range].Frequency != 0)
+            {
+                uint32_t step = 10;
+                if(pGainData->is_2point)
+                {
+                    step = pGainData->point2[range].Frequency - pGainData->point1[range].Frequency;
+                }
+                AD5933_DoClockChange(pGainData->point1[range].Frequency, step, 1);
+                avg_count = 0;
+                sum_real = 0;
+                sum_imag = 0;
+            }
+            else
+            {
                 status = AD_FINISH_CALIB;
             }
         }
@@ -745,21 +770,32 @@ AD5933_Error AD5933_MeasureTemperature(float *destination)
 }
 
 /**
- * Initiates a frequency measurement of one or two points and saves the data to the specified structure.
+ * Initiates an impedance measurement of one or two points in different clock ranges and saves the data to the
+ * specified structure.
  * 
- * Note that the specified structure needs the frequencies, and whether or not a two point calibration should be
- * performed, to already be set. The structure should not be changed during the measurement.
+ * Note that the frequency values in {@code cal} determine which clock sources will be used for calibration. A gain
+ * factor obtained with one frequency range can only be used with measurements in this range.
  * 
- * @param data Structure where measurements are written to
+ * @param cal The specifications for calibration impedance, frequency range and whether a two point calibration
+ *            should be performed (recommended)
  * @param range The specifications for PGA gain, voltage range, external attenuation and feedback resistor
+ * @param data Structure where measurements are written to
  * @return {@link AD5933_Error} code
  */
-AD5933_Error AD5933_Calibrate(AD5933_GainFactorData *data, const AD5933_RangeSettings *range)
+AD5933_Error AD5933_Calibrate(const AD5933_CalibrationSpec *cal, const AD5933_RangeSettings *range,
+        AD5933_GainFactorData *data)
 {
-    uint32_t freq_step = 10;
-    AD5933_Error ret;
+    AD5933_Error ret = AD_ERROR;
+    // Frequency limits for the different clock ranges, from low to high
+    const uint32_t limits[AD5933_NUM_CLOCKS + 1] = {
+        AD5933_CLK_LIM_EXT_L,
+        AD5933_CLK_LIM_EXT_M,
+        AD5933_CLK_LIM_EXT_H,
+        AD5933_CLK_LIM_INT,
+        AD5933_FREQ_MAX
+    };
     
-    if(status == AD_UNINIT || data == NULL || range == NULL)
+    if(status == AD_UNINIT || cal == NULL || data == NULL || range == NULL)
     {
         return AD_ERROR;
     }
@@ -767,21 +803,51 @@ AD5933_Error AD5933_Calibrate(AD5933_GainFactorData *data, const AD5933_RangeSet
     {
         return AD_BUSY;
     }
-    
-    pGainData = data;
-    
-    if(data->is_2point)
+    if(cal->is_2point && cal->freq2 <= cal->freq1)
     {
-        if(data->freq2 <= data->freq1)
-        {
-            return AD_ERROR;
-        }
-        
-        freq_step = data->freq2 - data->freq1;
+        return AD_ERROR;
     }
     
-    // Number of increments doesn't really matter, we check sweep_count in the callback anyway
-    ret = AD5933_StartMeasurement(range, data->freq1, freq_step, 1, 10);
+    pGainData = data;
+    data->impedance = cal->impedance;
+    data->is_2point = cal->is_2point;
+    
+    for(uint32_t j = 0; j < AD5933_NUM_CLOCKS; j++)
+    {
+        // Check if clock range and sweep range intersect
+        if(cal->freq1 < limits[j + 1] && cal->freq2 >= limits[j])
+        {
+            // limits[j] is the lower, limits[j + 1] the upper limit of the current range
+            uint32_t lower = (cal->freq1 < limits[j] ? limits[j] : cal->freq1);
+            uint32_t upper = (cal->freq2 >= limits[j + 1] ? limits[j + 1] - 1 : cal->freq2);
+            if(cal->is_2point)
+            {
+                data->point1[j].Frequency = lower + ((upper - lower) >> 2);
+                data->point2[j].Frequency = upper - ((upper - lower) >> 2);
+            }
+            else
+            {
+                data->point1[j].Frequency = (upper + lower) >> 1;
+                data->point2[j].Frequency = 0;
+            }
+        }
+        else
+        {
+            data->point1[j].Frequency = 0;
+            data->point2[j].Frequency = 0;
+        }
+    }
+    
+    for(uint32_t j = 0; j < AD5933_NUM_CLOCKS; j++)
+    {
+        if(data->point1[j].Frequency)
+        {
+            ret = AD5933_StartMeasurement(range, data->point1[j].Frequency,
+                    (data->is_2point ? data->point2[j].Frequency - data->point1[j].Frequency : 10), 1, 10);
+            sweep_count = j;
+            break;
+        }
+    }
     
     if(ret != AD_ERROR)
     {
@@ -857,30 +923,42 @@ AD5933_Status AD5933_TimerCallback(void)
  */
 void AD5933_CalculateGainFactor(const AD5933_GainFactorData *data, AD5933_GainFactor *gf)
 {
-    // Gain factor is calculated by (Magnitude * Impedance), with Magnitude being sqrt(Real^2 + Imag^2)
-    float magnitude = hypotf(data->real1, data->imag1);
-    float gain2;
-    // System phase can be directly calculated from real and imaginary parts
-    float phase = atan2f((float)data->imag1, (float)data->real1);
-    
     gf->is_2point = data->is_2point;
-    gf->freq1 = data->freq1;
-    gf->offset = magnitude * (float)data->impedance;
-    gf->phaseOffset = phase;
     
-    if(data->is_2point)
+    for(uint32_t j = 0; j < AD5933_NUM_CLOCKS; j++)
     {
-        magnitude = hypotf(data->real2, data->imag2);
-        gain2 = magnitude * (float)data->impedance;
-        gf->slope = (gain2 - gf->offset) / (float)(data->freq2 - data->freq1);
+        if(data->point1[j].Frequency == 0)
+        {
+            gf->ranges[j].freq1 = NAN;
+            continue;
+        }
+
+        // Gain factor is calculated by (Magnitude * Impedance), with Magnitude being sqrt(Real^2 + Imag^2)
+        float magnitude = hypotf(data->point1[j].Real, data->point1[j].Imag);
+        float gain2;
+        // System phase can be directly calculated from real and imaginary parts
+        float phase = atan2(data->point1[j].Imag, data->point1[j].Real);
         
-        phase = atan2f((float)data->imag2, (float)data->real2);
-        gf->phaseSlope = (phase - gf->phaseOffset) / (float)(data->freq2 - data->freq1);
-    }
-    else
-    {
-        gf->slope = 0.0f;
-        gf->phaseSlope = 0.0f;
+        gf->ranges[j].freq1 = data->point1[j].Frequency;
+        gf->ranges[j].offset = magnitude * (float)data->impedance;
+        gf->ranges[j].phaseOffset = phase;
+        
+        if(data->is_2point)
+        {
+            magnitude = hypotf(data->point2[j].Real, data->point2[j].Imag);
+            gain2 = magnitude * (float)data->impedance;
+            gf->ranges[j].slope =
+                    (gain2 - gf->ranges[j].offset) / (data->point2[j].Frequency - data->point1[j].Frequency);
+            
+            phase = atan2f((float)data->point2[j].Imag, (float)data->point2[j].Real);
+            gf->ranges[j].phaseSlope =
+                    (phase - gf->ranges[j].phaseOffset) / (data->point2[j].Frequency - data->point1[j].Frequency);
+        }
+        else
+        {
+            gf->ranges[j].slope = 0.0f;
+            gf->ranges[j].phaseSlope = 0.0f;
+        }
     }
 }
 
@@ -893,13 +971,14 @@ void AD5933_CalculateGainFactor(const AD5933_GainFactorData *data, AD5933_GainFa
  */
 float AD5933_GetMagnitude(const AD5933_ImpedanceData *data, const AD5933_GainFactor *gain)
 {
+    uint32_t range = AD5933_GetClockSource(data->Frequency);
     // Actual impedance is calculated by (Gain Factor / Magnitude), with Magnitude being sqrt(Real^2 + Imag^2)
     float magnitude = hypotf(data->Real, data->Imag);
-    float gain_2point = gain->offset;
+    float gain_2point = gain->ranges[range].offset;
     
     if(gain->is_2point)
     {
-        gain_2point += gain->slope * (data->Frequency - gain->freq1);
+        gain_2point += gain->ranges[range].slope * (data->Frequency - gain->ranges[range].freq1);
     }
     
     return gain_2point / magnitude;
@@ -914,12 +993,13 @@ float AD5933_GetMagnitude(const AD5933_ImpedanceData *data, const AD5933_GainFac
  */
 float AD5933_GetPhase(const AD5933_ImpedanceData *data, const AD5933_GainFactor *gain)
 {
+    uint32_t range = AD5933_GetClockSource(data->Frequency);
     float phase = atan2f(data->Imag, data->Real);
-    float phase_2point = gain->phaseOffset;
+    float phase_2point = gain->ranges[range].phaseOffset;
     
     if(gain->is_2point)
     {
-        phase_2point += gain->phaseSlope * (data->Frequency - gain->freq1);
+        phase_2point += gain->ranges[range].phaseSlope * (data->Frequency - gain->ranges[range].freq1);
     }
     
     phase -= phase_2point;
