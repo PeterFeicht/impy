@@ -114,6 +114,7 @@ static void Handle_TIM3_PeriodElapsed(void)
 }
 
 // Private functions ----------------------------------------------------------
+
 static void SetDefaults(void)
 {
     sweep.Num_Increments = 50;
@@ -749,6 +750,7 @@ Board_Error Board_Calibrate(uint32_t ohms)
     
     if(!autorange)
     {
+        AD5933_CalibrationSpec spec;
         AD5933_GainFactorData gainData;
         uint8_t cal = 0;
         for(uint32_t j = 0; j < NUMEL(calibrationValues) && calibrationValues[j]; j++)
@@ -756,7 +758,7 @@ Board_Error Board_Calibrate(uint32_t ohms)
             if(ohms == calibrationValues[j])
             {
                 cal = CAL_PORT_MIN + j;
-                gainData.impedance = calibrationValues[j];
+                spec.impedance = calibrationValues[j];
                 break;
             }
         }
@@ -765,16 +767,9 @@ Board_Error Board_Calibrate(uint32_t ohms)
             return BOARD_ERROR;
         }
         
-        // Set calibration frequencies midway between center and start/stop frequency
-        gainData.is_2point = 1;
-        gainData.freq1 = sweep.Start_Freq + ((stopFreq - sweep.Start_Freq) >> 2);
-        gainData.freq2 = stopFreq - ((stopFreq - sweep.Start_Freq) >> 2);
-        if(gainData.freq1 == gainData.freq2)
-        {
-            // In the unlikely case that start and stop frequency are really close together, use those instead
-            gainData.freq1 = sweep.Start_Freq;
-            gainData.freq2 = stopFreq;
-        }
+        spec.freq1 = sweep.Start_Freq;
+        spec.freq2 = stopFreq;
+        spec.is_2point = 1;
         
         // Set output mux
         cal = cal & ADG725_MASK_PORT;
@@ -782,7 +777,7 @@ Board_Error Board_Calibrate(uint32_t ohms)
         HAL_SPI_Transmit(&hspi3, &cal, 1, BOARD_SPI_TIMEOUT);
         HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_SET);
         
-        AD5933_Calibrate(&gainData, &range);
+        AD5933_Calibrate(&spec, &range, &gainData);
         // TODO use callback
         while(AD5933_GetStatus() == AD_CALIBRATE)
         {

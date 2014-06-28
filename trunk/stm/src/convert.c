@@ -9,6 +9,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "stm32f4xx.h"
 #include "convert.h"
 // Pull in support function needed for float formatting with printf
@@ -622,11 +623,13 @@ Buffer Convert_ConvertRaw(uint32_t format, const AD5933_ImpedanceData *data, uin
 Buffer Convert_ConvertGainFactor(const AD5933_GainFactor *gain)
 {
     static const char* const point = "%s point gain factor\r\n";
-    static const char* const freq1 = "freq1=%g\r\n";
-    static const char* const offset = "offset=%g\r\n";
-    static const char* const slope = "slope=%g\r\n";
-    static const char* const phaseOffset = "phaseOffset=%g\r\n";
-    static const char* const phaseSlope = "phaseSlope=%g\r\n";
+    static const char* const freq1 = "freq1={%g";
+    static const char* const offset = "}\r\noffset={%g";
+    static const char* const slope = "}\r\nslope={%g";
+    static const char* const phaseOffset = "}\r\nphaseOffset={%g";
+    static const char* const phaseSlope = "}\r\nphaseSlope={%g";
+    static const char* const end = "}\r\n\r\n";
+    static const char* const next = ",%g";
     
     uint32_t alloc = 0;
     void *buffer;
@@ -641,34 +644,71 @@ Buffer Convert_ConvertGainFactor(const AD5933_GainFactor *gain)
         return ret;
     }
     
-    alloc += strlen(point) + strlen(freq1) + strlen(offset) + strlen(phaseOffset);
+    alloc += strlen(point) + strlen(freq1) + strlen(offset) + strlen(phaseOffset) + strlen(end);
     if(gain->is_2point)
     {
         alloc += strlen(slope) + strlen(phaseSlope);
-        alloc += 50 /* 5 floats */;
+        alloc += AD5933_NUM_CLOCKS * 60 /* 5 floats */;
     }
     else
     {
-        alloc += 30 /* 3 floats */;
+        alloc += AD5933_NUM_CLOCKS * 36 /* 3 floats */;
     }
-    // Line break at end of transmission + word space + terminating 0
-    alloc += 2 + 2 + 1;
+    // Word space + terminating 0
+    alloc += 2 + 1;
     
     buffer = malloc(alloc);
     if(buffer == NULL)
         return ret;
     
     size += snprintf(buffer + size, alloc - size, point, (gain->is_2point ? "Two" : "One"));
-    size += snprintf(buffer + size, alloc - size, freq1, gain->freq1);
-    size += snprintf(buffer + size, alloc - size, offset, gain->offset);
+    
+    size += snprintf(buffer + size, alloc - size, freq1, gain->ranges[0].freq1);
+    for(uint32_t j = 1; j < AD5933_NUM_CLOCKS; j++)
+    {
+        size+= snprintf(buffer + size, alloc - size, next, gain->ranges[j].freq1);
+    }
+    
+    size += snprintf(buffer + size, alloc - size, offset,
+            (isnan(gain->ranges[0].freq1) ? NAN : gain->ranges[0].offset));
+    for(uint32_t j = 1; j < AD5933_NUM_CLOCKS; j++)
+    {
+        size+= snprintf(buffer + size, alloc - size, next,
+                (isnan(gain->ranges[j].freq1) ? NAN : gain->ranges[j].offset));
+    }
+    
     if(gain->is_2point)
-        size += snprintf(buffer + size, alloc - size, slope, gain->slope);
-    size += snprintf(buffer + size, alloc - size, phaseOffset, gain->phaseOffset);
+    {
+        size += snprintf(buffer + size, alloc - size, slope,
+                (isnan(gain->ranges[0].freq1) ? NAN : gain->ranges[0].slope));
+        for(uint32_t j = 1; j < AD5933_NUM_CLOCKS; j++)
+        {
+            size+= snprintf(buffer + size, alloc - size, next,
+                    (isnan(gain->ranges[j].freq1) ? NAN : gain->ranges[j].slope));
+        }
+    }
+    
+    size += snprintf(buffer + size, alloc - size, phaseOffset,
+            (isnan(gain->ranges[0].freq1) ? NAN : gain->ranges[0].phaseOffset));
+    for(uint32_t j = 1; j < AD5933_NUM_CLOCKS; j++)
+    {
+        size+= snprintf(buffer + size, alloc - size, next,
+                (isnan(gain->ranges[j].freq1) ? NAN : gain->ranges[j].phaseOffset));
+    }
+    
     if(gain->is_2point)
-        size += snprintf(buffer + size, alloc - size, phaseSlope, gain->phaseSlope);
-    // Second line break at end of transmission
-    *((char *)(buffer + size++)) = '\r';
-    *((char *)(buffer + size++)) = '\n';
+    {
+        size += snprintf(buffer + size, alloc - size, phaseSlope,
+                (isnan(gain->ranges[0].freq1) ? NAN : gain->ranges[0].phaseSlope));
+        for(uint32_t j = 1; j < AD5933_NUM_CLOCKS; j++)
+        {
+            size+= snprintf(buffer + size, alloc - size, next,
+                    (isnan(gain->ranges[j].freq1) ? NAN : gain->ranges[j].phaseSlope));
+        }
+    }
+    
+    // Copy termination
+    size = memccpy(buffer + size, end, 0, alloc - size) - buffer - 1;
 
     ret.data = buffer;
     ret.size = size;
