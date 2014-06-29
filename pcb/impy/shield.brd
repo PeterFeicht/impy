@@ -3128,6 +3128,10 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <attribute name="NAME" x="17.4625" y="40.3225" size="1.27" layer="25" rot="R90"/>
 <attribute name="VALUE" x="17.4625" y="40.3225" size="1.27" layer="27" rot="R90"/>
 </element>
+<element name="R22" library="rcl" package="R0603" value="10k" x="31.115" y="7.9375" smashed="yes" rot="MR90">
+<attribute name="NAME" x="31.75" y="7.3025" size="1.27" layer="26" rot="MR90"/>
+<attribute name="VALUE" x="31.75" y="7.3025" size="1.27" layer="28" rot="MR90"/>
+</element>
 </elements>
 <signals>
 <signal name="VDD" class="1">
@@ -3309,6 +3313,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="40.005" y1="14.9225" x2="42.8625" y2="14.9225" width="0.3556" layer="1"/>
 <wire x1="42.8625" y1="14.9225" x2="43.18" y2="15.24" width="0.3556" layer="1"/>
 <wire x1="43.18" y1="15.24" x2="43.18" y2="16.0725" width="0.3556" layer="1"/>
+<contactref element="R22" pad="1"/>
 </signal>
 <signal name="+5V" class="1">
 <contactref element="JP2" pad="3"/>
@@ -4524,7 +4529,10 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <signal name="PA9">
 <contactref element="JP2" pad="44"/>
 <contactref element="JP10" pad="1"/>
-<wire x1="35.2425" y1="10.16" x2="26.67" y2="10.16" width="0.9144" layer="16"/>
+<wire x1="35.2425" y1="10.16" x2="31.115" y2="10.16" width="0.9144" layer="16"/>
+<contactref element="R22" pad="2"/>
+<wire x1="31.115" y1="10.16" x2="26.67" y2="10.16" width="0.9144" layer="16"/>
+<wire x1="31.115" y1="8.7875" x2="31.115" y2="10.16" width="0.9144" layer="16"/>
 </signal>
 <signal name="PE2">
 <contactref element="JP2" pad="15"/>

@@ -10109,6 +10109,8 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <part name="R21" library="rcl" deviceset="R-EU_" device="R0603" value="3k9"/>
 <part name="P+38" library="supply1" deviceset="VCC" device=""/>
 <part name="P+39" library="supply1" deviceset="VCC" device=""/>
+<part name="GND6" library="supply1" deviceset="GND" device=""/>
+<part name="R22" library="rcl" deviceset="R-EU_" device="R0603" value="10k"/>
 </parts>
 <sheets>
 <sheet>
@@ -10237,6 +10239,8 @@ AGND - Analog ground</text>
 <instance part="R21" gate="G$1" x="210.82" y="73.66" rot="R90"/>
 <instance part="P+38" gate="VCC" x="200.66" y="86.36"/>
 <instance part="P+39" gate="VCC" x="210.82" y="86.36"/>
+<instance part="GND6" gate="1" x="220.98" y="60.96"/>
+<instance part="R22" gate="G$1" x="220.98" y="73.66" rot="R90"/>
 </instances>
 <busses>
 </busses>
@@ -10383,6 +10387,11 @@ AGND - Analog ground</text>
 <pinref part="GND45" gate="1" pin="GND"/>
 <pinref part="JP2" gate="A" pin="49"/>
 <wire x1="60.96" y1="20.32" x2="71.12" y2="20.32" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="GND6" gate="1" pin="GND"/>
+<pinref part="R22" gate="G$1" pin="1"/>
+<wire x1="220.98" y1="63.5" x2="220.98" y2="68.58" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="+5V" class="1">
@@ -10815,6 +10824,11 @@ AGND - Analog ground</text>
 <pinref part="JP10" gate="A" pin="1"/>
 <wire x1="78.74" y1="27.94" x2="96.52" y2="27.94" width="0.1524" layer="91"/>
 <wire x1="96.52" y1="27.94" x2="96.52" y2="38.1" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="R22" gate="G$1" pin="2"/>
+<wire x1="220.98" y1="78.74" x2="220.98" y2="83.82" width="0.1524" layer="91"/>
+<label x="220.98" y="83.82" size="1.778" layer="95" rot="R90"/>
 </segment>
 </net>
 <net name="PE2" class="0">
