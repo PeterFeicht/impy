@@ -892,6 +892,7 @@ static void Console_BoardRead(uint32_t argc, char **argv)
     const AD5933_ImpedanceData *raw;
     uint32_t count;
     Console_ArgID mode = CON_ARG_INVALID;
+    const char *err = NULL;
     
     // In case data from the previous command has not been deallocated, do so now
     FreeBuffer(&board_read_data);
@@ -965,7 +966,7 @@ static void Console_BoardRead(uint32_t argc, char **argv)
             data = Board_GetDataPolar(&count);
             if(data == NULL)
             {
-                VCP_SendLine(txtNoData);
+                err = txtNoData;
                 break;
             }
             
@@ -976,7 +977,7 @@ static void Console_BoardRead(uint32_t argc, char **argv)
             }
             else
             {
-                VCP_SendLine(txtOutOfMemory);
+                err = txtOutOfMemory;
             }
             break;
             
@@ -1003,7 +1004,7 @@ static void Console_BoardRead(uint32_t argc, char **argv)
             raw = Board_GetDataRaw(&count);
             if(raw == NULL)
             {
-                VCP_SendLine(txtNoRawData);
+                err = txtNoRawData;
                 break;
             }
 
@@ -1014,11 +1015,23 @@ static void Console_BoardRead(uint32_t argc, char **argv)
             }
             else
             {
-                VCP_SendLine(txtOutOfMemory);
+                err = txtOutOfMemory;
             }
             break;
     }
     
+    if(err != NULL)
+    {
+        if(format & FORMAT_FLAG_ASCII)
+        {
+            VCP_SendLine(err);
+        }
+        else
+        {
+            count = 0;
+            VCP_SendBuffer((uint8_t *)&count, 4);
+        }
+    }
 
     VCP_CommandFinish();
 }
