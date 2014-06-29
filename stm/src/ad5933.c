@@ -31,7 +31,6 @@ static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, u
         uint16_t num_incr, uint16_t settl);
 static void AD5933_SetClock(uint32_t freq_start, uint32_t freq_step);
 static AD5933_ClockSource AD5933_GetClockSource(uint32_t freq);
-static uint8_t AD5933_NeedClockChange(uint32_t freq);
 static void AD5933_DoClockChange(uint32_t freq_start, uint32_t freq_step, uint32_t increments);
 static AD5933_Status AD5933_CallbackTemp(void);
 static AD5933_Status AD5933_CallbackImpedance(void);
@@ -392,19 +391,6 @@ static AD5933_ClockSource AD5933_GetClockSource(uint32_t freq)
 }
 
 /**
- * Determines if the AD5933 clock source needs to be changed to measure the specified frequency.
- * 
- * @param freq The frequency that should be measured
- * @return {@code 0} if no change is required, nonzero value otherwise
- */
-static uint8_t AD5933_NeedClockChange(uint32_t freq)
-{
-    assert_param(freq >= AD5933_FREQ_MIN);
-    
-    return clk_source != AD5933_GetClockSource(freq);
-}
-
-/**
  * Changes the AD5933 clock source and sets the specified start frequency and number of increments.
  * 
  * A clock change is a new sweep to the AD5933, so the start frequency and number of increments needs to be set again
@@ -496,7 +482,7 @@ static AD5933_Status AD5933_CallbackImpedance(void)
             }
             else
             {
-                if(AD5933_NeedClockChange(sweep_freq))
+                if(clk_source != AD5933_GetClockSource(sweep_freq))
                 {
                     AD5933_DoClockChange(sweep_freq, sweep_spec.Freq_Increment,
                             sweep_spec.Num_Increments - sweep_count);
