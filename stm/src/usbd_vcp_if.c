@@ -190,7 +190,7 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
         if(*rxbuf == '\r' || *rxbuf == '\n' || cmd_len == MAX_CMDLINE_LENGTH)
         {
             // Don't call console with empty command
-            if(cmd_newline)
+            if(cmd_newline || cmd_len == 0)
             {
                 continue;
             }
