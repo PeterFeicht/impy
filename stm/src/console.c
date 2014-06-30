@@ -407,13 +407,13 @@ static void Console_Board(uint32_t argc, char **argv)
     
     if(argc == 1)
     {
-        VCP_SendLine(txtErrNoSubcommand);
-        VCP_CommandFinish();
+        interface->SendLine(txtErrNoSubcommand);
+        interface->CommandFinish();
     }
     else if(!Console_CallProcessor(argc - 1, argv + 1, cmds, NUMEL(cmds)))
     {
-        VCP_SendLine(txtUnknownSubcommand);
-        VCP_CommandFinish();
+        interface->SendLine(txtUnknownSubcommand);
+        interface->CommandFinish();
     }
 }
 
@@ -426,33 +426,33 @@ static void Console_BoardCalibrate(uint32_t argc, char **argv)
     
     if(argc != 2)
     {
-        VCP_SendLine(txtErrArgNum);
-        VCP_CommandFinish();
+        interface->SendLine(txtErrArgNum);
+        interface->CommandFinish();
         return;
     }
     
     ohms = IntFromSiString(argv[1], &end);
     if(end == NULL)
     {
-        VCP_SendString(txtInvalidValue);
-        VCP_SendLine("ohms");
+        interface->SendString(txtInvalidValue);
+        interface->SendLine("ohms");
     }
 
     err = Board_Calibrate(ohms);
     switch(err)
     {
         case BOARD_OK:
-            VCP_SendLine(txtOK);
+            interface->SendLine(txtOK);
             break;
         case BOARD_BUSY:
-            VCP_SendLine(txtBoardBusy);
+            interface->SendLine(txtBoardBusy);
             break;
         case BOARD_ERROR:
-            VCP_SendLine(txtWrongCalibValue);
+            interface->SendLine(txtWrongCalibValue);
             break;
     }
     
-    VCP_CommandFinish();
+    interface->CommandFinish();
 }
 
 /**
@@ -469,8 +469,8 @@ static void Console_BoardGet(uint32_t argc, char **argv)
     
     if(argc != 2)
     {
-        VCP_SendLine(txtErrArgNum);
-        VCP_CommandFinish();
+        interface->SendLine(txtErrArgNum);
+        interface->CommandFinish();
         return;
     }
     
@@ -487,79 +487,79 @@ static void Console_BoardGet(uint32_t argc, char **argv)
     switch(option)
     {
         case CON_ARG_SET_AUTORANGE:
-            VCP_SendLine(autorange ? txtEnabled : txtDisabled);
+            interface->SendLine(autorange ? txtEnabled : txtDisabled);
             break;
             
         case CON_ARG_SET_AVG:
             snprintf(buf, NUMEL(buf), "%u", Board_GetAverages());
-            VCP_SendLine(buf);
+            interface->SendLine(buf);
             break;
             
         case CON_ARG_SET_ECHO:
             // Well, do you see what you're typing or not?
-            VCP_SendLine(VCP_GetEcho() ? txtEnabled : txtDisabled);
+            interface->SendLine(interface->GetEcho() ? txtEnabled : txtDisabled);
             break;
             
         case CON_ARG_SET_FEEDBACK:
             if(autorange)
             {
-                VCP_SendLine(txtGetOnlyWhenAutorangeDisabled);
+                interface->SendLine(txtGetOnlyWhenAutorangeDisabled);
             }
             else
             {
                 const AD5933_RangeSettings *range = Board_GetRangeSettings();
                 SiStringFromInt(buf, NUMEL(buf), range->Feedback_Value);
-                VCP_SendLine(buf);
+                interface->SendLine(buf);
             }
             break;
             
         case CON_ARG_SET_FORMAT:
             Convert_FormatSpecToString(buf, NUMEL(buf), format_spec);
-            VCP_SendLine(buf);
+            interface->SendLine(buf);
             break;
             
         case CON_ARG_SET_GAIN:
             if(autorange)
             {
-                VCP_SendLine(txtGetOnlyWhenAutorangeDisabled);
+                interface->SendLine(txtGetOnlyWhenAutorangeDisabled);
             }
             else
             {
-                VCP_SendLine(Board_GetRangeSettings()->PGA_Gain == AD5933_GAIN_1 ? txtDisabled : txtEnabled);
+                interface->SendLine(Board_GetRangeSettings()->PGA_Gain == AD5933_GAIN_1 ? txtDisabled : txtEnabled);
             }
             break;
             
         case CON_ARG_SET_SETTL:
             snprintf(buf, NUMEL(buf), "%u", Board_GetSettlingCycles());
-            VCP_SendLine(buf);
+            interface->SendLine(buf);
             break;
             
         case CON_ARG_SET_START:
             snprintf(buf, NUMEL(buf), "%lu", Board_GetStartFreq());
-            VCP_SendLine(buf);
+            interface->SendLine(buf);
             break;
             
         case CON_ARG_SET_STEPS:
             snprintf(buf, NUMEL(buf), "%u", Board_GetFreqSteps());
-            VCP_SendLine(buf);
+            interface->SendLine(buf);
             break;
             
         case CON_ARG_SET_STOP:
             snprintf(buf, NUMEL(buf), "%lu", Board_GetStopFreq());
-            VCP_SendLine(buf);
+            interface->SendLine(buf);
             break;
             
         case CON_ARG_SET_VOLTAGE:
             if(autorange)
             {
-                VCP_SendLine(txtGetOnlyWhenAutorangeDisabled);
+                interface->SendLine(txtGetOnlyWhenAutorangeDisabled);
             }
             else
             {
                 const AD5933_RangeSettings *range = Board_GetRangeSettings();
                 uint16_t voltage = AD5933_GetVoltageFromRegister(range->Voltage_Range);
                 snprintf(buf, NUMEL(buf), "%u", voltage / range->Attenuation);
-                VCP_SendLine(buf);
+                interface->SendLine(buf);
             }
             break;
             
@@ -567,57 +567,57 @@ static void Console_BoardGet(uint32_t argc, char **argv)
             if(strcmp(argv[1], "all") == 0)
             {
                 // Send all relevant options, suitable for parsing
-                VCP_SendString("start=");
+                interface->SendString("start=");
                 snprintf(buf, NUMEL(buf), "%lu", Board_GetStartFreq());
-                VCP_SendLine(buf);
+                interface->SendLine(buf);
                 
-                VCP_SendString("steps=");
+                interface->SendString("steps=");
                 snprintf(buf, NUMEL(buf), "%u", Board_GetFreqSteps());
-                VCP_SendLine(buf);
+                interface->SendLine(buf);
                 
-                VCP_SendString("stop=");
+                interface->SendString("stop=");
                 snprintf(buf, NUMEL(buf), "%lu", Board_GetStopFreq());
-                VCP_SendLine(buf);
+                interface->SendLine(buf);
                 
-                VCP_SendString("settl=");
+                interface->SendString("settl=");
                 snprintf(buf, NUMEL(buf), "%u", Board_GetSettlingCycles());
-                VCP_SendLine(buf);
+                interface->SendLine(buf);
                 
-                VCP_SendString("avg=");
+                interface->SendString("avg=");
                 snprintf(buf, NUMEL(buf), "%u", Board_GetAverages());
-                VCP_SendLine(buf);
+                interface->SendLine(buf);
                 
-                VCP_SendString("autorange=");
-                VCP_SendLine(autorange ? txtEnabled : txtDisabled);
+                interface->SendString("autorange=");
+                interface->SendLine(autorange ? txtEnabled : txtDisabled);
                 
                 if(!autorange)
                 {
                     const AD5933_RangeSettings *range = Board_GetRangeSettings();
                     
-                    VCP_SendString("gain=");
-                    VCP_SendLine(range->PGA_Gain == AD5933_GAIN_5 ? txtEnabled : txtDisabled);
+                    interface->SendString("gain=");
+                    interface->SendLine(range->PGA_Gain == AD5933_GAIN_5 ? txtEnabled : txtDisabled);
                     
-                    VCP_SendString("voltage=");
+                    interface->SendString("voltage=");
                     uint16_t voltage = AD5933_GetVoltageFromRegister(range->Voltage_Range);
                     snprintf(buf, NUMEL(buf), "%u", voltage / range->Attenuation);
-                    VCP_SendLine(buf);
+                    interface->SendLine(buf);
                     
-                    VCP_SendString("feedback=");
+                    interface->SendString("feedback=");
                     snprintf(buf, NUMEL(buf), "%lu", range->Feedback_Value);
-                    VCP_SendLine(buf);
+                    interface->SendLine(buf);
                 }
                 
-                VCP_SendLine(NULL);
+                interface->SendLine(NULL);
             }
             else
             {
-                VCP_SendString(txtUnknownOption);
-                VCP_SendLine(argv[1]);
+                interface->SendString(txtUnknownOption);
+                interface->SendLine(argv[1]);
             }
             break;
     }
     
-    VCP_CommandFinish();
+    interface->CommandFinish();
 }
 
 /**
@@ -641,14 +641,14 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     
     if(argc != 1)
     {
-        VCP_SendLine(txtErrNoArgs);
-        VCP_CommandFinish();
+        interface->SendLine(txtErrNoArgs);
+        interface->CommandFinish();
         return;
     }
     
     // Board info and AD5933 status
-    VCP_SendLine(THIS_IS_IMPY BOARD_VERSION BUILT_ON __DATE__ ", " __TIME__ ".\r\n");
-    VCP_SendString(txtAdStatus);
+    interface->SendLine(THIS_IS_IMPY BOARD_VERSION BUILT_ON __DATE__ ", " __TIME__ ".\r\n");
+    interface->SendString(txtAdStatus);
     switch(AD5933_GetStatus())
     {
         case AD_IDLE:
@@ -671,7 +671,7 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
             temp = txtAdStatusUnknown;
             break;
     }
-    VCP_SendLine(temp);
+    interface->SendLine(temp);
     
     // Ports and values
     static const uint16_t attenuations[] = {
@@ -685,80 +685,80 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
         CAL_PORT_10, CAL_PORT_11, CAL_PORT_12, CAL_PORT_13, CAL_PORT_14, CAL_PORT_15
     };
     
-    VCP_SendString(txtPortsAvailable);
+    interface->SendString(txtPortsAvailable);
     snprintf(buf, NUMEL(buf), "(out) %u", PORT_MAX - PORT_MIN + 1);
-    VCP_SendString(buf);
-    VCP_SendString(" (");
+    interface->SendString(buf);
+    interface->SendString(" (");
     snprintf(buf, NUMEL(buf), "%u", PORT_MIN);
-    VCP_SendString(buf);
-    VCP_SendString("..");
+    interface->SendString(buf);
+    interface->SendString("..");
     snprintf(buf, NUMEL(buf), "%u", PORT_MAX);
-    VCP_SendString(buf);
-    VCP_SendLine(")");
+    interface->SendString(buf);
+    interface->SendLine(")");
     
-    VCP_SendString(txtFrequencyRange);
-    VCP_SendString("(frq) ");
+    interface->SendString(txtFrequencyRange);
+    interface->SendString("(frq) ");
     SiStringFromInt(buf, NUMEL(buf), AD5933_FREQ_MIN);
-    VCP_SendString(buf);
-    VCP_SendString("..");
+    interface->SendString(buf);
+    interface->SendString("..");
     SiStringFromInt(buf, NUMEL(buf), AD5933_FREQ_MAX);
-    VCP_SendLine(buf);
+    interface->SendLine(buf);
     
-    VCP_SendString(txtMaxNumIncrements);
-    VCP_SendString("(inc) ");
+    interface->SendString(txtMaxNumIncrements);
+    interface->SendString("(inc) ");
     SiStringFromInt(buf, NUMEL(buf), AD5933_MAX_NUM_INCREMENTS);
-    VCP_SendLine(buf);
+    interface->SendLine(buf);
     
-    VCP_SendString(txtAttenuationsAvailable);
-    VCP_SendString("(att) ");
+    interface->SendString(txtAttenuationsAvailable);
+    interface->SendString("(att) ");
     for(uint32_t j = 0; j < NUMEL(attenuations) && attenuations[j]; j++)
     {
         SiStringFromInt(buf, NUMEL(buf), attenuations[j]);
-        VCP_SendString(buf);
-        VCP_SendString(" ");
+        interface->SendString(buf);
+        interface->SendString(" ");
     }
-    VCP_SendLine(NULL);
+    interface->SendLine(NULL);
     
-    VCP_SendString(txtFeedbackResistorValues);
-    VCP_SendString("(rfb) ");
+    interface->SendString(txtFeedbackResistorValues);
+    interface->SendString("(rfb) ");
     for(uint32_t j = 0; j < NUMEL(feedbackValues) && feedbackValues[j]; j++)
     {
         SiStringFromInt(buf, NUMEL(buf), feedbackValues[j]);
-        VCP_SendString(buf);
-        VCP_SendString(" ");
+        interface->SendString(buf);
+        interface->SendString(" ");
     }
-    VCP_SendLine(NULL);
+    interface->SendLine(NULL);
     
-    VCP_SendString(txtCalibrationValues);
-    VCP_SendString("(rca) ");
+    interface->SendString(txtCalibrationValues);
+    interface->SendString("(rca) ");
     for(uint32_t j = 0; j < NUMEL(calibrationValues) && calibrationValues[j]; j++)
     {
         SiStringFromInt(buf, NUMEL(buf), calibrationValues[j]);
-        VCP_SendString(buf);
-        VCP_SendString(" ");
+        interface->SendString(buf);
+        interface->SendString(" ");
     }
-    VCP_SendLine(NULL);
+    interface->SendLine(NULL);
     
     // USB info
 #if defined(BOARD_HAS_USBH) && BOARD_HAS_USBH == 1
-    VCP_SendLine(NULL);
+    interface->SendLine(NULL);
     // TODO print USB info
-    VCP_SendLine(txtNotImplemented);
+    interface->SendLine(txtNotImplemented);
 #else
-    VCP_SendLine(NULL);
-    VCP_SendString(txtUSB);
-    VCP_SendLine(txtNotInstalled);
+    interface->SendLine(NULL);
+    interface->SendString(txtUSB);
+    interface->SendLine(txtNotInstalled);
 #endif
     
     // Ethernet info
 #if defined(BOARD_HAS_ETHERNET) && BOARD_HAS_ETHERNET == 1
-    VCP_SendLine(NULL);
+    interface->SendLine(NULL);
     // TODO print Ethernet info
-    VCP_SendLine(txtNotImplemented);
+    interface->SendLine(txtNotImplemented);
 #else
-    VCP_SendLine(NULL);
-    VCP_SendString(txtEthernet);
-    VCP_SendLine(txtNotInstalled);
+    interface->SendLine(NULL);
+    interface->SendString(txtEthernet);
+    interface->SendLine(txtNotInstalled);
 #endif
     
     // Memory info
@@ -769,40 +769,40 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
 #endif
     
 #if defined(BOARD_HAS_EEPROM) && BOARD_HAS_EEPROM == 1
-    VCP_SendLine(NULL);
+    interface->SendLine(NULL);
     // TODO print EEPROM info
-    VCP_SendLine(txtNotImplemented);
+    interface->SendLine(txtNotImplemented);
 #elif defined(MEMORY_FLAG)
-    VCP_SendLine(NULL);
-    VCP_SendString(txtEEPROM);
-    VCP_SendLine(txtNotInstalled);
+    interface->SendLine(NULL);
+    interface->SendString(txtEEPROM);
+    interface->SendLine(txtNotInstalled);
 #endif
     
 #if defined(BOARD_HAS_SRAM) && BOARD_HAS_SRAM == 1
-    VCP_SendLine(NULL);
+    interface->SendLine(NULL);
     // TODO print SRAM info
-    VCP_SendLine(txtNotImplemented);
+    interface->SendLine(txtNotImplemented);
 #elif defined(MEMORY_FLAG)
-    VCP_SendLine(NULL);
-    VCP_SendString(txtSRAM);
-    VCP_SendLine(txtNotInstalled);
+    interface->SendLine(NULL);
+    interface->SendString(txtSRAM);
+    interface->SendLine(txtNotInstalled);
 #endif
     
 #if defined(BOARD_HAS_FLASH) && BOARD_HAS_FLASH == 1
-    VCP_SendLine(NULL);
+    interface->SendLine(NULL);
     // TODO print Flash info
-    VCP_SendLine(txtNotImplemented);
+    interface->SendLine(txtNotImplemented);
 #elif defined(MEMORY_FLAG)
-    VCP_SendLine(NULL);
-    VCP_SendString(txtFlash);
-    VCP_SendLine(txtNotInstalled);
+    interface->SendLine(NULL);
+    interface->SendString(txtFlash);
+    interface->SendLine(txtNotInstalled);
 #endif
     
 #ifndef MEMORY_FLAG
-    VCP_SendLine(txtNoMemory);
+    interface->SendLine(txtNoMemory);
 #endif
     
-    VCP_CommandFinish();
+    interface->CommandFinish();
 }
 
 /**
@@ -824,8 +824,8 @@ static void Console_BoardMeasure(uint32_t argc, char **argv)
     
     if(argc != 3)
     {
-        VCP_SendLine(txtErrArgNum);
-        VCP_CommandFinish();
+        interface->SendLine(txtErrArgNum);
+        interface->CommandFinish();
         return;
     }
     
@@ -833,18 +833,18 @@ static void Console_BoardMeasure(uint32_t argc, char **argv)
     // Uncomment if PORT_MIN is greater than 0
     if(end == NULL || /*port < PORT_MIN ||*/ port > PORT_MAX)
     {
-        VCP_SendString(txtInvalidValue);
-        VCP_SendLine("port");
-        VCP_CommandFinish();
+        interface->SendString(txtInvalidValue);
+        interface->SendLine("port");
+        interface->CommandFinish();
         return;
     }
     
     freq = IntFromSiString(argv[2], &end);
     if(end == NULL || freq < AD5933_FREQ_MIN || freq > AD5933_FREQ_MAX)
     {
-        VCP_SendString(txtInvalidValue);
-        VCP_SendLine("freq");
-        VCP_CommandFinish();
+        interface->SendString(txtInvalidValue);
+        interface->SendLine("freq");
+        interface->CommandFinish();
         return;
     }
     
@@ -853,30 +853,30 @@ static void Console_BoardMeasure(uint32_t argc, char **argv)
     switch(ok)
     {
         case BOARD_OK:
-            VCP_SendString(txtImpedance);
+            interface->SendString(txtImpedance);
             buf = malloc(buflen);
             if(buf != NULL)
             {
                 snprintf(buf, buflen, "%g < %g", result.Magnitude, result.Angle);
-                VCP_SendLine(buf);
+                interface->SendLine(buf);
                 free(buf);
             }
             else
             {
-                VCP_SendLine("PANIC!");
+                interface->SendLine("PANIC!");
             }
             break;
             
         case BOARD_BUSY:
-            VCP_SendLine(txtBoardBusy);
+            interface->SendLine(txtBoardBusy);
             break;
             
         case BOARD_ERROR:
-            VCP_SendLine(txtNoGain);
+            interface->SendLine(txtNoGain);
             break;
     }
     
-    VCP_CommandFinish();
+    interface->CommandFinish();
 }
 
 static void Console_BoardRead(uint32_t argc, char **argv)
@@ -901,8 +901,8 @@ static void Console_BoardRead(uint32_t argc, char **argv)
     // Check status, we also allow for incomplete data to be retrieved (status == AD_IDLE)
     if(AD5933_IsBusy())
     {
-        VCP_SendLine(txtNoReadWhileBusy);
-        VCP_CommandFinish();
+        interface->SendLine(txtNoReadWhileBusy);
+        interface->CommandFinish();
         return;
     }
     
@@ -917,9 +917,9 @@ static void Console_BoardRead(uint32_t argc, char **argv)
         if(arg == NULL)
         {
             // Complain about unknown arguments and bail out
-            VCP_SendString(txtUnknownOption);
-            VCP_SendLine(argv[j]);
-            VCP_CommandFinish();
+            interface->SendString(txtUnknownOption);
+            interface->SendLine(argv[j]);
+            interface->CommandFinish();
             return;
         }
         
@@ -933,9 +933,9 @@ static void Console_BoardRead(uint32_t argc, char **argv)
                 }
                 else
                 {
-                    VCP_SendString(txtInvalidValue);
-                    VCP_SendLine(arg->arg);
-                    VCP_CommandFinish();
+                    interface->SendString(txtInvalidValue);
+                    interface->SendLine(arg->arg);
+                    interface->CommandFinish();
                     return;
                 }
                 break;
@@ -944,8 +944,8 @@ static void Console_BoardRead(uint32_t argc, char **argv)
             case CON_ARG_READ_RAW:
                 if(mode != CON_ARG_INVALID)
                 {
-                    VCP_SendLine(txtOnlyOneArg);
-                    VCP_CommandFinish();
+                    interface->SendLine(txtOnlyOneArg);
+                    interface->CommandFinish();
                     return;
                 }
                 mode = arg->id;
@@ -953,9 +953,9 @@ static void Console_BoardRead(uint32_t argc, char **argv)
                 
             default:
                 // Should not happen, means that a defined argument has no switch case
-                VCP_SendLine(txtNotImplemented);
-                VCP_SendLine(arg->arg);
-                VCP_CommandFinish();
+                interface->SendLine(txtNotImplemented);
+                interface->SendLine(arg->arg);
+                interface->CommandFinish();
                 return;
         }
     }
@@ -974,7 +974,7 @@ static void Console_BoardRead(uint32_t argc, char **argv)
             board_read_data = Convert_ConvertPolar(format, data, count);
             if(board_read_data.data != NULL)
             {
-                VCP_SendBuffer((uint8_t *)board_read_data.data, board_read_data.size);
+                interface->SendBuffer((uint8_t *)board_read_data.data, board_read_data.size);
             }
             else
             {
@@ -986,18 +986,18 @@ static void Console_BoardRead(uint32_t argc, char **argv)
             gain = Board_GetGainFactor();
             if(gain == NULL)
             {
-                VCP_SendLine(txtNotCalibrated);
+                interface->SendLine(txtNotCalibrated);
                 break;
             }
 
             board_read_data = Convert_ConvertGainFactor(gain);
             if(board_read_data.data != NULL)
             {
-                VCP_SendBuffer((uint8_t *)board_read_data.data, board_read_data.size);
+                interface->SendBuffer((uint8_t *)board_read_data.data, board_read_data.size);
             }
             else
             {
-                VCP_SendLine(txtOutOfMemory);
+                interface->SendLine(txtOutOfMemory);
             }
             break;
             
@@ -1012,7 +1012,7 @@ static void Console_BoardRead(uint32_t argc, char **argv)
             board_read_data = Convert_ConvertRaw(format, raw, count);
             if(board_read_data.data != NULL)
             {
-                VCP_SendBuffer((uint8_t *)board_read_data.data, board_read_data.size);
+                interface->SendBuffer((uint8_t *)board_read_data.data, board_read_data.size);
             }
             else
             {
@@ -1025,16 +1025,16 @@ static void Console_BoardRead(uint32_t argc, char **argv)
     {
         if(format & FORMAT_FLAG_ASCII)
         {
-            VCP_SendLine(err);
+            interface->SendLine(err);
         }
         else
         {
             count = 0;
-            VCP_SendBuffer((uint8_t *)&count, 4);
+            interface->SendBuffer((uint8_t *)&count, 4);
         }
     }
 
-    VCP_CommandFinish();
+    interface->CommandFinish();
 }
 
 /**
@@ -1050,8 +1050,8 @@ static void Console_BoardSet(uint32_t argc, char **argv)
 {
     if(argc == 1)
     {
-        VCP_SendLine(txtErrArgNum);
-        VCP_CommandFinish();
+        interface->SendLine(txtErrArgNum);
+        interface->CommandFinish();
         return;
     }
     
@@ -1066,8 +1066,8 @@ static void Console_BoardSet(uint32_t argc, char **argv)
         if(arg == NULL)
         {
             // Complain about unknown arguments but ignore otherwise
-            VCP_SendString(txtUnknownOption);
-            VCP_SendLine(argv[j]);
+            interface->SendString(txtUnknownOption);
+            interface->SendLine(argv[j]);
             continue;
         }
 
@@ -1078,8 +1078,8 @@ static void Console_BoardSet(uint32_t argc, char **argv)
                 flag = Console_GetFlag(value);
                 if(flag == CON_FLAG_INVALID)
                 {
-                    VCP_SendString(txtInvalidValue);
-                    VCP_SendLine(arg->arg);
+                    interface->SendString(txtInvalidValue);
+                    interface->SendLine(arg->arg);
                     continue;
                 }
                 break;
@@ -1088,8 +1088,8 @@ static void Console_BoardSet(uint32_t argc, char **argv)
                 intval = IntFromSiString(value, &end);
                 if(end == NULL)
                 {
-                    VCP_SendString(txtInvalidValue);
-                    VCP_SendLine(arg->arg);
+                    interface->SendString(txtInvalidValue);
+                    interface->SendLine(arg->arg);
                     continue;
                 }
                 break;
@@ -1107,7 +1107,7 @@ static void Console_BoardSet(uint32_t argc, char **argv)
                 Board_SetAutorange(flag == CON_FLAG_ON);
                 if(AD5933_IsBusy())
                 {
-                    VCP_SendLine(txtEffectiveNextSweep);
+                    interface->SendLine(txtEffectiveNextSweep);
                 }
                 break;
                 
@@ -1123,14 +1123,14 @@ static void Console_BoardSet(uint32_t argc, char **argv)
                 break;
                 
             case CON_ARG_SET_ECHO:
-                VCP_SetEcho(flag == CON_FLAG_ON);
+                interface->SetEcho(flag == CON_FLAG_ON);
                 break;
                 
             case CON_ARG_SET_FEEDBACK:
                 if(autorange)
                 {
-                    VCP_SendString(txtSetOnlyWhenAutorangeDisabled);
-                    VCP_SendLine(arg->arg);
+                    interface->SendString(txtSetOnlyWhenAutorangeDisabled);
+                    interface->SendLine(arg->arg);
                 }
                 else
                 {
@@ -1153,8 +1153,8 @@ static void Console_BoardSet(uint32_t argc, char **argv)
             case CON_ARG_SET_GAIN:
                 if(autorange)
                 {
-                    VCP_SendString(txtSetOnlyWhenAutorangeDisabled);
-                    VCP_SendLine(arg->arg);
+                    interface->SendString(txtSetOnlyWhenAutorangeDisabled);
+                    interface->SendLine(arg->arg);
                 }
                 else
                 {
@@ -1188,8 +1188,8 @@ static void Console_BoardSet(uint32_t argc, char **argv)
             case CON_ARG_SET_VOLTAGE:
                 if(autorange)
                 {
-                    VCP_SendString(txtSetOnlyWhenAutorangeDisabled);
-                    VCP_SendLine(arg->arg);
+                    interface->SendString(txtSetOnlyWhenAutorangeDisabled);
+                    interface->SendLine(arg->arg);
                 }
                 else
                 {
@@ -1199,23 +1199,23 @@ static void Console_BoardSet(uint32_t argc, char **argv)
                 
             default:
                 // Should not happen, means that a defined argument has no switch case
-                VCP_SendLine(txtNotImplemented);
+                interface->SendLine(txtNotImplemented);
                 break;
         }
         
         if(ok == BOARD_BUSY)
         {
-            VCP_SendString(txtSetOnlyWhenIdle);
-            VCP_SendLine(arg->arg);
+            interface->SendString(txtSetOnlyWhenIdle);
+            interface->SendLine(arg->arg);
         }
         else if(ok == BOARD_ERROR)
         {
-            VCP_SendString(txtInvalidValue);
-            VCP_SendLine(arg->arg);
+            interface->SendString(txtInvalidValue);
+            interface->SendLine(arg->arg);
         }
     }
     
-    VCP_CommandFinish();
+    interface->CommandFinish();
 }
 
 /**
@@ -1232,10 +1232,10 @@ static void Console_BoardStandby(uint32_t argc, char **argv __attribute__((unuse
     }
     else
     {
-        VCP_SendLine(txtErrNoArgs);
+        interface->SendLine(txtErrNoArgs);
     }
     
-    VCP_CommandFinish();
+    interface->CommandFinish();
 }
 
 /**
@@ -1253,8 +1253,8 @@ static void Console_BoardStart(uint32_t argc, char **argv)
     
     if(argc != 2)
     {
-        VCP_SendLine(txtErrArgNum);
-        VCP_CommandFinish();
+        interface->SendLine(txtErrArgNum);
+        interface->CommandFinish();
         return;
     }
     
@@ -1262,9 +1262,9 @@ static void Console_BoardStart(uint32_t argc, char **argv)
     // Uncomment if PORT_MIN is greater than 0
     if(end == NULL || /*port < PORT_MIN ||*/ port > PORT_MAX)
     {
-        VCP_SendString(txtInvalidValue);
-        VCP_SendLine("port");
-        VCP_CommandFinish();
+        interface->SendString(txtInvalidValue);
+        interface->SendLine("port");
+        interface->CommandFinish();
         return;
     }
 
@@ -1272,17 +1272,17 @@ static void Console_BoardStart(uint32_t argc, char **argv)
     switch(ok)
     {
         case BOARD_OK:
-            VCP_SendLine(txtOK);
+            interface->SendLine(txtOK);
             break;
         case BOARD_BUSY:
-            VCP_SendLine(txtBoardBusy);
+            interface->SendLine(txtBoardBusy);
             break;
         case BOARD_ERROR:
-            VCP_SendLine(txtNoGain);
+            interface->SendLine(txtNoGain);
             break;
     }
     
-    VCP_CommandFinish();
+    interface->CommandFinish();
 }
 
 /**
@@ -1301,8 +1301,8 @@ static void Console_BoardStatus(uint32_t argc, char **argv __attribute__((unused
     
     if(argc != 1)
     {
-        VCP_SendLine(txtErrNoArgs);
-        VCP_CommandFinish();
+        interface->SendLine(txtErrNoArgs);
+        interface->CommandFinish();
         return;
     }
     
@@ -1312,53 +1312,53 @@ static void Console_BoardStatus(uint32_t argc, char **argv __attribute__((unused
         case AD_MEASURE_IMPEDANCE:
         case AD_MEASURE_IMPEDANCE_AUTORANGE:
             // Point count
-            VCP_SendString(txtAdStatusSweep);
+            interface->SendString(txtAdStatusSweep);
             snprintf(buf, NUMEL(buf), "%u", status.point);
-            VCP_SendString(buf);
-            VCP_SendString(txtOf);
+            interface->SendString(buf);
+            interface->SendString(txtOf);
             snprintf(buf, NUMEL(buf), "%u", status.totalPoints);
-            VCP_SendLine(buf);
+            interface->SendLine(buf);
             // Autorange status
-            VCP_SendString(txtAutorangeStatus);
-            VCP_SendString(status.autorange ? txtEnabled : txtDisabled);
-            VCP_SendLine(".");
+            interface->SendString(txtAutorangeStatus);
+            interface->SendString(status.autorange ? txtEnabled : txtDisabled);
+            interface->SendLine(".");
             break;
             
         case AD_IDLE:
         case AD_FINISH_TEMP:
         case AD_FINISH_CALIB:
-            VCP_SendLine(txtAdStatusIdle);
+            interface->SendLine(txtAdStatusIdle);
             if(status.interrupted)
             {
-                VCP_SendLine(txtLastInterrupted);
+                interface->SendLine(txtLastInterrupted);
             }
-            VCP_SendLine(status.validData ? txtValidData : txtNoData);
-            VCP_SendLine(status.validGainFactor ? txtValidGain : txtNoGain);
+            interface->SendLine(status.validData ? txtValidData : txtNoData);
+            interface->SendLine(status.validGainFactor ? txtValidGain : txtNoGain);
             break;
             
         case AD_FINISH_IMPEDANCE:
-            VCP_SendString(txtAdStatusFinishImpedance);
+            interface->SendString(txtAdStatusFinishImpedance);
             snprintf(buf, NUMEL(buf), "%u", status.point);
-            VCP_SendLine(buf);
-            VCP_SendLine(status.validData ? txtValidData : txtNoData);
-            VCP_SendLine(status.validGainFactor ? txtValidGain : txtNoGain);
+            interface->SendLine(buf);
+            interface->SendLine(status.validData ? txtValidData : txtNoData);
+            interface->SendLine(status.validGainFactor ? txtValidGain : txtNoGain);
             break;
             
         case AD_MEASURE_TEMP:
-            VCP_SendLine(txtAdStatusTemp);
+            interface->SendLine(txtAdStatusTemp);
             break;
             
         case AD_CALIBRATE:
-            VCP_SendLine(txtAdStatusCalibrate);
+            interface->SendLine(txtAdStatusCalibrate);
             break;
             
         default:
             // Should not happen, driver should be initialized by now.
-            VCP_SendLine(txtAdStatusUnknown);
+            interface->SendLine(txtAdStatusUnknown);
             break;
     }
     
-    VCP_CommandFinish();
+    interface->CommandFinish();
 }
 
 /**
@@ -1375,18 +1375,18 @@ static void Console_BoardStop(uint32_t argc, char **argv __attribute__((unused))
         if(status == AD_MEASURE_IMPEDANCE || status == AD_MEASURE_IMPEDANCE_AUTORANGE)
         {
             Board_StopSweep();
-            VCP_SendLine(txtOK);
+            interface->SendLine(txtOK);
         }
         else
         {
-            VCP_SendLine(txtAdStatusIdle);
+            interface->SendLine(txtAdStatusIdle);
         }
     }
     else
     {
-        VCP_SendLine(txtErrNoArgs);
+        interface->SendLine(txtErrNoArgs);
     }
-    VCP_CommandFinish();
+    interface->CommandFinish();
 }
 
 /**
@@ -1403,14 +1403,14 @@ static void Console_BoardTemp(uint32_t argc, char **argv __attribute__((unused))
     {
         float temp = Board_MeasureTemperature(TEMP_AD5933);
         snprintf(buf, NUMEL(buf), "%.1f %cC", temp, '\xB0' /* Degree symbol in ISO 8859-1 and -15 */); 
-        VCP_SendLine(buf);
+        interface->SendLine(buf);
     }
     else
     {
-        VCP_SendLine(txtErrArgNum);
+        interface->SendLine(txtErrArgNum);
     }
     
-    VCP_CommandFinish();
+    interface->CommandFinish();
 }
 
 /**
@@ -1431,32 +1431,32 @@ static void Console_Eth(uint32_t argc __attribute__((unused)), char **argv __att
     
     if(argc == 1)
     {
-        VCP_SendLine(txtErrNoSubcommand);
-        VCP_CommandFinish();
+        interface->SendLine(txtErrNoSubcommand);
+        interface->CommandFinish();
     }
     else if(!Console_CallProcessor(argc - 1, argv + 1, cmds, NUMEL(cmds)))
     {
-        VCP_SendLine(txtUnknownSubcommand);
-        VCP_CommandFinish();
+        interface->SendLine(txtUnknownSubcommand);
+        interface->CommandFinish();
     }
 #else
-    VCP_SendString(txtEthernet);
-    VCP_SendLine(txtNotInstalled);
-    VCP_CommandFinish();
+    interface->SendString(txtEthernet);
+    interface->SendLine(txtNotInstalled);
+    interface->CommandFinish();
 #endif
 }
 
 #if defined(BOARD_HAS_ETHERNET) && BOARD_HAS_ETHERNET == 1
 static void Console_EthDisable(uint32_t argc, char **argv)
 {
-    VCP_SendLine(txtNotImplemented);
-    VCP_CommandFinish();
+    interface->SendLine(txtNotImplemented);
+    interface->CommandFinish();
 }
 
 static void Console_EthEnable(uint32_t argc, char **argv)
 {
-    VCP_SendLine(txtNotImplemented);
-    VCP_CommandFinish();
+    interface->SendLine(txtNotImplemented);
+    interface->CommandFinish();
 }
 
 static void Console_EthSet(uint32_t argc, char **argv)
@@ -1466,14 +1466,14 @@ static void Console_EthSet(uint32_t argc, char **argv)
         { "ip", CON_ARG_SET_IP, CON_STRING }
     };
 
-    VCP_SendLine(txtNotImplemented);
-    VCP_CommandFinish();
+    interface->SendLine(txtNotImplemented);
+    interface->CommandFinish();
 }
 
 static void Console_EthStatus(uint32_t argc, char **argv)
 {
-    VCP_SendLine(txtNotImplemented);
-    VCP_CommandFinish();
+    interface->SendLine(txtNotImplemented);
+    interface->CommandFinish();
 }
 #endif
 
@@ -1496,52 +1496,52 @@ static void Console_Usb(uint32_t argc __attribute__((unused)), char **argv __att
     
     if(argc == 1)
     {
-        VCP_SendLine(txtErrNoSubcommand);
-        VCP_CommandFinish();
+        interface->SendLine(txtErrNoSubcommand);
+        interface->CommandFinish();
     }
     else if(!Console_CallProcessor(argc - 1, argv + 1, cmds, NUMEL(cmds)))
     {
-        VCP_SendLine(txtUnknownSubcommand);
-        VCP_CommandFinish();
+        interface->SendLine(txtUnknownSubcommand);
+        interface->CommandFinish();
     }
 #else
-    VCP_SendString(txtUSB);
-    VCP_SendLine(txtNotInstalled);
-    VCP_CommandFinish();
+    interface->SendString(txtUSB);
+    interface->SendLine(txtNotInstalled);
+    interface->CommandFinish();
 #endif
 }
 
 #if defined(BOARD_HAS_USBH) && BOARD_HAS_USBH == 1
 static void Console_UsbEject(uint32_t argc, char **argv)
 {
-    VCP_SendLine(txtNotImplemented);
-    VCP_CommandFinish();
+    interface->SendLine(txtNotImplemented);
+    interface->CommandFinish();
 }
 
 static void Console_UsbInfo(uint32_t argc, char **argv)
 {
-    VCP_SendLine(txtNotImplemented);
-    VCP_CommandFinish();
+    interface->SendLine(txtNotImplemented);
+    interface->CommandFinish();
 }
 
 static void Console_UsbLs(uint32_t argc, char **argv)
 {
-    VCP_SendLine(txtNotImplemented);
-    VCP_CommandFinish();
+    interface->SendLine(txtNotImplemented);
+    interface->CommandFinish();
 }
 
 static void Console_UsbStatus(uint32_t argc, char **argv)
 {
-    VCP_SendLine(txtNotImplemented);
-    VCP_CommandFinish();
+    interface->SendLine(txtNotImplemented);
+    interface->CommandFinish();
 }
 
 static void Console_UsbWrite(uint32_t argc, char **argv)
 {
     // Arguments: file
 
-    VCP_SendLine(txtNotImplemented);
-    VCP_CommandFinish();
+    interface->SendLine(txtNotImplemented);
+    interface->CommandFinish();
 }
 #endif
 
@@ -1559,7 +1559,7 @@ static void Console_Help(uint32_t argc, char **argv)
     {
         case 1:
             // Command without arguments, print usage
-            VCP_SendBuffer((uint8_t *)strHelp.data, strHelp.length);
+            interface->SendBuffer((uint8_t *)strHelp.data, strHelp.length);
             break;
         case 2:
             // Command with topic, look for help message
@@ -1573,20 +1573,20 @@ static void Console_Help(uint32_t argc, char **argv)
             }
             if(topic != NULL)
             {
-                VCP_SendBuffer((const uint8_t *)topic->text.data, topic->text.length);
+                interface->SendBuffer((const uint8_t *)topic->text.data, topic->text.length);
             }
             else
             {
-                VCP_SendLine(txtUnknownTopic);
+                interface->SendLine(txtUnknownTopic);
             }
             break;
         default:
             // Wrong number of arguments, print error message
-            VCP_SendLine(txtErrArgNum);
+            interface->SendLine(txtErrArgNum);
             break;
     }
     
-    VCP_CommandFinish();
+    interface->CommandFinish();
 }
 
 /**
@@ -1600,24 +1600,24 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
 #ifdef DEBUG
     if(argc == 1)
     {
-        VCP_SendLine("send, echo, printf-float, malloc, leak, usb-paksize, heap, tim, mux");
-        VCP_CommandFinish();
+        interface->SendLine("send, echo, printf-float, malloc, leak, usb-paksize, heap, tim, mux");
+        interface->CommandFinish();
         return;
     }
     
     if(strcmp(argv[1], "send") == 0)
     {
         // Send some strings to test how the VCP copes with multiple calls in close succession
-        VCP_SendString("this is a test string\r\n");
-        VCP_SendString("second SendString call with a string that is longer than before.\r\n");
-        VCP_SendString("short line\r\n");
+        interface->SendString("this is a test string\r\n");
+        interface->SendString("second SendString call with a string that is longer than before.\r\n");
+        interface->SendString("short line\r\n");
     }
     else if(strcmp(argv[1], "echo") == 0)
     {
         // Echo back all received arguments
         for(uint32_t j = 2; j < argc; j++)
         {
-            VCP_SendLine(argv[j]);
+            interface->SendLine(argv[j]);
         }
     }
     else if(strcmp(argv[1], "printf-float") == 0)
@@ -1631,19 +1631,19 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
             float f1 = 1.5378f;
             float f2 = atan2f(0.5f, 0.5f);
             snprintf(buf, size, "%g < %g", f1, f2);
-            VCP_SendLine(buf);
+            interface->SendLine(buf);
             for(uint32_t j = 0; j < 10; j++)
             {
                 f1 *= 10.0f;
                 f2 /= 10.0f;
                 snprintf(buf, size, "%g < %g", f1, f2);
-                VCP_SendLine(buf);
+                interface->SendLine(buf);
             }
             free(buf);
         }
         else
         {
-            VCP_SendLine("Pointer was NULL.");
+            interface->SendLine("Pointer was NULL.");
         }
     }
     else if(strcmp(argv[1], "malloc") == 0)
@@ -1660,12 +1660,12 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
         allocs = calloc(length, sizeof(char*));
         if(buf == NULL || allocs == NULL)
         {
-            VCP_SendLine("Could not allocate string buffer and pointer buffer.");
+            interface->SendLine("Could not allocate string buffer and pointer buffer.");
         }
         else
         {
-            VCP_SendLine("Trying to allocate some buffers...");
-            VCP_Flush();
+            interface->SendLine("Trying to allocate some buffers...");
+            interface->Flush();
             for(uint32_t j = 0; j < length; j++)
             {
                 allocs[j] = malloc(size);
@@ -1676,22 +1676,22 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
                 if(j % 10 == 0)
                 {
                     snprintf(buf, len, "%lu ", j);
-                    VCP_SendString(buf);
-                    VCP_Flush();
+                    interface->SendString(buf);
+                    interface->Flush();
                 }
                 buffers++;
             }
             snprintf(buf, len, "\r\nCould allocate %lu buffers with %lu bytes each.", buffers, size);
-            VCP_SendLine(buf);
+            interface->SendLine(buf);
             snprintf(buf, len, "For everyone too lazy to use their brain, that's %lu bytes in total.", buffers * size);
-            VCP_SendLine(buf);
-            VCP_SendLine("Now freeing...");
-            VCP_Flush();
+            interface->SendLine(buf);
+            interface->SendLine("Now freeing...");
+            interface->Flush();
             for(uint32_t j = 0; j < buffers; j++)
             {
                 free(allocs[j]);
             }
-            VCP_SendLine("Finished.");
+            interface->SendLine("Finished.");
         }
         free(buf);
         free(allocs);
@@ -1705,20 +1705,20 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
             uint32_t bytes = IntFromSiString(argv[2], &end);
             if(end == NULL)
             {
-                VCP_SendLine("Don't be silly.");
+                interface->SendLine("Don't be silly.");
             }
             else if(malloc(bytes) != NULL)
             {
-                VCP_SendLine("Allocation successful, memory leaked.");
+                interface->SendLine("Allocation successful, memory leaked.");
             }
             else
             {
-                VCP_SendLine("Allocation failed.");
+                interface->SendLine("Allocation failed.");
             }
         }
         else
         {
-            VCP_SendLine(txtErrArgNum);
+            interface->SendLine(txtErrArgNum);
         }
     }
     else if(strcmp(argv[1], "usb-paksize") == 0)
@@ -1726,7 +1726,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
         // Test VCP with multiples of USB packet size
         static const char *txtTest = "This is a string with 64 bytes of data to be sent over the VCP..";
         static const char *txtTest2 = "This is an even longer text that should hold 128 bytes, which is exactly two packet sizes, to test the failure with two packets.";
-        VCP_SendBuffer((uint8_t *)(argc == 2 ? txtTest : txtTest2), strlen(argc == 2 ? txtTest : txtTest2));
+        interface->SendBuffer((uint8_t *)(argc == 2 ? txtTest : txtTest2), strlen(argc == 2 ? txtTest : txtTest2));
     }
     else if(strcmp(argv[1], "heap") == 0)
     {
@@ -1738,10 +1738,10 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
         
         snprintf(buf, NUMEL(buf), "Heap begin: %p, Heap limit: %p (size = %lu)\r\n",
                 &_Heap_Begin, &_Heap_Limit, (uint32_t)(&_Heap_Limit - &_Heap_Begin));
-        VCP_SendString(buf);
+        interface->SendString(buf);
         snprintf(buf, NUMEL(buf), "Current break: %p\r\nFree bytes: %lu\r\n",
                 brk, (uint32_t)((void *)&_Heap_Limit - brk));
-        VCP_SendString(buf);
+        interface->SendString(buf);
     }
     else if(strcmp(argv[1], "tim") == 0)
     {
@@ -1751,7 +1751,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
         // Enable or disable TIM10 OC output
         if(argc != 3)
         {
-            VCP_SendLine(txtErrArgNum);
+            interface->SendLine(txtErrArgNum);
         }
         else
         {
@@ -1779,7 +1779,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
         // Set output mux port, or disable
         if(argc != 3)
         {
-            VCP_SendLine(txtErrArgNum);
+            interface->SendLine(txtErrArgNum);
         }
         else
         {
@@ -1792,7 +1792,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
                 HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_RESET);
                 HAL_SPI_Transmit(&hspi3, &port, 1, BOARD_SPI_TIMEOUT);
                 HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_SET);
-                VCP_SendLine("Switched off.");
+                interface->SendLine("Switched off.");
             }
             else if(end != NULL && port <= 15)
             {
@@ -1800,23 +1800,23 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
                 HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_RESET);
                 HAL_SPI_Transmit(&hspi3, &port, 1, BOARD_SPI_TIMEOUT);
                 HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_SET);
-                VCP_SendLine("Port set.");
+                interface->SendLine("Port set.");
             }
             else
             {
-                VCP_SendLine("Unknown port.");
+                interface->SendLine("Unknown port.");
             }
         }
     }
     else
     {
-        VCP_SendLine(txtUnknownSubcommand);
+        interface->SendLine(txtUnknownSubcommand);
     }
 #else
-    VCP_SendLine("This is a release build, no debug code compiled in.");
+    interface->SendLine("This is a release build, no debug code compiled in.");
 #endif
 
-    VCP_CommandFinish();
+    interface->CommandFinish();
 }
 
 // Exported functions ---------------------------------------------------------
@@ -1850,12 +1850,12 @@ void Console_ProcessLine(Console_Interface *itf, char *str)
     if(argc == 0)
     {
         // Command line is empty, do nothing
-        VCP_CommandFinish();
+        interface->CommandFinish();
     }
     else if(!Console_CallProcessor(argc, arguments, commands, NUMEL(commands)))
     {
-        VCP_SendLine(txtUnknownCommand);
-        VCP_CommandFinish();
+        interface->SendLine(txtUnknownCommand);
+        interface->CommandFinish();
     }
 }
 
