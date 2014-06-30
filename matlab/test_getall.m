@@ -1,4 +1,10 @@
 % Test script: get current sweep parameters from board using impy_getall
+% 
+% The output of the 'board get all' command gets all relevant sweep parameters with one command and is designed
+% specifically for parsing (key=value lines). The function impy_getall sends this command and reads all key/value pairs
+% into a structure. The structure obtained this way can be customized to the measurement need at hand and then used with
+% the impy_setsweep function to send the sweep parameters to the board.
+
 %% Clean up
 clear all;
 clc;
