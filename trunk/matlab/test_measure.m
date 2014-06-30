@@ -1,9 +1,21 @@
 % Test script: make a measurement with specified parameters and plot magnitude and phase
+%
+% The basic procedure is:
+%  1) Get a structure with current sweep parameters using `impy_getall` and modify it, or make your own one, with the
+%     desired sweep parameters
+%  2) Send sweep parameters to board using `impy_setsweep`
+%  3) Calibrate with a suitable calibration resistor using `impy_calibrate`
+%  4) Start a sweep on any port with `impy_start`
+%  5) Wait for the sweep to complete using `impy_poll`
+%  6) Read data in desired format using `impy_read`
+%  7) Repeat from 4) for other ports if needed, calibration is only necessary when sweep parameters change
+
 %% Clean up
 clear all;
 clc;
 
 %% Sweep parameters
+% See also test_getall
 sweep = struct;
 sweep.start = 10e3;         % Start frequency in Hz
 sweep.stop = 20e3;          % Stop frequency in Hz
@@ -19,6 +31,9 @@ port = 0;
 
 %% Open COM port
 impy = serial('COM6', 'BaudRate', 115200);
+% IMPORTANT: Set the Terminator property to either 'CR/LF' or { 'CR/LF', 'LF' } for proper operation
+% Timeout needs to be set high when low frequencies are used, because in this case calibration can take a long time
+% I think InputBufferSize needs to be large enough to hold all data sent by 'board read', so 128KB should be big enough
 set(impy, 'Terminator', { 'CR/LF', 'LF' }, 'Timeout', 120, 'InputBufferSize', 128*1024);
 fopen(impy);
 
