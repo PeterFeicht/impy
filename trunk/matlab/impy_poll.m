@@ -16,7 +16,9 @@ while get(comport, 'BytesAvailable') > 0
     fgetl(comport);
 end
 
-if ~isempty(strfind(status, 'finished'))
+if isempty(status)
+    error('Error reading from serial device, check connection.');
+elseif ~isempty(strfind(status, 'finished'))
     finished = true;
     split = strsplit(status, ': ');
     [numpoints, status] = str2num(split{2});

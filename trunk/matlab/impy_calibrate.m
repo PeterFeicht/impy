@@ -8,12 +8,10 @@ function [ ] = impy_calibrate( comport, resistor )
 fprintf(comport, '@board calibrate %d\n', resistor);
 
 str = fgetl(comport);
-if ~strcmp(str, 'OK')
-    if isempty(str)
-        error('Error reading from serial device, check connection.');
-    else
-        error(str);
-    end
+if isempty(str)
+    error('Error reading from serial device, check connection.');
+elseif ~strcmp(str, 'OK')
+    error(str);
 end
 
 end
