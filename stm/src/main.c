@@ -678,11 +678,17 @@ Board_Error Board_MeasureSingleFrequency(uint8_t port, uint32_t freq, AD5933_Imp
     {
         return BOARD_ERROR;
     }
+    // Calibration is only valid in the current frequency range
+    if(freq < sweep.Start_Freq || freq > stopFreq)
+    {
+        return BOARD_ERROR;
+    }
     
     // AD5933 cannot measure a single frequency, make room for two
     AD5933_ImpedanceData buffer[2];
     AD5933_Sweep sw = sweep;
     sw.Start_Freq = freq;
+    sw.Freq_Increment = 1;
     sw.Num_Increments = 1;
     
     // TODO implement autorange
