@@ -7,6 +7,7 @@
 
 // Includes -------------------------------------------------------------------
 #include <math.h>
+#include <assert.h>
 #include "ad5933.h"
 
 // Private type definitions ---------------------------------------------------
@@ -609,10 +610,8 @@ AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c, TIM_HandleTypeDef *tim)
 {
     GPIO_InitTypeDef init;
     
-    if(i2c == NULL || tim == NULL)
-    {
-        return AD_ERROR;
-    }
+    assert_param(i2c != NULL);
+    assert_param(tim != NULL);
     
     // Configure attenuation and feedback mux GPIO pins
     init.Pin = AD5933_ATTENUATION_GPIO_0 | AD5933_ATTENUATION_GPIO_1;
@@ -654,10 +653,7 @@ AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c, TIM_HandleTypeDef *tim)
  */
 AD5933_Error AD5933_Reset(void)
 {
-    if(status == AD_UNINIT)
-    {
-        return AD_ERROR;
-    }
+    assert(status != AD_UNINIT);
     
     // Reset first (low byte) and then put in standby mode
     uint16_t data = AD5933_FUNCTION_STANDBY | AD5933_CTRL_RESET;
@@ -690,10 +686,11 @@ AD5933_Error AD5933_MeasureImpedance(const AD5933_Sweep *sweep, const AD5933_Ran
     uint16_t data;
     AD5933_Error ret;
     
-    if(status == AD_UNINIT || sweep == NULL || buffer == NULL || range == NULL)
-    {
-        return AD_ERROR;
-    }
+    assert_param(sweep != NULL);
+    assert_param(buffer != NULL);
+    assert_param(range != NULL);
+    assert(status != AD_UNINIT);
+    
     if(AD5933_IsBusy())
     {
         return AD_BUSY;
@@ -738,10 +735,9 @@ uint16_t AD5933_GetSweepCount(void)
  */
 AD5933_Error AD5933_MeasureTemperature(float *destination)
 {
-    if(status == AD_UNINIT || destination == NULL)
-    {
-        return AD_ERROR;
-    }
+    assert_param(destination != NULL);
+    assert(status != AD_UNINIT);
+    
     if(AD5933_IsBusy())
     {
         return AD_BUSY;
@@ -781,10 +777,11 @@ AD5933_Error AD5933_Calibrate(const AD5933_CalibrationSpec *cal, const AD5933_Ra
         AD5933_FREQ_MAX
     };
     
-    if(status == AD_UNINIT || cal == NULL || data == NULL || range == NULL)
-    {
-        return AD_ERROR;
-    }
+    assert_param(cal != NULL);
+    assert_param(range != NULL);
+    assert_param(data != NULL);
+    assert(status != AD_UNINIT);
+    
     if(AD5933_IsBusy())
     {
         return AD_BUSY;
