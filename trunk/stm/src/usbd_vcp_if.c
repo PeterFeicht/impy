@@ -59,6 +59,18 @@ USBD_VCP_ItfTypeDef USBD_VCP_fops =
     VCP_Transmit
 };
 
+static Console_Interface console_interface = 
+{
+    VCP_SendString,
+    VCP_SendLine,
+    VCP_SendBuffer,
+    VCP_SendChar,
+    VCP_Flush,
+    VCP_CommandFinish,
+    VCP_SetEcho,
+    VCP_GetEcho
+};
+
 // Private functions ----------------------------------------------------------
 
 /**
@@ -259,7 +271,7 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
     
     if(call)
     {
-        Console_ProcessLine((char *)VCP_cmdline);
+        Console_ProcessLine(&console_interface, (char *)VCP_cmdline);
     }
     
     VCP_Flush();
