@@ -98,6 +98,7 @@ static uint8_t Console_CallProcessor(uint32_t argc, char **argv, const Console_C
 static const Console_Arg* Console_GetArg(const char *arg, const Console_Arg *args, uint32_t count);
 static const char* Console_GetArgValue(const char *arg);
 static Console_FlagValue Console_GetFlag(const char *str);
+__STATIC_INLINE void Console_Flush(void);
 // Command line processors
 static void Console_Board(uint32_t argc, char **argv);
 static void Console_BoardCalibrate(uint32_t argc, char **argv);
@@ -379,6 +380,15 @@ static Console_FlagValue Console_GetFlag(const char *str)
     {
         return CON_FLAG_INVALID;
     }
+}
+
+/**
+ * Inline wrapper for {@code interface->Flush()} to allow NULL pointer for back ends that don't support it.
+ */
+__STATIC_INLINE void Console_Flush(void)
+{
+    if(interface->Flush != NULL)
+        interface->Flush();
 }
 
 // Command processing functions -----------------------------------------------
@@ -1665,7 +1675,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
         else
         {
             interface->SendLine("Trying to allocate some buffers...");
-            interface->Flush();
+            Console_Flush();
             for(uint32_t j = 0; j < length; j++)
             {
                 allocs[j] = malloc(size);
@@ -1677,7 +1687,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
                 {
                     snprintf(buf, len, "%lu ", j);
                     interface->SendString(buf);
-                    interface->Flush();
+                    Console_Flush();
                 }
                 buffers++;
             }
@@ -1686,7 +1696,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
             snprintf(buf, len, "For everyone too lazy to use their brain, that's %lu bytes in total.", buffers * size);
             interface->SendLine(buf);
             interface->SendLine("Now freeing...");
-            interface->Flush();
+            Console_Flush();
             for(uint32_t j = 0; j < buffers; j++)
             {
                 free(allocs[j]);
