@@ -12,6 +12,26 @@
 #include <stdint.h>
 #include "usbd_vcp_if.h"
 
+// Exported type definitions --------------------------------------------------
+/**
+ * Defines the interface used by the virtual console to send data back to the user.
+ * Different back ends can supply their functions using this structure when calling {@link Console_ProcessLine}.
+ * 
+ * Care has to be taken when multiple back ends want to communicate concurrently; only the last interface supplied to
+ * {@code Console_ProcessLine} is used for communication.
+ */
+typedef struct
+{
+    uint32_t (*SendString)(const char *str);
+    uint32_t (*SendLine)(const char *str);
+    uint32_t (*SendBuffer)(const uint8_t *buf, uint32_t len);
+    uint32_t (*SendChar)(uint8_t c);
+    void     (*Flush)(void);
+    void     (*CommandFinish)(void);
+    void     (*SetEcho)(uint8_t enable);
+    uint8_t  (*GetEcho)(void);
+} Console_Interface;
+
 // Macros ---------------------------------------------------------------------
 
 #define NUMEL(X)                (sizeof(X) / sizeof(*X))
