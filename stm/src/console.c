@@ -136,6 +136,7 @@ static Buffer board_read_data = {
     .data = NULL,
     .size = 0
 };
+static Console_Interface *interface = NULL;
 
 // Console definition
 static String strHelp = {
@@ -1833,18 +1834,17 @@ void Console_Init(void)
 /**
  * Processes the specified 0-terminated string to extract commands and arguments and calls the appropriate functions.
  * 
+ * @param itf Pointer to an interface structure with functions to use for communication
  * @param str Pointer to a command line string
  */
-void Console_ProcessLine(char *str)
+void Console_ProcessLine(Console_Interface *itf, char *str)
 {
     uint32_t argc;
     
-    if(str == NULL)
-    {
-        // Should not happen, VCP does not call us with NULL so do nothing (not even finish command)
-        return;
-    }
+    assert_param(str != NULL);
+    assert_param(itf != NULL);
     
+    interface = itf;
     argc = Console_GetArguments(str);
     
     if(argc == 0)
