@@ -668,12 +668,14 @@ uint8_t Board_GetPort(void)
  */
 Board_Error Board_MeasureSingleFrequency(uint8_t port, uint32_t freq, AD5933_ImpedancePolar *result)
 {
+    assert_param(result != NULL);
+    
     if(AD5933_IsBusy())
     {
         return BOARD_BUSY;
     }
     // Uncomment if PORT_MIN is greater than 0
-    if(freq < AD5933_FREQ_MIN || freq > AD5933_FREQ_MAX || /*port < PORT_MIN ||*/ port > PORT_MAX || result == NULL ||
+    if(freq < AD5933_FREQ_MIN || freq > AD5933_FREQ_MAX || /*port < PORT_MIN ||*/ port > PORT_MAX ||
             (!validGain && !autorange))
     {
         return BOARD_ERROR;

@@ -255,10 +255,6 @@ static uint32_t Console_GetArguments(char *cmdline)
     uint32_t argc = 0;
     char *tmp;
     
-    if(cmdline == NULL)
-    {
-        return 0;
-    }
     if(*cmdline != ' ')
     {
         argc = 1;
@@ -1634,7 +1630,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
     {
         // Test the number format of floating point numbers
         char *buf;
-        uint32_t size = 100;
+        const uint32_t size = 100;
         buf = malloc(size);
         if(buf != NULL)
         {

@@ -444,10 +444,7 @@ uint32_t Convert_FormatSpecFromString(const char *str)
 {
     uint32_t flags = 0;
     
-    if(str == NULL)
-    {
-        return 0;
-    }
+    assert_param(str != NULL);
     
     // Set flags for all specified characters
     for(const char *c = str; *c; c++)
@@ -512,10 +509,8 @@ uint32_t Convert_FormatSpecFromString(const char *str)
 uint32_t Convert_FormatSpecToString(char *buf, uint32_t length, uint32_t format)
 {
     // We only accept buffers of at least 10 bytes to keep the code simple and aid expansion with more flags
-    if(buf == NULL || length < 10)
-    {
-        return 0;
-    }
+    assert_param(buf != NULL);
+    assert_param(length >= 10);
     
     uint8_t pos = 0;
     memset(buf, 0, length);
@@ -639,10 +634,7 @@ Buffer Convert_ConvertGainFactor(const AD5933_GainFactor *gain)
         .size = 0
     };
     
-    if(gain == NULL)
-    {
-        return ret;
-    }
+    assert_param(gain != NULL);
     
     alloc += strlen(point) + strlen(freq1) + strlen(offset) + strlen(phaseOffset) + strlen(end);
     if(gain->is_2point)

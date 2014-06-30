@@ -369,8 +369,7 @@ uint32_t VCP_SendString(const char *str)
     uint32_t len;
     uint32_t sent;
     
-    if(str == NULL)
-        return 0;
+    assert_param(str != NULL);
     
     len = strlen(str);
     
