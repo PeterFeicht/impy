@@ -45,7 +45,7 @@ typedef struct
 
 // Exported functions ---------------------------------------------------------
 void Console_Init(void);
-void Console_ProcessLine(char *str);
+void Console_ProcessLine(Console_Interface *itf, char *str);
 
 __STATIC_INLINE uint32_t max(uint32_t left, uint32_t right)
 {
