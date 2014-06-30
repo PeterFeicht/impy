@@ -1,5 +1,8 @@
 function [ ] = impy_setsweep( comport, sweep )
 %IMPY_SETSWEEP Send the specified sweep parameters to the board
+%   The sweep structure needs the following fields to be set: start, stop, steps, settl, voltage, feedback, gain.
+%   The following fields are optional: avg, autorange.
+%   Other fields are ignored.
 %   Arguments:
 %       comport - Serial port object that has been 'fopen'ed
 %       sweep - Sweep specifications, use impy_getall to obtain a structure with current values
