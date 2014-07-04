@@ -20,6 +20,7 @@ typedef enum
 } AD5933_ClockSource;
 
 // Private function prototypes ------------------------------------------------
+// AD5933 communication
 static HAL_StatusTypeDef AD5933_SetAddress(uint8_t MemAddress);
 static HAL_StatusTypeDef AD5933_Write8(uint8_t MemAddress, uint8_t value);
 static HAL_StatusTypeDef AD5933_Write16(uint8_t MemAddress, uint16_t value);
@@ -27,12 +28,14 @@ static HAL_StatusTypeDef AD5933_Write24(uint8_t MemAddress, uint32_t value);
 static HAL_StatusTypeDef AD5933_Read16(uint8_t MemAddress, uint16_t *destination);
 static HAL_StatusTypeDef AD5933_WriteFunction(uint16_t code);
 static uint8_t AD5933_ReadStatus();
+// Misc
 static uint32_t AD5933_CalcFrequencyReg(uint32_t freq, uint32_t clock);
 static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, uint32_t freq_start, uint32_t freq_step,
         uint16_t num_incr, uint16_t settl);
 static void AD5933_SetClock(uint32_t freq_start, uint32_t freq_step);
 static AD5933_ClockSource AD5933_GetClockSource(uint32_t freq);
 static void AD5933_DoClockChange(uint32_t freq_start, uint32_t freq_step, uint32_t increments);
+// Timer callbacks
 static AD5933_Status AD5933_CallbackTemp(void);
 static AD5933_Status AD5933_CallbackImpedance(void);
 static AD5933_Status AD5933_CallbackCalibrate(void);
@@ -43,9 +46,9 @@ static I2C_HandleTypeDef *i2cHandle = NULL;
 static TIM_HandleTypeDef *timHandle = NULL;
 static AD5933_Sweep sweep_spec;             //!< Local copy of the sweep specification
 static AD5933_RangeSettings range_spec;     //!< Local copy of the range specification
-static volatile uint16_t sweep_count;       //!< Variable to keep track of the number of measured points
-static volatile uint32_t sweep_freq;        //!< Variable to keep track of the current frequency
-static volatile uint16_t avg_count;         //!< Variable to keep track of the averages recorded
+static volatile uint16_t sweep_count;       //!< The number of measured points
+static volatile uint32_t sweep_freq;        //!< The current frequency
+static volatile uint16_t avg_count;         //!< The averages recorded
 static volatile int32_t sum_real;           //!< Sum of the real values for averaging
 static volatile int32_t sum_imag;           //!< Sum of the imaginary values for averaging
 static volatile uint16_t wait_coupl;        //!< Time to wait for coupling capacitor to charge, or 0 to not wait
@@ -81,7 +84,7 @@ static HAL_StatusTypeDef AD5933_SetAddress(uint8_t MemAddress)
 }
 
 /**
- * Writes an 8-bit value to a AD5933 device register.
+ * Writes an 8-bit value to an AD5933 device register.
  * 
  * @param MemAddress Register address to write to
  * @param value Value to write
@@ -93,7 +96,7 @@ static HAL_StatusTypeDef AD5933_Write8(uint8_t MemAddress, uint8_t value)
 }
 
 /**
- * Writes a 16-bit value to a AD5933 device register with the correct endianness.
+ * Writes a 16-bit value to an AD5933 device register with the correct endianness.
  * 
  * @param MemAddress Register address to write to
  * @param value Value to write
@@ -118,7 +121,7 @@ static HAL_StatusTypeDef AD5933_Write16(uint8_t MemAddress, uint16_t value)
 }
 
 /**
- * Writes a 24-bit value to a AD5933 device register with the correct endianness.
+ * Writes a 24-bit value to an AD5933 device register with the correct endianness.
  * 
  * @param MemAddress Register address to write to
  * @param value Value to write
@@ -144,7 +147,7 @@ static HAL_StatusTypeDef AD5933_Write24(uint8_t MemAddress, uint32_t value)
 }
 
 /**
- * Reads a 16-bit value from a AD5933 device register with the correct endianness.
+ * Reads a 16-bit value from an AD5933 device register with the correct endianness.
  * 
  * @param MemAddress Register address to read from
  * @param destination The address where the value is written to
@@ -171,7 +174,7 @@ static HAL_StatusTypeDef AD5933_Read16(uint8_t MemAddress, uint16_t *destination
 }
 
 /**
- * Writes the specified function code to the control register, together with the current range settings.
+ * Writes the specified function code to the AD5933 control register, together with the current range settings.
  * 
  * @param code One of the {@link AD5933_FUNCTION} codes
  * @return HAL status code
@@ -604,7 +607,7 @@ uint8_t AD5933_IsBusy(void)
  * 
  * @param i2c Pointer to an I2C handle structure that is to be used for communication with the AD5933
  * @param tim Pointer to a timer handle structure that is to be used for the external clock source
- * @return {@link AD5933_Error} code
+ * @return {@code AD_OK}
  */
 AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c, TIM_HandleTypeDef *tim)
 {
@@ -649,7 +652,7 @@ AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c, TIM_HandleTypeDef *tim)
 /**
  * Resets the AD5933 and the driver to initialization state.
  * 
- * @return {@code AD_ERROR} if the driver has not been initialized, {@code AD_OK} otherwise
+ * @return {@code AD_OK}
  */
 AD5933_Error AD5933_Reset(void)
 {
@@ -671,8 +674,9 @@ AD5933_Error AD5933_Reset(void)
 /**
  * Initiates a frequency sweep over the specified range with the specified output buffer.
  * 
- * Note that if the number of frequency increments in {@code sweep} is zero, two points are measured regardless
- * because the AD5933 insists on doing so.
+ * The number of frequency increments in {@code sweep} is the number of times the frequency is incremented, so one more
+ * points than this value are measured. The minimum value is {@code 1} since the AD5933 insists on measuring at least
+ * two points.
  * 
  * @param sweep The specifications to use for the sweep
  * @param range The specifications for PGA gain, voltage range, external attenuation and feedback resistor
@@ -759,7 +763,7 @@ AD5933_Error AD5933_MeasureTemperature(float *destination)
  * factor obtained with one frequency range can only be used with measurements in this range.
  * 
  * @param cal The specifications for calibration impedance, frequency range and whether a two point calibration
- *            should be performed (recommended)
+ *            should be performed (highly recommended)
  * @param range The specifications for PGA gain, voltage range, external attenuation and feedback resistor
  * @param data Structure where measurements are written to
  * @return {@link AD5933_Error} code
@@ -891,12 +895,14 @@ AD5933_Status AD5933_TimerCallback(void)
     return status;
 }
 
+// Conversion functions -------------------------------------------------------
+
 /**
  * Calculates gain factor values from calibration measurement data.
  * 
  * The data can be one or two point calibration measurements.
  * The gain factor should be calibrated if any of the following parameters change:
- *  + Current-to-voltage gain setting resistor RFB
+ *  + Current-to-voltage gain setting resistor RFB (feedback resistor)
  *  + Output voltage range
  *  + PGA gain setting
  *  + Temperature (gain varies up to 1% over 150°C temperature, probably not relevant in a lab environment)
