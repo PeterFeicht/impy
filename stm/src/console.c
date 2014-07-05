@@ -1606,7 +1606,7 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
 #ifdef DEBUG
     if(argc == 1)
     {
-        interface->SendLine("send, echo, printf-float, malloc, leak, usb-paksize, heap, tim, mux");
+        interface->SendLine("send, echo, printf-float, malloc, leak, usb-paksize, heap, tim, mux, output");
         interface->CommandFinish();
         return;
     }
@@ -1811,6 +1811,39 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
             else
             {
                 interface->SendLine("Unknown port.");
+            }
+        }
+    }
+    else if(strcmp(argv[1], "output") == 0)
+    {
+        // Output a single frequency on specified port (arguments: freq port)
+        if(argc != 4)
+        {
+            interface->SendLine(txtErrArgNum);
+        }
+        else
+        {
+            const char *end1, *end2;
+            uint32_t freq = IntFromSiString(argv[2], &end1);
+            uint8_t port = IntFromSiString(argv[3], &end2);
+            
+            if(end1 == NULL)
+            {
+                interface->SendLine("Bad frequency.");
+            }
+            else if(end2 == NULL || port > 15)
+            {
+                interface->SendLine("Unknown port.");
+            }
+            else
+            {
+                // Set mux
+                port &= ADG725_MASK_PORT;
+                HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_RESET);
+                HAL_SPI_Transmit(&hspi3, &port, 1, BOARD_SPI_TIMEOUT);
+                HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_SET);
+                
+                AD5933_Debug_OutputFreq(freq, Board_GetRangeSettings());
             }
         }
     }
