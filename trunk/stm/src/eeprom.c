@@ -6,13 +6,18 @@
  */
 
 // Includes -------------------------------------------------------------------
+#include <assert.h>
 #include "eeprom.h"
+
+// Check structure sizes, in case the compiler aligns something we don't want it to
+_Static_assert(sizeof(EEPROM_ConfigurationBuffer) == EEPROM_CONFIG_SIZE, "Bad EEPROM_ConfigurationBuffer definition");
+_Static_assert(sizeof(EEPROM_SettingsBuffer) == EEPROM_SETTINGS_SIZE, "Bad EEPROM_SettingsBuffer definition");
 
 // Private function prototypes ------------------------------------------------
 
 
 // Private variables ----------------------------------------------------------
-static EEPROM_Status status = EE_UNINIT;
+static volatile EEPROM_Status status = EE_UNINIT;
 static I2C_HandleTypeDef *i2cHandle = NULL;
 static uint8_t e2_state;
 
@@ -40,10 +45,7 @@ EEPROM_Status GetStatus(void)
  */
 EEPROM_Error EE_Init(I2C_HandleTypeDef *i2c, uint8_t e2_set)
 {
-    if(i2c == NULL)
-    {
-        return EE_ERROR;
-    }
+    assert_param(i2c != NULL);
     
     i2cHandle = i2c;
     e2_state = (e2_set ? EEPROM_M24C08_ADDR_E2 : 0);
