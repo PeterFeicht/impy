@@ -129,6 +129,7 @@ extern I2C_HandleTypeDef hi2c1;
 extern SPI_HandleTypeDef hspi3;
 extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim10;
+extern CRC_HandleTypeDef hcrc;
 
 // Exported functions ---------------------------------------------------------
 Board_Error Board_SetStartFreq(uint32_t freq);
