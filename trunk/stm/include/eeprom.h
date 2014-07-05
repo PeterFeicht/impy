@@ -89,6 +89,9 @@ typedef struct
 
 #define LOBYTE(x)  ((uint8_t)(x & 0x00FF))
 #define HIBYTE(x)  ((uint8_t)((x & 0xFF00) >> 8))
+#define MAKE_ADDRESS(_addr, _e2)            ((uint8_t)EEPROM_M24C08_ADDR | \
+                                             ((_e2) ? EEPROM_M24C08_ADDR_E2 : 0) | \
+                                             (((uint8_t)(_addr) >> 7) & EEPROM_M24C08_BYTE_ADDR_H))
 
 // Constants ------------------------------------------------------------------
 
@@ -106,8 +109,8 @@ typedef struct
 #define EEPROM_M24C08_ADDR                  0xA0        //!< M24C08 device identifier
 #define EEPROM_M24C08_ADDR_E2               0x08        //!< M24C08 E2 address bit
 /**
- * Bitmask for the M24C08 I2C Address bits that are used for the memory address. The value needs to be shifted left by
- * one from the actual address, since the I2C read/write bit is between these two address bits and the low byte.
+ * Bitmask for the M24C08 I2C Address bits that are used for the high byte of the memory address. The address bits are
+ * either the high byte shifted left by one or the 16 bit address shifted right by 7 and then masked.
  */
 #define EEPROM_M24C08_BYTE_ADDR_H           0x06
 /** @} */
@@ -116,6 +119,11 @@ typedef struct
  * Timeout in ms for I2C communication
  */
 #define EEPROM_I2C_TIMEOUT                  0x200
+
+/**
+ * EEPROM sizein bytes
+ */
+#define EEPROM_SIZE                         0x400
 
 /**
  * Configuration data offset, that is the first address of the configuration data space
@@ -133,9 +141,9 @@ typedef struct
 #define EEPROM_DATA_OFFSET                  0x80
 
 /**
- * Size of the data section in bytes, this is the EEPROM size (1024 bytes) minus the data offset
+ * Size of the data section in bytes, this is the EEPROM size minus the data offset
  */
-#define EEPROM_DATA_SIZE                    (0x400 - EEPROM_DATA_OFFSET)
+#define EEPROM_DATA_SIZE                    (EEPROM_SIZE - EEPROM_DATA_OFFSET)
 
 /**
  * Size of the settings buffer in bytes
