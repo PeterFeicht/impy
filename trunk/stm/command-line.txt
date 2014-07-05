@@ -26,7 +26,7 @@ Commands:
   calibrate     Perform a calibration with the specified resistor value
                 For more information see 'help calibrate'
   start         Start a frequency sweep on specified port
-                For the valid port range see 'board info'
+                For the valid port and frequency range see 'board info'
   stop          Stop a running frequency sweep (also reset the AD5933)
   status        Print measurement status information
   measure       Measure and print a single frequency point on specified port
@@ -35,11 +35,12 @@ Commands:
                 For possible formats see 'help format'
 
 For detailed description of options see 'help options'.
+For a guide on how to select range settings see 'help ranges'.
 See 'help eth' and 'help usb' for Ethernet and USB commands, respectively.
 
 When a command is preceded by an '@' character, echo is disabled for this line.
-This is useful for non-interactive communication, where '@board set --echo=off'
-can be sent to disable echo without the command itself being echoed.
+This is useful for non-interactive communication, where it is undesirable that
+sent characters are echoed back.
 
 ----
 help options:
@@ -141,7 +142,25 @@ help autorange:
   TODO Autoranging is not implemented yet.
 
 help calibrate:
-  TODO
+Before measurements can be made the system has to be calibrated with a known
+impedance. After the range settings (start and stop frequency, output voltage,
+feedback resistor or PGA gain) are changed, the 'board calibrate' command is
+used to do that. The calibration impedance should be in the same range as the
+impedance to be measured for accurate results.
+A recalibration should also be performed when the ambient temperature changes
+significantly.
+
+help ranges:
+The AD5933 outputs a known voltage and measures the current through the unknown
+impedance by means of a current-to-voltage amplifier. The following procedure
+can be used to select the proper ranges:
+ * Set the output voltage low enough, that the output current does not exceed
+   25mA with the lowest impedance expected.
+ * Set the current feedback resistor to a value low enough, that the input
+   voltage stays below 3V for the highest output current expected.
+ * If necessary, the PGA can be set to x5 gain to further amplify the input
+   voltage when high impedances are to be measured. For accurate results, the
+   input signal should be close to 3V for the lowest impedance expected.
 
 help echo:
 By default, all characters received on the virtual COM port (VCP) are echoed
