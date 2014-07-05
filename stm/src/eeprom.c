@@ -38,7 +38,7 @@ EEPROM_Status GetStatus(void)
  * @param e2_set Indicates the state of the E2 pin of the device
  * @return {@link AD5933_Error} code
  */
-EEPROM_Error EEPROM_Init(I2C_HandleTypeDef *i2c, uint8_t e2_set)
+EEPROM_Error EE_Init(I2C_HandleTypeDef *i2c, uint8_t e2_set)
 {
     if(i2c == NULL)
     {
@@ -55,7 +55,7 @@ EEPROM_Error EEPROM_Init(I2C_HandleTypeDef *i2c, uint8_t e2_set)
  * 
  * @return {@code EE_ERROR} if the driver has not been initialized, {@code EE_OK} otherwise
  */
-EEPROM_Error EEPROM_Reset(void)
+EEPROM_Error EE_Reset(void)
 {
     if(status == EE_UNINIT)
     {
