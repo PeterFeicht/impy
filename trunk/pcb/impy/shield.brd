@@ -107,10 +107,10 @@
 </layers>
 <board>
 <plain>
-<wire x1="-38" y1="-3" x2="99" y2="-3" width="0" layer="20"/>
+<wire x1="-41" y1="-3" x2="99" y2="-3" width="0" layer="20"/>
 <wire x1="99" y1="-3" x2="99" y2="98" width="0" layer="20"/>
-<wire x1="99" y1="98" x2="-38" y2="98" width="0" layer="20"/>
-<wire x1="-38" y1="98" x2="-38" y2="-3" width="0" layer="20"/>
+<wire x1="99" y1="98" x2="-41" y2="98" width="0" layer="20"/>
+<wire x1="-41" y1="98" x2="-41" y2="-3" width="0" layer="20"/>
 <wire x1="-33" y1="0" x2="33" y2="0" width="0.254" layer="51"/>
 <wire x1="33" y1="0" x2="33" y2="97.5" width="0.254" layer="51"/>
 <wire x1="33" y1="97.5" x2="-33" y2="97.5" width="0.254" layer="51"/>
@@ -174,18 +174,18 @@ Peter Feichtinger 2014</text>
 <text x="38.735" y="69.85" size="1.27" layer="51" ratio="10" rot="R90">Icc</text>
 <text x="35.8775" y="14.605" size="1.27" layer="51" ratio="10" rot="R90">VBUS</text>
 <text x="95.5675" y="34.29" size="1.27" layer="51" ratio="10" rot="R90" align="bottom-center">GND</text>
-<text x="-31.75" y="93.0275" size="1.6764" layer="1" font="vector" ratio="10" align="top-left">TOP</text>
-<wire x1="-32.0675" y1="93.345" x2="-26.9875" y2="93.345" width="0.254" layer="41"/>
-<wire x1="-26.9875" y1="93.345" x2="-26.9875" y2="91.1225" width="0.254" layer="41"/>
-<wire x1="-26.9875" y1="91.1225" x2="-32.0675" y2="91.1225" width="0.254" layer="41"/>
-<wire x1="-32.0675" y1="91.1225" x2="-32.0675" y2="93.345" width="0.254" layer="41"/>
-<text x="-31.75" y="93.0275" size="1.6764" layer="16" font="vector" ratio="10" rot="MR0" align="top-right">BOTTOM</text>
-<wire x1="-32.0675" y1="93.345" x2="-22.225" y2="93.345" width="0.254" layer="42"/>
-<wire x1="-22.225" y1="93.345" x2="-22.225" y2="91.1225" width="0.254" layer="42"/>
-<wire x1="-22.225" y1="91.1225" x2="-32.0675" y2="91.1225" width="0.254" layer="42"/>
-<wire x1="-32.0675" y1="91.1225" x2="-32.0675" y2="93.345" width="0.254" layer="42"/>
-<dimension x1="-38" y1="98" x2="-38" y2="-3" x3="-43" y3="47.5" textsize="1.27" textratio="10" layer="47" width="0.1" visible="yes"/>
-<dimension x1="99" y1="98" x2="-38" y2="98" x3="30.5" y3="103" textsize="1.27" textratio="10" layer="47" width="0.1" visible="yes"/>
+<text x="-24.75" y="93.0275" size="1.6764" layer="1" font="vector" ratio="10" align="top-left">TOP</text>
+<wire x1="-25.0675" y1="93.345" x2="-19.9875" y2="93.345" width="0.254" layer="41"/>
+<wire x1="-19.9875" y1="93.345" x2="-19.9875" y2="91.1225" width="0.254" layer="41"/>
+<wire x1="-19.9875" y1="91.1225" x2="-25.0675" y2="91.1225" width="0.254" layer="41"/>
+<wire x1="-25.0675" y1="91.1225" x2="-25.0675" y2="93.345" width="0.254" layer="41"/>
+<text x="-24.75" y="93.0275" size="1.6764" layer="16" font="vector" ratio="10" rot="MR0" align="top-right">BOTTOM</text>
+<wire x1="-25.0675" y1="93.345" x2="-15.225" y2="93.345" width="0.254" layer="42"/>
+<wire x1="-15.225" y1="93.345" x2="-15.225" y2="91.1225" width="0.254" layer="42"/>
+<wire x1="-15.225" y1="91.1225" x2="-25.0675" y2="91.1225" width="0.254" layer="42"/>
+<wire x1="-25.0675" y1="91.1225" x2="-25.0675" y2="93.345" width="0.254" layer="42"/>
+<dimension x1="-41" y1="98" x2="-41" y2="-3" x3="-46" y3="47.5" textsize="1.27" textratio="10" layer="47" width="0.1" visible="yes"/>
+<dimension x1="99" y1="98" x2="-41" y2="98" x3="29" y3="103" textsize="1.27" textratio="10" layer="47" width="0.1" visible="yes"/>
 </plain>
 <libraries>
 <library name="parts">
@@ -2419,6 +2419,26 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 </package>
 </packages>
 </library>
+<library name="holes">
+<description>&lt;b&gt;Mounting Holes and Pads&lt;/b&gt;&lt;p&gt;
+&lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
+<packages>
+<package name="3,2">
+<description>&lt;b&gt;MOUNTING HOLE&lt;/b&gt; 3.2 mm with drill center</description>
+<wire x1="-2.159" y1="0" x2="0" y2="-2.159" width="2.4892" layer="51" curve="90" cap="flat"/>
+<wire x1="0" y1="2.159" x2="2.159" y2="0" width="2.4892" layer="51" curve="-90" cap="flat"/>
+<circle x="0" y="0" radius="3.429" width="0.1524" layer="21"/>
+<circle x="0" y="0" radius="0.762" width="0.4572" layer="51"/>
+<circle x="0" y="0" radius="3.048" width="2.032" layer="39"/>
+<circle x="0" y="0" radius="3.048" width="2.032" layer="43"/>
+<circle x="0" y="0" radius="3.048" width="2.032" layer="40"/>
+<circle x="0" y="0" radius="3.048" width="2.032" layer="41"/>
+<circle x="0" y="0" radius="3.048" width="2.032" layer="42"/>
+<circle x="0" y="0" radius="1.7" width="0.2032" layer="21"/>
+<hole x="0" y="0" drill="3.2"/>
+</package>
+</packages>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -2453,7 +2473,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <param name="mdSmdSmd" value="4mil"/>
 <param name="mdViaViaSameLayer" value="8mil"/>
 <param name="mnLayersViaInSmd" value="2"/>
-<param name="mdCopperDimension" value="100mil"/>
+<param name="mdCopperDimension" value="80mil"/>
 <param name="mdDrill" value="8mil"/>
 <param name="mdSmdStop" value="0mil"/>
 <param name="msWidth" value="10mil"/>
@@ -2857,10 +2877,10 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <attribute name="VALUE" x="43.4975" y="87.2" size="1.27" layer="27" rot="R270"/>
 <attribute name="NAME" x="54.9275" y="87.2" size="1.27" layer="25" rot="R270"/>
 </element>
-<element name="D1" library="parts" package="DO214AC" value="STPS1L30A" x="30.7975" y="14.9225" smashed="yes" rot="R270">
-<attribute name="RS" value="485-8061" x="30.7975" y="14.9225" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="NAME" x="32.401" y="16.2925" size="1.27" layer="25" ratio="10" rot="R270"/>
-<attribute name="VALUE" x="32.369" y="19.785" size="1.27" layer="27" ratio="10" rot="R270"/>
+<element name="D1" library="parts" package="DO214AC" value="STPS1L30A" x="30.7975" y="14.605" smashed="yes" rot="R270">
+<attribute name="RS" value="485-8061" x="30.7975" y="14.605" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="NAME" x="32.401" y="15.975" size="1.27" layer="25" ratio="10" rot="R270"/>
+<attribute name="VALUE" x="32.369" y="19.4675" size="1.27" layer="27" ratio="10" rot="R270"/>
 </element>
 <element name="R13" library="rcl" package="R0603" value="510R" x="41.275" y="12.065" smashed="yes">
 <attribute name="NAME" x="39.0525" y="11.43" size="1.27" layer="25" rot="R90"/>
@@ -3132,6 +3152,10 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <attribute name="NAME" x="31.75" y="7.3025" size="1.27" layer="26" rot="MR90"/>
 <attribute name="VALUE" x="31.75" y="7.3025" size="1.27" layer="28" rot="MR90"/>
 </element>
+<element name="U$1" library="holes" package="3,2" value="" x="-35" y="92"/>
+<element name="U$2" library="holes" package="3,2" value="" x="-35" y="3"/>
+<element name="U$3" library="holes" package="3,2" value="" x="66" y="92"/>
+<element name="U$4" library="holes" package="3,2" value="" x="66" y="3"/>
 </elements>
 <signals>
 <signal name="VDD" class="1">
@@ -3247,8 +3271,8 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="39.37" y1="12.3825" x2="39.6875" y2="12.065" width="0.3556" layer="1"/>
 <wire x1="39.6875" y1="12.065" x2="40.425" y2="12.065" width="0.3556" layer="1"/>
 <polygon width="0.9144" layer="16" rank="6">
-<vertex x="-38.1" y="-3.175"/>
-<vertex x="-38.1" y="97.79"/>
+<vertex x="-41.1" y="-3.175"/>
+<vertex x="-41.1" y="97.79"/>
 <vertex x="99.06" y="97.79"/>
 <vertex x="99.06" y="-3.175"/>
 </polygon>
@@ -3354,9 +3378,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <vertex x="46.355" y="84.1375"/>
 </polygon>
 <wire x1="47.3075" y1="80.645" x2="47.3075" y2="82.55" width="0.9144" layer="16"/>
-<wire x1="30.7975" y1="16.9725" x2="29.6725" y2="16.9725" width="0.9144" layer="1"/>
-<wire x1="29.6725" y1="16.9725" x2="28.8925" y2="16.1925" width="0.9144" layer="1"/>
-<wire x1="28.8925" y1="16.1925" x2="28.8925" y2="1.74625" width="0.9144" layer="1"/>
+<wire x1="28.8925" y1="14.75" x2="28.8925" y2="1.74625" width="0.9144" layer="1"/>
 <wire x1="28.8925" y1="1.74625" x2="27.94" y2="0.79375" width="0.9144" layer="1"/>
 <wire x1="27.94" y1="0.79375" x2="22.86" y2="0.79375" width="0.9144" layer="1"/>
 <wire x1="22.86" y1="0.79375" x2="21.9075" y2="1.74625" width="0.9144" layer="1"/>
@@ -3379,10 +3401,11 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="17.49" y1="53.6575" x2="21.9075" y2="53.6575" width="0.3556" layer="1"/>
 <wire x1="53.18125" y1="15.1375" x2="55.03" y2="15.1375" width="0.3556" layer="1"/>
 <wire x1="55.03" y1="15.1375" x2="56.1975" y2="13.97" width="0.3556" layer="1"/>
-<wire x1="31.605" y1="17.78" x2="30.7975" y2="16.9725" width="0.9144" layer="1"/>
 <wire x1="48.475" y1="17.78" x2="51.1175" y2="15.1375" width="0.9144" layer="1"/>
 <wire x1="48.475" y1="17.78" x2="45.4025" y2="17.78" width="0.9144" layer="1"/>
-<wire x1="31.605" y1="17.78" x2="44.1325" y2="17.78" width="0.9144" layer="1"/>
+<wire x1="31.9225" y1="17.78" x2="44.1325" y2="17.78" width="0.9144" layer="1"/>
+<wire x1="31.9225" y1="17.78" x2="30.7975" y2="16.655" width="0.9144" layer="1"/>
+<wire x1="28.8925" y1="14.75" x2="30.7975" y2="16.655" width="0.9144" layer="1"/>
 </signal>
 <signal name="+3V3" class="1">
 <contactref element="JP2" pad="5"/>
@@ -3660,11 +3683,9 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="76.2" y1="13.335" x2="76.2" y2="11.1125" width="0.254" layer="16"/>
 <wire x1="76.2" y1="11.1125" x2="77.47" y2="9.8425" width="0.254" layer="16"/>
 <via x="77.47" y="9.8425" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="77.47" y1="9.8425" x2="72.39" y2="9.8425" width="0.3556" layer="1"/>
-<wire x1="72.39" y1="9.8425" x2="70.8025" y2="8.255" width="0.3556" layer="1"/>
-<wire x1="70.8025" y1="8.255" x2="62.23" y2="8.255" width="0.3556" layer="1"/>
-<wire x1="62.23" y1="8.255" x2="60.325" y2="10.16" width="0.3556" layer="1"/>
-<wire x1="60.325" y1="10.16" x2="60.325" y2="18.0975" width="0.3556" layer="1"/>
+<wire x1="77.47" y1="9.8425" x2="62.23" y2="9.8425" width="0.3556" layer="1"/>
+<wire x1="62.23" y1="9.8425" x2="60.325" y2="11.7475" width="0.3556" layer="1"/>
+<wire x1="60.325" y1="11.7475" x2="60.325" y2="18.0975" width="0.3556" layer="1"/>
 <wire x1="60.325" y1="18.0975" x2="59.69" y2="18.7325" width="0.3556" layer="1"/>
 <wire x1="59.69" y1="18.7325" x2="38.1" y2="18.7325" width="0.3556" layer="1"/>
 <via x="32.0675" y="21.59" extent="1-16" drill="0.8" shape="octagon"/>
@@ -3748,13 +3769,11 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="77.5925" y1="14.22" x2="78.64875" y2="14.22" width="0.254" layer="16"/>
 <wire x1="78.64875" y1="14.22" x2="79.53375" y2="13.335" width="0.254" layer="16"/>
 <via x="79.53375" y="13.335" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="79.53375" y1="13.335" x2="73.3425" y2="13.335" width="0.3556" layer="1"/>
-<wire x1="73.3425" y1="13.335" x2="72.0725" y2="12.065" width="0.3556" layer="1"/>
-<wire x1="72.0725" y1="12.065" x2="72.0725" y2="10.4775" width="0.3556" layer="1"/>
-<wire x1="72.0725" y1="10.4775" x2="70.485" y2="8.89" width="0.3556" layer="1"/>
-<wire x1="70.485" y1="8.89" x2="62.5475" y2="8.89" width="0.3556" layer="1"/>
-<wire x1="62.5475" y1="8.89" x2="60.96" y2="10.4775" width="0.3556" layer="1"/>
-<wire x1="60.96" y1="10.4775" x2="60.96" y2="18.415" width="0.3556" layer="1"/>
+<wire x1="79.53375" y1="13.335" x2="78.4225" y2="13.335" width="0.3556" layer="1"/>
+<wire x1="78.4225" y1="13.335" x2="75.8825" y2="10.795" width="0.3556" layer="1"/>
+<wire x1="75.8825" y1="10.795" x2="62.5475" y2="10.795" width="0.3556" layer="1"/>
+<wire x1="62.5475" y1="10.795" x2="60.96" y2="12.3825" width="0.3556" layer="1"/>
+<wire x1="60.96" y1="12.3825" x2="60.96" y2="18.415" width="0.3556" layer="1"/>
 <wire x1="60.96" y1="18.415" x2="60.0075" y2="19.3675" width="0.3556" layer="1"/>
 <wire x1="60.0075" y1="19.3675" x2="38.4175" y2="19.3675" width="0.3556" layer="1"/>
 <wire x1="38.4175" y1="19.3675" x2="34.925" y2="22.86" width="0.3556" layer="1"/>
@@ -3939,10 +3958,10 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="50.165" y1="32.0675" x2="50.165" y2="34.71" width="0.3556" layer="1"/>
 <wire x1="50.165" y1="34.71" x2="51.49125" y2="36.03625" width="0.3556" layer="1"/>
 <polygon width="0.9144" layer="1" rank="6">
-<vertex x="-38.1" y="-3.175"/>
+<vertex x="-41.1" y="-3.175"/>
 <vertex x="99.06" y="-3.175"/>
 <vertex x="99.06" y="97.79"/>
-<vertex x="-38.1" y="97.79"/>
+<vertex x="-41.1" y="97.79"/>
 </polygon>
 <wire x1="52.3875" y1="60.96" x2="55.88" y2="60.96" width="0.9144" layer="16"/>
 <wire x1="55.88" y1="60.96" x2="56.515" y2="60.325" width="0.9144" layer="16"/>
@@ -4554,8 +4573,8 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <contactref element="D1" pad="A"/>
 <wire x1="35.2425" y1="12.7" x2="33.02" y2="12.7" width="0.9144" layer="16"/>
 <via x="33.02" y="12.7" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="33.02" y1="12.7" x2="30.97" y2="12.7" width="0.9144" layer="1"/>
-<wire x1="30.97" y1="12.7" x2="30.7975" y2="12.8725" width="0.9144" layer="1"/>
+<wire x1="33.02" y1="12.7" x2="30.9425" y2="12.7" width="0.9144" layer="1"/>
+<wire x1="30.9425" y1="12.7" x2="30.7975" y2="12.555" width="0.9144" layer="1"/>
 </signal>
 <signal name="N$39">
 <contactref element="U7" pad="5"/>
@@ -4615,13 +4634,11 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="77.5925" y1="14.72" x2="79.1725" y2="14.72" width="0.254" layer="16"/>
 <wire x1="79.1725" y1="14.72" x2="79.53375" y2="15.08125" width="0.254" layer="16"/>
 <via x="79.53375" y="15.08125" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="79.53375" y1="15.08125" x2="72.86625" y2="15.08125" width="0.3556" layer="1"/>
-<wire x1="72.86625" y1="15.08125" x2="71.4375" y2="13.6525" width="0.3556" layer="1"/>
-<wire x1="71.4375" y1="13.6525" x2="71.4375" y2="10.795" width="0.3556" layer="1"/>
-<wire x1="71.4375" y1="10.795" x2="70.1675" y2="9.525" width="0.3556" layer="1"/>
-<wire x1="70.1675" y1="9.525" x2="62.865" y2="9.525" width="0.3556" layer="1"/>
-<wire x1="62.865" y1="9.525" x2="61.595" y2="10.795" width="0.3556" layer="1"/>
-<wire x1="61.595" y1="10.795" x2="61.595" y2="18.7325" width="0.3556" layer="1"/>
+<wire x1="79.53375" y1="15.08125" x2="78.58125" y2="15.08125" width="0.3556" layer="1"/>
+<wire x1="78.58125" y1="15.08125" x2="75.2475" y2="11.7475" width="0.3556" layer="1"/>
+<wire x1="75.2475" y1="11.7475" x2="62.865" y2="11.7475" width="0.3556" layer="1"/>
+<wire x1="62.865" y1="11.7475" x2="61.595" y2="13.0175" width="0.3556" layer="1"/>
+<wire x1="61.595" y1="13.0175" x2="61.595" y2="18.7325" width="0.3556" layer="1"/>
 <wire x1="61.595" y1="18.7325" x2="60.325" y2="20.0025" width="0.3556" layer="1"/>
 <wire x1="60.325" y1="20.0025" x2="38.735" y2="20.0025" width="0.3556" layer="1"/>
 <wire x1="38.735" y1="20.0025" x2="35.2425" y2="23.495" width="0.3556" layer="1"/>
@@ -4745,12 +4762,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="70.2825" y1="13.22" x2="70.485" y2="13.0175" width="0.254" layer="16"/>
 <wire x1="70.485" y1="13.0175" x2="70.485" y2="11.1125" width="0.254" layer="16"/>
 <wire x1="70.485" y1="11.1125" x2="69.85" y2="10.4775" width="0.254" layer="16"/>
-<wire x1="69.85" y1="10.4775" x2="68.2625" y2="10.4775" width="0.254" layer="16"/>
-<wire x1="68.2625" y1="10.4775" x2="66.675" y2="8.89" width="0.254" layer="16"/>
-<wire x1="66.675" y1="8.89" x2="64.135" y2="8.89" width="0.254" layer="16"/>
-<wire x1="64.135" y1="8.89" x2="62.865" y2="10.16" width="0.254" layer="16"/>
-<wire x1="62.865" y1="10.16" x2="62.865" y2="13.0175" width="0.254" layer="16"/>
-<wire x1="62.865" y1="13.0175" x2="62.23" y2="13.6525" width="0.254" layer="16"/>
+<wire x1="64.4525" y1="10.4775" x2="61.595" y2="13.335" width="0.254" layer="16"/>
 <wire x1="53.975" y1="39.0735" x2="53.975" y2="40.9575" width="0.3556" layer="1"/>
 <wire x1="53.975" y1="40.9575" x2="55.245" y2="42.2275" width="0.3556" layer="1"/>
 <wire x1="55.245" y1="42.2275" x2="58.1025" y2="42.2275" width="0.3556" layer="1"/>
@@ -4763,9 +4775,10 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="59.055" y1="42.2275" x2="58.57875" y2="41.75125" width="0.3556" layer="1"/>
 <wire x1="60.0075" y1="22.5425" x2="60.0075" y2="32.0675" width="0.254" layer="16"/>
 <wire x1="60.0075" y1="32.0675" x2="60.6425" y2="32.7025" width="0.254" layer="16"/>
-<wire x1="62.23" y1="13.6525" x2="62.23" y2="20.32" width="0.254" layer="16"/>
-<wire x1="62.23" y1="20.32" x2="60.0075" y2="22.5425" width="0.254" layer="16"/>
+<wire x1="61.595" y1="13.335" x2="61.595" y2="20.955" width="0.254" layer="16"/>
+<wire x1="61.595" y1="20.955" x2="60.0075" y2="22.5425" width="0.254" layer="16"/>
 <wire x1="60.9625" y1="34.6075" x2="60.6425" y2="34.6075" width="0.3556" layer="1"/>
+<wire x1="69.85" y1="10.4775" x2="64.4525" y2="10.4775" width="0.254" layer="16"/>
 </signal>
 <signal name="N$14" class="2">
 <contactref element="U3" pad="1"/>
@@ -5562,38 +5575,34 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <signal name="N$96" class="2">
 <contactref element="U13" pad="35"/>
 <contactref element="JP16" pad="1"/>
-<wire x1="71.0925" y1="9.72" x2="71.0925" y2="8.2275" width="0.254" layer="16"/>
-<wire x1="71.0925" y1="8.2275" x2="70.485" y2="7.62" width="0.254" layer="16"/>
-<wire x1="70.485" y1="7.62" x2="63.5" y2="7.62" width="0.254" layer="16"/>
-<wire x1="63.5" y1="7.62" x2="61.595" y2="9.525" width="0.254" layer="16"/>
-<wire x1="61.595" y1="9.525" x2="61.595" y2="12.3825" width="0.254" layer="16"/>
-<wire x1="61.595" y1="12.3825" x2="60.96" y2="13.0175" width="0.254" layer="16"/>
-<wire x1="60.96" y1="13.0175" x2="60.96" y2="19.685" width="0.254" layer="16"/>
-<wire x1="60.96" y1="19.685" x2="58.7375" y2="21.9075" width="0.254" layer="16"/>
+<wire x1="71.0925" y1="9.72" x2="71.0925" y2="8.8625" width="0.254" layer="16"/>
+<wire x1="60.325" y1="12.7" x2="60.325" y2="20.32" width="0.254" layer="16"/>
+<wire x1="60.325" y1="20.32" x2="58.7375" y2="21.9075" width="0.254" layer="16"/>
 <wire x1="58.7375" y1="21.9075" x2="58.7375" y2="33.655" width="0.254" layer="16"/>
 <wire x1="58.7375" y1="33.655" x2="59.69" y2="34.6075" width="0.254" layer="16"/>
 <wire x1="59.69" y1="34.6075" x2="61.595" y2="34.6075" width="0.254" layer="16"/>
 <wire x1="61.595" y1="34.6075" x2="62.865" y2="33.3375" width="0.254" layer="16"/>
 <wire x1="62.865" y1="33.3375" x2="72.7075" y2="33.3375" width="0.254" layer="16"/>
 <wire x1="72.7075" y1="33.3375" x2="75.2475" y2="30.7975" width="0.254" layer="16"/>
+<wire x1="71.0925" y1="8.8625" x2="70.8025" y2="8.5725" width="0.254" layer="16"/>
+<wire x1="70.8025" y1="8.5725" x2="70.1675" y2="8.5725" width="0.254" layer="16"/>
+<wire x1="70.1675" y1="8.5725" x2="69.5325" y2="9.2075" width="0.254" layer="16"/>
+<wire x1="69.5325" y1="9.2075" x2="63.8175" y2="9.2075" width="0.254" layer="16"/>
+<wire x1="63.8175" y1="9.2075" x2="60.325" y2="12.7" width="0.254" layer="16"/>
 </signal>
 <signal name="N$97" class="2">
 <contactref element="U13" pad="36"/>
 <contactref element="JP16" pad="2"/>
-<wire x1="70.5925" y1="9.72" x2="70.5925" y2="8.68" width="0.254" layer="16"/>
-<wire x1="70.5925" y1="8.68" x2="70.1675" y2="8.255" width="0.254" layer="16"/>
-<wire x1="70.1675" y1="8.255" x2="63.8175" y2="8.255" width="0.254" layer="16"/>
-<wire x1="63.8175" y1="8.255" x2="62.23" y2="9.8425" width="0.254" layer="16"/>
-<wire x1="62.23" y1="9.8425" x2="62.23" y2="12.7" width="0.254" layer="16"/>
-<wire x1="62.23" y1="12.7" x2="61.595" y2="13.335" width="0.254" layer="16"/>
-<wire x1="61.595" y1="13.335" x2="61.595" y2="20.0025" width="0.254" layer="16"/>
-<wire x1="61.595" y1="20.0025" x2="59.3725" y2="22.225" width="0.254" layer="16"/>
+<wire x1="60.96" y1="13.0175" x2="60.96" y2="20.6375" width="0.254" layer="16"/>
+<wire x1="60.96" y1="20.6375" x2="59.3725" y2="22.225" width="0.254" layer="16"/>
 <wire x1="59.3725" y1="22.225" x2="59.3725" y2="33.3375" width="0.254" layer="16"/>
 <wire x1="59.3725" y1="33.3375" x2="60.0075" y2="33.9725" width="0.254" layer="16"/>
 <wire x1="60.0075" y1="33.9725" x2="61.2775" y2="33.9725" width="0.254" layer="16"/>
 <wire x1="61.2775" y1="33.9725" x2="62.5475" y2="32.7025" width="0.254" layer="16"/>
 <wire x1="62.5475" y1="32.7025" x2="70.8025" y2="32.7025" width="0.254" layer="16"/>
 <wire x1="70.8025" y1="32.7025" x2="72.7075" y2="30.7975" width="0.254" layer="16"/>
+<wire x1="70.5925" y1="9.72" x2="64.2575" y2="9.72" width="0.254" layer="16"/>
+<wire x1="64.2575" y1="9.72" x2="60.96" y2="13.0175" width="0.254" layer="16"/>
 </signal>
 <signal name="N$98" class="2">
 <contactref element="U13" pad="37"/>
@@ -5602,14 +5611,10 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="68.8975" y1="32.0675" x2="61.595" y2="32.0675" width="0.254" layer="16"/>
 <wire x1="61.595" y1="32.0675" x2="60.6425" y2="31.115" width="0.254" layer="16"/>
 <wire x1="60.6425" y1="31.115" x2="60.6425" y2="22.86" width="0.254" layer="16"/>
-<wire x1="69.0925" y1="11.22" x2="68.0525" y2="11.22" width="0.254" layer="16"/>
-<wire x1="68.0525" y1="11.22" x2="66.3575" y2="9.525" width="0.254" layer="16"/>
-<wire x1="66.3575" y1="9.525" x2="64.4525" y2="9.525" width="0.254" layer="16"/>
-<wire x1="62.865" y1="20.6375" x2="60.6425" y2="22.86" width="0.254" layer="16"/>
-<wire x1="62.865" y1="20.6375" x2="62.865" y2="13.97" width="0.254" layer="16"/>
-<wire x1="62.865" y1="13.97" x2="63.5" y2="13.335" width="0.254" layer="16"/>
-<wire x1="63.5" y1="13.335" x2="63.5" y2="10.4775" width="0.254" layer="16"/>
-<wire x1="63.5" y1="10.4775" x2="64.4525" y2="9.525" width="0.254" layer="16"/>
+<wire x1="62.23" y1="21.2725" x2="60.6425" y2="22.86" width="0.254" layer="16"/>
+<wire x1="62.23" y1="21.2725" x2="62.23" y2="13.6525" width="0.254" layer="16"/>
+<wire x1="62.23" y1="13.6525" x2="64.6625" y2="11.22" width="0.254" layer="16"/>
+<wire x1="69.0925" y1="11.22" x2="64.6625" y2="11.22" width="0.254" layer="16"/>
 </signal>
 <signal name="N$99" class="2">
 <contactref element="U13" pad="38"/>
@@ -5617,16 +5622,15 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="67.6275" y1="30.7975" x2="66.3575" y2="29.5275" width="0.254" layer="16"/>
 <wire x1="66.3575" y1="29.5275" x2="66.3575" y2="26.3525" width="0.254" layer="16"/>
 <via x="66.04" y="21.9075" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="69.0925" y1="11.72" x2="67.6" y2="11.72" width="0.254" layer="16"/>
-<wire x1="67.6" y1="11.72" x2="66.04" y2="10.16" width="0.254" layer="16"/>
-<wire x1="66.04" y1="10.16" x2="64.77" y2="10.16" width="0.254" layer="16"/>
-<wire x1="64.77" y1="10.16" x2="64.135" y2="10.795" width="0.254" layer="16"/>
-<wire x1="66.04" y1="21.9075" x2="66.04" y2="16.51" width="0.254" layer="1"/>
-<wire x1="66.04" y1="16.51" x2="64.135" y2="14.605" width="0.254" layer="1"/>
-<via x="64.135" y="14.605" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="64.135" y1="14.605" x2="64.135" y2="10.795" width="0.254" layer="16"/>
+<wire x1="66.04" y1="21.9075" x2="66.04" y2="18.7325" width="0.254" layer="1"/>
+<via x="63.5" y="16.1925" extent="1-16" drill="0.8" shape="octagon"/>
 <wire x1="66.3575" y1="26.3525" x2="66.04" y2="26.035" width="0.254" layer="16"/>
 <wire x1="66.04" y1="26.035" x2="66.04" y2="21.9075" width="0.254" layer="16"/>
+<wire x1="64.135" y1="12.7" x2="64.135" y2="15.5575" width="0.254" layer="16"/>
+<wire x1="64.135" y1="15.5575" x2="63.5" y2="16.1925" width="0.254" layer="16"/>
+<wire x1="69.0925" y1="11.72" x2="65.115" y2="11.72" width="0.254" layer="16"/>
+<wire x1="65.115" y1="11.72" x2="64.135" y2="12.7" width="0.254" layer="16"/>
+<wire x1="66.04" y1="18.7325" x2="63.5" y2="16.1925" width="0.254" layer="1"/>
 </signal>
 <signal name="N$100" class="2">
 <contactref element="U13" pad="39"/>
@@ -5634,13 +5638,12 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="65.0875" y1="30.7975" x2="63.8175" y2="29.5275" width="0.254" layer="16"/>
 <wire x1="63.8175" y1="29.5275" x2="63.8175" y2="23.495" width="0.254" layer="16"/>
 <via x="63.8175" y="23.495" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="69.0925" y1="12.22" x2="66.195" y2="12.22" width="0.254" layer="16"/>
-<wire x1="66.195" y1="12.22" x2="65.405" y2="11.43" width="0.254" layer="16"/>
-<via x="65.405" y="11.43" extent="1-16" drill="0.8" shape="octagon"/>
-<wire x1="65.405" y1="11.43" x2="62.865" y2="13.97" width="0.254" layer="1"/>
-<wire x1="63.8175" y1="23.495" x2="63.8175" y2="16.1925" width="0.254" layer="1"/>
-<wire x1="63.8175" y1="16.1925" x2="62.865" y2="15.24" width="0.254" layer="1"/>
-<wire x1="62.865" y1="15.24" x2="62.865" y2="13.97" width="0.254" layer="1"/>
+<wire x1="69.0925" y1="12.22" x2="65.5675" y2="12.22" width="0.254" layer="16"/>
+<via x="63.8175" y="18.7325" extent="1-16" drill="0.8" shape="octagon"/>
+<wire x1="63.8175" y1="23.495" x2="63.8175" y2="18.7325" width="0.254" layer="1"/>
+<wire x1="65.5675" y1="12.22" x2="64.77" y2="13.0175" width="0.254" layer="16"/>
+<wire x1="64.77" y1="13.0175" x2="64.77" y2="17.78" width="0.254" layer="16"/>
+<wire x1="64.77" y1="17.78" x2="63.8175" y2="18.7325" width="0.254" layer="16"/>
 </signal>
 <signal name="N$101" class="2">
 <contactref element="U13" pad="40"/>
@@ -5717,8 +5720,7 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <via x="66.675" y="13.97" extent="1-16" drill="0.8" shape="octagon"/>
 <wire x1="69.215" y1="13.97" x2="66.675" y2="13.97" width="0.3556" layer="1"/>
 <wire x1="62.23" y1="22.5425" x2="62.23" y2="21.59" width="0.3556" layer="1"/>
-<wire x1="62.23" y1="21.59" x2="62.23" y2="12.7" width="0.3556" layer="1"/>
-<wire x1="62.23" y1="12.7" x2="64.77" y2="10.16" width="0.3556" layer="1"/>
+<wire x1="62.23" y1="21.59" x2="62.23" y2="15.24" width="0.3556" layer="1"/>
 <wire x1="51.3925" y1="24.1725" x2="51.7525" y2="23.8125" width="0.3556" layer="1"/>
 <via x="51.7525" y="23.8125" extent="1-16" drill="0.8" shape="octagon"/>
 <wire x1="51.7525" y1="23.8125" x2="55.5625" y2="23.8125" width="0.3556" layer="16"/>
@@ -5726,10 +5728,9 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <wire x1="55.5625" y1="23.8125" x2="60.96" y2="23.8125" width="0.3556" layer="1"/>
 <wire x1="60.96" y1="23.8125" x2="62.23" y2="22.5425" width="0.3556" layer="1"/>
 <wire x1="51.3925" y1="25.3025" x2="51.3925" y2="24.1725" width="0.3556" layer="1"/>
-<wire x1="66.675" y1="13.97" x2="66.675" y2="10.795" width="0.3556" layer="1"/>
-<wire x1="66.675" y1="10.795" x2="66.04" y2="10.16" width="0.3556" layer="1"/>
-<wire x1="66.04" y1="10.16" x2="64.77" y2="10.16" width="0.3556" layer="1"/>
 <wire x1="61.91" y1="21.59" x2="62.23" y2="21.59" width="0.3556" layer="1"/>
+<wire x1="62.23" y1="15.24" x2="63.5" y2="13.97" width="0.3556" layer="1"/>
+<wire x1="63.5" y1="13.97" x2="66.675" y2="13.97" width="0.3556" layer="1"/>
 </signal>
 <signal name="PC9">
 <contactref element="JP2" pad="46"/>
@@ -6183,10 +6184,63 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <approved hash="3,1,4a58b624b61b4a67"/>
 <approved hash="3,1,3dfb63020a0412fb"/>
 <approved hash="3,1,2974272826bb28e7"/>
-<approved hash="3,1,e9aa13435342a9ab"/>
-<approved hash="3,1,d4955037d07c54de"/>
 <approved hash="3,1,6bb66994e988ebaa"/>
 <approved hash="3,16,e96348c9c83f6995"/>
+<approved hash="5,16,7ffb6699d8648e78"/>
+<approved hash="5,16,a361424970a93dab"/>
+<approved hash="5,16,5d8342f549f7b17c"/>
+<approved hash="5,16,402566a054c53b3e"/>
+<approved hash="5,16,66f07775f7d4baef"/>
+<approved hash="5,16,86165fa06145394a"/>
+<approved hash="5,16,de690b4d528a7985"/>
+<approved hash="5,16,02a71587520afb4e"/>
+<approved hash="5,16,32690eb95788bad7"/>
+<approved hash="5,16,8ea7124cf5d2d8d2"/>
+<approved hash="4,1,3f63b1b090285374"/>
+<approved hash="4,1,43f6198d4266d7cb"/>
+<approved hash="4,1,d39e3f9525e615a3"/>
+<approved hash="4,1,2c2dd52bde561141"/>
+<approved hash="4,1,dd48dace55099541"/>
+<approved hash="4,1,7a07b765595c0129"/>
+<approved hash="4,1,a1d661ce243fda13"/>
+<approved hash="4,1,0a2b5e6dbf637778"/>
+<approved hash="4,16,8101c73b2c74d63e"/>
+<approved hash="4,16,43f6198d4266d7cb"/>
+<approved hash="4,16,d39e3f9525e615a3"/>
+<approved hash="4,16,82d245b320a4f809"/>
+<approved hash="4,16,3cdb904e94b2b026"/>
+<approved hash="4,16,3bc3b65d8d3f8026"/>
+<approved hash="4,16,a1d661ce243fda13"/>
+<approved hash="4,16,0a2b5e6dbf637778"/>
+<approved hash="4,16,de600d22a9fe1f82"/>
+<approved hash="4,16,2c2dd52bde561141"/>
+<approved hash="4,16,58a24704f7262f6d"/>
+<approved hash="4,16,7a07b765595c0129"/>
+<approved hash="4,16,dd48dace55099541"/>
+<approved hash="4,16,170407c41ad52c9a"/>
+<approved hash="4,1,7ab9c17c9f341756"/>
+<approved hash="4,1,9e27496fc76eb12b"/>
+<approved hash="4,16,9b239c3d667ee04b"/>
+<approved hash="4,16,7ab9c17c9f341756"/>
+<approved hash="4,16,9e27496fc76eb12b"/>
+<approved hash="4,16,68231c6841903ede"/>
+<approved hash="4,1,eb2d2a021b747a47"/>
+<approved hash="4,1,ad15ff14ef171990"/>
+<approved hash="4,1,9b8d5ebaf75eda4f"/>
+<approved hash="4,1,3b00600545ababaa"/>
+<approved hash="4,1,2c8b49e297d0cf01"/>
+<approved hash="4,16,c0ec318552911b0c"/>
+<approved hash="4,16,eb2d2a021b747a47"/>
+<approved hash="4,16,ad15ff14ef171990"/>
+<approved hash="4,16,7ae2c16170e064a8"/>
+<approved hash="4,16,a906855c97c743b7"/>
+<approved hash="4,16,2c8b49e297d0cf01"/>
+<approved hash="4,16,9b8d5ebaf75eda4f"/>
+<approved hash="4,16,3b00600545ababaa"/>
+<approved hash="3,1,e9aa13435342a9ab"/>
+<approved hash="3,1,d4955037d07c54de"/>
+<approved hash="3,1,59503b72bb56d974"/>
+<approved hash="3,16,bb40beea3ed93b73"/>
 <approved hash="3,16,79b079b354065405"/>
 <approved hash="3,16,eeb2eecde578e507"/>
 <approved hash="3,16,1fcf1fce7a7b7a7a"/>
@@ -6458,58 +6512,58 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <approved hash="3,1,aa4ea672a4b2a88e"/>
 <approved hash="3,1,b91b35e734eab816"/>
 <approved hash="3,1,394a05d6052939b5"/>
-<approved hash="19,1,b8cff6ab1be6bec8"/>
-<approved hash="19,1,babb581640579657"/>
-<approved hash="19,1,b2a27c2d819d2ee8"/>
 <approved hash="19,1,ac44e29e0009b6c8"/>
-<approved hash="19,1,c2b406d119b9e2f5"/>
+<approved hash="19,1,b8cff6ab1be6bec8"/>
+<approved hash="19,1,b2a27c2d819d2ee8"/>
+<approved hash="19,1,babb581640579657"/>
 <approved hash="19,1,d22c0c8683c572f4"/>
 <approved hash="19,1,c93e186f8c3c69c0"/>
 <approved hash="19,1,ca96123a0590ea6b"/>
+<approved hash="19,1,c2b406d119b9e2f5"/>
 <approved hash="5,1,d38fc585c3b89210"/>
 <approved hash="5,1,cc6071170f46b230"/>
 <approved hash="5,1,7ccda28582c942e5"/>
 <approved hash="5,1,0e6804c3423c8eb3"/>
 <approved hash="5,1,10c2acf25221ee93"/>
-<approved hash="5,1,6fb0d57db651ace0"/>
-<approved hash="5,1,c8d0b24d277e2405"/>
 <approved hash="5,1,b31301d8e33cf042"/>
 <approved hash="5,1,1dbdfc8b29b43fa0"/>
+<approved hash="5,1,6fb0d57db651ace0"/>
+<approved hash="5,1,c8d0b24d277e2405"/>
 <approved hash="5,1,55a25fc35f759686"/>
 <approved hash="5,1,83c011be535a6091"/>
 <approved hash="5,1,60cda6c5b678c012"/>
 <approved hash="5,1,5f62c4d307ff3c32"/>
-<approved hash="5,1,feb2627f01533de2"/>
-<approved hash="5,1,7bd2014d277e2407"/>
 <approved hash="5,1,98e6a6a34770d982"/>
 <approved hash="5,1,aebf4f8b29b43fa2"/>
+<approved hash="5,1,feb2627f01533de2"/>
+<approved hash="5,1,7bd2014d277e2407"/>
+<approved hash="5,1,2867229bae03416d"/>
+<approved hash="5,1,280f31fd702ec96b"/>
 <approved hash="5,1,c008df5d94bf958e"/>
 <approved hash="5,1,f008dbc58c0e2e1f"/>
 <approved hash="5,1,ee6f55de96f28d3f"/>
-<approved hash="5,1,2867229bae03416d"/>
-<approved hash="5,1,280f31fd702ec96b"/>
 <approved hash="5,1,49bff372905e8aef"/>
 <approved hash="5,1,eadf904d237e200a"/>
 <approved hash="5,1,951c27d7c533d64d"/>
 <approved hash="5,1,3fb2de8b2db43baf"/>
+<approved hash="5,1,31bf2dbf9b7d9919"/>
+<approved hash="5,1,01bf2b5681bf2019"/>
+<approved hash="5,1,7169dad819f41239"/>
 <approved hash="5,1,dba93dc3574a6cba"/>
 <approved hash="5,1,adcb0fb54d514e9a"/>
-<approved hash="5,1,01bf2b5681bf2019"/>
-<approved hash="5,1,31bf2dbf9b7d9919"/>
-<approved hash="5,1,7169dad819f41239"/>
+<approved hash="5,1,2e6831be2f49f059"/>
+<approved hash="5,1,d8b901be2f49f6e9"/>
+<approved hash="5,1,65d91f4d237e200c"/>
 <approved hash="5,1,041adba8257bfa4b"/>
 <approved hash="5,1,b0b4518b2db43ba9"/>
-<approved hash="5,1,d8b901be2f49f6e9"/>
-<approved hash="5,1,2e6831be2f49f059"/>
-<approved hash="5,1,65d91f4d237e200c"/>
-<approved hash="4,1,3f63b1b090285374"/>
-<approved hash="4,1,d39e3f9525e615a3"/>
-<approved hash="4,1,43f6198d4266d7cb"/>
-<approved hash="4,1,a1d661ce243fda13"/>
-<approved hash="4,1,0a2b5e6dbf637778"/>
-<approved hash="4,1,2c2dd52bde561141"/>
-<approved hash="4,1,7a07b765595c0129"/>
-<approved hash="4,1,dd48dace55099541"/>
+<approved hash="4,1,a110bf21a35e4162"/>
+<approved hash="4,1,179d24ef48753a4f"/>
+<approved hash="4,1,a0dcec0c7da6a69e"/>
+<approved hash="4,1,2a47851f4fefe05c"/>
+<approved hash="4,1,1ccde49653b2ad5c"/>
+<approved hash="4,1,f4f1168a6b67a5c0"/>
+<approved hash="4,1,ea5a2338e25556aa"/>
+<approved hash="4,1,ae6b7033df972d1f"/>
 <approved hash="6,1,b369fabc5ff6da63"/>
 <approved hash="6,1,bca1cbb36286d9d4"/>
 <approved hash="6,1,870b801398139f0b"/>
@@ -6548,53 +6602,55 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <approved hash="5,16,65350522218dfc46"/>
 <approved hash="5,16,5866637f1b5c3f01"/>
 <approved hash="5,16,a9353234f68a2107"/>
-<approved hash="5,16,4b599a1ba9ed0684"/>
 <approved hash="5,16,741925e642a4ea84"/>
-<approved hash="5,16,c4e75b18a8b5c9d6"/>
+<approved hash="5,16,4b599a1ba9ed0684"/>
 <approved hash="5,16,04e753cd8c3b4b1a"/>
+<approved hash="5,16,c4e75b18a8b5c9d6"/>
 <approved hash="5,16,6b1b9928837e94b8"/>
 <approved hash="5,16,5601c420f4fdd8b8"/>
-<approved hash="5,16,9a1c0e1d074932f5"/>
 <approved hash="5,16,a1cbf55bb4b41ef5"/>
-<approved hash="5,16,70bfe9da7f2b5822"/>
-<approved hash="5,16,491e7f478303d422"/>
+<approved hash="5,16,9a1c0e1d074932f5"/>
 <approved hash="5,16,5195475addce6d1d"/>
-<approved hash="5,16,d273cb227875b444"/>
+<approved hash="5,16,491e7f478303d422"/>
+<approved hash="5,16,70bfe9da7f2b5822"/>
 <approved hash="5,16,b640d3a0b5890529"/>
+<approved hash="5,16,d273cb227875b444"/>
 <approved hash="5,16,ba3bd390b5bd0962"/>
 <approved hash="5,16,de2ecb0a7855b809"/>
 <approved hash="5,16,2aa6cb0a78654cb1"/>
 <approved hash="5,16,4fb3d380b5adfcfa"/>
-<approved hash="5,16,b4cceaefe0152718"/>
-<approved hash="5,16,495dea8df3c1fa4b"/>
-<approved hash="5,16,06aeaf40f421fa71"/>
-<approved hash="5,16,4288eaebf9edc194"/>
 <approved hash="5,16,97b5cb0258206704"/>
+<approved hash="5,16,9006cb267842f385"/>
+<approved hash="5,16,d7d688fa7875e847"/>
+<approved hash="5,16,4288eaebf9edc194"/>
+<approved hash="5,16,b4cceaefe0152718"/>
 <approved hash="5,16,ea6bdff0f6a52720"/>
 <approved hash="5,16,40b4198e5816cd91"/>
-<approved hash="5,16,76bba960f5cdc1a8"/>
 <approved hash="5,16,9bcacb37f8d93f01"/>
 <approved hash="5,16,9979cb0ad82eac80"/>
 <approved hash="5,16,60d0c5abf8e4f981"/>
+<approved hash="5,16,495dea8df3c1fa4b"/>
+<approved hash="5,16,06aeaf40f421fa71"/>
+<approved hash="5,16,76bba960f5cdc1a8"/>
 <approved hash="5,16,9297cbc65b2d40c6"/>
+<approved hash="5,16,263978ea5b153438"/>
 <approved hash="5,16,9ce8cb2a380fd9c7"/>
 <approved hash="5,16,b995e75638353de8"/>
-<approved hash="5,16,9006cb267842f385"/>
-<approved hash="5,16,d7d688fa7875e847"/>
-<approved hash="5,16,263978ea5b153438"/>
 <approved hash="5,16,13325646d815f9df"/>
+<approved hash="5,16,1996f99c3a207157"/>
+<approved hash="5,16,375d0b85529cbad7"/>
+<approved hash="5,16,1996f9f64109393b"/>
+<approved hash="5,16,6d058c1faec00364"/>
 <approved hash="5,16,1a4f2a89582a8efd"/>
-<approved hash="5,16,7ffb6699d8648e78"/>
+<approved hash="5,16,6d058c0998493b48"/>
 <approved hash="5,16,06f53285482498eb"/>
+<approved hash="5,16,b64b439f326ce646"/>
+<approved hash="5,16,b64b4389d2053daa"/>
 <approved hash="5,16,4a506089c86549a2"/>
 <approved hash="5,16,8967720f32d12d07"/>
 <approved hash="5,16,8967721cc258152b"/>
 <approved hash="5,16,7a13165d24b410b9"/>
-<approved hash="5,16,a361424970a93dab"/>
 <approved hash="5,16,7c59c4b5d824ba70"/>
-<approved hash="5,16,5d8342f549f7b17c"/>
-<approved hash="5,16,402566a054c53b3e"/>
-<approved hash="5,16,66f07775f7d4baef"/>
 <approved hash="5,16,b26696053815d168"/>
 <approved hash="5,16,55c0c495d81593f8"/>
 <approved hash="5,16,d0ea71ef36d072ab"/>
@@ -6603,7 +6659,6 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <approved hash="5,16,9aaa485276b80213"/>
 <approved hash="5,16,8379078fbdd00498"/>
 <approved hash="5,16,8379079211d94cb4"/>
-<approved hash="5,16,86165fa06145394a"/>
 <approved hash="5,16,cfc0b3d5803401aa"/>
 <approved hash="5,16,544cdd2c4c4f99d1"/>
 <approved hash="5,16,544cdd362ba5513d"/>
@@ -6612,110 +6667,106 @@ Design rules for in house PCB manufacture at the JKU Linz IME institute.</descri
 <approved hash="5,16,db1efa85d20b8c37"/>
 <approved hash="5,16,d6e688bd438ca20b"/>
 <approved hash="5,16,9176895d428de49a"/>
-<approved hash="5,16,de690b4d528a7985"/>
-<approved hash="5,16,02a71587520afb4e"/>
 <approved hash="5,16,0e7cd8c322c10aef"/>
 <approved hash="5,16,458cd9c32200407e"/>
 <approved hash="5,16,c4546922923aeca7"/>
 <approved hash="5,16,a454404bf4b4aed7"/>
-<approved hash="5,16,eb37e7435f74a08f"/>
-<approved hash="5,16,32690eb95788bad7"/>
-<approved hash="5,16,8ca7e3096e162ff9"/>
 <approved hash="5,16,2b37d87df5ea339c"/>
+<approved hash="5,16,eb37e7435f74a08f"/>
+<approved hash="5,16,8ca7e3096e162ff9"/>
+<approved hash="5,16,7b87a775583c37b7"/>
+<approved hash="5,16,4f895b84d2d278a4"/>
 <approved hash="5,16,a1aefbc5d20af646"/>
-<approved hash="5,16,8ea7124cf5d2d8d2"/>
-<approved hash="5,16,771f3def31e44ea2"/>
-<approved hash="5,16,b71f16dcb53c6a18"/>
-<approved hash="5,16,dda25052ce204c37"/>
 <approved hash="5,16,9a326c32f2213646"/>
-<approved hash="5,16,a930fd7c0eec849a"/>
+<approved hash="5,16,b71f16dcb53c6a18"/>
+<approved hash="5,16,771f3def31e44ea2"/>
+<approved hash="5,16,dda25052ce204c37"/>
+<approved hash="5,16,83895f5536ec98d2"/>
 <approved hash="5,16,eea0fc9c0fedc20b"/>
-<approved hash="5,16,fae624456b4d0a45"/>
-<approved hash="5,16,dae630b971afb0a0"/>
-<approved hash="5,16,0056264568adf0d5"/>
+<approved hash="5,16,a930fd7c0eec849a"/>
 <approved hash="5,16,20561359518f6ad0"/>
-<approved hash="5,16,f6cee7434383ec22"/>
+<approved hash="5,16,0056264568adf0d5"/>
+<approved hash="5,16,dae630b971afb0a0"/>
+<approved hash="5,16,fae624456b4d0a45"/>
 <approved hash="5,16,b05ee7834282abb3"/>
-<approved hash="5,16,7f9f0fa9cbb7407e"/>
-<approved hash="5,16,380f02a9c6960aef"/>
+<approved hash="5,16,f6cee7434383ec22"/>
 <approved hash="5,16,571fb4c5c936d420"/>
 <approved hash="5,16,d71f87839659acef"/>
+<approved hash="5,16,7f9f0fa9cbb7407e"/>
 <approved hash="5,16,298fa343b159769f"/>
 <approved hash="5,16,a98fb585c8762bb0"/>
+<approved hash="5,16,380f02a9c6960aef"/>
+<approved hash="5,16,b1479a0c3503749d"/>
+<approved hash="5,16,51478a9cea7a8f84"/>
 <approved hash="5,16,4ad7bacc1623aeed"/>
 <approved hash="5,16,aad78bbceb7a7474"/>
 <approved hash="5,16,c70d9af902678c22"/>
-<approved hash="5,16,51478a9cea7a8f84"/>
-<approved hash="5,16,b1479a0c3503749d"/>
 <approved hash="5,16,809d9b190266cbb3"/>
-<approved hash="5,16,7d982545230aff14"/>
-<approved hash="5,16,42375ac4b53cd314"/>
-<approved hash="5,16,08a759c4b63d9aa5"/>
-<approved hash="5,16,3a082b452d0bb6a5"/>
-<approved hash="5,16,c58fd53696ee2ce8"/>
-<approved hash="5,16,858fdb8bb46d944c"/>
 <approved hash="5,16,427fda8bb54d53dc"/>
 <approved hash="5,16,027fc8d688cef698"/>
-<approved hash="5,16,3f27e9c773341b18"/>
-<approved hash="5,16,9f27f5e0e0f83096"/>
-<approved hash="5,16,0906ba1be941d565"/>
-<approved hash="5,16,3de32e4ff4ad5965"/>
+<approved hash="5,16,3a082b452d0bb6a5"/>
+<approved hash="5,16,08a759c4b63d9aa5"/>
+<approved hash="5,16,7d982545230aff14"/>
+<approved hash="5,16,42375ac4b53cd314"/>
+<approved hash="5,16,c58fd53696ee2ce8"/>
+<approved hash="5,16,858fdb8bb46d944c"/>
 <approved hash="5,16,7373298ff34c17d4"/>
 <approved hash="5,16,4e96b43be7409bd4"/>
-<approved hash="5,16,f4b7e8877274d188"/>
+<approved hash="5,16,0906ba1be941d565"/>
+<approved hash="5,16,3de32e4ff4ad5965"/>
 <approved hash="5,16,54b7e460f2b8eae6"/>
-<approved hash="5,16,1804ceee5296751d"/>
-<approved hash="5,16,2e3cf884b134991d"/>
+<approved hash="5,16,f4b7e8877274d188"/>
+<approved hash="5,16,9f27f5e0e0f83096"/>
+<approved hash="5,16,3f27e9c773341b18"/>
 <approved hash="5,16,ecefe6ad40a38e94"/>
 <approved hash="5,16,ecefff5cb6b55b6d"/>
 <approved hash="5,16,644cf984b075d38c"/>
 <approved hash="5,16,5f94c3ee5fb73f8c"/>
+<approved hash="5,16,1804ceee5296751d"/>
+<approved hash="5,16,2e3cf884b134991d"/>
 <approved hash="5,16,227ff8bcb0b595dd"/>
 <approved hash="5,16,227ff2ad568354e4"/>
-<approved hash="5,16,7d97d777a46dec93"/>
-<approved hash="5,16,1d97cccdf04e9cb0"/>
 <approved hash="5,16,170d0f85737bd5cf"/>
 <approved hash="5,16,2f0357a43eec99cf"/>
-<approved hash="5,16,d727cfcdf32e5520"/>
 <approved hash="5,16,b727c797b74d36e3"/>
+<approved hash="5,16,d727cfcdf32e5520"/>
 <approved hash="5,16,509d0e85727a93be"/>
 <approved hash="5,16,689356a43feddfbe"/>
+<approved hash="5,16,1d97cccdf04e9cb0"/>
+<approved hash="5,16,7d97d777a46dec93"/>
+<approved hash="5,16,115f8184aa7a44fc"/>
+<approved hash="5,16,d15f840000174e91"/>
 <approved hash="5,16,3991d99aa2204672"/>
 <approved hash="5,16,3fd51f4db54dea72"/>
-<approved hash="5,16,c8ef9d44b6ba9d6c"/>
 <approved hash="5,16,08ef98c01f1794e1"/>
-<approved hash="5,16,d15f840000174e91"/>
-<approved hash="5,16,115f8184aa7a44fc"/>
+<approved hash="5,16,c8ef9d44b6ba9d6c"/>
 <approved hash="5,16,44451f8db46c9183"/>
 <approved hash="5,16,7e01e47a9e213d83"/>
-<approved hash="5,16,b987aabb7c75d6a4"/>
 <approved hash="5,16,9987a90a73e27afc"/>
-<approved hash="5,16,6017ad9b7b7508d4"/>
-<approved hash="5,16,4017aaca73c2a08c"/>
-<approved hash="5,16,4d1c7131767755a5"/>
-<approved hash="5,16,70876cbcfa7559a5"/>
-<approved hash="5,16,0e376ddcfb342634"/>
+<approved hash="5,16,b987aabb7c75d6a4"/>
 <approved hash="5,16,0a8c49514e162a34"/>
+<approved hash="5,16,0e376ddcfb342634"/>
+<approved hash="5,16,70876cbcfa7559a5"/>
+<approved hash="5,16,4d1c7131767755a5"/>
+<approved hash="5,16,4017aaca73c2a08c"/>
+<approved hash="5,16,6017ad9b7b7508d4"/>
 <approved hash="5,16,ce9c45a8d82481a4"/>
 <approved hash="5,16,800c45a8d825cf35"/>
 <approved hash="5,16,2a7845ad471fb786"/>
 <approved hash="5,16,1ffa35d1471a9fd0"/>
 <approved hash="5,16,61c845ad471efc37"/>
 <approved hash="5,16,544a35d1471bd461"/>
-<approved hash="4,16,8101c73b2c74d63e"/>
-<approved hash="4,16,d39e3f9525e615a3"/>
-<approved hash="4,16,43f6198d4266d7cb"/>
-<approved hash="4,16,82d245b320a4f809"/>
-<approved hash="4,16,2c2dd52bde561141"/>
-<approved hash="4,16,58a24704f7262f6d"/>
-<approved hash="4,16,dd48dace55099541"/>
-<approved hash="4,16,7a07b765595c0129"/>
-<approved hash="4,16,170407c41ad52c9a"/>
-<approved hash="4,16,3cdb904e94b2b026"/>
-<approved hash="4,16,3bc3b65d8d3f8026"/>
-<approved hash="4,16,0a2b5e6dbf637778"/>
-<approved hash="4,16,a1d661ce243fda13"/>
-<approved hash="4,16,de600d22a9fe1f82"/>
+<approved hash="4,16,39181b865f78f8d3"/>
+<approved hash="4,16,179d24ef48753a4f"/>
+<approved hash="4,16,a0dcec0c7da6a69e"/>
+<approved hash="4,16,17bf1013a91ef448"/>
+<approved hash="4,16,801420953b747e2d"/>
+<approved hash="4,16,ea5a2338e25556aa"/>
+<approved hash="4,16,ae6b7033df972d1f"/>
+<approved hash="4,16,2a47851f4fefe05c"/>
+<approved hash="4,16,c57955d66a5a4557"/>
+<approved hash="4,16,f4f1168a6b67a5c0"/>
+<approved hash="4,16,1ccde49653b2ad5c"/>
 </errors>
 </board>
 </drawing>
