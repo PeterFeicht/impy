@@ -155,6 +155,7 @@ static Console_HelpEntry txtHelpTopics[] = {
     TOPIC("voltage"),
     TOPIC("autorange"),
     TOPIC("calibrate"),
+    TOPIC("ranges"),
     TOPIC("echo"),
 };
 // Those are the top level commands, subcommands are called from their respective processing functions
