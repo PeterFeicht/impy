@@ -78,7 +78,7 @@ USBD_ClassTypeDef  USBD_VCP =
     USBD_VCP_EP0_RxReady,
     USBD_VCP_DataIn,
     USBD_VCP_DataOut,
-    NULL,   /* SOF */ // TODO maybe add SOF callback for faster bulk transfer to host
+    NULL,   /* SOF */
     NULL,   /* IsoINIncomplete */
     NULL,   /* IsoOUTIncomplete */
     USBD_VCP_GetHSCfgDesc,
@@ -397,6 +397,13 @@ static uint8_t USBD_VCP_Setup(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *re
                     USBD_CtlPrepareRx(pdev, (uint8_t *)hcdc->data, req->wLength);
                 }
             }
+            else
+            {
+                ((USBD_VCP_ItfTypeDef *)pdev->pUserData)->Control(req->bRequest, NULL, 0);
+            }
+            break;
+            
+        default:
             break;
     }
     

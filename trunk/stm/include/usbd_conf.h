@@ -9,7 +9,7 @@
 #define USBD_CONF_H_
 
 // Includes -------------------------------------------------------------------
-#include "stm32f4xx_hal.h"
+#include "stm32f4xx.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
