@@ -121,9 +121,14 @@ typedef struct
 #define EEPROM_I2C_TIMEOUT                  0x200
 
 /**
- * EEPROM sizein bytes
+ * EEPROM size in bytes
  */
 #define EEPROM_SIZE                         0x400
+
+/**
+ * Mask for the page address, a page write can only write to addresses which have the same page address
+ */
+#define EEPROM_PAGE_MASK                    0x3F0
 
 /**
  * Configuration data offset, that is the first address of the configuration data space
