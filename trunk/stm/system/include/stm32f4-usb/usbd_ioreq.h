@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    usbd_ioreq.h
   * @author  MCD Application Team
-  * @version V2.0.0
-  * @date    18-February-2014
+  * @version V2.2.0
+  * @date    13-June-2014
   * @brief   header file for the usbd_ioreq.c file
   ******************************************************************************
   * @attention
@@ -34,7 +34,7 @@
 #include  "usbd_def.h"
 #include  "usbd_core.h"
 
-/** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
+/** @addtogroup STM32_USB_DEVICE_LIBRARY
   * @{
   */
   

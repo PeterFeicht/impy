@@ -1,9 +1,9 @@
 /**
   ******************************************************************************
-  * @file    USBD_CDC.c
+  * @file    usbd_cdc.c
   * @author  MCD Application Team
-  * @version V2.0.0
-  * @date    18-February-2014
+  * @version V2.2.0
+  * @date    13-June-2014
   * @brief   This file provides the high layer firmware functions to manage the 
   *          following functionalities of the USB CDC Class:
   *           - Initialization and Configuration of high and low layer
@@ -28,11 +28,6 @@
   *             - Abstract Control Model compliant
   *             - Union Functional collection (using 1 IN endpoint for control)
   *             - Data interface class
-
-  *           @note
-  *             For the Abstract Control Model, this core allows only transmitting the requests to
-  *             lower layer dispatcher (ie. USBD_CDC_vcp.c/.h) which should manage each request and
-  *             perform relative actions.
   * 
   *           These aspects may be enriched or modified for a specific user application.
   *          
@@ -69,7 +64,7 @@
 #include "usbd_ctlreq.h"
 
 
-/** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
+/** @addtogroup STM32_USB_DEVICE_LIBRARY
   * @{
   */
 
@@ -370,7 +365,6 @@ __ALIGN_BEGIN uint8_t USBD_CDC_CfgFSDesc[USB_CDC_CONFIG_DESC_SIZ] __ALIGN_END =
   0x00                               /* bInterval: ignore for Bulk transfer */
 } ;
 
-/* USB_OTG_HS_INTERNAL_DMA_ENABLED */ 
 __ALIGN_BEGIN uint8_t USBD_CDC_OtherSpeedCfgDesc[USB_CDC_CONFIG_DESC_SIZ] __ALIGN_END =
 { 
   0x09,   /* bLength: Configuation Descriptor size */
@@ -625,13 +619,23 @@ static uint8_t  USBD_CDC_Setup (USBD_HandleTypeDef *pdev,
       {
         hcdc->CmdOpCode = req->bRequest;
         hcdc->CmdLength = req->wLength;
-                                                      
+        
         USBD_CtlPrepareRx (pdev, 
                            (uint8_t *)hcdc->data,
                            req->wLength);
       }
-      break;
+      
     }
+    else
+    {
+        ((USBD_CDC_ItfTypeDef *)pdev->pUserData)->Control(req->bRequest,
+                                                          NULL,
+                                                          0);
+    }
+    break;
+ 
+  default: 
+    break;
   }
   return USBD_OK;
 }

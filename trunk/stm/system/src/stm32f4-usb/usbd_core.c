@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    usbd_core.c
   * @author  MCD Application Team
-  * @version V2.0.0
-  * @date    18-February-2014
+  * @version V2.2.0
+  * @date    13-June-2014
   * @brief   This file provides all the USBD core functions.
   ******************************************************************************
   * @attention
@@ -89,7 +89,6 @@
 * @brief  USBD_Init
 *         Initailizes the device stack and load the class driver
 * @param  pdev: device instance
-* @param  core_address: USB OTG core ID
 * @param  pdesc: Descriptor structure address
 * @param  id: Low level core index
 * @retval None
