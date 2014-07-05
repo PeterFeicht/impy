@@ -164,7 +164,7 @@ EEPROM_Error EE_ReadConfiguration(EEPROM_ConfigurationBuffer *buffer);
 EEPROM_Error EE_WriteConfiguration(EEPROM_ConfigurationBuffer *buffer);
 EEPROM_Error EE_ReadSettings(EEPROM_SettingsBuffer *buffer);
 EEPROM_Error EE_WriteSettings(EEPROM_SettingsBuffer *buffer);
-void EE_TimerCallback(void);
+EEPROM_Status EE_TimerCallback(void);
 
 // ----------------------------------------------------------------------------
 
