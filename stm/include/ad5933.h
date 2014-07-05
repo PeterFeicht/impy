@@ -549,6 +549,10 @@ void AD5933_ConvertPolarToCartesian(const AD5933_ImpedancePolar *polar, AD5933_I
 
 uint16_t AD5933_GetVoltageFromRegister(uint16_t reg);
 
+#ifdef DEBUG
+AD5933_Error AD5933_Debug_OutputFreq(uint32_t freq, const AD5933_RangeSettings *range);
+#endif
+
 // ----------------------------------------------------------------------------
 
 #endif /* AD5933_H_ */

@@ -1047,4 +1047,35 @@ uint16_t AD5933_GetVoltageFromRegister(uint16_t reg)
     }
 }
 
+// Debugging functions --------------------------------------------------------
+#ifdef DEBUG
+
+/**
+ * Programs the AD5933 to output a single frequency.
+ * 
+ * @param freq The frequency in Hz
+ * @param range The specifications for PGA gain, voltage range, external attenuation and feedback resistor
+ * @return {@link AD5933_Error} code
+ */
+AD5933_Error AD5933_Debug_OutputFreq(uint32_t freq, const AD5933_RangeSettings *range)
+{
+    AD5933_Error ret;
+    
+    assert_param(range != NULL);
+    assert(status != AD_UNINIT);
+    
+    if(AD5933_IsBusy())
+    {
+        return AD_BUSY;
+    }
+    
+    ret = AD5933_StartMeasurement(range, freq, 1, 1, 10);
+    HAL_Delay(10);
+    HAL_GPIO_WritePin(AD5933_COUPLING_GPIO_PORT, AD5933_COUPLING_GPIO_PIN, GPIO_PIN_SET);
+    
+    return ret;
+}
+
+#endif
+
 // ----------------------------------------------------------------------------
