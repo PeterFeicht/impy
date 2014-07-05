@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    usbd_req.c
   * @author  MCD Application Team
-  * @version V2.0.0
-  * @date    18-February-2014 
+  * @version V2.2.0
+  * @date    13-June-2014 
   * @brief   This file provides the standard USB requests following chapter 9.
   ******************************************************************************
   * @attention
@@ -163,7 +163,7 @@ USBD_StatusTypeDef  USBD_StdDevReq (USBD_HandleTypeDef *pdev , USBD_SetupReqType
 /**
 * @brief  USBD_StdItfReq
 *         Handle standard usb interface requests
-* @param  pdev: USB OTG device instance
+* @param  pdev: device instance
 * @param  req: usb request
 * @retval status
 */
@@ -200,7 +200,7 @@ USBD_StatusTypeDef  USBD_StdItfReq (USBD_HandleTypeDef *pdev , USBD_SetupReqType
 /**
 * @brief  USBD_StdEPReq
 *         Handle standard usb endpoint requests
-* @param  pdev: USB OTG device instance
+* @param  pdev: device instance
 * @param  req: usb request
 * @retval status
 */
