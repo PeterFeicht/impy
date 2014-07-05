@@ -15,6 +15,7 @@ static void MX_I2C1_Init(void);
 static void MX_SPI3_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_TIM10_Init(void);
+static void MX_CRC_Init(void);
 static void MX_USB_DEVICE_Init(void);
 
 // Exported functions ---------------------------------------------------------
@@ -66,6 +67,7 @@ void MX_Init()
     MX_SPI3_Init();
     MX_TIM3_Init();
     MX_TIM10_Init();
+    MX_CRC_Init();
     MX_USB_DEVICE_Init();
 }
 
@@ -318,6 +320,15 @@ static void MX_GPIO_Init(void)
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
     HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+}
+
+/**
+ * Initialize CRC peripheral.
+ */
+static void MX_CRC_Init(void)
+{
+    hcrc.Instance = CRC;
+    HAL_CRC_Init(&hcrc);
 }
 
 /**
