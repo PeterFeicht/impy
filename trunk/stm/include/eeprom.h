@@ -2,7 +2,12 @@
  * @file    eeprom.h
  * @author  Peter Feichtinger
  * @date    16.04.2014
- * @brief   This file contains constants and control function prototypes for the EEPROM driver.
+ * @brief   This file contains constants, type definitions and control function prototypes for the EEPROM driver.
+ * 
+ * The different types of data structures stored on the EEPROM are defined here as well:
+ *  + {@link EEPROM_ConfigurationBuffer} stores configuration data for a specific board that is not likely to change,
+ *    such as soldered resistor values or the Ethernet MAC address.
+ *  + {@link EEPROM_SettingsBuffer} stores the current sweep settings and related things.
  */
 
 #ifndef EEPROM_H_
@@ -36,6 +41,50 @@ typedef struct
     uint8_t  *pData;    //!< Pointer to data buffer
 } EEPROM_Data;
 
+typedef struct
+{
+    uint16_t attenuations[4];               //!< Possible attenuation values, {@code 0} for unpopulated ports
+    uint32_t feedback_resistors[8];         //!< Feedback resistor values, {@code 0} for unpopulated ports
+    uint32_t calibration_values[6];         //!< Calibration resistor values, {@code 0} for unpopulated ports
+    uint8_t  eth_mac[6];                    //!< Ethernet MAC address, 48 bits with MSB first
+    uint8_t  reserved[54];                  //!< Reserved for future use, padding to 128 bytes
+    uint32_t checksum;                      //!< CRC32 checksum of the buffer
+} EEPROM_ConfigurationBuffer;
+
+typedef struct
+{
+    /* Sweep */
+    uint32_t start_freq;                    //!< Sweep start frequency in Hz
+    uint32_t stop_freq;                     //!< Sweep stop frequency in Hz
+    uint32_t feedback;                      //!< Feedback resistor value in Ohm
+    uint16_t num_steps;                     //!< Number of frequency increments
+    uint16_t settling_cycles;               //!< Number of settling cycles, register value
+    uint16_t averages;                      //!< Number of averages per frequency point
+    uint16_t voltage;                       //!< Output voltage range, register value
+    uint16_t attenuation;                   //!< Output voltage attenuation
+    uint16_t pad1;                          //!< Padding for 32 bit alignment
+    /* Console */
+    uint32_t format_spec;                   //!< Console format specification
+    /* ETH */
+    uint32_t ip_address;                    //!< Ethernet IP address
+    /* Bitfield */
+    struct _flags
+    {
+        /* Sweep */
+        unsigned int pga_enabled : 1;       //!< Whether the x5 gain is enabled
+        unsigned int autorange : 1;         //!< Whether autoranging is enabled
+        /* ETH */
+        unsigned int dhcp : 1;              //!< Whether DHCP is enabled
+        unsigned int netmask : 5;           //!< The number of bits set in the IP network mask
+        /* Metadata */
+        unsigned int reserved : 24;         //!< Reserved for future use, padding to 32 bits
+    } flags;                                //!< Bitfield for flags and small values
+    /* Metadata */
+    uint8_t reserved[22];                   //!< Reserved for future use, padding to 64 bytes 
+    uint16_t serial;                        //!< Buffer serial number for EEPROM wear leveling, should not be modified
+    uint32_t checksum;                      //!< CRC32 checksum of the buffer
+} EEPROM_SettingsBuffer;
+
 // Macros ---------------------------------------------------------------------
 
 #define LOBYTE(x)  ((uint8_t)(x & 0x00FF))
@@ -68,15 +117,40 @@ typedef struct
  */
 #define EEPROM_I2C_TIMEOUT                  0x200
 
+/**
+ * Configuration data offset, that is the first address of the configuration data space
+ */
+#define EEPROM_CONFIG_OFFSET                0
+
+/**
+ * Size of the configuration data section in bytes
+ */
+#define EEPROM_CONFIG_SIZE                  128
+
+/**
+ * Data offset, that is the first address for arbitrary data
+ */
+#define EEPROM_DATA_OFFSET                  0x80
+
+/**
+ * Size of the data section in bytes, this is the EEPROM size (1024 bytes) minus the data offset
+ */
+#define EEPROM_DATA_SIZE                    (0x400 - EEPROM_DATA_OFFSET)
+
+/**
+ * Size of the settings buffer in bytes
+ */
+#define EEPROM_SETTINGS_SIZE                64
+
 // Exported functions ---------------------------------------------------------
 
 EEPROM_Status GetStatus(void);
 EEPROM_Error EE_Init(I2C_HandleTypeDef *i2c, uint8_t e2_set);
 EEPROM_Error EE_Reset(void);
-EEPROM_Error EE_ReadByte(uint16_t address, uint8_t *destination);
-EEPROM_Error EE_ReadPage(uint16_t address, uint8_t *buffer, uint8_t size);
-EEPROM_Error EE_WriteByte(uint16_t address, uint8_t value);
-EEPROM_Error EE_WritePage(uint16_t address, uint8_t *buffer, uint8_t size);
+EEPROM_Error EE_ReadConfiguration(EEPROM_ConfigurationBuffer *buffer);
+EEPROM_Error EE_WriteConfiguration(EEPROM_ConfigurationBuffer *buffer);
+EEPROM_Error EE_ReadSettings(EEPROM_SettingsBuffer *buffer);
+EEPROM_Error EE_WriteSettings(EEPROM_SettingsBuffer *buffer);
 void EE_TimerCallback(void);
 
 // ----------------------------------------------------------------------------
