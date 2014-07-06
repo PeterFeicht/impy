@@ -96,8 +96,12 @@ typedef struct
 
 // Macros ---------------------------------------------------------------------
 
+#ifndef LOBYTE
 #define LOBYTE(x)  ((uint8_t)(x & 0x00FF))
+#endif
+#ifndef HIBYTE
 #define HIBYTE(x)  ((uint8_t)((x & 0xFF00) >> 8))
+#endif
 #define MAKE_ADDRESS(_addr, _e2)            ((uint8_t)EEPROM_M24C08_ADDR | \
                                              ((_e2) ? EEPROM_M24C08_ADDR_E2 : 0) | \
                                              (((uint8_t)(_addr) >> 7) & EEPROM_M24C08_BYTE_ADDR_H))
