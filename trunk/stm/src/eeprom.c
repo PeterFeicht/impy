@@ -21,6 +21,7 @@ _Static_assert(sizeof(EEPROM_SettingsBuffer) == EEPROM_SETTINGS_SIZE, "Bad EEPRO
 static HAL_StatusTypeDef EE_Read(uint16_t address, uint8_t *buffer, uint16_t length);
 static HAL_StatusTypeDef EE_Write(uint16_t address, uint8_t *buffer, uint16_t length);
 __STATIC_INLINE uint8_t EE_IsBusy(void);
+static HAL_StatusTypeDef EE_FindLatestSettings(uint16_t *result);
 
 // Private macros -------------------------------------------------------------
 #define CRC_SIZE(X)         ((sizeof(X) - 4) >> 2)
@@ -94,6 +95,45 @@ __STATIC_INLINE uint8_t EE_IsBusy(void)
     EEPROM_Status tmp = status;
     return (tmp != EE_FINISH &&
             tmp != EE_IDLE);
+}
+
+/**
+ * Finds the EEPROM address of the latest settings buffer.
+ * 
+ * @param result Pointer to variable receiving the address
+ * @return HAL status code
+ */
+static HAL_StatusTypeDef EE_FindLatestSettings(uint16_t *result)
+{
+    HAL_StatusTypeDef ret;
+    uint16_t addr = EEPROM_DATA_OFFSET;
+    uint16_t serial;
+    
+    ret = EE_Read(addr + offsetof(EEPROM_SettingsBuffer, serial), (uint8_t *)&serial, 2);
+    if(ret != HAL_OK)
+    {
+        return ret;
+    }
+    
+    // Look for latest buffer
+    while(addr + 2 * EEPROM_SETTINGS_SIZE <= EEPROM_DATA_OFFSET + EEPROM_DATA_SIZE)
+    {
+        uint16_t tmp;
+        ret = EE_Read(addr + EEPROM_SETTINGS_SIZE + offsetof(EEPROM_SettingsBuffer, serial), (uint8_t *)&tmp, 2);
+        if(ret != HAL_OK)
+        {
+            return ret;
+        }
+        if(tmp != serial + 1)
+        {
+            break;
+        }
+        serial = tmp;
+        addr += EEPROM_SETTINGS_SIZE;
+    }
+    
+    *result = addr;
+    return HAL_OK;
 }
 
 // Exported functions ---------------------------------------------------------
@@ -228,34 +268,13 @@ EEPROM_Error EE_ReadSettings(EEPROM_SettingsBuffer *buffer)
         return EE_BUSY;
     }
     status = EE_READ;
-    
-    HAL_StatusTypeDef ret;
-    uint16_t addr = EEPROM_DATA_OFFSET;
-    uint16_t serial;
-    
-    ret = EE_Read(addr + offsetof(EEPROM_SettingsBuffer, serial), (uint8_t *)&serial, 2);
+
+    uint16_t addr;
+    HAL_StatusTypeDef ret = EE_FindLatestSettings(&addr);
     if(ret != HAL_OK)
     {
         status = EE_IDLE;
         return EE_ERROR;
-    }
-    
-    // Look for latest buffer
-    while(addr + 2 * EEPROM_SETTINGS_SIZE <= EEPROM_DATA_OFFSET + EEPROM_DATA_SIZE)
-    {
-        uint16_t tmp;
-        ret = EE_Read(addr + EEPROM_SETTINGS_SIZE + offsetof(EEPROM_SettingsBuffer, serial), (uint8_t *)&tmp, 2);
-        if(ret != HAL_OK)
-        {
-            status = EE_IDLE;
-            return EE_ERROR;
-        }
-        if(tmp != serial + 1)
-        {
-            break;
-        }
-        serial = tmp;
-        addr += EEPROM_SETTINGS_SIZE;
     }
     
     do
@@ -283,6 +302,50 @@ EEPROM_Error EE_ReadSettings(EEPROM_SettingsBuffer *buffer)
     
     status = EE_IDLE;
     return EE_ERROR;
+}
+
+/**
+ * Writes settings data to the EEPROM.
+ * 
+ * @param buffer Structure pointer to data to write, the checksum is set before writing
+ * @return {@link EEPROM_Error} code
+ */
+EEPROM_Error EE_WriteSettings(EEPROM_SettingsBuffer *buffer)
+{
+    assert_param(buffer != NULL);
+    assert(status != EE_UNINIT);
+    
+    if(EE_IsBusy())
+    {
+        return EE_BUSY;
+    }
+    
+    uint16_t addr;
+    HAL_StatusTypeDef ret = EE_FindLatestSettings(&addr);
+    if(ret != HAL_OK)
+    {
+        status = EE_IDLE;
+        return EE_ERROR;
+    }
+    addr += EEPROM_SETTINGS_SIZE;
+    if(addr + EEPROM_SETTINGS_SIZE > EEPROM_DATA_OFFSET + EEPROM_DATA_SIZE)
+    {
+        addr = EEPROM_DATA_OFFSET;
+    }
+    
+    buffer->checksum = HAL_CRC_Calculate(crcHandle, (uint32_t *)buffer, CRC_SIZE(EEPROM_SettingsBuffer));
+    buf_settings = *buffer;
+    ret = EE_Write(addr, (uint8_t *)&buf_settings, sizeof(EEPROM_SettingsBuffer));
+    
+    if(ret == HAL_OK)
+    {
+        status = EE_WRITE_SETTINGS;
+        return EE_OK;
+    }
+    else
+    {
+        return EE_ERROR;
+    }
 }
 
 /**
