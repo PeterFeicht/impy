@@ -677,12 +677,9 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     interface->SendLine(temp);
     
     interface->SendString(txtPortsAvailable);
-    snprintf(buf, NUMEL(buf), "(out) %u", PORT_MAX - PORT_MIN + 1);
+    snprintf(buf, NUMEL(buf), "(out) %u", PORT_MAX + 1);
     interface->SendString(buf);
-    interface->SendString(" (");
-    snprintf(buf, NUMEL(buf), "%u", PORT_MIN);
-    interface->SendString(buf);
-    interface->SendString("..");
+    interface->SendString(" (0..");
     snprintf(buf, NUMEL(buf), "%u", PORT_MAX);
     interface->SendString(buf);
     interface->SendLine(")");
@@ -833,8 +830,7 @@ static void Console_BoardMeasure(uint32_t argc, char **argv)
     }
     
     port = IntFromSiString(argv[1], &end);
-    // Uncomment if PORT_MIN is greater than 0
-    if(end == NULL || /*port < PORT_MIN ||*/ port > PORT_MAX)
+    if(end == NULL || port > PORT_MAX)
     {
         interface->SendString(txtInvalidValue);
         interface->SendLine("port");
@@ -1262,8 +1258,7 @@ static void Console_BoardStart(uint32_t argc, char **argv)
     }
     
     port = IntFromSiString(argv[1], &end);
-    // Uncomment if PORT_MIN is greater than 0
-    if(end == NULL || /*port < PORT_MIN ||*/ port > PORT_MAX)
+    if(end == NULL || port > PORT_MAX)
     {
         interface->SendString(txtInvalidValue);
         interface->SendLine("port");

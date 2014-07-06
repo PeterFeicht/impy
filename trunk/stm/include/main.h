@@ -59,10 +59,6 @@ typedef struct
 #define SWITCH_USB_PIN					GPIO_PIN_8				//!< USB host power switch GPIO pin (active high)
 
 /**
- * The minimum port number that can be used for measurements.
- */
-#define PORT_MIN                        0
-/**
  * The maximum port number that can be used for measurements.
  */
 #define PORT_MAX                        9
@@ -70,7 +66,7 @@ typedef struct
 /**
  * The first calibration port number
  */
-#define CAL_PORT_MIN                    (PORT_MAX + 1)
+#define CAL_PORT_MIN                    10
 
 /**
  * Timeout in ms for SPI communication
