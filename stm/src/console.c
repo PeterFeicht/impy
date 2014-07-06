@@ -1452,14 +1452,28 @@ static void Console_Eth(uint32_t argc __attribute__((unused)), char **argv __att
     }
 }
 
-static void Console_EthDisable(uint32_t argc, char **argv)
+static void Console_EthDisable(uint32_t argc, char **argv __attribute__((unused)))
 {
+    if(argc != 1)
+    {
+        interface->SendLine(txtErrNoArgs);
+        interface->CommandFinish();
+        return;
+    }
+    
     interface->SendLine(txtNotImplemented);
     interface->CommandFinish();
 }
 
-static void Console_EthEnable(uint32_t argc, char **argv)
+static void Console_EthEnable(uint32_t argc, char **argv __attribute__((unused)))
 {
+    if(argc != 1)
+    {
+        interface->SendLine(txtErrNoArgs);
+        interface->CommandFinish();
+        return;
+    }
+    
     interface->SendLine(txtNotImplemented);
     interface->CommandFinish();
 }
@@ -1475,8 +1489,15 @@ static void Console_EthSet(uint32_t argc, char **argv)
     interface->CommandFinish();
 }
 
-static void Console_EthStatus(uint32_t argc, char **argv)
+static void Console_EthStatus(uint32_t argc, char **argv __attribute__((unused)))
 {
+    if(argc != 1)
+    {
+        interface->SendLine(txtErrNoArgs);
+        interface->CommandFinish();
+        return;
+    }
+    
     interface->SendLine(txtNotImplemented);
     interface->CommandFinish();
 }
@@ -1518,26 +1539,54 @@ static void Console_Usb(uint32_t argc __attribute__((unused)), char **argv __att
     }
 }
 
-static void Console_UsbEject(uint32_t argc, char **argv)
+static void Console_UsbEject(uint32_t argc, char **argv __attribute__((unused)))
 {
+    if(argc != 1)
+    {
+        interface->SendLine(txtErrNoArgs);
+        interface->CommandFinish();
+        return;
+    }
+    
     interface->SendLine(txtNotImplemented);
     interface->CommandFinish();
 }
 
-static void Console_UsbInfo(uint32_t argc, char **argv)
+static void Console_UsbInfo(uint32_t argc, char **argv __attribute__((unused)))
 {
+    if(argc != 1)
+    {
+        interface->SendLine(txtErrNoArgs);
+        interface->CommandFinish();
+        return;
+    }
+    
     interface->SendLine(txtNotImplemented);
     interface->CommandFinish();
 }
 
-static void Console_UsbLs(uint32_t argc, char **argv)
+static void Console_UsbLs(uint32_t argc, char **argv __attribute__((unused)))
 {
+    if(argc != 1)
+    {
+        interface->SendLine(txtErrNoArgs);
+        interface->CommandFinish();
+        return;
+    }
+    
     interface->SendLine(txtNotImplemented);
     interface->CommandFinish();
 }
 
-static void Console_UsbStatus(uint32_t argc, char **argv)
+static void Console_UsbStatus(uint32_t argc, char **argv __attribute__((unused)))
 {
+    if(argc != 1)
+    {
+        interface->SendLine(txtErrNoArgs);
+        interface->CommandFinish();
+        return;
+    }
+    
     interface->SendLine(txtNotImplemented);
     interface->CommandFinish();
 }
