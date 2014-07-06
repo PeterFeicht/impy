@@ -150,6 +150,7 @@ EEPROM_Error EE_Reset(void)
 EEPROM_Error EE_ReadConfiguration(EEPROM_ConfigurationBuffer *buffer)
 {
     assert_param(buffer != NULL);
+    assert(status != EE_UNINIT);
     
     if(EE_IsBusy())
     {
@@ -189,6 +190,7 @@ EEPROM_Error EE_ReadConfiguration(EEPROM_ConfigurationBuffer *buffer)
 EEPROM_Error EE_WriteConfiguration(EEPROM_ConfigurationBuffer *buffer)
 {
     assert_param(buffer != NULL);
+    assert(status != EE_UNINIT);
     
     if(EE_IsBusy())
     {
@@ -219,6 +221,7 @@ EEPROM_Error EE_WriteConfiguration(EEPROM_ConfigurationBuffer *buffer)
 EEPROM_Error EE_ReadSettings(EEPROM_SettingsBuffer *buffer)
 {
     assert_param(buffer != NULL);
+    assert(status != EE_UNINIT);
     
     if(EE_IsBusy())
     {
