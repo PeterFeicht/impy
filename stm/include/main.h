@@ -97,20 +97,8 @@ typedef struct
 #define ADG725_CHIP_CSB_NOT             ((uint8_t)0x20)
 /** @} */
 
-// Set to 1 if the EEPROM is fitted
+// Set to 1 if the EEPROM is fitted, 0 otherwise
 #define BOARD_HAS_EEPROM                1
-
-// Set to 1 if the SRAM is fitted
-#define BOARD_HAS_SRAM                  0
-
-// Set to 1 if the Flash memory is fitted
-#define BOARD_HAS_FLASH                 0
-
-// Set to 1 if the Ethernet interface is fitted
-#define BOARD_HAS_ETHERNET              0
-
-// Set to 1 if the USB host port is fitted
-#define BOARD_HAS_USBH                  0
 
 // Exported variables ---------------------------------------------------------
 extern USBD_HandleTypeDef hUsbDevice;
