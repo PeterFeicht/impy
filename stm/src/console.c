@@ -1140,6 +1140,7 @@ static void Console_BoardSet(uint32_t argc, char **argv)
                 if(intval != 0)
                 {
                     format_spec = intval;
+                    MarkSettingsDirty();
                 }
                 else
                 {
