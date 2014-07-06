@@ -25,9 +25,11 @@ __STATIC_INLINE uint8_t EE_IsBusy(void);
 static volatile EEPROM_Status status = EE_UNINIT;
 static I2C_HandleTypeDef *i2cHandle = NULL;
 static CRC_HandleTypeDef *crcHandle = NULL;
-static uint8_t e2_state;
-static EEPROM_ConfigurationBuffer buf_config;
-
+static uint8_t e2_state;                        //!< State of the E2 pin on the device
+static EEPROM_ConfigurationBuffer buf_config;   //!< Temporary configuration buffer for reading and writing
+static uint8_t *write_buf;                      //!< The next address to write from
+static uint16_t write_addr;                     //!< The next address to write to
+static uint16_t write_len;                      //!< The number of bytes remaining
 
 // Private functions ----------------------------------------------------------
  
@@ -48,7 +50,8 @@ static HAL_StatusTypeDef EE_Read(uint16_t address, uint8_t *buffer, uint16_t len
 }
 
 /**
- * Writes an amount of data to the EEPROM.
+ * Writes an amount of data to the EEPROM, if the write cannot be completed in one go, the first page is written and
+ * {@code write_addr} and {@code write_len} are set.
  * 
  * @param address The address to write to
  * @param buffer Pointer to buffer with data to write
@@ -58,10 +61,24 @@ static HAL_StatusTypeDef EE_Read(uint16_t address, uint8_t *buffer, uint16_t len
 static HAL_StatusTypeDef EE_Write(uint16_t address, uint8_t *buffer, uint16_t length)
 {
     assert_param(length > 0 && address + length <= EEPROM_SIZE);
-    assert_param((address & EEPROM_PAGE_MASK) == ((address + length - 1) & EEPROM_PAGE_MASK));
     
-    uint8_t dev_addr = MAKE_ADDRESS(address, e2_state);
-    return HAL_I2C_Mem_Write(i2cHandle, dev_addr, address, 1, buffer, length, EEPROM_I2C_TIMEOUT);
+    uint16_t len = (length <= EEPROM_PAGE_SIZE ? length : EEPROM_PAGE_SIZE);
+    if((address & EEPROM_PAGE_MASK) != ((address + len - 1) & EEPROM_PAGE_MASK))
+    {
+        // Write spans multiple pages, only write bytes in first page
+        len = ((address + len) & EEPROM_PAGE_MASK) - address;
+    }
+    
+    HAL_StatusTypeDef ret =
+            HAL_I2C_Mem_Write(i2cHandle, MAKE_ADDRESS(address, e2_state), address, 1, buffer, len, EEPROM_I2C_TIMEOUT);
+    
+    if(ret == HAL_OK)
+    {
+        write_buf = buffer + len;
+        write_addr = address + len;
+        write_len = length - len;
+    }
+    return ret;
 }
 
 /**
@@ -90,7 +107,7 @@ EEPROM_Status GetStatus(void)
  * @param i2c Pointer to an I2C handle structure that is to be used for communication with the EEPROM
  * @param crc Pointer to a CRC handle structure used for CRC calculation
  * @param e2_set Indicates the state of the E2 pin of the device
- * @return {@link EEPROM_Error} code
+ * @return {@code EE_OK}
  */
 EEPROM_Error EE_Init(I2C_HandleTypeDef *i2c, CRC_HandleTypeDef *crc, uint8_t e2_set)
 {
@@ -135,12 +152,8 @@ EEPROM_Error EE_ReadConfiguration(EEPROM_ConfigurationBuffer *buffer)
     }
     status = EE_READ;
     
-    HAL_StatusTypeDef ret;
-    uint8_t dev_addr = MAKE_ADDRESS(EEPROM_CONFIG_OFFSET, e2_state);
-    uint32_t crc;
-    
     // Read buffer from EEPROM
-    ret = EE_Read(EEPROM_CONFIG_OFFSET, (uint8_t *)&buf_config, sizeof(EEPROM_ConfigurationBuffer));
+    HAL_StatusTypeDef ret = EE_Read(EEPROM_CONFIG_OFFSET, (uint8_t *)&buf_config, sizeof(EEPROM_ConfigurationBuffer));
     if(ret != HAL_OK)
     {
         status = EE_IDLE;
@@ -148,7 +161,7 @@ EEPROM_Error EE_ReadConfiguration(EEPROM_ConfigurationBuffer *buffer)
     }
     
     // Check integrity
-    crc = HAL_CRC_Calculate(crcHandle, (uint32_t *)&buf_config, sizeof(EEPROM_ConfigurationBuffer) - 4);
+    uint32_t crc = HAL_CRC_Calculate(crcHandle, (uint32_t *)&buf_config, sizeof(EEPROM_ConfigurationBuffer) - 4);
     if(crc == buf_config.checksum)
     {
         *buffer = buf_config;
@@ -160,6 +173,75 @@ EEPROM_Error EE_ReadConfiguration(EEPROM_ConfigurationBuffer *buffer)
         status = EE_IDLE;
         return EE_ERROR;
     }
+}
+
+/**
+ * Writes configuration data to the EEPROM.
+ * 
+ * @param buffer Structure pointer to data to write, the checksum is set before writing
+ * @return {@link EEPROM_Error} code
+ */
+EEPROM_Error EE_WriteConfiguration(EEPROM_ConfigurationBuffer *buffer)
+{
+    assert_param(buffer != NULL);
+    
+    if(EE_IsBusy())
+    {
+        return EE_BUSY;
+    }
+    
+    buffer->checksum = HAL_CRC_Calculate(crcHandle, (uint32_t *)buffer, sizeof(EEPROM_ConfigurationBuffer) - 4);
+    buf_config = *buffer;
+    HAL_StatusTypeDef ret = EE_Write(EEPROM_CONFIG_OFFSET, (uint8_t *)&buf_config, sizeof(EEPROM_ConfigurationBuffer));
+    
+    if(ret == HAL_OK)
+    {
+        status = EE_WRITE_CONFIG;
+        return EE_OK;
+    }
+    else
+    {
+        return EE_ERROR;
+    }
+}
+
+/**
+ * This function should be called periodically to update the driver status.
+ * 
+ * @return The (new) EEPROM status
+ */
+EEPROM_Status EE_TimerCallback(void)
+{
+    switch(status)
+    {
+        case EE_UNINIT:
+        case EE_IDLE:
+        case EE_FINISH:
+            break;
+            
+        case EE_READ:
+            // Reads are done in one go and blocking, nothing to do here
+            break;
+            
+        case EE_WRITE_CONFIG:
+        case EE_WRITE_SETTINGS:
+            if(write_len > 0)
+            {
+                // Not finished, try to write
+                EE_Write(write_addr, write_buf, write_len);
+            }
+            else
+            {
+                // Finished writing, wait for EEPROM to complete write cycle
+                if(HAL_I2C_IsDeviceReady(i2cHandle, MAKE_ADDRESS(0, e2_state), 1, EEPROM_I2C_TIMEOUT) == HAL_OK)
+                {
+                    status = EE_FINISH;
+                }
+            }
+            break;
+    }
+    
+    return status;
 }
 
 // ----------------------------------------------------------------------------
