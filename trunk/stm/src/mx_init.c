@@ -45,16 +45,6 @@ void SystemClock_Config(void)
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
     RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
     HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3);
-    
-#if defined(BOARD_HAS_ETHERNET) && BOARD_HAS_ETHERNET == 1
-    // Configure PLLI2S used for the Ethernet RMII clock and MCO2 output
-    RCC_PeriphCLKInitTypeDef PeriphClkInitStruct;
-    PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_I2S;
-    PeriphClkInitStruct.PLLI2S.PLLI2SN = 200;
-    PeriphClkInitStruct.PLLI2S.PLLI2SR = 4;
-    HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct);
-    HAL_RCC_MCOConfig(RCC_MCO2, RCC_MCO2SOURCE_PLLI2SCLK, RCC_MCODIV_1);
-#endif
 }
 
 /**
@@ -69,6 +59,22 @@ void MX_Init()
     MX_TIM10_Init();
     MX_CRC_Init();
     MX_USB_DEVICE_Init();
+}
+
+/**
+ * Performs Ethernet specific initialization.
+ */
+void MX_Init_Ethernet(void)
+{
+    /*
+     * Configure PLLI2S used for the Ethernet RMII clock and MCO2 output
+     */
+    RCC_PeriphCLKInitTypeDef PeriphClkInitStruct;
+    PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_I2S;
+    PeriphClkInitStruct.PLLI2S.PLLI2SN = 200;
+    PeriphClkInitStruct.PLLI2S.PLLI2SR = 4;
+    HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct);
+    HAL_RCC_MCOConfig(RCC_MCO2, RCC_MCO2SOURCE_PLLI2SCLK, RCC_MCODIV_1);
 }
 
 // Private functions ----------------------------------------------------------
@@ -180,18 +186,20 @@ static void MX_GPIO_Init(void)
     __GPIOH_CLK_ENABLE();
     
     /*
-     * Configure unused pins as analog to reduce power consumption (doesn't really do much)
+     * Configure potentially unused pins as analog to reduce power consumption (doesn't really do much)
      */
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     // PA
-    GPIO_InitStruct.Pin = GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_8 | GPIO_PIN_15;
+    GPIO_InitStruct.Pin = GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_7 | GPIO_PIN_8 | GPIO_PIN_15;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
     // PB
-    GPIO_InitStruct.Pin = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_10;
+    GPIO_InitStruct.Pin = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_10 | GPIO_PIN_11 | GPIO_PIN_12 |
+            GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15;
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
     // PC
-    GPIO_InitStruct.Pin = GPIO_PIN_3 | GPIO_PIN_6 | GPIO_PIN_7 | GPIO_PIN_8 | GPIO_PIN_13 | GPIO_PIN_14;
+    GPIO_InitStruct.Pin = GPIO_PIN_1 | GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7 |
+            GPIO_PIN_8 | GPIO_PIN_9 | GPIO_PIN_13 | GPIO_PIN_14;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
     // PD
     GPIO_InitStruct.Pin = GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_6 | GPIO_PIN_7 | GPIO_PIN_10 | GPIO_PIN_11;
@@ -199,27 +207,6 @@ static void MX_GPIO_Init(void)
     // PE
     GPIO_InitStruct.Pin = GPIO_PIN_7 | ((uint16_t)0xFF00) /* PE8..PE15 */;
     HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
-    
-#if !defined(BOARD_HAS_ETHERNET) || BOARD_HAS_ETHERNET == 0
-    GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    // PA
-    GPIO_InitStruct.Pin = GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_7;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-    // PB
-    GPIO_InitStruct.Pin = GPIO_PIN_11 | GPIO_PIN_12 | GPIO_PIN_13;
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-    // PC
-    GPIO_InitStruct.Pin = GPIO_PIN_1 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_9;
-    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-#endif
-    
-#if !defined(BOARD_HAS_USBH) || BOARD_HAS_USBH == 0
-    GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Pin = GPIO_PIN_14 | GPIO_PIN_15;
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-#endif
     
     /*
      * Button (in): PA0
