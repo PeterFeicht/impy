@@ -161,7 +161,7 @@ EEPROM_Error EE_ReadConfiguration(EEPROM_ConfigurationBuffer *buffer)
     }
     
     // Check integrity
-    uint32_t crc = HAL_CRC_Calculate(crcHandle, (uint32_t *)&buf_config, sizeof(EEPROM_ConfigurationBuffer) - 4);
+    uint32_t crc = HAL_CRC_Calculate(crcHandle, (uint32_t *)&buf_config, (sizeof(EEPROM_ConfigurationBuffer) - 4) >> 2);
     if(crc == buf_config.checksum)
     {
         *buffer = buf_config;
@@ -190,7 +190,7 @@ EEPROM_Error EE_WriteConfiguration(EEPROM_ConfigurationBuffer *buffer)
         return EE_BUSY;
     }
     
-    buffer->checksum = HAL_CRC_Calculate(crcHandle, (uint32_t *)buffer, sizeof(EEPROM_ConfigurationBuffer) - 4);
+    buffer->checksum = HAL_CRC_Calculate(crcHandle, (uint32_t *)buffer, (sizeof(EEPROM_ConfigurationBuffer) - 4) >> 2);
     buf_config = *buffer;
     HAL_StatusTypeDef ret = EE_Write(EEPROM_CONFIG_OFFSET, (uint8_t *)&buf_config, sizeof(EEPROM_ConfigurationBuffer));
     
