@@ -43,11 +43,19 @@ typedef struct
 
 typedef struct
 {
+    struct _peripherals
+    {
+        unsigned int sram : 1;              //!< Whether external SRAM is populated
+        unsigned int flash : 1;             //!< Whether external flash memory is populated
+        unsigned int eth : 1;               //!< Whether the Ethernet interface is populated
+        unsigned int usbh : 1;              //!< Whether the USB host port is populated
+        unsigned int reserved : 28;         //!< Reserved for future use, padding to 32 bits (set to 0)
+    } peripherals;                          //!< Bitfield for populated peripherals
     uint16_t attenuations[4];               //!< Possible attenuation values, {@code 0} for unpopulated ports
     uint32_t feedback_resistors[8];         //!< Feedback resistor values, {@code 0} for unpopulated ports
     uint32_t calibration_values[6];         //!< Calibration resistor values, {@code 0} for unpopulated ports
     uint8_t  eth_mac[6];                    //!< Ethernet MAC address, 48 bits with MSB first
-    uint8_t  reserved[54];                  //!< Reserved for future use, padding to 128 bytes
+    uint8_t  reserved[50];                  //!< Reserved for future use, padding to 128 bytes (set to 0)
     uint32_t checksum;                      //!< CRC32 checksum of the buffer
 } EEPROM_ConfigurationBuffer;
 
@@ -62,7 +70,7 @@ typedef struct
     uint16_t averages;                      //!< Number of averages per frequency point
     uint16_t voltage;                       //!< Output voltage range, register value
     uint16_t attenuation;                   //!< Output voltage attenuation
-    uint16_t pad1;                          //!< Padding for 32 bit alignment
+    uint16_t pad1;                          //!< Padding for 32 bit alignment (set to 0)
     /* Console */
     uint32_t format_spec;                   //!< Console format specification
     /* ETH */
@@ -77,10 +85,10 @@ typedef struct
         unsigned int dhcp : 1;              //!< Whether DHCP is enabled
         unsigned int netmask : 5;           //!< The number of bits set in the IP network mask
         /* Metadata */
-        unsigned int reserved : 24;         //!< Reserved for future use, padding to 32 bits
+        unsigned int reserved : 24;         //!< Reserved for future use, padding to 32 bits (set to 0)
     } flags;                                //!< Bitfield for flags and small values
     /* Metadata */
-    uint8_t reserved[22];                   //!< Reserved for future use, padding to 64 bytes 
+    uint8_t reserved[22];                   //!< Reserved for future use, padding to 64 bytes  (set to 0)
     uint16_t serial;                        //!< Buffer serial number for EEPROM wear leveling, should not be modified
     uint32_t checksum;                      //!< CRC32 checksum of the buffer
 } EEPROM_SettingsBuffer;
@@ -128,7 +136,7 @@ typedef struct
 /**
  * Mask for the page address, a page write can only write to addresses which have the same page address
  */
-#define EEPROM_PAGE_MASK                    0x3F0
+#define EEPROM_PAGE_MASK                    0x03F0
 
 /**
  * Configuration data offset, that is the first address of the configuration data space
