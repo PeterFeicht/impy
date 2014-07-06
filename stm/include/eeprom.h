@@ -179,6 +179,7 @@ typedef struct
 // Exported functions ---------------------------------------------------------
 
 EEPROM_Status EE_GetStatus(void);
+uint8_t EE_IsBusy(void);
 EEPROM_Error EE_Init(I2C_HandleTypeDef *i2c, CRC_HandleTypeDef *crc, uint8_t e2_set);
 EEPROM_Error EE_Reset(void);
 EEPROM_Error EE_ReadConfiguration(EEPROM_ConfigurationBuffer *buffer);

@@ -20,7 +20,6 @@ _Static_assert(sizeof(EEPROM_SettingsBuffer) == EEPROM_SETTINGS_SIZE, "Bad EEPRO
 // Private function prototypes ------------------------------------------------
 static HAL_StatusTypeDef EE_Read(uint16_t address, uint8_t *buffer, uint16_t length);
 static HAL_StatusTypeDef EE_Write(uint16_t address, uint8_t *buffer, uint16_t length);
-__STATIC_INLINE uint8_t EE_IsBusy(void);
 static HAL_StatusTypeDef EE_FindLatestSettings(uint16_t *result);
 
 // Private macros -------------------------------------------------------------
@@ -88,16 +87,6 @@ static HAL_StatusTypeDef EE_Write(uint16_t address, uint8_t *buffer, uint16_t le
 }
 
 /**
- * Gets a value indicating whether the driver is busy or can start a new transfer.
- */
-__STATIC_INLINE uint8_t EE_IsBusy(void)
-{
-    EEPROM_Status tmp = status;
-    return (tmp != EE_FINISH &&
-            tmp != EE_IDLE);
-}
-
-/**
  * Finds the EEPROM address of the latest settings buffer.
  * 
  * @param result Pointer to variable receiving the address
@@ -144,6 +133,16 @@ static HAL_StatusTypeDef EE_FindLatestSettings(uint16_t *result)
 EEPROM_Status EE_GetStatus(void)
 {
     return status;
+}
+
+/**
+ * Gets a value indicating whether the driver is busy or can start a new transfer.
+ */
+uint8_t EE_IsBusy(void)
+{
+    EEPROM_Status tmp = status;
+    return (tmp != EE_FINISH &&
+            tmp != EE_IDLE);
 }
 
 /**
