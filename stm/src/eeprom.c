@@ -333,6 +333,7 @@ EEPROM_Error EE_WriteSettings(EEPROM_SettingsBuffer *buffer)
         addr = EEPROM_DATA_OFFSET;
     }
     
+    buffer->serial++;
     buffer->checksum = HAL_CRC_Calculate(crcHandle, (uint32_t *)buffer, CRC_SIZE(EEPROM_SettingsBuffer));
     buf_settings = *buffer;
     ret = EE_Write(addr, (uint8_t *)&buf_settings, sizeof(EEPROM_SettingsBuffer));
