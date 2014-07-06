@@ -253,8 +253,12 @@ typedef struct _USBD_HandleTypeDef
 #define  SWAPBYTE(addr)        (((uint16_t)(*((uint8_t *)(addr)))) + \
                                (((uint16_t)(*(((uint8_t *)(addr)) + 1))) << 8))
 
+#ifndef LOBYTE
 #define LOBYTE(x)  ((uint8_t)(x & 0x00FF))
+#endif
+#ifndef HIBYTE
 #define HIBYTE(x)  ((uint8_t)((x & 0xFF00) >>8))
+#endif
 #define MIN(a, b)  (((a) < (b)) ? (a) : (b))
 #define MAX(a, b)  (((a) > (b)) ? (a) : (b))
 
