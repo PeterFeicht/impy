@@ -107,10 +107,10 @@
 </layers>
 <board>
 <plain>
-<wire x1="-41" y1="-3" x2="99" y2="-3" width="0" layer="20"/>
-<wire x1="99" y1="-3" x2="99" y2="98" width="0" layer="20"/>
-<wire x1="99" y1="98" x2="-41" y2="98" width="0" layer="20"/>
-<wire x1="-41" y1="98" x2="-41" y2="-3" width="0" layer="20"/>
+<wire x1="-41" y1="-2.5" x2="99" y2="-2.5" width="0" layer="20"/>
+<wire x1="99" y1="-2.5" x2="99" y2="97.5" width="0" layer="20"/>
+<wire x1="99" y1="97.5" x2="-41" y2="97.5" width="0" layer="20"/>
+<wire x1="-41" y1="97.5" x2="-41" y2="-2.5" width="0" layer="20"/>
 <wire x1="-33" y1="0" x2="33" y2="0" width="0.254" layer="51"/>
 <wire x1="33" y1="0" x2="33" y2="97.5" width="0.254" layer="51"/>
 <wire x1="33" y1="97.5" x2="-33" y2="97.5" width="0.254" layer="51"/>
@@ -184,8 +184,8 @@ Peter Feichtinger 2014</text>
 <wire x1="-15.225" y1="93.345" x2="-15.225" y2="91.1225" width="0.254" layer="42"/>
 <wire x1="-15.225" y1="91.1225" x2="-25.0675" y2="91.1225" width="0.254" layer="42"/>
 <wire x1="-25.0675" y1="91.1225" x2="-25.0675" y2="93.345" width="0.254" layer="42"/>
-<dimension x1="-41" y1="98" x2="-41" y2="-3" x3="-46" y3="47.5" textsize="1.27" textratio="10" layer="47" width="0.1" visible="yes"/>
-<dimension x1="99" y1="98" x2="-41" y2="98" x3="29" y3="103" textsize="1.27" textratio="10" layer="47" width="0.1" visible="yes"/>
+<dimension x1="-41" y1="97.5" x2="-41" y2="-2.5" x3="-46" y3="47.5" textsize="1.27" textratio="10" layer="47" width="0.1" visible="yes"/>
+<dimension x1="99" y1="97.5" x2="-41" y2="97.5" x3="29" y3="102.5" textsize="1.27" textratio="10" layer="47" width="0.1" visible="yes"/>
 </plain>
 <libraries>
 <library name="parts">
