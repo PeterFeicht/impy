@@ -101,6 +101,11 @@ typedef struct
  */
 #define EEPROM_E2_PIN_SET               0
 
+/**
+ * The time after which changed settings are written to the EEPROM in ms.
+ */
+#define EEPROM_WRITE_INTERVAL           1000
+
 // Exported variables ---------------------------------------------------------
 extern USBD_HandleTypeDef hUsbDevice;
 extern I2C_HandleTypeDef hi2c1;
@@ -141,6 +146,8 @@ uint8_t Board_GetPort(void);
 Board_Error Board_MeasureSingleFrequency(uint8_t port, uint32_t freq, AD5933_ImpedancePolar *result);
 float Board_MeasureTemperature(Board_TemperatureSource what);
 Board_Error Board_Calibrate(uint32_t ohms);
+
+void MarkSettingsDirty(void);
 
 
 // ----------------------------------------------------------------------------

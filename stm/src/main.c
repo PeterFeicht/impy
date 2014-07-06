@@ -44,7 +44,10 @@ EEPROM_ConfigurationBuffer board_config =
     .checksum = 0
 };
 
+// Settings storage
 static EEPROM_SettingsBuffer settings;
+static volatile uint8_t settings_dirty = 0;
+static volatile uint32_t settings_dirty_tick;
 
 // AD5933 driver values
 static AD5933_Sweep sweep;
@@ -179,14 +182,17 @@ static void Handle_TIM3_AD5933(void)
 static void Handle_TIM3_EEPROM(void)
 {
 #if defined(BOARD_HAS_EEPROM) && BOARD_HAS_EEPROM == 1
-    static EEPROM_Status prevStatus = EE_UNINIT;
-    
-    EEPROM_Status status = EE_TimerCallback();
-    if(prevStatus != status)
+    EE_TimerCallback();
+    if(EE_IsBusy())
     {
-        // Nothing to do yet
+        return;
     }
-    prevStatus = status;
+    if(settings_dirty && HAL_GetTick() - settings_dirty_tick > EEPROM_WRITE_INTERVAL)
+    {
+        UpdateSettings();
+        EE_WriteSettings(&settings);
+        settings_dirty = 0;
+    }
 #endif
 }
 
@@ -258,6 +264,7 @@ Board_Error Board_SetStartFreq(uint32_t freq)
     
     sweep.Start_Freq = freq;
     validGain = 0;
+    MarkSettingsDirty();
     return BOARD_OK;
 }
 
@@ -281,6 +288,7 @@ Board_Error Board_SetStopFreq(uint32_t freq)
     
     stopFreq = freq;
     validGain = 0;
+    MarkSettingsDirty();
     return BOARD_OK;
 }
 
@@ -304,6 +312,7 @@ Board_Error Board_SetFreqSteps(uint16_t steps)
     }
     
     sweep.Num_Increments = steps;
+    MarkSettingsDirty();
     return BOARD_OK;
 }
 
@@ -341,8 +350,9 @@ Board_Error Board_SetSettlingCycles(uint16_t cycles, uint8_t multiplier)
         default:
             return BOARD_ERROR;
     }
-    sweep.Settling_Cycles = cycles;
     
+    sweep.Settling_Cycles = cycles;
+    MarkSettingsDirty();
     return BOARD_OK;
 }
 
@@ -378,6 +388,7 @@ Board_Error Board_SetVoltageRange(uint16_t voltage)
                 range.Attenuation = board_config.attenuations[j];
                 range.Voltage_Range = voltage_values[k];
                 validGain = 0;
+                MarkSettingsDirty();
                 return BOARD_OK;
             }
         }
@@ -405,6 +416,7 @@ Board_Error Board_SetPGA(uint8_t enable)
         validGain = 0;
     }
     
+    MarkSettingsDirty();
     return BOARD_OK;
 }
 
@@ -417,6 +429,7 @@ Board_Error Board_SetPGA(uint8_t enable)
 Board_Error Board_SetAutorange(uint8_t enable)
 {
     autorange = enable;
+    MarkSettingsDirty();
     return BOARD_OK;
 }
 
@@ -452,6 +465,7 @@ Board_Error Board_SetFeedback(uint32_t ohms)
         validGain = 0;
     }
     
+    MarkSettingsDirty();
     return BOARD_OK;
 }
 
@@ -473,6 +487,7 @@ Board_Error Board_SetAverages(uint16_t value)
     }
     
     sweep.Averages = value;
+    MarkSettingsDirty();
     return BOARD_OK;
 }
 
@@ -586,6 +601,7 @@ void Board_Reset(void)
     SetDefaults();
     Console_Init();
     Board_Standby();
+    MarkSettingsDirty();
 }
 
 /**
@@ -879,6 +895,15 @@ Board_Error Board_Calibrate(uint32_t ohms)
     }
     
     return BOARD_OK;
+}
+
+/**
+ * Mark settings as dirty and schedule a write to the EEPROM.
+ */
+void MarkSettingsDirty(void)
+{
+    settings_dirty = 1;
+    settings_dirty_tick = HAL_GetTick();
 }
 
 // ----------------------------------------------------------------------------
