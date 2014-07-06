@@ -48,7 +48,7 @@ void SystemClock_Config(void)
 }
 
 /**
- * Calls all the MX initialization functions.
+ * Performs configuration independent initialization.
  */
 void MX_Init()
 {
