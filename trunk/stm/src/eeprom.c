@@ -162,6 +162,7 @@ EEPROM_Error EE_Init(I2C_HandleTypeDef *i2c, CRC_HandleTypeDef *crc, uint8_t e2_
     i2cHandle = i2c;
     crcHandle = crc;
     e2_state = (e2_set ? EEPROM_M24C08_ADDR_E2 : 0);
+    status = EE_IDLE;
     return EE_OK;
 }
 
