@@ -124,7 +124,7 @@ static HAL_StatusTypeDef EE_FindLatestSettings(uint16_t *result)
         {
             return ret;
         }
-        if(tmp != serial + 1)
+        if(tmp != (uint16_t)(serial + 1))
         {
             break;
         }
