@@ -17,6 +17,8 @@ _Static_assert(sizeof(EEPROM_ConfigurationBuffer) == EEPROM_CONFIG_SIZE, "Bad EE
 _Static_assert(sizeof(EEPROM_SettingsBuffer) == EEPROM_SETTINGS_SIZE, "Bad EEPROM_SettingsBuffer definition");
 
 // Private function prototypes ------------------------------------------------
+static HAL_StatusTypeDef EE_Read(uint16_t address, uint8_t *buffer, uint16_t length);
+static HAL_StatusTypeDef EE_Write(uint16_t address, uint8_t *buffer, uint16_t length);
 __STATIC_INLINE uint8_t EE_IsBusy(void);
 
 // Private variables ----------------------------------------------------------
@@ -28,6 +30,39 @@ static EEPROM_ConfigurationBuffer buf_config;
 
 
 // Private functions ----------------------------------------------------------
+ 
+/**
+ * Reads an amount of data from the EEPROM.
+ * 
+ * @param address The address to read from
+ * @param buffer Pointer to buffer receiving the data
+ * @param length Number of bytes to read
+ * @return HAL status code
+ */
+static HAL_StatusTypeDef EE_Read(uint16_t address, uint8_t *buffer, uint16_t length)
+{
+    assert_param(length > 0 && address + length <= EEPROM_SIZE);
+    
+    uint8_t dev_addr = MAKE_ADDRESS(address, e2_state);
+    return HAL_I2C_Mem_Read(i2cHandle, dev_addr, address, 1, buffer, length, EEPROM_I2C_TIMEOUT);
+}
+
+/**
+ * Writes an amount of data to the EEPROM.
+ * 
+ * @param address The address to write to
+ * @param buffer Pointer to buffer with data to write
+ * @param length Number of bytes to write
+ * @return HAL status code
+ */
+static HAL_StatusTypeDef EE_Write(uint16_t address, uint8_t *buffer, uint16_t length)
+{
+    assert_param(length > 0 && address + length <= EEPROM_SIZE);
+    assert_param((address & EEPROM_PAGE_MASK) == ((address + length - 1) & EEPROM_PAGE_MASK));
+    
+    uint8_t dev_addr = MAKE_ADDRESS(address, e2_state);
+    return HAL_I2C_Mem_Write(i2cHandle, dev_addr, address, 1, buffer, length, EEPROM_I2C_TIMEOUT);
+}
 
 /**
  * Gets a value indicating whether the driver is busy or can start a new transfer.
@@ -105,8 +140,7 @@ EEPROM_Error EE_ReadConfiguration(EEPROM_ConfigurationBuffer *buffer)
     uint32_t crc;
     
     // Read buffer from EEPROM
-    ret = HAL_I2C_Mem_Read(i2cHandle, dev_addr, EEPROM_CONFIG_OFFSET, 1,
-            (uint8_t *)&buf_config, sizeof(EEPROM_ConfigurationBuffer), EEPROM_I2C_TIMEOUT);
+    ret = EE_Read(EEPROM_CONFIG_OFFSET, (uint8_t *)&buf_config, sizeof(EEPROM_ConfigurationBuffer));
     if(ret != HAL_OK)
     {
         status = EE_IDLE;
@@ -118,10 +152,12 @@ EEPROM_Error EE_ReadConfiguration(EEPROM_ConfigurationBuffer *buffer)
     if(crc == buf_config.checksum)
     {
         *buffer = buf_config;
+        status = EE_FINISH;
         return EE_OK;
     }
     else
     {
+        status = EE_IDLE;
         return EE_ERROR;
     }
 }
