@@ -799,6 +799,7 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
         interface->SendLine(txtNoMemory);
     }
     
+    interface->SendLine(NULL);
     interface->CommandFinish();
 }
 
