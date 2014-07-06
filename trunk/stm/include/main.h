@@ -96,6 +96,11 @@ typedef struct
 // Set to 1 if the EEPROM is fitted, 0 otherwise
 #define BOARD_HAS_EEPROM                1
 
+/**
+ * Whether the E2 pin on the EEPROM chip is pulled high.
+ */
+#define EEPROM_E2_PIN_SET               0
+
 // Exported variables ---------------------------------------------------------
 extern USBD_HandleTypeDef hUsbDevice;
 extern I2C_HandleTypeDef hi2c1;
