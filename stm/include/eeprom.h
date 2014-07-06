@@ -24,7 +24,8 @@ typedef enum
     EE_IDLE,            //!< Driver has been initialized and is ready to start a transfer
     EE_FINISH,          //!< Driver has finished with a transfer
     EE_READ,            //!< Driver is doing a read operation
-    EE_WRITE            //!< Driver is doing a write operation
+    EE_WRITE_CONFIG,    //!< Driver is writing configuration data
+    EE_WRITE_SETTINGS   //!< Driver is writing settings data
 } EEPROM_Status;
 
 typedef enum
