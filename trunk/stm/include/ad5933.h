@@ -488,6 +488,8 @@ typedef struct
 
 /**
  * Maximum number of settling time cycles (Settling time register D8:D0)
+ * 
+ * This can also be used to mask out the multiplier bits from a register value.
  */
 #define AD5933_MAX_SETTL                    ((uint16_t)0x1FF)
 
