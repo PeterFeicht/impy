@@ -14,6 +14,7 @@
 #include "mx_init.h"
 #include "console.h"
 #include "ad5933.h"
+#include "eeprom.h"
 
 // Exported type definitions --------------------------------------------------
 typedef enum
@@ -72,18 +73,6 @@ typedef struct
 #define CAL_PORT_MIN                    (PORT_MAX + 1)
 
 /**
- * @defgroup CAL_PORT Calibration Resistor Values
- * @{
- */
-#define CAL_PORT_10                     10              //!< Port 10 value: 10
-#define CAL_PORT_11                     100             //!< Port 11 value: 100
-#define CAL_PORT_12                     1000            //!< Port 12 value: 1k
-#define CAL_PORT_13                     10000           //!< Port 13 value: 10k
-#define CAL_PORT_14                     100000          //!< Port 14 value: 100k
-#define CAL_PORT_15                     1000000         //!< Port 15 value: 1M
-/** @} */
-
-/**
  * Timeout in ms for SPI communication
  */
 #define BOARD_SPI_TIMEOUT               10
@@ -108,20 +97,20 @@ typedef struct
 #define ADG725_CHIP_CSB_NOT             ((uint8_t)0x20)
 /** @} */
 
-// Uncomment if the EEPROM is fitted
-//#define BOARD_HAS_EEPROM                1
+// Set to 1 if the EEPROM is fitted
+#define BOARD_HAS_EEPROM                1
 
-// Uncomment if the SRAM is fitted
-//#define BOARD_HAS_SRAM                  1
+// Set to 1 if the SRAM is fitted
+#define BOARD_HAS_SRAM                  0
 
-// Uncomment if the Flash memory is fitted
-//#define BOARD_HAS_FLASH                 1
+// Set to 1 if the Flash memory is fitted
+#define BOARD_HAS_FLASH                 0
 
-// Uncomment if the Ethernet interface is fitted
-//#define BOARD_HAS_ETHERNET              1
+// Set to 1 if the Ethernet interface is fitted
+#define BOARD_HAS_ETHERNET              0
 
-// Uncomment if the USB host port is fitted
-//#define BOARD_HAS_USBH                  1
+// Set to 1 if the USB host port is fitted
+#define BOARD_HAS_USBH                  0
 
 // Exported variables ---------------------------------------------------------
 extern USBD_HandleTypeDef hUsbDevice;
@@ -130,6 +119,7 @@ extern SPI_HandleTypeDef hspi3;
 extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim10;
 extern CRC_HandleTypeDef hcrc;
+extern EEPROM_ConfigurationBuffer board_config;
 
 // Exported functions ---------------------------------------------------------
 Board_Error Board_SetStartFreq(uint32_t freq);

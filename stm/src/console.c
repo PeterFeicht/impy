@@ -680,18 +680,6 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     }
     interface->SendLine(temp);
     
-    // Ports and values
-    static const uint16_t attenuations[] = {
-        AD5933_ATTENUATION_PORT_0, AD5933_ATTENUATION_PORT_1, AD5933_ATTENUATION_PORT_2, AD5933_ATTENUATION_PORT_3
-    };
-    static const uint32_t feedbackValues[] = {
-        AD5933_FEEDBACK_PORT_0, AD5933_FEEDBACK_PORT_1, AD5933_FEEDBACK_PORT_2, AD5933_FEEDBACK_PORT_3,
-        AD5933_FEEDBACK_PORT_4, AD5933_FEEDBACK_PORT_5, AD5933_FEEDBACK_PORT_6, AD5933_FEEDBACK_PORT_7
-    };
-    static const uint32_t calibrationValues[] = {
-        CAL_PORT_10, CAL_PORT_11, CAL_PORT_12, CAL_PORT_13, CAL_PORT_14, CAL_PORT_15
-    };
-    
     interface->SendString(txtPortsAvailable);
     snprintf(buf, NUMEL(buf), "(out) %u", PORT_MAX - PORT_MIN + 1);
     interface->SendString(buf);
@@ -718,9 +706,9 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     
     interface->SendString(txtAttenuationsAvailable);
     interface->SendString("(att) ");
-    for(uint32_t j = 0; j < NUMEL(attenuations) && attenuations[j]; j++)
+    for(uint32_t j = 0; j < NUMEL(board_config.attenuations) && board_config.attenuations[j]; j++)
     {
-        SiStringFromInt(buf, NUMEL(buf), attenuations[j]);
+        SiStringFromInt(buf, NUMEL(buf), board_config.attenuations[j]);
         interface->SendString(buf);
         interface->SendString(" ");
     }
@@ -728,9 +716,9 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     
     interface->SendString(txtFeedbackResistorValues);
     interface->SendString("(rfb) ");
-    for(uint32_t j = 0; j < NUMEL(feedbackValues) && feedbackValues[j]; j++)
+    for(uint32_t j = 0; j < NUMEL(board_config.feedback_resistors) && board_config.feedback_resistors[j]; j++)
     {
-        SiStringFromInt(buf, NUMEL(buf), feedbackValues[j]);
+        SiStringFromInt(buf, NUMEL(buf), board_config.feedback_resistors[j]);
         interface->SendString(buf);
         interface->SendString(" ");
     }
@@ -738,9 +726,9 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     
     interface->SendString(txtCalibrationValues);
     interface->SendString("(rca) ");
-    for(uint32_t j = 0; j < NUMEL(calibrationValues) && calibrationValues[j]; j++)
+    for(uint32_t j = 0; j < NUMEL(board_config.calibration_values) && board_config.calibration_values[j]; j++)
     {
-        SiStringFromInt(buf, NUMEL(buf), calibrationValues[j]);
+        SiStringFromInt(buf, NUMEL(buf), board_config.calibration_values[j]);
         interface->SendString(buf);
         interface->SendString(" ");
     }
