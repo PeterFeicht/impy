@@ -116,19 +116,15 @@ static void Console_Eth(uint32_t argc, char **argv);
 static void Console_Usb(uint32_t argc, char **argv);
 static void Console_Help(uint32_t argc, char **argv);
 static void Console_Debug(uint32_t argc, char **argv);
-#if defined(BOARD_HAS_ETHERNET) && BOARD_HAS_ETHERNET == 1
 static void Console_EthDisable(uint32_t argc, char **argv);
 static void Console_EthEnable(uint32_t argc, char **argv);
 static void Console_EthSet(uint32_t argc, char **argv);
 static void Console_EthStatus(uint32_t argc, char **argv);
-#endif
-#if defined(BOARD_HAS_USBH) && BOARD_HAS_USBH == 1
 static void Console_UsbEject(uint32_t argc, char **argv);
 static void Console_UsbInfo(uint32_t argc, char **argv);
 static void Console_UsbLs(uint32_t argc, char **argv);
 static void Console_UsbStatus(uint32_t argc, char **argv);
 static void Console_UsbWrite(uint32_t argc, char **argv);
-#endif
 
 // Private variables ----------------------------------------------------------
 static char *arguments[CON_MAX_ARGUMENTS];
@@ -735,67 +731,79 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     interface->SendLine(NULL);
     
     // USB info
-#if defined(BOARD_HAS_USBH) && BOARD_HAS_USBH == 1
-    interface->SendLine(NULL);
-    // TODO print USB info
-    interface->SendLine(txtNotImplemented);
-#else
-    interface->SendLine(NULL);
-    interface->SendString(txtUSB);
-    interface->SendLine(txtNotInstalled);
-#endif
+    if(board_config.peripherals.usbh)
+    {
+        interface->SendLine(NULL);
+        // TODO print USB info
+        interface->SendLine(txtNotImplemented);
+    }
+    else
+    {
+        interface->SendLine(NULL);
+        interface->SendString(txtUSB);
+        interface->SendLine(txtNotInstalled);
+    }
     
     // Ethernet info
-#if defined(BOARD_HAS_ETHERNET) && BOARD_HAS_ETHERNET == 1
-    interface->SendLine(NULL);
-    // TODO print Ethernet info
-    interface->SendLine(txtNotImplemented);
-#else
-    interface->SendLine(NULL);
-    interface->SendString(txtEthernet);
-    interface->SendLine(txtNotInstalled);
-#endif
+    if(board_config.peripherals.eth)
+    {
+        interface->SendLine(NULL);
+        // TODO print Ethernet info
+        interface->SendLine(txtNotImplemented);
+    }
+    else
+    {
+        interface->SendLine(NULL);
+        interface->SendString(txtEthernet);
+        interface->SendLine(txtNotInstalled);
+    }
     
     // Memory info
-#if (defined(BOARD_HAS_EEPROM) && BOARD_HAS_EEPROM == 1) || \
-    (defined(BOARD_HAS_SRAM) && BOARD_HAS_SRAM == 1) || \
-    (defined(BOARD_HAS_FLASH) && BOARD_HAS_FLASH == 1)
-#define MEMORY_FLAG
-#endif
+    uint8_t memory_flag = board_config.peripherals.sram || board_config.peripherals.flash || BOARD_HAS_EEPROM;
     
-#if defined(BOARD_HAS_EEPROM) && BOARD_HAS_EEPROM == 1
-    interface->SendLine(NULL);
-    // TODO print EEPROM info
-    interface->SendLine(txtNotImplemented);
-#elif defined(MEMORY_FLAG)
-    interface->SendLine(NULL);
-    interface->SendString(txtEEPROM);
-    interface->SendLine(txtNotInstalled);
-#endif
+    if(BOARD_HAS_EEPROM)
+    {
+        interface->SendLine(NULL);
+        // TODO print EEPROM info
+        interface->SendLine(txtNotImplemented);
+    }
+    else if(memory_flag)
+    {
+        interface->SendLine(NULL);
+        interface->SendString(txtEEPROM);
+        interface->SendLine(txtNotInstalled);
+    }
     
-#if defined(BOARD_HAS_SRAM) && BOARD_HAS_SRAM == 1
-    interface->SendLine(NULL);
-    // TODO print SRAM info
-    interface->SendLine(txtNotImplemented);
-#elif defined(MEMORY_FLAG)
-    interface->SendLine(NULL);
-    interface->SendString(txtSRAM);
-    interface->SendLine(txtNotInstalled);
-#endif
+    if(board_config.peripherals.sram)
+    {
+        interface->SendLine(NULL);
+        // TODO print SRAM info
+        interface->SendLine(txtNotImplemented);
+    }
+    else if(memory_flag)
+    {
+        interface->SendLine(NULL);
+        interface->SendString(txtSRAM);
+        interface->SendLine(txtNotInstalled);
+    }
     
-#if defined(BOARD_HAS_FLASH) && BOARD_HAS_FLASH == 1
-    interface->SendLine(NULL);
-    // TODO print Flash info
-    interface->SendLine(txtNotImplemented);
-#elif defined(MEMORY_FLAG)
-    interface->SendLine(NULL);
-    interface->SendString(txtFlash);
-    interface->SendLine(txtNotInstalled);
-#endif
+    if(board_config.peripherals.flash)
+    {
+        interface->SendLine(NULL);
+        // TODO print Flash info
+        interface->SendLine(txtNotImplemented);
+    }
+    else
+    {
+        interface->SendLine(NULL);
+        interface->SendString(txtFlash);
+        interface->SendLine(txtNotInstalled);
+    }
     
-#ifndef MEMORY_FLAG
-    interface->SendLine(txtNoMemory);
-#endif
+    if(!memory_flag)
+    {
+        interface->SendLine(txtNoMemory);
+    }
     
     interface->CommandFinish();
 }
@@ -1416,7 +1424,6 @@ static void Console_BoardTemp(uint32_t argc, char **argv __attribute__((unused))
  */
 static void Console_Eth(uint32_t argc __attribute__((unused)), char **argv __attribute__((unused)))
 {
-#if defined(BOARD_HAS_ETHERNET) && BOARD_HAS_ETHERNET == 1
     static const Console_Command cmds[] = {
         { "set", Console_EthSet },
         { "status", Console_EthStatus },
@@ -1424,24 +1431,27 @@ static void Console_Eth(uint32_t argc __attribute__((unused)), char **argv __att
         { "disable", Console_EthDisable }
     };
     
-    if(argc == 1)
+    if(board_config.peripherals.eth)
     {
-        interface->SendLine(txtErrNoSubcommand);
+        if(argc == 1)
+        {
+            interface->SendLine(txtErrNoSubcommand);
+            interface->CommandFinish();
+        }
+        else if(!Console_CallProcessor(argc - 1, argv + 1, cmds, NUMEL(cmds)))
+        {
+            interface->SendLine(txtUnknownSubcommand);
+            interface->CommandFinish();
+        }
+    }
+    else
+    {
+        interface->SendString(txtEthernet);
+        interface->SendLine(txtNotInstalled);
         interface->CommandFinish();
     }
-    else if(!Console_CallProcessor(argc - 1, argv + 1, cmds, NUMEL(cmds)))
-    {
-        interface->SendLine(txtUnknownSubcommand);
-        interface->CommandFinish();
-    }
-#else
-    interface->SendString(txtEthernet);
-    interface->SendLine(txtNotInstalled);
-    interface->CommandFinish();
-#endif
 }
 
-#if defined(BOARD_HAS_ETHERNET) && BOARD_HAS_ETHERNET == 1
 static void Console_EthDisable(uint32_t argc, char **argv)
 {
     interface->SendLine(txtNotImplemented);
@@ -1470,7 +1480,6 @@ static void Console_EthStatus(uint32_t argc, char **argv)
     interface->SendLine(txtNotImplemented);
     interface->CommandFinish();
 }
-#endif
 
 /**
  * Calls the appropriate subcommand processing function for {@code usb} commands.
@@ -1480,7 +1489,6 @@ static void Console_EthStatus(uint32_t argc, char **argv)
  */
 static void Console_Usb(uint32_t argc __attribute__((unused)), char **argv __attribute__((unused)))
 {
-#if defined(BOARD_HAS_USBH) && BOARD_HAS_USBH == 1
     static const Console_Command cmds[] = {
         { "status", Console_UsbStatus },
         { "info", Console_UsbInfo },
@@ -1489,24 +1497,27 @@ static void Console_Usb(uint32_t argc __attribute__((unused)), char **argv __att
         { "ls", Console_UsbLs }
     };
     
-    if(argc == 1)
+    if(board_config.peripherals.usbh)
     {
-        interface->SendLine(txtErrNoSubcommand);
+        if(argc == 1)
+        {
+            interface->SendLine(txtErrNoSubcommand);
+            interface->CommandFinish();
+        }
+        else if(!Console_CallProcessor(argc - 1, argv + 1, cmds, NUMEL(cmds)))
+        {
+            interface->SendLine(txtUnknownSubcommand);
+            interface->CommandFinish();
+        }
+    }
+    else
+    {
+        interface->SendString(txtUSB);
+        interface->SendLine(txtNotInstalled);
         interface->CommandFinish();
     }
-    else if(!Console_CallProcessor(argc - 1, argv + 1, cmds, NUMEL(cmds)))
-    {
-        interface->SendLine(txtUnknownSubcommand);
-        interface->CommandFinish();
-    }
-#else
-    interface->SendString(txtUSB);
-    interface->SendLine(txtNotInstalled);
-    interface->CommandFinish();
-#endif
 }
 
-#if defined(BOARD_HAS_USBH) && BOARD_HAS_USBH == 1
 static void Console_UsbEject(uint32_t argc, char **argv)
 {
     interface->SendLine(txtNotImplemented);
@@ -1538,7 +1549,6 @@ static void Console_UsbWrite(uint32_t argc, char **argv)
     interface->SendLine(txtNotImplemented);
     interface->CommandFinish();
 }
-#endif
 
 /**
  * Processes the {@code help} command.
