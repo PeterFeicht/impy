@@ -57,7 +57,9 @@ typedef struct
     uint32_t calibration_values[6];         //!< Calibration resistor values, {@code 0} for unpopulated ports
     uint16_t coupling_tau;                  //!< Time constant of the coupling capacitor RC network in ms
     uint8_t  eth_mac[6];                    //!< Ethernet MAC address, 48 bits with MSB first
-    uint8_t  reserved[48];                  //!< Reserved for future use, padding to 128 bytes (set to 0)
+    uint32_t sram_size;                     //!< Size of the external SRAM in bytes
+    uint32_t flash_size;                    //!< Size of the external flash memory in bytes
+    uint8_t  reserved[40];                  //!< Reserved for future use, padding to 128 bytes (set to 0)
     uint32_t checksum;                      //!< CRC32 checksum of the buffer
 } EEPROM_ConfigurationBuffer;
 
