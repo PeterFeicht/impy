@@ -11,7 +11,9 @@
 
 // Private function prototypes ------------------------------------------------
 static void SetDefaults(void);
-static void Handle_TIM3_PeriodElapsed(void);
+static void UpdateSettings(void);
+static void Handle_TIM3_AD5933(void);
+static void Handle_TIM3_EEPROM(void);
 
 // Variables ------------------------------------------------------------------
 USBD_HandleTypeDef hUsbDevice;
@@ -41,6 +43,8 @@ EEPROM_ConfigurationBuffer board_config =
     .reserved = { 0 },
     .checksum = 0
 };
+
+static EEPROM_SettingsBuffer settings;
 
 // AD5933 driver values
 static AD5933_Sweep sweep;
@@ -74,7 +78,40 @@ int main(int argc, char* argv[])
     MX_Init();
     Console_Init();
     SetDefaults();
-    // TODO read settings from EEPROM
+    
+#if defined(BOARD_HAS_EEPROM) && BOARD_HAS_EEPROM == 1
+    EE_Init(&hi2c1, &hcrc, EEPROM_E2_PIN_SET);
+    
+    if(EE_ReadConfiguration(&board_config) != EE_OK)
+    {
+        // Bad configuration, write default values to EEPROM
+        EE_WriteConfiguration(&board_config);
+    }
+    
+    if(EE_ReadSettings(&settings) == EE_OK)
+    {
+        // Populate the various variables with settings read from EEPROM, the opposite of what UpdateSettings does
+        sweep.Num_Increments = settings.num_steps;
+        sweep.Start_Freq = settings.start_freq;
+        stopFreq = settings.stop_freq;
+        sweep.Settling_Cycles = settings.settling_cycles & AD5933_MAX_SETTL;
+        sweep.Settling_Mult = settings.settling_cycles & ~AD5933_MAX_SETTL;
+        sweep.Averages = settings.averages;
+
+        range.PGA_Gain = (settings.flags.pga_enabled ? AD5933_GAIN_5 : AD5933_GAIN_1);
+        range.Voltage_Range = settings.voltage;
+        range.Attenuation = settings.attenuation;
+        range.Feedback_Value = settings.feedback;
+
+        autorange = settings.flags.autorange;
+        Console_SetFormat(settings.format_spec);
+    }
+    else
+    {
+        // Settings could not be read, write default settings to EEPROM
+        EE_WriteSettings(&settings);
+    }
+#endif
     
     AD5933_Init(&hi2c1, &htim10);
     
@@ -100,14 +137,15 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
     if(htim->Instance == TIM3)
     {
-        Handle_TIM3_PeriodElapsed();
+        Handle_TIM3_AD5933();
+        Handle_TIM3_EEPROM();
     }
 }
 
 /**
- * Handles TIM3 period elapsed event.
+ * Handles TIM3 period elapsed event for the AD5933 driver.
  */
-static void Handle_TIM3_PeriodElapsed(void)
+static void Handle_TIM3_AD5933(void)
 {
     static AD5933_Status prevStatus = AD_UNINIT;
 
@@ -135,6 +173,23 @@ static void Handle_TIM3_PeriodElapsed(void)
     prevStatus = status;
 }
 
+/**
+ * Handles TIM3 period elapsed event for the EEPROM driver.
+ */
+static void Handle_TIM3_EEPROM(void)
+{
+#if defined(BOARD_HAS_EEPROM) && BOARD_HAS_EEPROM == 1
+    static EEPROM_Status prevStatus = EE_UNINIT;
+    
+    EEPROM_Status status = EE_TimerCallback();
+    if(prevStatus != status)
+    {
+        // Nothing to do yet
+    }
+    prevStatus = status;
+#endif
+}
+
 // Private functions ----------------------------------------------------------
 
 static void SetDefaults(void)
@@ -157,6 +212,28 @@ static void SetDefaults(void)
     validGain = 0;
     pointCount = 0;
     interrupted = 0;
+    
+    UpdateSettings();
+}
+
+/**
+ * Update settings structure from sweep values.
+ */
+static void UpdateSettings(void)
+{
+    settings.num_steps = sweep.Num_Increments;
+    settings.start_freq = sweep.Start_Freq;
+    settings.stop_freq = stopFreq;
+    settings.settling_cycles = sweep.Settling_Cycles | sweep.Settling_Mult;
+    settings.averages = sweep.Averages;
+    
+    settings.flags.pga_enabled = (range.PGA_Gain == AD5933_GAIN_5 ? 1 : 0);
+    settings.voltage = range.Voltage_Range;
+    settings.attenuation = range.Attenuation;
+    settings.feedback = range.Feedback_Value;
+    
+    settings.flags.autorange = (autorange ? 1 : 0);
+    settings.format_spec = Console_GetFormat();
 }
 
 // Exported functions ---------------------------------------------------------
