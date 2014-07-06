@@ -148,6 +148,7 @@ float Board_MeasureTemperature(Board_TemperatureSource what);
 Board_Error Board_Calibrate(uint32_t ohms);
 
 void MarkSettingsDirty(void);
+void WriteConfiguration(void);
 
 
 // ----------------------------------------------------------------------------

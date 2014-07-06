@@ -118,6 +118,12 @@ int main(int argc, char* argv[])
     
     AD5933_Init(&hi2c1, &htim10);
     
+    // Call configuration dependent initialization functions
+    if(board_config.peripherals.eth)
+    {
+        MX_Init_Ethernet();
+    }
+    
     // Start timer for periodic interrupt generation
     HAL_TIM_Base_Start_IT(&htim3);
     
@@ -904,6 +910,14 @@ void MarkSettingsDirty(void)
 {
     settings_dirty = 1;
     settings_dirty_tick = HAL_GetTick();
+}
+
+/**
+ * Schedule a write of the confighuration data to the EEPROM.
+ */
+void WriteConfiguration(void)
+{
+    EE_WriteConfiguration(&board_config);
 }
 
 // ----------------------------------------------------------------------------
