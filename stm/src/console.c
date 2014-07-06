@@ -757,42 +757,39 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     
     // Memory info
     uint8_t memory_flag = board_config.peripherals.sram || board_config.peripherals.flash || BOARD_HAS_EEPROM;
+    interface->SendLine(NULL);
     
     if(BOARD_HAS_EEPROM)
     {
-        interface->SendLine(NULL);
-        // TODO print EEPROM info
-        interface->SendLine(txtNotImplemented);
+        interface->SendString(txtEEPROM);
+        interface->SendString(txtInstalledSize);
+        snprintf(buf, NUMEL(buf), "%d", EEPROM_SIZE);
+        interface->SendLine(buf);
     }
     else if(memory_flag)
     {
-        interface->SendLine(NULL);
         interface->SendString(txtEEPROM);
         interface->SendLine(txtNotInstalled);
     }
     
     if(board_config.peripherals.sram)
     {
-        interface->SendLine(NULL);
         // TODO print SRAM info
         interface->SendLine(txtNotImplemented);
     }
     else if(memory_flag)
     {
-        interface->SendLine(NULL);
         interface->SendString(txtSRAM);
         interface->SendLine(txtNotInstalled);
     }
     
     if(board_config.peripherals.flash)
     {
-        interface->SendLine(NULL);
         // TODO print Flash info
         interface->SendLine(txtNotImplemented);
     }
     else
     {
-        interface->SendLine(NULL);
         interface->SendString(txtFlash);
         interface->SendLine(txtNotInstalled);
     }
