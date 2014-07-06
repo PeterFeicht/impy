@@ -7,6 +7,7 @@
 
 // Includes -------------------------------------------------------------------
 #include <assert.h>
+#include <stddef.h>
 #include "eeprom.h"
 
 // Check structure size constants, buffer data without the checksum needs to be aligned to 32 bits for CRC calculation
@@ -21,12 +22,16 @@ static HAL_StatusTypeDef EE_Read(uint16_t address, uint8_t *buffer, uint16_t len
 static HAL_StatusTypeDef EE_Write(uint16_t address, uint8_t *buffer, uint16_t length);
 __STATIC_INLINE uint8_t EE_IsBusy(void);
 
+// Private macros -------------------------------------------------------------
+#define CRC_SIZE(X)         ((sizeof(X) - 4) >> 2)
+
 // Private variables ----------------------------------------------------------
 static volatile EEPROM_Status status = EE_UNINIT;
 static I2C_HandleTypeDef *i2cHandle = NULL;
 static CRC_HandleTypeDef *crcHandle = NULL;
 static uint8_t e2_state;                        //!< State of the E2 pin on the device
 static EEPROM_ConfigurationBuffer buf_config;   //!< Temporary configuration buffer for reading and writing
+static EEPROM_SettingsBuffer buf_settings;      //!< Temporary settings buffer for reading and writing
 static uint8_t *write_buf;                      //!< The next address to write from
 static uint16_t write_addr;                     //!< The next address to write to
 static uint16_t write_len;                      //!< The number of bytes remaining
@@ -161,7 +166,7 @@ EEPROM_Error EE_ReadConfiguration(EEPROM_ConfigurationBuffer *buffer)
     }
     
     // Check integrity
-    uint32_t crc = HAL_CRC_Calculate(crcHandle, (uint32_t *)&buf_config, (sizeof(EEPROM_ConfigurationBuffer) - 4) >> 2);
+    uint32_t crc = HAL_CRC_Calculate(crcHandle, (uint32_t *)&buf_config, CRC_SIZE(EEPROM_ConfigurationBuffer));
     if(crc == buf_config.checksum)
     {
         *buffer = buf_config;
@@ -190,7 +195,7 @@ EEPROM_Error EE_WriteConfiguration(EEPROM_ConfigurationBuffer *buffer)
         return EE_BUSY;
     }
     
-    buffer->checksum = HAL_CRC_Calculate(crcHandle, (uint32_t *)buffer, (sizeof(EEPROM_ConfigurationBuffer) - 4) >> 2);
+    buffer->checksum = HAL_CRC_Calculate(crcHandle, (uint32_t *)buffer, CRC_SIZE(EEPROM_ConfigurationBuffer));
     buf_config = *buffer;
     HAL_StatusTypeDef ret = EE_Write(EEPROM_CONFIG_OFFSET, (uint8_t *)&buf_config, sizeof(EEPROM_ConfigurationBuffer));
     
@@ -203,6 +208,78 @@ EEPROM_Error EE_WriteConfiguration(EEPROM_ConfigurationBuffer *buffer)
     {
         return EE_ERROR;
     }
+}
+
+/**
+ * Reads the latest settings data from the EEPROM.
+ * 
+ * @param buffer Structure pointer receiving the data, the buffer is not altered if the read fails
+ * @return {@link EEPROM_Error} code
+ */
+EEPROM_Error EE_ReadSettings(EEPROM_SettingsBuffer *buffer)
+{
+    assert_param(buffer != NULL);
+    
+    if(EE_IsBusy())
+    {
+        return EE_BUSY;
+    }
+    status = EE_READ;
+    
+    HAL_StatusTypeDef ret;
+    uint16_t addr = EEPROM_DATA_OFFSET;
+    uint16_t serial;
+    
+    ret = EE_Read(addr + offsetof(EEPROM_SettingsBuffer, serial), (uint8_t *)&serial, 2);
+    if(ret != HAL_OK)
+    {
+        status = EE_IDLE;
+        return EE_ERROR;
+    }
+    
+    // Look for latest buffer
+    while(addr + 2 * EEPROM_SETTINGS_SIZE <= EEPROM_DATA_OFFSET + EEPROM_DATA_SIZE)
+    {
+        uint16_t tmp;
+        ret = EE_Read(addr + EEPROM_SETTINGS_SIZE + offsetof(EEPROM_SettingsBuffer, serial), (uint8_t *)&tmp, 2);
+        if(ret != HAL_OK)
+        {
+            status = EE_IDLE;
+            return EE_ERROR;
+        }
+        if(tmp != serial + 1)
+        {
+            break;
+        }
+        serial = tmp;
+        addr += EEPROM_SETTINGS_SIZE;
+    }
+    
+    do
+    {
+        // Read current buffer
+        ret = EE_Read(addr, (uint8_t *)&buf_settings, sizeof(EEPROM_SettingsBuffer));
+        if(ret != HAL_OK)
+        {
+            status = EE_IDLE;
+            return EE_ERROR;
+        }
+        
+        // Check integrity
+        uint32_t crc = HAL_CRC_Calculate(crcHandle, (uint32_t *)&buf_settings, CRC_SIZE(EEPROM_SettingsBuffer));
+        if(crc == buf_settings.checksum)
+        {
+            *buffer = buf_settings;
+            status = EE_FINISH;
+            return EE_OK;
+        }
+        
+        // CRC failed, try the previous buffer
+        addr -= EEPROM_SETTINGS_SIZE;
+    } while(addr >= EEPROM_DATA_OFFSET);
+    
+    status = EE_IDLE;
+    return EE_ERROR;
 }
 
 /**
