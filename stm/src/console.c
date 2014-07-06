@@ -1938,4 +1938,21 @@ void Console_ProcessLine(Console_Interface *itf, char *str)
     }
 }
 
+/**
+ * Gets the current format specification.
+ */
+uint32_t Console_GetFormat(void)
+{
+   return format_spec; 
+}
+
+/**
+ * Sets the format specification to the specified value.
+ * @param spec Format specification
+ */
+void Console_SetFormat(uint32_t spec)
+{
+    format_spec = spec;
+}
+
 // ----------------------------------------------------------------------------
