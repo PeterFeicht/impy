@@ -598,7 +598,7 @@ const AD5933_GainFactor* Board_GetGainFactor(void)
 /**
  * Initiates a frequency sweep on the specified port.
  * 
- * @param port Port number for the sweep, needs to be in the range {@link PORT_MIN} to {@link PORT_MAX}
+ * @param port Port number for the sweep, needs to be in the range 0 to {@link PORT_MAX}
  * @return {@link Board_Error} code
  */
 Board_Error Board_StartSweep(uint8_t port)
@@ -607,8 +607,7 @@ Board_Error Board_StartSweep(uint8_t port)
     {
         return BOARD_BUSY;
     }
-    // Uncomment if PORT_MIN is greater than 0
-    if(/*port < PORT_MIN ||*/ port > PORT_MAX || (!validGain && !autorange))
+    if(port > PORT_MAX || (!validGain && !autorange))
     {
         return BOARD_ERROR;
     }
@@ -685,9 +684,7 @@ Board_Error Board_MeasureSingleFrequency(uint8_t port, uint32_t freq, AD5933_Imp
     {
         return BOARD_BUSY;
     }
-    // Uncomment if PORT_MIN is greater than 0
-    if(freq < AD5933_FREQ_MIN || freq > AD5933_FREQ_MAX || /*port < PORT_MIN ||*/ port > PORT_MAX ||
-            (!validGain && !autorange))
+    if(freq < AD5933_FREQ_MIN || freq > AD5933_FREQ_MAX || port > PORT_MAX || (!validGain && !autorange))
     {
         return BOARD_ERROR;
     }
