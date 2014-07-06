@@ -140,6 +140,11 @@ typedef struct
 #define EEPROM_PAGE_MASK                    0x03F0
 
 /**
+ * Page size of the EEPROM, only one page can be written at a time
+ */
+#define EEPROM_PAGE_SIZE                    0x10
+
+/**
  * Configuration data offset, that is the first address of the configuration data space
  */
 #define EEPROM_CONFIG_OFFSET                0
