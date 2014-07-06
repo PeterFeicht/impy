@@ -21,6 +21,24 @@ TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim10;
 CRC_HandleTypeDef hcrc;
 
+// Default board configuration
+EEPROM_ConfigurationBuffer board_config =
+{
+    .peripherals = {
+        .sram = 0,
+        .flash = 0,
+        .eth = 0,
+        .usbh = 0,
+        .reserved = 0
+    },
+    .attenuations = { 1, 100, 0, 0 },
+    .feedback_resistors = { 100, 1000, 10000, 100000, 1000000, 0, 0, 0 },
+    .calibration_values = { 10, 100, 1000, 10000, 100000, 1000000 },
+    .eth_mac = { 0x11, 0x00, 0xAA, 0x00, 0x00, 0x00 },
+    .reserved = { 0 },
+    .checksum = 0
+};
+
 // AD5933 driver values
 static AD5933_Sweep sweep;
 static AD5933_RangeSettings range;
@@ -270,18 +288,14 @@ Board_Error Board_SetVoltageRange(uint16_t voltage)
         AD5933_VOLTAGE_1,
         AD5933_VOLTAGE_2
     };
-    static const uint16_t attenuations[] = {
-        AD5933_ATTENUATION_PORT_0,
-        AD5933_ATTENUATION_PORT_1
-    };
     
-    for(uint32_t j = 0; j < NUMEL(attenuations); j++)
+    for(uint32_t j = 0; j < NUMEL(board_config.attenuations) && board_config.attenuations[j]; j++)
     {
         for(uint32_t k = 0; k < NUMEL(voltages); k++)
         {
-            if(voltage == voltages[k] / attenuations[j])
+            if(voltage == voltages[k] / board_config.attenuations[j])
             {
-                range.Attenuation = attenuations[j];
+                range.Attenuation = board_config.attenuations[j];
                 range.Voltage_Range = voltage_values[k];
                 validGain = 0;
                 return BOARD_OK;
@@ -339,19 +353,14 @@ Board_Error Board_SetFeedback(uint32_t ohms)
         return BOARD_BUSY;
     }
     
-    static const uint32_t feedbackValues[] = {
-        AD5933_FEEDBACK_PORT_0, AD5933_FEEDBACK_PORT_1, AD5933_FEEDBACK_PORT_2, AD5933_FEEDBACK_PORT_3,
-        AD5933_FEEDBACK_PORT_4, AD5933_FEEDBACK_PORT_5, AD5933_FEEDBACK_PORT_6, AD5933_FEEDBACK_PORT_7
-    };
-    
     if(!autorange)
     {
         uint32_t fb = 0;
-        for(uint32_t j = 0; j < NUMEL(feedbackValues); j++)
+        for(uint32_t j = 0; j < NUMEL(board_config.feedback_resistors) && board_config.feedback_resistors[j]; j++)
         {
-            if(ohms == feedbackValues[j])
+            if(ohms == board_config.feedback_resistors[j])
             {
-                fb = feedbackValues[j];
+                fb = board_config.feedback_resistors[j];
                 break;
             }
         }
@@ -753,21 +762,17 @@ Board_Error Board_Calibrate(uint32_t ohms)
         return BOARD_BUSY;
     }
     
-    static const uint32_t calibrationValues[] = {
-        CAL_PORT_10, CAL_PORT_11, CAL_PORT_12, CAL_PORT_13, CAL_PORT_14, CAL_PORT_15
-    };
-    
     if(!autorange)
     {
         AD5933_CalibrationSpec spec;
         AD5933_GainFactorData gainData;
         uint8_t cal = 0;
-        for(uint32_t j = 0; j < NUMEL(calibrationValues) && calibrationValues[j]; j++)
+        for(uint32_t j = 0; j < NUMEL(board_config.calibration_values) && board_config.calibration_values[j]; j++)
         {
-            if(ohms == calibrationValues[j])
+            if(ohms == board_config.calibration_values[j])
             {
                 cal = CAL_PORT_MIN + j;
-                spec.impedance = calibrationValues[j];
+                spec.impedance = board_config.calibration_values[j];
                 break;
             }
         }

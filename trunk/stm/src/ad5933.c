@@ -9,6 +9,7 @@
 #include <math.h>
 #include <assert.h>
 #include "ad5933.h"
+#include "main.h"
 
 // Private type definitions ---------------------------------------------------
 typedef enum
@@ -229,49 +230,33 @@ static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, u
     uint8_t portFb = 0;
     uint8_t j;
     
-    static const uint16_t attenuation[] = {
-        AD5933_ATTENUATION_PORT_0,
-        AD5933_ATTENUATION_PORT_1,
-        AD5933_ATTENUATION_PORT_2,
-        AD5933_ATTENUATION_PORT_3
-    };
-    static const uint32_t feedback[] = {
-        AD5933_FEEDBACK_PORT_0,
-        AD5933_FEEDBACK_PORT_1,
-        AD5933_FEEDBACK_PORT_2,
-        AD5933_FEEDBACK_PORT_3,
-        AD5933_FEEDBACK_PORT_4,
-        AD5933_FEEDBACK_PORT_5,
-        AD5933_FEEDBACK_PORT_6,
-        AD5933_FEEDBACK_PORT_7
-    };
     static const GPIO_PinState SET = GPIO_PIN_SET;
     static const GPIO_PinState RESET = GPIO_PIN_RESET;
     
     // Find attenuation port with desired value
-    for(j = 0; j < NUMEL(attenuation); j++)
+    for(j = 0; j < NUMEL(board_config.attenuations); j++)
     {
-        if(attenuation[j] == range->Attenuation)
+        if(board_config.attenuations[j] == range->Attenuation)
         {
             portAtt = j;
             break;
         }
     }
-    if(j == NUMEL(attenuation) || attenuation[j] == 0)
+    if(j == NUMEL(board_config.attenuations) || board_config.attenuations[j] == 0)
     {
         return AD_ERROR;
     }
     
     // Find feedback port with desired value
-    for(j = 0; j < NUMEL(feedback); j++)
+    for(j = 0; j < NUMEL(board_config.feedback_resistors); j++)
     {
-        if(feedback[j] == range->Feedback_Value)
+        if(board_config.feedback_resistors[j] == range->Feedback_Value)
         {
             portFb = j;
             break;
         }
     }
-    if(j == NUMEL(feedback) || feedback[j] == 0)
+    if(j == NUMEL(board_config.feedback_resistors) || board_config.feedback_resistors[j] == 0)
     {
         return AD_ERROR;
     }
