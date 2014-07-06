@@ -141,7 +141,7 @@ static HAL_StatusTypeDef EE_FindLatestSettings(uint16_t *result)
 /**
  * Gets the current driver status.
  */
-EEPROM_Status GetStatus(void)
+EEPROM_Status EE_GetStatus(void)
 {
     return status;
 }
