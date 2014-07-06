@@ -34,6 +34,7 @@ EEPROM_ConfigurationBuffer board_config =
     .attenuations = { 1, 100, 0, 0 },
     .feedback_resistors = { 100, 1000, 10000, 100000, 1000000, 0, 0, 0 },
     .calibration_values = { 10, 100, 1000, 10000, 100000, 1000000 },
+    .coupling_tau = 110,
     .eth_mac = { 0x11, 0x00, 0xAA, 0x00, 0x00, 0x00 },
     .reserved = { 0 },
     .checksum = 0

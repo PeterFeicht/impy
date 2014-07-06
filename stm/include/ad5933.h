@@ -159,11 +159,6 @@ typedef struct
 /** @} */
 
 /**
- * Time constant of the coupling capacitor-discharge resistor RC network in ms.
- */
-#define AD5933_COUPLING_TAU                 110
-
-/**
  * @defgroup AD5933_COUPLING_GPIO Coupling Capacitor Charging Switch GPIO Definition
  * @{
  */

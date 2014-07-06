@@ -291,7 +291,7 @@ static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, u
     
     // Start charging coupling capacitor, this is always needed, assuming the output was previously switched off
     HAL_GPIO_WritePin(AD5933_COUPLING_GPIO_PORT, AD5933_COUPLING_GPIO_PIN, GPIO_PIN_RESET);
-    wait_coupl = AD5933_COUPLING_TAU * 4;
+    wait_coupl = board_config.coupling_tau * 4;
     wait_tick = HAL_GetTick();
 
     return AD_OK;
