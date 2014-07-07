@@ -236,6 +236,7 @@ EEPROM_Error EE_WriteConfiguration(EEPROM_ConfigurationBuffer *buffer)
     {
         return EE_BUSY;
     }
+    status = EE_WRITE_SEND;
     
     buffer->checksum = HAL_CRC_Calculate(crcHandle, (uint32_t *)buffer, CRC_SIZE(EEPROM_ConfigurationBuffer));
     buf_config = *buffer;
@@ -243,11 +244,12 @@ EEPROM_Error EE_WriteConfiguration(EEPROM_ConfigurationBuffer *buffer)
     
     if(ret == HAL_OK)
     {
-        status = EE_WRITE_CONFIG;
+        status = EE_WRITE_WAIT;
         return EE_OK;
     }
     else
     {
+        status = EE_IDLE;
         return EE_ERROR;
     }
 }
@@ -319,6 +321,7 @@ EEPROM_Error EE_WriteSettings(EEPROM_SettingsBuffer *buffer)
     {
         return EE_BUSY;
     }
+    status = EE_WRITE_SEND;
     
     uint16_t addr;
     HAL_StatusTypeDef ret = EE_FindLatestSettings(&addr);
@@ -340,11 +343,12 @@ EEPROM_Error EE_WriteSettings(EEPROM_SettingsBuffer *buffer)
     
     if(ret == HAL_OK)
     {
-        status = EE_WRITE_SETTINGS;
+        status = EE_WRITE_WAIT;
         return EE_OK;
     }
     else
     {
+        status = EE_IDLE;
         return EE_ERROR;
     }
 }
@@ -361,18 +365,20 @@ EEPROM_Status EE_TimerCallback(void)
         case EE_UNINIT:
         case EE_IDLE:
         case EE_FINISH:
+        case EE_WRITE_SEND:
             break;
             
         case EE_READ:
             // Reads are done in one go and blocking, nothing to do here
             break;
             
-        case EE_WRITE_CONFIG:
-        case EE_WRITE_SETTINGS:
+        case EE_WRITE_WAIT:
             if(write_len > 0)
             {
                 // Not finished, try to write
+                status = EE_WRITE_SEND;
                 EE_Write(write_addr, write_buf, write_len);
+                status = EE_WRITE_WAIT;
             }
             else
             {
