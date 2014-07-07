@@ -115,6 +115,7 @@ static void Console_BoardTemp(uint32_t argc, char **argv);
 static void Console_Eth(uint32_t argc, char **argv);
 static void Console_Usb(uint32_t argc, char **argv);
 static void Console_Help(uint32_t argc, char **argv);
+static void Console_Setup(uint32_t argc, char **argv);
 static void Console_Debug(uint32_t argc, char **argv);
 static void Console_EthDisable(uint32_t argc, char **argv);
 static void Console_EthEnable(uint32_t argc, char **argv);
@@ -153,6 +154,7 @@ static Console_HelpEntry txtHelpTopics[] = {
     TOPIC("calibrate"),
     TOPIC("ranges"),
     TOPIC("echo"),
+    TOPIC("setup"),
 };
 // Those are the top level commands, subcommands are called from their respective processing functions
 static const Console_Command commands[] = {
@@ -160,6 +162,7 @@ static const Console_Command commands[] = {
     { "eth", Console_Eth },
     { "usb", Console_Usb },
     { "help", Console_Help },
+    { "setup", Console_Setup },
     { "debug", Console_Debug }
 };
 // Those are the values that can be set with 'board set' and read with 'board get'
@@ -1634,6 +1637,18 @@ static void Console_Help(uint32_t argc, char **argv)
             break;
     }
     
+    interface->CommandFinish();
+}
+
+/**
+ * Processes the {@code setup} command.
+ * 
+ * @param argc Number of arguments
+ * @param argv Array of arguments
+ */
+static void Console_Setup(uint32_t argc, char **argv)
+{
+    interface->SendLine(txtNotImplemented);
     interface->CommandFinish();
 }
 
