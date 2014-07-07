@@ -43,6 +43,7 @@ EEPROM_ConfigurationBuffer board_config =
     .reserved = { 0 },
     .checksum = 0
 };
+static volatile uint8_t config_dirty = 0;
 
 // Settings storage
 static EEPROM_SettingsBuffer settings;
@@ -64,6 +65,7 @@ static uint8_t validPolar = 0;
 static AD5933_GainFactor dataGainFactor;    // Gain factor for valid raw data
 static uint32_t pointCount = 0;
 static uint8_t interrupted = 0;
+static AD5933_GainFactorData gainData;
 static AD5933_GainFactor gainFactor;        // Current gain factor, could have changed since the measurement finished
 static uint8_t validGain = 0;               // Whether gainFactor is valid for the current sweep parameters
 
@@ -88,7 +90,7 @@ int main(int argc, char* argv[])
     if(EE_ReadConfiguration(&board_config) != EE_OK)
     {
         // Bad configuration, write default values to EEPROM
-        EE_WriteConfiguration(&board_config);
+        config_dirty = 1;
     }
     
     if(EE_ReadSettings(&settings) == EE_OK)
@@ -112,7 +114,8 @@ int main(int argc, char* argv[])
     else
     {
         // Settings could not be read, write default settings to EEPROM
-        EE_WriteSettings(&settings);
+        settings_dirty = 1;
+        settings_dirty_tick = HAL_GetTick();
     }
 #endif
     
@@ -159,10 +162,13 @@ static void Handle_TIM3_AD5933(void)
     static AD5933_Status prevStatus = AD_UNINIT;
 
     AD5933_Status status = AD5933_TimerCallback();
-    if(prevStatus != status)
+    if(prevStatus == status)
     {
-        if(status == AD_FINISH_IMPEDANCE)
-        {
+        return;
+    }
+    switch(status)
+    {
+        case AD_FINISH_IMPEDANCE:
             pointCount = AD5933_GetSweepCount();
             interrupted = 0;
             
@@ -177,7 +183,16 @@ static void Handle_TIM3_AD5933(void)
                 validData = 0;
                 validPolar = 1;
             }
-        }
+            break;
+            
+        case AD_FINISH_CALIB:
+            AD5933_CalculateGainFactor(&gainData, &gainFactor);
+            validGain = 1;
+            Console_CalibrateCallback();
+            break;
+            
+        default:
+            break;
     }
     prevStatus = status;
 }
@@ -193,11 +208,18 @@ static void Handle_TIM3_EEPROM(void)
     {
         return;
     }
+    if(config_dirty)
+    {
+        EE_WriteConfiguration(&board_config);
+        config_dirty = 0;
+        return;
+    }
     if(settings_dirty && HAL_GetTick() - settings_dirty_tick > EEPROM_WRITE_INTERVAL)
     {
         UpdateSettings();
         EE_WriteSettings(&settings);
         settings_dirty = 0;
+        return;
     }
 #endif
 }
@@ -226,6 +248,7 @@ static void SetDefaults(void)
     interrupted = 0;
     
     UpdateSettings();
+    settings.serial = 0;
 }
 
 /**
@@ -861,46 +884,35 @@ Board_Error Board_Calibrate(uint32_t ohms)
         return BOARD_BUSY;
     }
     
-    if(!autorange)
+    AD5933_CalibrationSpec spec;
+    uint8_t cal = 0;
+    for(uint32_t j = 0; j < NUMEL(board_config.calibration_values) && board_config.calibration_values[j]; j++)
     {
-        AD5933_CalibrationSpec spec;
-        AD5933_GainFactorData gainData;
-        uint8_t cal = 0;
-        for(uint32_t j = 0; j < NUMEL(board_config.calibration_values) && board_config.calibration_values[j]; j++)
+        if(ohms == board_config.calibration_values[j])
         {
-            if(ohms == board_config.calibration_values[j])
-            {
-                cal = CAL_PORT_MIN + j;
-                spec.impedance = board_config.calibration_values[j];
-                break;
-            }
+            cal = CAL_PORT_MIN + j;
+            spec.impedance = board_config.calibration_values[j];
+            break;
         }
-        if(!cal)
-        {
-            return BOARD_ERROR;
-        }
-        
-        spec.freq1 = sweep.Start_Freq;
-        spec.freq2 = stopFreq;
-        spec.is_2point = 1;
-        
-        // Set output mux
-        cal = cal & ADG725_MASK_PORT;
-        HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_RESET);
-        HAL_SPI_Transmit(&hspi3, &cal, 1, BOARD_SPI_TIMEOUT);
-        HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_SET);
-        
-        AD5933_Calibrate(&spec, &range, &gainData);
-        // TODO use callback
-        while(AD5933_GetStatus() == AD_CALIBRATE)
-        {
-            HAL_Delay(1);
-        }
-        AD5933_CalculateGainFactor(&gainData, &gainFactor);
-        validGain = 1;
+    }
+    if(!cal)
+    {
+        return BOARD_ERROR;
     }
     
-    return BOARD_OK;
+    spec.freq1 = sweep.Start_Freq;
+    spec.freq2 = stopFreq;
+    spec.is_2point = 1;
+    
+    // Set output mux
+    cal = cal & ADG725_MASK_PORT;
+    HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_RESET);
+    HAL_SPI_Transmit(&hspi3, &cal, 1, BOARD_SPI_TIMEOUT);
+    HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_SET);
+    
+    AD5933_Error ret = AD5933_Calibrate(&spec, &range, &gainData);
+    
+    return (ret == AD_OK ? BOARD_OK : BOARD_ERROR);
 }
 
 /**
@@ -913,11 +925,11 @@ void MarkSettingsDirty(void)
 }
 
 /**
- * Schedule a write of the confighuration data to the EEPROM.
+ * Schedule a write of the configuration data to the EEPROM.
  */
 void WriteConfiguration(void)
 {
-    EE_WriteConfiguration(&board_config);
+    config_dirty = 1;
 }
 
 // ----------------------------------------------------------------------------

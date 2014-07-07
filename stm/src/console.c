@@ -423,6 +423,12 @@ static void Console_Board(uint32_t argc, char **argv)
     }
 }
 
+/**
+ * Processes the 'board calibrate' command. This command finishes when {@link Console_CalibrateCallback} is called.
+ * 
+ * @param argc Number of arguments
+ * @param argv Array of arguments
+ */
 static void Console_BoardCalibrate(uint32_t argc, char **argv)
 {
     // Arguments: ohms
@@ -448,17 +454,16 @@ static void Console_BoardCalibrate(uint32_t argc, char **argv)
     switch(err)
     {
         case BOARD_OK:
-            interface->SendLine(txtOK);
             break;
         case BOARD_BUSY:
             interface->SendLine(txtBoardBusy);
+            interface->CommandFinish();
             break;
         case BOARD_ERROR:
             interface->SendLine(txtWrongCalibValue);
+            interface->CommandFinish();
             break;
     }
-    
-    interface->CommandFinish();
 }
 
 /**
@@ -879,6 +884,12 @@ static void Console_BoardMeasure(uint32_t argc, char **argv)
     interface->CommandFinish();
 }
 
+/**
+ * Processes the 'board read' command. This command finishes immediately.
+ * 
+ * @param argc Number of arguments
+ * @param argv Array of arguments
+ */
 static void Console_BoardRead(uint32_t argc, char **argv)
 {
     static const Console_Arg args[] = {
@@ -1970,6 +1981,18 @@ uint32_t Console_GetFormat(void)
 void Console_SetFormat(uint32_t spec)
 {
     format_spec = spec;
+}
+
+// Callbacks ------------------------------------------------------------------
+
+/**
+ * Called when a calibration is finished.
+ */
+void Console_CalibrateCallback(void)
+{
+    interface->SendLine(txtOK);
+    interface->Flush();
+    interface->CommandFinish();
 }
 
 // ----------------------------------------------------------------------------
