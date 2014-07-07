@@ -67,7 +67,7 @@ const char* const txtImpedance = "Impedance (polar): ";
 const char* const txtNoReadWhileBusy = "Data can only be read after the measurement is finished.";
 const char* const txtOutOfMemory = "Not enough memory to send all data, try binary format or use fewer points.";
 const char* const txtNotCalibrated = "Calibration not performed.";
-const char* const txtNoRawData = "Now raw data is present (raw data is not retained when autoranging is enabled.";
+const char* const txtNoRawData = "No raw data is present (raw data is not retained when autoranging is enabled).";
 // board calibrate
 const char* const txtWrongCalibValue = "Unknown resistor value, see 'board info' for possible values.";
 
