@@ -314,6 +314,7 @@ static void MX_GPIO_Init(void)
  */
 static void MX_CRC_Init(void)
 {
+    __CRC_CLK_ENABLE();
     hcrc.Instance = CRC;
     HAL_CRC_Init(&hcrc);
 }
