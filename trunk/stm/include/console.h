@@ -56,6 +56,9 @@ __STATIC_INLINE uint32_t max(uint32_t left, uint32_t right)
     return (left > right ? left : right);
 }
 
+// Callbacks
+void Console_CalibrateCallback(void);
+
 // ----------------------------------------------------------------------------
 
 #endif /* CONSOLE_H_ */
