@@ -35,7 +35,7 @@ typedef struct
 
 // Macros ---------------------------------------------------------------------
 
-#define NUMEL(X)                (sizeof(X) / sizeof(*X))
+#define NUMEL(X)                (sizeof(X) / sizeof(X[0]))
 
 // Constants ------------------------------------------------------------------
 
