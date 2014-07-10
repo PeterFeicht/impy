@@ -16,6 +16,7 @@ Commands:
   eth set [--dhcp=(on|off)] [--ip=IP]
   eth (status | enable | disable)
   usb (status | info | eject | write <file> | ls)
+  setup <cmd> [<args>...]
   help [<topic>]
 
 Commands:
@@ -37,6 +38,7 @@ Commands:
 For detailed description of options see 'help options'.
 For a guide on how to select range settings see 'help ranges'.
 See 'help eth' and 'help usb' for Ethernet and USB commands, respectively.
+See 'help setup' for information on how to use the setup command.
 
 When a command is preceded by an '@' character, echo is disabled for this line.
 This is useful for non-interactive communication, where it is undesirable that
@@ -170,3 +172,31 @@ disabled either completely (board set --echo=off) or just for single lines, by
 preceding them with an '@' character.
 If echo is disabled globally, the '@' character has no effect and is ignored.
 
+help setup:
+The EEPROM stores configuration information for the board, such a populated
+feedback or calibration resistors, Ethernet MAC address and populated
+peripherals. The setup command is used to set these configuration options when
+the board is used for the first time. If no EEPROM is fitted, this command has
+no effect.
+
+Commands:
+  attenuation <value>...        Possible output voltage attenuations, at most
+                                4 values
+  feedback <ohms>...            Fitted feedback resistors, at most 8 values
+  calibration <ohms>...         Fitted calibration resistors, at most 6 values
+  coupl <tau>                   Coupling capacitor time constant in ms
+  sram (on|off) [<size>]        Whether external SRAM memory is fitted and, if
+                                so, the size in bytes
+  flash (on|off) [<size>]       Whether external flash memory is fitted and, if
+                                so, the size in bytes
+  eth (on|off) [<mac-address>]  Whether the Ethernet interface is fitted and,
+                                if so, the MAC address to be used in the format
+                                "12:34:56:78:9A:BC"
+  usbh (on|off)                 Whether the USB host jack is fitted
+
+For attenuations and feedback and calibration resistors, the order on the
+command line is the same as for the respective ports in ascending order.
+For example, if feedback port 0 has a 10k resistor and port 1 a 100k resistor,
+the corresponding command line would be 'setup feedback 10k 100k'.
+Values that are not populated can also be set to 0, for example
+'setup attenuation 1 100 0 0'.
