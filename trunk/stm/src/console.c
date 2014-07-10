@@ -1674,7 +1674,8 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
 #ifdef DEBUG
     if(argc == 1)
     {
-        interface->SendLine("send, echo, printf-float, malloc, leak, usb-paksize, heap, tim, mux, output");
+        interface->SendLine("send, echo, printf-float, malloc, leak, usb-paksize, heap, tim, mux, output,");
+        interface->SendLine("dump");
         interface->CommandFinish();
         return;
     }
@@ -1913,6 +1914,37 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
                 
                 AD5933_Debug_OutputFreq(freq, Board_GetRangeSettings());
             }
+        }
+    }
+    else if(strcmp(argv[1], "dump") == 0)
+    {
+        // Dump contents of the EEPROM in binary format to the console
+        const size_t size = 1024;
+        const uint8_t addr = 0xA0;
+        
+        uint8_t *buffer = malloc(size);
+        if(buffer == NULL)
+        {
+            interface->SendLine("Failed to allocate memory.");
+        }
+        else
+        {
+            HAL_StatusTypeDef ret = HAL_I2C_Mem_Read(&hi2c1, addr, 0, 1, buffer, size, 200);
+            switch(ret)
+            {
+                case HAL_OK:
+                    for(uint32_t j = 0; j < size; j++)
+                    {
+                        interface->SendChar(buffer[j]);
+                    }
+                    break;
+                case HAL_TIMEOUT:
+                case HAL_ERROR:
+                case HAL_BUSY:
+                    interface->SendLine("HAL_I2C_Mem_Read error.");
+                    break;
+            }
+            free(buffer);
         }
     }
     else
