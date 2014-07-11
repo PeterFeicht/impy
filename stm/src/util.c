@@ -26,7 +26,7 @@ static uint8_t Util_ConvertHexDigit(char c)
 {
     char low = c & 0x0F;
     
-    switch(c & 0xF0)
+    switch((c & 0xF0) >> 4)
     {
         case 3: /* 0 .. 9 */
             if(c <= '9')
@@ -36,10 +36,10 @@ static uint8_t Util_ConvertHexDigit(char c)
             break;
             
         case 4: /* A .. F */
-        case 5: /* a .. f */
+        case 6: /* a .. f */
             if(low && low <= 6)
             {
-                return low - 1;
+                return low + 9;
             }
             break;
     }
