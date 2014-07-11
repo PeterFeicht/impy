@@ -146,12 +146,13 @@ uint8_t EE_IsBusy(void)
 }
 
 /**
- * Initializes the driver with the specified I2C handle for communication and E2 bit state.
+ * Tries to initialize the driver with the specified I2C handle for communication and E2 bit state.
+ * The return value can be used to determine whether the EEPROM responded (and is fitted) or not.
  * 
  * @param i2c Pointer to an I2C handle structure that is to be used for communication with the EEPROM
  * @param crc Pointer to a CRC handle structure used for CRC calculation
  * @param e2_set Indicates the state of the E2 pin of the device
- * @return {@code EE_OK}
+ * @return {@code EE_OK} if EEPROM responds, {@code EE_ERROR} otherwise
  */
 EEPROM_Error EE_Init(I2C_HandleTypeDef *i2c, CRC_HandleTypeDef *crc, uint8_t e2_set)
 {
@@ -161,8 +162,16 @@ EEPROM_Error EE_Init(I2C_HandleTypeDef *i2c, CRC_HandleTypeDef *crc, uint8_t e2_
     i2cHandle = i2c;
     crcHandle = crc;
     e2_state = (e2_set ? EEPROM_M24C08_ADDR_E2 : 0);
-    status = EE_IDLE;
-    return EE_OK;
+    
+    if(HAL_I2C_IsDeviceReady(i2c, MAKE_ADDRESS(0, e2_state), 10, EEPROM_I2C_TIMEOUT) == HAL_OK)
+    {
+        status = EE_IDLE;
+        return EE_OK;
+    }
+    else
+    {
+        return EE_ERROR;
+    }
 }
 
 /**
