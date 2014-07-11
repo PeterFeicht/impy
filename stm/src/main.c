@@ -24,6 +24,7 @@ TIM_HandleTypeDef htim10;
 CRC_HandleTypeDef hcrc;
 
 // Default board configuration
+uint8_t board_has_eeprom = 0;
 EEPROM_ConfigurationBuffer board_config =
 {
     .peripherals = {
@@ -80,41 +81,44 @@ int main(int argc __attribute__((unused)), char* argv[] __attribute__((unused)))
     Console_Init();
     SetDefaults();
     
-#if defined(BOARD_HAS_EEPROM) && BOARD_HAS_EEPROM == 1
-    // TODO dynamically check for EEPROM presence
-    EE_Init(&hi2c1, &hcrc, EEPROM_E2_PIN_SET);
-    
-    if(EE_ReadConfiguration(&board_config) != EE_OK)
+    if(EE_Init(&hi2c1, &hcrc, EEPROM_E2_PIN_SET) == EE_OK)
     {
-        // Bad configuration, write default values to EEPROM
-        config_dirty = 1;
+        board_has_eeprom = 1;
     }
     
-    if(EE_ReadSettings(&settings) == EE_OK)
+    if(board_has_eeprom)
     {
-        // Populate the various variables with settings read from EEPROM, the opposite of what UpdateSettings does
-        sweep.Num_Increments = settings.num_steps;
-        sweep.Start_Freq = settings.start_freq;
-        stopFreq = settings.stop_freq;
-        sweep.Settling_Cycles = settings.settling_cycles & AD5933_MAX_SETTL;
-        sweep.Settling_Mult = settings.settling_cycles & ~AD5933_MAX_SETTL;
-        sweep.Averages = settings.averages;
-
-        range.PGA_Gain = (settings.flags.pga_enabled ? AD5933_GAIN_5 : AD5933_GAIN_1);
-        range.Voltage_Range = settings.voltage;
-        range.Attenuation = settings.attenuation;
-        range.Feedback_Value = settings.feedback;
-
-        autorange = settings.flags.autorange;
-        Console_SetFormat(settings.format_spec);
+        if(EE_ReadConfiguration(&board_config) != EE_OK)
+        {
+            // Bad configuration, write default values to EEPROM
+            config_dirty = 1;
+        }
+        
+        if(EE_ReadSettings(&settings) == EE_OK)
+        {
+            // Populate the various variables with settings read from EEPROM, the opposite of what UpdateSettings does
+            sweep.Num_Increments = settings.num_steps;
+            sweep.Start_Freq = settings.start_freq;
+            stopFreq = settings.stop_freq;
+            sweep.Settling_Cycles = settings.settling_cycles & AD5933_MAX_SETTL;
+            sweep.Settling_Mult = settings.settling_cycles & ~AD5933_MAX_SETTL;
+            sweep.Averages = settings.averages;
+            
+            range.PGA_Gain = (settings.flags.pga_enabled ? AD5933_GAIN_5 : AD5933_GAIN_1);
+            range.Voltage_Range = settings.voltage;
+            range.Attenuation = settings.attenuation;
+            range.Feedback_Value = settings.feedback;
+            
+            autorange = settings.flags.autorange;
+            Console_SetFormat(settings.format_spec);
+        }
+        else
+        {
+            // Settings could not be read, write default settings to EEPROM
+            settings_dirty = 1;
+            settings_dirty_tick = HAL_GetTick();
+        }
     }
-    else
-    {
-        // Settings could not be read, write default settings to EEPROM
-        settings_dirty = 1;
-        settings_dirty_tick = HAL_GetTick();
-    }
-#endif
     
     AD5933_Init(&hi2c1, &htim10);
     
@@ -201,7 +205,9 @@ static void Handle_TIM3_AD5933(void)
  */
 static void Handle_TIM3_EEPROM(void)
 {
-#if defined(BOARD_HAS_EEPROM) && BOARD_HAS_EEPROM == 1
+    if(!board_has_eeprom)
+        return;
+    
     EE_TimerCallback();
     if(EE_IsBusy())
     {
@@ -220,7 +226,6 @@ static void Handle_TIM3_EEPROM(void)
         settings_dirty = 0;
         return;
     }
-#endif
 }
 
 // Private functions ----------------------------------------------------------
