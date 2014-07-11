@@ -179,7 +179,7 @@ int SiStringFromInt(char *s, uint32_t size, uint32_t value)
  */
 int MacAddressFromString(const char *str, uint8_t *result)
 {
-    if(strlen(str) < 17)
+    if(str == NULL || strlen(str) < 17 || result == NULL)
     {
         return -1;
     }
@@ -219,7 +219,7 @@ int StringFromMacAddress(char *s, uint32_t size, const uint8_t *mac)
 {
     static const char digits[16] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
     
-    if(size < 18)
+    if(s == NULL || size < 18)
     {
         return -1;
     }
