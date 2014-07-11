@@ -144,7 +144,7 @@ Board_Error Board_StartSweep(uint8_t port);
 Board_Error Board_StopSweep(void);
 uint8_t Board_GetPort(void);
 Board_Error Board_MeasureSingleFrequency(uint8_t port, uint32_t freq, AD5933_ImpedancePolar *result);
-float Board_MeasureTemperature(Board_TemperatureSource what);
+Board_Error Board_MeasureTemperature(Board_TemperatureSource what);
 Board_Error Board_Calibrate(uint32_t ohms);
 
 void MarkSettingsDirty(void);

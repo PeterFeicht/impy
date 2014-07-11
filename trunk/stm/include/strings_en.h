@@ -71,6 +71,8 @@ const char* const txtNotCalibrated = "Calibration not performed.";
 const char* const txtNoRawData = "No raw data is present (raw data is not retained when autoranging is enabled).";
 // board calibrate
 const char* const txtWrongCalibValue = "Unknown resistor value, see 'board info' for possible values.";
+// board temp
+const char* const txtTempFail = "Temperature measurement failed.";
 // setup
 const char* const txtWrongFlag = "Invalid flag, 'on' or 'off' expected.";
 const char* const txtWrongTau = "Invalid time constant, needs to be a number in the range 0 to 1000";

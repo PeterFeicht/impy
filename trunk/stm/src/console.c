@@ -1417,27 +1417,25 @@ static void Console_BoardStop(uint32_t argc, char **argv __attribute__((unused))
 }
 
 /**
- * Processes the 'board temp' command. This command finishes immediately.
+ * Processes the 'board temp' command. This command finishes when {@link Console_TempCallback} is called.
  * 
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
 static void Console_BoardTemp(uint32_t argc, char **argv __attribute__((unused)))
 {
-    char buf[16];
-    
-    if(argc == 1)
+    if(argc != 1)
     {
-        float temp = Board_MeasureTemperature(TEMP_AD5933);
-        snprintf(buf, NUMEL(buf), "%.1f %cC", temp, '\xB0' /* Degree symbol in ISO 8859-1 and -15 */); 
-        interface->SendLine(buf);
-    }
-    else
-    {
-        interface->SendLine(txtErrArgNum);
+        interface->SendLine(txtErrNoArgs);
+        interface->CommandFinish();
+        return;
     }
     
-    interface->CommandFinish();
+    if(Board_MeasureTemperature(TEMP_AD5933) != BOARD_OK)
+    {
+        interface->SendLine(txtTempFail);
+        interface->CommandFinish();
+    }
 }
 
 /**
@@ -1618,6 +1616,13 @@ static void Console_UsbStatus(uint32_t argc, char **argv __attribute__((unused))
 static void Console_UsbWrite(uint32_t argc, char **argv)
 {
     // Arguments: file
+    
+    if(argc != 2)
+    {
+        interface->SendLine(txtErrArgNum);
+        interface->CommandFinish();
+        return;
+    }
 
     interface->SendLine(txtNotImplemented);
     interface->CommandFinish();
@@ -2298,6 +2303,20 @@ void Console_SetFormat(uint32_t spec)
 void Console_CalibrateCallback(void)
 {
     interface->SendLine(txtOK);
+    Console_Flush();
+    interface->CommandFinish();
+}
+
+/**
+ * Called when a temperature measurement is finished.
+ * 
+ * @param temp The measured temperature
+ */
+void Console_TempCallback(float temp)
+{
+    char buf[16];
+    snprintf(buf, NUMEL(buf), "%.1f %cC", temp, '\xB0' /* Degree symbol in ISO 8859-1 and -15 */); 
+    interface->SendLine(buf);
     Console_Flush();
     interface->CommandFinish();
 }

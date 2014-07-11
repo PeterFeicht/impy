@@ -68,6 +68,7 @@ static uint8_t interrupted = 0;
 static AD5933_GainFactorData gainData;
 static AD5933_GainFactor gainFactor;        // Current gain factor, could have changed since the measurement finished
 static uint8_t validGain = 0;               // Whether gainFactor is valid for the current sweep parameters
+static float temp;                          // Result from temperature measurements.
 
 // main and Interrupt handlers ------------------------------------------------
 
@@ -182,6 +183,10 @@ static void Handle_TIM3_AD5933(void)
             AD5933_CalculateGainFactor(&gainData, &gainFactor);
             validGain = 1;
             Console_CalibrateCallback();
+            break;
+            
+        case AD_FINISH_TEMP:
+            Console_TempCallback(temp);
             break;
             
         default:
@@ -837,31 +842,24 @@ Board_Error Board_MeasureSingleFrequency(uint8_t port, uint32_t freq, AD5933_Imp
  * This function blocks until a value is available.
  * 
  * @param what Which temperature to measure
- * @return The measured temperature, or {@code NaN} in case of an error
+ * @return {@link Board_Error} code
  */
-float Board_MeasureTemperature(Board_TemperatureSource what)
+Board_Error Board_MeasureTemperature(Board_TemperatureSource what)
 {
-    float temp;
-    
     switch(what)
     {
         case TEMP_AD5933:
             if(AD5933_MeasureTemperature(&temp) != AD_OK)
             {
-                return NAN;
-            }
-            // TODO use callbacks
-            while(AD5933_GetStatus() == AD_MEASURE_TEMP)
-            {
-                HAL_Delay(1);
+                return BOARD_ERROR;
             }
             break;
             
         default:
-            return NAN;
+            return BOARD_ERROR;
     }
     
-    return temp;
+    return BOARD_OK;
 }
 
 /**

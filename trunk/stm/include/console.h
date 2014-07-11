@@ -58,6 +58,7 @@ __STATIC_INLINE uint32_t max(uint32_t left, uint32_t right)
 
 // Callbacks
 void Console_CalibrateCallback(void);
+void Console_TempCallback(float temp);
 
 // ----------------------------------------------------------------------------
 
