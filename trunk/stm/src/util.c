@@ -207,7 +207,7 @@ int MacAddressFromString(const char *str, uint8_t *result)
 }
 
 /**
- * Convert a MAC address (6 bytes) to a human readable string in the format {@code 12:34:56:78:9A:BC}.
+ * Convert a MAC address (6 bytes) to a human readable string in the format {@code 12-34-56-78-9A-BC}.
  * 
  * @param s Pointer to a buffer receiving the converted string
  * @param size Size of the buffer in bytes
@@ -228,7 +228,7 @@ int StringFromMacAddress(char *s, uint32_t size, const uint8_t *mac)
     {
         *s++ = digits[(mac[j] >> 4) & 0x0F];
         *s++ = digits[mac[j] & 0x0F];
-        *s++ = ':';
+        *s++ = '-';
     }
     
     s[-1] = 0;
