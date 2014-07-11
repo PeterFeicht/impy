@@ -60,6 +60,7 @@ const char* const txtNoMemory = "\r\nNo external memory installed.";
 const char* const txtFrequencyRange = "Possible frequency range in Hz: ";
 const char* const txtMaxNumIncrements = "Maximum number of frequency increments: ";
 const char* const txtInstalledSize = " installed, size in bytes: ";
+const char* const txtEthernetInstalledMacAddr = "Ethernet installed, MAC address: ";
 // board measure
 const char* const txtBoardBusy = "Another measurement is currently running.";
 const char* const txtImpedance = "Impedance (polar): ";
