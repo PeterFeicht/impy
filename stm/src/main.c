@@ -71,13 +71,8 @@ static uint8_t validGain = 0;               // Whether gainFactor is valid for t
 
 // main and Interrupt handlers ------------------------------------------------
 
-// Sample pragmas to cope with warnings. Please note the related line at
-// the end of this function, used to pop the compiler diagnostics status.
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#pragma GCC diagnostic ignored "-Wreturn-type"
-
-int main(int argc, char* argv[])
+__attribute__((noreturn))
+int main(int argc __attribute__((unused)), char* argv[] __attribute__((unused)))
 {
     // At this stage the system clock should have already been configured at high speed.
     MX_Init();
@@ -137,8 +132,6 @@ int main(int argc, char* argv[])
         HAL_Delay(600);
     }
 }
-
-#pragma GCC diagnostic pop
 
 /**
  * Calls the appropriate functions for timer period interrupts.
