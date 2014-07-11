@@ -27,6 +27,9 @@
 uint32_t IntFromSiString(const char *str, const char **end);
 int SiStringFromInt(char *s, uint32_t size, uint32_t value);
 
+int MacAddressFromString(const char *str, uint8_t *result);
+int StringFromMacAddress(char *s, uint32_t size, const uint8_t *mac);
+
 // ----------------------------------------------------------------------------
 
 #endif /* UTIL_H_ */
