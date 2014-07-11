@@ -657,7 +657,7 @@ static void Console_BoardGet(uint32_t argc, char **argv)
 static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused)))
 {
     const char *temp;
-    char buf[16];
+    char buf[32];
     
     if(argc != 1)
     {
@@ -749,6 +749,8 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     {
         interface->SendLine(NULL);
         // TODO print USB info
+        interface->SendString(txtUSB);
+        interface->SendString(": ");
         interface->SendLine(txtNotImplemented);
     }
     else
@@ -762,8 +764,9 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     if(board_config.peripherals.eth)
     {
         interface->SendLine(NULL);
-        // TODO print Ethernet info
-        interface->SendLine(txtNotImplemented);
+        interface->SendString(txtEthernetInstalledMacAddr);
+        StringFromMacAddress(buf, NUMEL(buf), &board_config.eth_mac[0]);
+        interface->SendLine(buf);
     }
     else
     {
@@ -791,8 +794,10 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     
     if(board_config.peripherals.sram)
     {
-        // TODO print SRAM info
-        interface->SendLine(txtNotImplemented);
+        interface->SendString(txtSRAM);
+        interface->SendString(txtInstalledSize);
+        snprintf(buf, NUMEL(buf), "%lu", board_config.sram_size);
+        interface->SendLine(buf);
     }
     else if(memory_flag)
     {
@@ -802,10 +807,12 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     
     if(board_config.peripherals.flash)
     {
-        // TODO print Flash info
-        interface->SendLine(txtNotImplemented);
+        interface->SendString(txtFlash);
+        interface->SendString(txtInstalledSize);
+        snprintf(buf, NUMEL(buf), "%lu", board_config.flash_size);
+        interface->SendLine(buf);
     }
-    else
+    else if(memory_flag)
     {
         interface->SendString(txtFlash);
         interface->SendLine(txtNotInstalled);
