@@ -68,7 +68,7 @@ static uint8_t interrupted = 0;
 static AD5933_GainFactorData gainData;
 static AD5933_GainFactor gainFactor;        // Current gain factor, could have changed since the measurement finished
 static uint8_t validGain = 0;               // Whether gainFactor is valid for the current sweep parameters
-static float temp;                          // Result from temperature measurements.
+static float temp;                          // Result from temperature measurements
 
 // main and Interrupt handlers ------------------------------------------------
 
@@ -81,6 +81,7 @@ int main(int argc __attribute__((unused)), char* argv[] __attribute__((unused)))
     SetDefaults();
     
 #if defined(BOARD_HAS_EEPROM) && BOARD_HAS_EEPROM == 1
+    // TODO dynamically check for EEPROM presence
     EE_Init(&hi2c1, &hcrc, EEPROM_E2_PIN_SET);
     
     if(EE_ReadConfiguration(&board_config) != EE_OK)
