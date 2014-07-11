@@ -275,8 +275,7 @@ static void InitFromEEPROM(void)
     else
     {
         // Settings could not be read, write default settings to EEPROM
-        settings_dirty = 1;
-        settings_dirty_tick = HAL_GetTick();
+        MarkSettingsDirty();
     }
 }
 
