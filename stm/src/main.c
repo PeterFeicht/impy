@@ -12,6 +12,7 @@
 // Private function prototypes ------------------------------------------------
 static void SetDefaults(void);
 static void UpdateSettings(void);
+static void InitFromEEPROM(void);
 static void Handle_TIM3_AD5933(void);
 static void Handle_TIM3_EEPROM(void);
 
@@ -84,40 +85,7 @@ int main(int argc __attribute__((unused)), char* argv[] __attribute__((unused)))
     if(EE_Init(&hi2c1, &hcrc, EEPROM_E2_PIN_SET) == EE_OK)
     {
         board_has_eeprom = 1;
-    }
-    
-    if(board_has_eeprom)
-    {
-        if(EE_ReadConfiguration(&board_config) != EE_OK)
-        {
-            // Bad configuration, write default values to EEPROM
-            config_dirty = 1;
-        }
-        
-        if(EE_ReadSettings(&settings) == EE_OK)
-        {
-            // Populate the various variables with settings read from EEPROM, the opposite of what UpdateSettings does
-            sweep.Num_Increments = settings.num_steps;
-            sweep.Start_Freq = settings.start_freq;
-            stopFreq = settings.stop_freq;
-            sweep.Settling_Cycles = settings.settling_cycles & AD5933_MAX_SETTL;
-            sweep.Settling_Mult = settings.settling_cycles & ~AD5933_MAX_SETTL;
-            sweep.Averages = settings.averages;
-            
-            range.PGA_Gain = (settings.flags.pga_enabled ? AD5933_GAIN_5 : AD5933_GAIN_1);
-            range.Voltage_Range = settings.voltage;
-            range.Attenuation = settings.attenuation;
-            range.Feedback_Value = settings.feedback;
-            
-            autorange = settings.flags.autorange;
-            Console_SetFormat(settings.format_spec);
-        }
-        else
-        {
-            // Settings could not be read, write default settings to EEPROM
-            settings_dirty = 1;
-            settings_dirty_tick = HAL_GetTick();
-        }
+        InitFromEEPROM();
     }
     
     AD5933_Init(&hi2c1, &htim10);
@@ -273,6 +241,43 @@ static void UpdateSettings(void)
     
     settings.flags.autorange = (autorange ? 1 : 0);
     settings.format_spec = Console_GetFormat();
+}
+
+/**
+ * Read configuration and settings from EEPROM.
+ */
+static void InitFromEEPROM(void)
+{
+    if(EE_ReadConfiguration(&board_config) != EE_OK)
+    {
+        // Bad configuration, write default values to EEPROM
+        config_dirty = 1;
+    }
+    
+    if(EE_ReadSettings(&settings) == EE_OK)
+    {
+        // Populate the various variables with settings read from EEPROM, the opposite of what UpdateSettings does
+        sweep.Num_Increments = settings.num_steps;
+        sweep.Start_Freq = settings.start_freq;
+        stopFreq = settings.stop_freq;
+        sweep.Settling_Cycles = settings.settling_cycles & AD5933_MAX_SETTL;
+        sweep.Settling_Mult = settings.settling_cycles & ~AD5933_MAX_SETTL;
+        sweep.Averages = settings.averages;
+        
+        range.PGA_Gain = (settings.flags.pga_enabled ? AD5933_GAIN_5 : AD5933_GAIN_1);
+        range.Voltage_Range = settings.voltage;
+        range.Attenuation = settings.attenuation;
+        range.Feedback_Value = settings.feedback;
+        
+        autorange = settings.flags.autorange;
+        Console_SetFormat(settings.format_spec);
+    }
+    else
+    {
+        // Settings could not be read, write default settings to EEPROM
+        settings_dirty = 1;
+        settings_dirty_tick = HAL_GetTick();
+    }
 }
 
 // Exported functions ---------------------------------------------------------
