@@ -283,7 +283,7 @@ static void InitFromEEPROM(void)
 
 /**
  * Sets the start frequency used for a sweep.
- * The value needs to be between {@link FREQ_MIN} and {@link FREQ_MAX}, and less than the stop frequency.
+ * The value needs to be between {@link AD5933_FREQ_MIN} and {@link AD5933_FREQ_MAX}, and less than the stop frequency.
  * 
  * @param freq the frequency in Hz
  * @return {@link Board_Error} code
@@ -307,7 +307,8 @@ Board_Error Board_SetStartFreq(uint32_t freq)
 
 /**
  * Sets the stop frequency used for a sweep.
- * The value needs to be between {@link FREQ_MIN} and {@link FREQ_MAX}, and greater than the start frequency.
+ * The value needs to be between {@link AD5933_FREQ_MIN} and {@link AD5933_FREQ_MAX}, and greater than the start
+ * frequency.
  * 
  * @param freq the frequency in Hz
  * @return {@link Board_Error} code
@@ -332,7 +333,7 @@ Board_Error Board_SetStopFreq(uint32_t freq)
 /**
  * Sets the number of frequency increments used for a sweep.
  * The value cannot be greater than the difference in start and stop frequency (the resolution is 1 Hz) and needs to be
- * in the range from {@code 0} to {@link AD5933_MAX_NUM_INCREMENTS}.
+ * in the range from `0` to {@link AD5933_MAX_NUM_INCREMENTS}.
  * 
  * @param steps the number of points to measure
  * @return {@link Board_Error} code
@@ -355,8 +356,8 @@ Board_Error Board_SetFreqSteps(uint16_t steps)
 
 /**
  * Sets the number of settling cycles used for a sweep.
- * The value of {@code cycles} needs to be in the range from {@code 0} to {@link AD5933_MAX_SETTL}, {@code multiplier}
- * can be {@code 1}, {@code 2} or {@code 4}.
+ * The value of `cycles` needs to be in the range from `0` to {@link AD5933_MAX_SETTL}, `multiplier` can be
+ * `1`, `2` or `4`.
  * 
  * @param cycles The number of settling cycles
  * @param multiplier Multiplier for the cycle number
@@ -395,10 +396,9 @@ Board_Error Board_SetSettlingCycles(uint16_t cycles, uint8_t multiplier)
 
 /**
  * Sets the voltage range used for a sweep.
- * The value can be <i>0.2V</i>, <i>0.4V</i>, <i>1V</i> or <i>2V</i>, attenuated by the values in
- * {@link AD5933_ATTENUATION_PORT}.
+ * The value can be <i>0.2V</i>, <i>0.4V</i>, <i>1V</i> or <i>2V</i>, attenuated by the values in `board_config`.
  * 
- * @param range The output voltage in mV
+ * @param voltage The output voltage in mV
  * @return {@link Board_Error} code
  */
 Board_Error Board_SetVoltageRange(uint16_t voltage)
@@ -437,7 +437,7 @@ Board_Error Board_SetVoltageRange(uint16_t voltage)
 /**
  * Sets whether the x5 gain stage of the PGA is enabled. This setting is ignored, if autoranging is enabled.
  * 
- * @param enable {@code 0} to disable the gain stage, nonzero value to enable
+ * @param enable `0` to disable the gain stage, nonzero value to enable
  * @return {@link Board_Error} code
  */
 Board_Error Board_SetPGA(uint8_t enable)
@@ -460,8 +460,8 @@ Board_Error Board_SetPGA(uint8_t enable)
 /**
  * Sets whether autoranging is enabled.
  * 
- * @param enable {@code 0} to disable autoranging, nonzero value to enable
- * @return {@code BOARD_OK}
+ * @param enable `0` to disable autoranging, nonzero value to enable
+ * @return `BOARD_OK`
  */
 Board_Error Board_SetAutorange(uint8_t enable)
 {
@@ -509,7 +509,7 @@ Board_Error Board_SetFeedback(uint32_t ohms)
 /**
  * Sets the number of averages for each frequency point.
  * 
- * @param value the number of averages, a value of {@code 1} means no averaging is performed
+ * @param value the number of averages, a value of `1` means no averaging is performed
  * @return {@link Board_Error} code
  */
 Board_Error Board_SetAverages(uint16_t value)
@@ -582,7 +582,7 @@ uint16_t Board_GetSettlingCycles(void)
  * Note that the value of an active sweep can be different if it has been set since the sweep has started.
  * To get the value for the active sweep, use {@link  Board_GetStatus}.
  * 
- * @return {@code 0} if autoranging is disabled, a nonzero value otherwise
+ * @return `0` if autoranging is disabled, a nonzero value otherwise
  */
 uint8_t Board_GetAutorange(void)
 {
@@ -659,7 +659,7 @@ void Board_Standby(void)
  * Gets a pointer to the converted measurement data in polar format.
  * 
  * @param count Pointer to a variable receiving the number of points in the buffer
- * @return Pointer to the data buffer, or {@code NULL} if no data is available
+ * @return Pointer to the data buffer, or `NULL` if no data is available
  */
 const AD5933_ImpedancePolar* Board_GetDataPolar(uint32_t *count)
 {
@@ -691,7 +691,7 @@ const AD5933_ImpedancePolar* Board_GetDataPolar(uint32_t *count)
  * Gets a pointer to the raw measurement data.
  * 
  * @param count Pointer to a variable receiving the number of points in the buffer
- * @return Pointer to the data buffer, or {@code NULL} if no raw data is available
+ * @return Pointer to the data buffer, or `NULL` if no raw data is available
  */
 const AD5933_ImpedanceData* Board_GetDataRaw(uint32_t *count)
 {
@@ -713,7 +713,7 @@ const AD5933_ImpedanceData* Board_GetDataRaw(uint32_t *count)
  * Note that a gain factor is only valid when no range settings (voltage range, feedback resistor, etc.) have
  * been changed since a calibration was performed.
  * 
- * @return Pointer to gain factor, or {@code NULL} if calibration has not been performed
+ * @return Pointer to gain factor, or `NULL` if calibration has not been performed
  */
 const AD5933_GainFactor* Board_GetGainFactor(void)
 {
@@ -875,7 +875,7 @@ Board_Error Board_MeasureTemperature(Board_TemperatureSource what)
 /**
  * Initiates a calibration measurement with the specified calibration resistor.
  * 
- * @param ohms Calibration resistor value in Ohms, must be one of the {@link CAL_PORT} values.
+ * @param ohms Calibration resistor value in Ohms, must be one of the values in `board_config`.
  * @return {@link Board_Error} code
  */
 Board_Error Board_Calibrate(uint32_t ohms)

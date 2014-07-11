@@ -72,14 +72,17 @@ typedef struct
 /**
  * Pointer to a function that processes a specific command.
  * 
- * Note that this file does not conform to the standard values {@code (argc, argv)} in that {@code argc} contains the
- * number of elements in {@code argv}, but {@code argv} has no {@code NULL} pointer at that index.
+ * Note that this file does not conform to the standard values `(argc, argv)` in that `argc` contains the
+ * number of elements in `argv`, but `argv` has no `NULL` pointer at that index.
  * 
  * @param argc Number of arguments in the command line
  * @param argv Array of arguments
  */
 typedef void (*Console_CommandFunc)(uint32_t argc, char **argv);
 
+/**
+ * Specifies the different types of arguments to commands, used for conversion.
+ */
 typedef enum
 {
     CON_FLAG = 0,   //!< Argument is either 'on' or 'off'
@@ -87,6 +90,9 @@ typedef enum
     CON_STRING      //!< Argument is a string of nonzero length
 } Console_ArgType;
 
+/**
+ * Represents an argument to a command with name, ID and type.
+ */
 typedef struct
 {
     const char *arg;        //!< Name of this argument
@@ -94,6 +100,9 @@ typedef struct
     Console_ArgType type;   //!< Type of this argument
 } Console_Arg;
 
+/**
+ * Represents a command with name and processing function.
+ */
 typedef struct
 {
     const char *cmd;                //!< Command name
@@ -137,8 +146,8 @@ static void Console_UsbStatus(uint32_t argc, char **argv);
 static void Console_UsbWrite(uint32_t argc, char **argv);
 
 // Private variables ----------------------------------------------------------
-static char *arguments[CON_MAX_ARGUMENTS];
-static uint32_t format_spec;
+static char *arguments[CON_MAX_ARGUMENTS];      //!< Array of arguments populated by {@link Console_GetArguments}
+static uint32_t format_spec;                    //!< The format specification used for the `board read` command
 static Buffer board_read_data = {
     .data = NULL,
     .size = 0
@@ -150,8 +159,8 @@ static String strHelp = {
     .data = NULL,
     .length = 0
 };
-// All help topics from command-line.txt need to be added here
 #define TOPIC(X)    { X, { NULL, 0 } }
+//! All help topics from `command-line.txt` need to be added here
 static Console_HelpEntry txtHelpTopics[] = {
     TOPIC("options"),
     TOPIC("eth"),
@@ -165,7 +174,7 @@ static Console_HelpEntry txtHelpTopics[] = {
     TOPIC("echo"),
     TOPIC("setup"),
 };
-// Those are the top level commands, subcommands are called from their respective processing functions
+//! Those are the top level commands, subcommands are called from their respective processing functions
 static const Console_Command commands[] = {
     { "board", Console_Board },
     { "eth", Console_Eth },
@@ -174,7 +183,7 @@ static const Console_Command commands[] = {
     { "setup", Console_Setup },
     { "debug", Console_Debug }
 };
-// Those are the values that can be set with 'board set' and read with 'board get'
+//! Those are the values that can be set with `board set` and read with `board get`
 static const Console_Arg argsBoardSet[] = {
     { "start", CON_ARG_SET_START, CON_INT },
     { "stop", CON_ARG_SET_STOP, CON_INT },
@@ -297,7 +306,7 @@ static uint32_t Console_GetArguments(char *cmdline)
  * @param argv Array of arguments
  * @param cmds Array of possible commands
  * @param count The number of commands in the array
- * @return {@code 1} if a processing function was called, {@code 0} otherwise
+ * @return `1` if a processing function was called, `0` otherwise
  */
 static uint8_t Console_CallProcessor(uint32_t argc, char **argv, const Console_Command *cmds, uint32_t count)
 {
@@ -318,7 +327,7 @@ static uint8_t Console_CallProcessor(uint32_t argc, char **argv, const Console_C
  * @param arg Pointer to the argument
  * @param args Array of possible arguments
  * @param count The number of arguments in the array
- * @return Pointer to the argument structure, or {@code NULL} if none was found
+ * @return Pointer to the argument structure, or `NULL` if none was found
  */
 static const Console_Arg* Console_GetArg(const char *arg, const Console_Arg *args, uint32_t count)
 {
@@ -345,7 +354,7 @@ static const Console_Arg* Console_GetArg(const char *arg, const Console_Arg *arg
  * Gets the value of an argument, that is the string after the equals sign.
  * 
  * @param arg The argument to get the value from
- * @return Pointer to the substring containing the value (can be empty), or {@code NULL} in case there is no value
+ * @return Pointer to the substring containing the value (can be empty), or `NULL` in case there is no value
  */
 static const char* Console_GetArgValue(const char *arg)
 {
@@ -361,7 +370,7 @@ static const char* Console_GetArgValue(const char *arg)
 /**
  * Gets a flag value corresponding to the specified string.
  * 
- * The valid flags for <i>on</i> and <i>off</i> are taken from the string constants {@code txtOn} and {@code txtOff},
+ * The valid flags for <i>on</i> and <i>off</i> are taken from the string constants `txtOn` and `txtOff`,
  * respectively.
  * 
  * @param str A string containing 'on', 'off' or some other, invalid value
@@ -388,7 +397,8 @@ static Console_FlagValue Console_GetFlag(const char *str)
 }
 
 /**
- * Inline wrapper for {@code interface->Flush()} to allow NULL pointer for back ends that don't support it.
+ * Inline wrapper for {@link Console_Interface#Flush() interface->Flush()} to allow NULL pointer for back ends that
+ * don't support it.
  */
 __STATIC_INLINE void Console_Flush(void)
 {
@@ -399,7 +409,7 @@ __STATIC_INLINE void Console_Flush(void)
 // Command processing functions -----------------------------------------------
 
 /**
- * Calls the appropriate subcommand processing function for {@code board} commands.
+ * Calls the appropriate subcommand processing function for `board` commands.
  * 
  * @param argc Number of arguments
  * @param argv Array of arguments
@@ -1439,7 +1449,7 @@ static void Console_BoardTemp(uint32_t argc, char **argv __attribute__((unused))
 }
 
 /**
- * Calls the appropriate subcommand processing function for {@code eth} commands.
+ * Calls the appropriate subcommand processing function for `eth` commands.
  * 
  * @param argc Number of arguments
  * @param argv Array of arguments
@@ -1525,7 +1535,7 @@ static void Console_EthStatus(uint32_t argc, char **argv __attribute__((unused))
 }
 
 /**
- * Calls the appropriate subcommand processing function for {@code usb} commands.
+ * Calls the appropriate subcommand processing function for `usb` commands.
  * 
  * @param argc Number of arguments
  * @param argv Array of arguments
@@ -1629,7 +1639,7 @@ static void Console_UsbWrite(uint32_t argc, char **argv)
 }
 
 /**
- * Processes the {@code help} command.
+ * Processes the `help` command.
  * 
  * @param argc Number of arguments
  * @param argv Array of arguments
@@ -1673,7 +1683,7 @@ static void Console_Help(uint32_t argc, char **argv)
 }
 
 /**
- * Processes the {@code setup} command.
+ * Processes the `setup` command.
  * 
  * @param argc Number of arguments
  * @param argv Array of arguments
@@ -1944,7 +1954,7 @@ static void Console_Setup(uint32_t argc, char **argv)
 }
 
 /**
- * Processes the {@code debug} command.
+ * Processes the `debug` command.
  * 
  * @param argc Number of arguments
  * @param argv Array of arguments

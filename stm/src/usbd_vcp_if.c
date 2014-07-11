@@ -74,7 +74,7 @@ static Console_Interface console_interface =
 /**
  * Initializes the VCP media low layer.
  * 
- * @return {@code USBD_Status} code
+ * @return `USBD_Status` code
  */
 static int8_t VCP_Init(void)
 {
@@ -88,7 +88,7 @@ static int8_t VCP_Init(void)
 /**
  * DeInitializes the VCP media low layer.
  * 
- * @return {@code USBD_Status} code
+ * @return `USBD_Status` code
  */
 static int8_t VCP_DeInit(void)
 {
@@ -101,7 +101,7 @@ static int8_t VCP_DeInit(void)
  * @param  cmd Command code
  * @param  pbuf Buffer containing command data (request parameters)
  * @param  length Number of bytes to be sent
- * @retval {@code USBD_Status} code
+ * @return `USBD_Status` code
  */
 static int8_t VCP_Control(uint8_t cmd, uint8_t* pbuf, uint16_t length __attribute__((unused)))
 {
@@ -162,7 +162,7 @@ static int8_t VCP_Control(uint8_t cmd, uint8_t* pbuf, uint16_t length __attribut
  * 
  * @param  Buf Buffer of data to be received
  * @param  Len Number of bytes received
- * @retval {@code USBD_Status} code
+ * @return `USBD_Status` code
  */
 static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
 {
@@ -280,7 +280,7 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
 /**
  * This function is called once a transfer is complete and a new one can be started.
  * 
- * @return {@code USBD_Status} code
+ * @return `USBD_Status` code
  */
 static int8_t VCP_Transmit(void)
 {
@@ -293,7 +293,7 @@ static int8_t VCP_Transmit(void)
 /**
  * Sets whether characters received from the host should be echoed back.
  * 
- * @param enable {@code 0} to disable echo, nonzero value otherwise
+ * @param enable `0` to disable echo, nonzero value otherwise
  */
 void VCP_SetEcho(uint8_t enable)
 {
@@ -303,7 +303,7 @@ void VCP_SetEcho(uint8_t enable)
 /**
  * Gets a value indicating whether input received over the VCP is echoed back.
  * 
- * @return {@code 0} if echo is disabled, nonzero value otherwise
+ * @return `0` if echo is disabled, nonzero value otherwise
  */
 uint8_t VCP_GetEcho(void)
 {
@@ -326,7 +326,7 @@ void VCP_CommandFinish(void)
  * after more calls to this or other functions) {@link VCP_Flush} needs to be called.
  * 
  * @param c The value to send
- * @return {@code 1} if the character was buffered, {@code 0} if the buffer is full
+ * @return `1` if the character was buffered, `0` if the buffer is full
  */
 uint32_t VCP_SendChar(uint8_t c)
 {
@@ -404,7 +404,7 @@ uint32_t VCP_SendString(const char *str)
  * Queues the specified 0 terminated string to be sent over the virtual COM port, followed by a line break.
  * See {@link VCP_SendString} for more information.
  * 
- * @param str Pointer to a zero terminated string (may be {@code NULL} to send only the line break)
+ * @param str Pointer to a zero terminated string (may be `NULL` to send only the line break)
  * @return The number of bytes buffered. This can be less than the string length, if the string is longer than the
  *         free space in the transmit buffer, or 2 more if the whole string plus the line break was buffered.
  */
@@ -430,7 +430,7 @@ uint32_t VCP_SendLine(const char *str)
  * 
  * @param buf Pointer to the buffer to be sent
  * @param len Number of bytes to be sent
- * @return {@code 1} on success, {@code 0} otherwise
+ * @return `1` on success, `0` otherwise
  */
 uint32_t VCP_SendBuffer(const uint8_t *buf, uint32_t len)
 {

@@ -13,6 +13,9 @@
 #include "ad5933.h"
 
 // Exported type definitions --------------------------------------------------
+/**
+ * Represents a data buffer of a certain length. This structure in returned by the data conversion functions.
+ */
 typedef struct
 {
     void *data;         //!< Pointer to the buffer data

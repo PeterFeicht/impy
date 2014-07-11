@@ -17,6 +17,9 @@
 #include "eeprom.h"
 
 // Exported type definitions --------------------------------------------------
+/**
+ * The possible outcomes of a command.
+ */
 typedef enum
 {
     BOARD_OK = 0,       //!< Indicates success
@@ -24,11 +27,17 @@ typedef enum
     BOARD_ERROR         //!< Indicates an error condition
 } Board_Error;
 
+/**
+ * The possible sources for a temperature measurement.
+ */
 typedef enum
 {
     TEMP_AD5933         //!< AD5933 internal chip temperature
 } Board_TemperatureSource;
 
+/**
+ * Contains status information for the board.
+ */
 typedef struct
 {
     AD5933_Status ad_status;    //!< Status code of the AD5933 driver

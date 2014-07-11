@@ -219,7 +219,7 @@ void HAL_PCD_DisconnectCallback(PCD_HandleTypeDef *hpcd)
  * Initializes the Low Level portion of the Device driver.
  * 
  * @param  pdev: Device handle
- * @retval USBD Status
+ * @return USBD Status
  */
 USBD_StatusTypeDef USBD_LL_Init(USBD_HandleTypeDef *pdev)
 {
@@ -255,7 +255,7 @@ USBD_StatusTypeDef USBD_LL_Init(USBD_HandleTypeDef *pdev)
  * De-Initializes the Low Level portion of the Device driver.
  * 
  * @param  pdev: Device handle
- * @retval USBD Status
+ * @return USBD Status
  */
 USBD_StatusTypeDef USBD_LL_DeInit(USBD_HandleTypeDef *pdev)
 {
@@ -267,7 +267,7 @@ USBD_StatusTypeDef USBD_LL_DeInit(USBD_HandleTypeDef *pdev)
  * Starts the Low Level portion of the Device driver. 
  * 
  * @param  pdev: Device handle
- * @retval USBD Status
+ * @return USBD Status
  */
 USBD_StatusTypeDef USBD_LL_Start(USBD_HandleTypeDef *pdev)
 {
@@ -279,7 +279,7 @@ USBD_StatusTypeDef USBD_LL_Start(USBD_HandleTypeDef *pdev)
  * Stops the Low Level portion of the Device driver.
  * 
  * @param  pdev: Device handle
- * @retval USBD Status
+ * @return USBD Status
  */
 USBD_StatusTypeDef USBD_LL_Stop(USBD_HandleTypeDef *pdev)
 {
@@ -294,7 +294,7 @@ USBD_StatusTypeDef USBD_LL_Stop(USBD_HandleTypeDef *pdev)
  * @param  ep_addr: Endpoint Number
  * @param  ep_type: Endpoint Type
  * @param  ep_mps: Endpoint Max Packet Size
- * @retval USBD Status
+ * @return USBD Status
  */
 USBD_StatusTypeDef USBD_LL_OpenEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr, uint8_t ep_type, uint16_t ep_mps)
 {
@@ -307,7 +307,7 @@ USBD_StatusTypeDef USBD_LL_OpenEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr, uin
  * 
  * @param  pdev: Device handle
  * @param  ep_addr: Endpoint Number
- * @retval USBD Status
+ * @return USBD Status
  */
 USBD_StatusTypeDef USBD_LL_CloseEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr)
 {
@@ -320,7 +320,7 @@ USBD_StatusTypeDef USBD_LL_CloseEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr)
  * 
  * @param  pdev: Device handle
  * @param  ep_addr: Endpoint Number
- * @retval USBD Status
+ * @return USBD Status
  */
 USBD_StatusTypeDef USBD_LL_FlushEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr)
 {
@@ -333,7 +333,7 @@ USBD_StatusTypeDef USBD_LL_FlushEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr)
  * 
  * @param  pdev: Device handle
  * @param  ep_addr: Endpoint Number
- * @retval USBD Status
+ * @return USBD Status
  */
 USBD_StatusTypeDef USBD_LL_StallEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr)
 {
@@ -346,7 +346,7 @@ USBD_StatusTypeDef USBD_LL_StallEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr)
  * 
  * @param  pdev: Device handle
  * @param  ep_addr: Endpoint Number
- * @retval USBD Status
+ * @return USBD Status
  */
 USBD_StatusTypeDef USBD_LL_ClearStallEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr)
 {
@@ -359,7 +359,7 @@ USBD_StatusTypeDef USBD_LL_ClearStallEP(USBD_HandleTypeDef *pdev, uint8_t ep_add
  * 
  * @param  pdev: Device handle
  * @param  ep_addr: Endpoint Number
- * @retval Stall (1: Yes, 0: No)
+ * @return Stall (1: Yes, 0: No)
  */
 uint8_t USBD_LL_IsStallEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr)
 {
@@ -380,8 +380,8 @@ uint8_t USBD_LL_IsStallEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr)
  * Assigns a USB address to the device.
  * 
  * @param  pdev: Device handle
- * @param  ep_addr: Endpoint Number
- * @retval USBD Status
+ * @param  dev_addr: Device address
+ * @return USBD Status
  */
 USBD_StatusTypeDef USBD_LL_SetUSBAddress(USBD_HandleTypeDef *pdev, uint8_t dev_addr)
 {
@@ -396,7 +396,7 @@ USBD_StatusTypeDef USBD_LL_SetUSBAddress(USBD_HandleTypeDef *pdev, uint8_t dev_a
  * @param  ep_addr: Endpoint Number
  * @param  pbuf: Pointer to data to be sent
  * @param  size: Data size    
- * @retval USBD Status
+ * @return USBD Status
  */
 USBD_StatusTypeDef USBD_LL_Transmit(USBD_HandleTypeDef *pdev, uint8_t ep_addr, uint8_t *pbuf, uint16_t size)
 {
@@ -411,7 +411,7 @@ USBD_StatusTypeDef USBD_LL_Transmit(USBD_HandleTypeDef *pdev, uint8_t ep_addr, u
  * @param  ep_addr: Endpoint Number
  * @param  pbuf: Pointer to data to be received
  * @param  size: Data size
- * @retval USBD Status
+ * @return USBD Status
  */
 USBD_StatusTypeDef USBD_LL_PrepareReceive(USBD_HandleTypeDef *pdev, uint8_t ep_addr, uint8_t *pbuf, uint16_t size)
 {
@@ -424,7 +424,7 @@ USBD_StatusTypeDef USBD_LL_PrepareReceive(USBD_HandleTypeDef *pdev, uint8_t ep_a
  * 
  * @param  pdev: Device handle
  * @param  ep_addr: Endpoint Number
- * @retval Recived Data Size
+ * @return Recived Data Size
  */
 uint32_t USBD_LL_GetRxDataSize(USBD_HandleTypeDef *pdev, uint8_t ep_addr)
 {
