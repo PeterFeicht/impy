@@ -776,10 +776,10 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     }
     
     // Memory info
-    uint8_t memory_flag = board_config.peripherals.sram || board_config.peripherals.flash || BOARD_HAS_EEPROM;
+    uint8_t memory_flag = board_config.peripherals.sram || board_config.peripherals.flash || board_has_eeprom;
     interface->SendLine(NULL);
     
-    if(BOARD_HAS_EEPROM)
+    if(board_has_eeprom)
     {
         interface->SendString(txtEEPROM);
         interface->SendString(txtInstalledSize);

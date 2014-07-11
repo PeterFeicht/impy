@@ -93,9 +93,6 @@ typedef struct
 #define ADG725_CHIP_CSB_NOT             ((uint8_t)0x20)
 /** @} */
 
-// Set to 1 if the EEPROM is fitted, 0 otherwise
-#define BOARD_HAS_EEPROM                1
-
 /**
  * Whether the E2 pin on the EEPROM chip is pulled high.
  */
@@ -113,6 +110,7 @@ extern SPI_HandleTypeDef hspi3;
 extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim10;
 extern CRC_HandleTypeDef hcrc;
+extern uint8_t board_has_eeprom;
 extern EEPROM_ConfigurationBuffer board_config;
 
 // Exported functions ---------------------------------------------------------
