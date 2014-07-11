@@ -11,6 +11,42 @@
 #include <stdio.h>
 #include "util.h"
 
+// Private function prototypes ------------------------------------------------
+static uint8_t Util_ConvertHexDigit(char c);
+
+// Private functions ----------------------------------------------------------
+
+/**
+ * Convert a single hexadecimal digit to an integer value.
+ * 
+ * @param c The digit to convert
+ * @return The corresponding integer value, or {@code 0xFF} in case {@code c} is not a proper hex digit
+ */
+static uint8_t Util_ConvertHexDigit(char c)
+{
+    char low = c & 0x0F;
+    
+    switch(c & 0xF0)
+    {
+        case 3: /* 0 .. 9 */
+            if(c <= '9')
+            {
+                return low;
+            }
+            break;
+            
+        case 4: /* A .. F */
+        case 5: /* a .. f */
+            if(low && low <= 6)
+            {
+                return low - 1;
+            }
+            break;
+    }
+    
+    return 0xFF;
+}
+
 // Exported functions ---------------------------------------------------------
 
 /**
@@ -132,6 +168,71 @@ int SiStringFromInt(char *s, uint32_t size, uint32_t value)
     {
         return snprintf(s, size, "%lu%c", value, c);
     }
+}
+
+/**
+ * Converts a MAC address from a string in the format {@code 12:34:56:78:9A:BC}.
+ * 
+ * @param str Pointer to a string containing a MAC address
+ * @param result Pointer to array receiving the converted address, needs to be able to store at least 6 values
+ * @return The number of characters read if successful (always 17), {@code -1} otherwise
+ */
+int MacAddressFromString(const char *str, uint8_t *result)
+{
+    if(strlen(str) < 17)
+    {
+        return -1;
+    }
+    
+    char sep = str[2];
+    
+    if(sep != ':' && sep != '-' && sep != ' ')
+    {
+        return -1;
+    }
+    
+    for(uint32_t j = 0; j < 6; j++)
+    {
+        uint8_t hi = Util_ConvertHexDigit(*str++);
+        uint8_t lo = Util_ConvertHexDigit(*str++);
+        char s = *str++;
+        if(hi == 0xFF || lo == 0xFF || (s && s != sep))
+        {
+            return -1;
+        }
+        result[j] = (hi << 4) | lo;
+    }
+    
+    return 17;
+}
+
+/**
+ * Convert a MAC address (6 bytes) to a human readable string in the format {@code 12:34:56:78:9A:BC}.
+ * 
+ * @param s Pointer to a buffer receiving the converted string
+ * @param size Size of the buffer in bytes
+ * @param mac The MAC address to convert, needs to have 6 elements
+ * @return {@code -1} if {@code size} is less than 18, the number of characters written (excluding terminating 0)
+ *         otherwise (always 17)
+ */
+int StringFromMacAddress(char *s, uint32_t size, const uint8_t *mac)
+{
+    static const char digits[16] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+    
+    if(size < 18)
+    {
+        return -1;
+    }
+    
+    for(uint32_t j = 0; j < 6; j++)
+    {
+        *s++ = digits[(mac[j] >> 4) & 0x0F];
+        *s++ = digits[mac[j] & 0x0F];
+        *s++ = ':';
+    }
+    
+    s[-1] = 0;
+    return 17;
 }
 
 // ----------------------------------------------------------------------------
