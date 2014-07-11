@@ -417,16 +417,28 @@ static uint8_t USBD_VCP_Setup(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *re
  * @param  epnum endpoint number
  * @return {@link USBD_Status} code
  */
-static uint8_t USBD_VCP_DataIn(USBD_HandleTypeDef *pdev, uint8_t epnum __attribute__((unused)))
+static uint8_t USBD_VCP_DataIn(USBD_HandleTypeDef *pdev, uint8_t epnum)
 {
     USBD_VCP_HandleTypeDef *hcdc = pdev->pClassData;
     
     if(hcdc != NULL)
     {
-        hcdc->TxState = 0;
+        PCD_HandleTypeDef *hpcd = pdev->pData;
+        PCD_EPTypeDef *ep = &hpcd->IN_ep[epnum]; 
         
-        // Call interface callback
-        ((USBD_VCP_ItfTypeDef *)pdev->pUserData)->Transmit();
+        // For transfers exactly a multiple of the packet size, we need to send a zero length packet to complete
+        if(ep->xfer_len && (ep->xfer_len / ep->maxpacket) * ep->maxpacket == ep->xfer_len)
+        {
+            ep->xfer_len = 0;
+            USB_EPStartXfer(hpcd->Instance, ep, 0);
+        }
+        else
+        {
+            hcdc->TxState = 0;
+            
+            // Call interface callback
+            ((USBD_VCP_ItfTypeDef *)pdev->pUserData)->Transmit();
+        }
         
         return USBD_OK;
     }
