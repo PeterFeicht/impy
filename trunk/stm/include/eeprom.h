@@ -18,6 +18,9 @@
 #include "stm32f4xx_hal.h"
 
 // Exported type definitions --------------------------------------------------
+/**
+ * The possible states the EEPROM driver can be in.
+ */
 typedef enum
 {
     EE_UNINIT = 0,      //!< Driver has not been initialized
@@ -28,6 +31,9 @@ typedef enum
     EE_WRITE_WAIT       //!< Driver is waiting for the EEPROM to finish a write cycle
 } EEPROM_Status;
 
+/**
+ * The possible outcomes of an operation.
+ */
 typedef enum
 {
     EE_OK = 0,      //!< Indicates success
@@ -35,6 +41,10 @@ typedef enum
     EE_ERROR        //!< Indicates an error condition
 } EEPROM_Error;
 
+/**
+ * Contains static configuration for the board such as populated peripherals, fitted resistor values and Ethernet MAC
+ * address, that are stored on the EEPROM.
+ */
 typedef struct
 {
     struct _peripherals
@@ -45,9 +55,9 @@ typedef struct
         unsigned int usbh : 1;              //!< Whether the USB host port is populated
         unsigned int reserved : 28;         //!< Reserved for future use, padding to 32 bits (set to 0)
     } peripherals;                          //!< Bitfield for populated peripherals
-    uint16_t attenuations[4];               //!< Possible attenuation values, {@code 0} for unpopulated ports
-    uint32_t feedback_resistors[8];         //!< Feedback resistor values, {@code 0} for unpopulated ports
-    uint32_t calibration_values[6];         //!< Calibration resistor values, {@code 0} for unpopulated ports
+    uint16_t attenuations[4];               //!< Possible attenuation values, `0` for unpopulated ports
+    uint32_t feedback_resistors[8];         //!< Feedback resistor values, `0` for unpopulated ports
+    uint32_t calibration_values[6];         //!< Calibration resistor values, `0` for unpopulated ports
     uint16_t coupling_tau;                  //!< Time constant of the coupling capacitor RC network in ms
     uint8_t  eth_mac[6];                    //!< Ethernet MAC address, 48 bits with MSB first
     uint32_t sram_size;                     //!< Size of the external SRAM in bytes
@@ -56,6 +66,9 @@ typedef struct
     uint32_t checksum;                      //!< CRC32 checksum of the buffer
 } EEPROM_ConfigurationBuffer;
 
+/**
+ * Contains dynamic settings for the board such as frequency range and IP address.
+ */
 typedef struct
 {
     /* Sweep */
@@ -109,8 +122,8 @@ typedef struct
  * 
  * The address byte that is sent to an M24C08 consists of 4 parts:
  *  + The device identifier {@link EEPROM_M24C08_ADDR} (4 bits)
- *  + An address bit {@link EEPROM_M24C08_ADDR_E2} that is either set or not, depending on the value of the {@code E2}
- *    pin on the M24C08 device
+ *  + An address bit {@link EEPROM_M24C08_ADDR_E2} that is either set or not, depending on the value of the `E2` pin on
+ *    the M24C08 device
  *  + The two most significant bits of the memory address to be read/written {@link EEPROM_M24C08_BYTE_ADDR_H}
  *  + The standard I2C read/write bit
  * @{

@@ -49,7 +49,7 @@ USBD_DescriptorsTypeDef VCP_Desc =
 };
 
 // USB Standard Device Descriptor
-#if defined ( __ICCARM__ ) /*!< IAR Compiler */
+#if defined ( __ICCARM__ ) /* IAR Compiler */
   #pragma data_alignment=4   
 #endif
 __ALIGN_BEGIN uint8_t hUSBDDeviceDesc[USB_LEN_DEV_DESC] __ALIGN_END =
@@ -74,7 +74,7 @@ __ALIGN_BEGIN uint8_t hUSBDDeviceDesc[USB_LEN_DEV_DESC] __ALIGN_END =
     USBD_MAX_NUM_CONFIGURATION  /* bNumConfigurations */
 }; /* USB_DeviceDescriptor */
 
-#if defined ( __ICCARM__ ) /*!< IAR Compiler */
+#if defined ( __ICCARM__ ) /* IAR Compiler */
   #pragma data_alignment=4   
 #endif
 __ALIGN_BEGIN uint8_t USBD_LangIDDesc[USB_LEN_LANGID_STR_DESC] __ALIGN_END =
@@ -85,7 +85,7 @@ __ALIGN_BEGIN uint8_t USBD_LangIDDesc[USB_LEN_LANGID_STR_DESC] __ALIGN_END =
     HIBYTE(USBD_LANGID_STRING), 
 };
 
-#if defined ( __ICCARM__ ) /*!< IAR Compiler */
+#if defined ( __ICCARM__ ) /* IAR Compiler */
   #pragma data_alignment=4   
 #endif
 __ALIGN_BEGIN uint8_t USBD_StrDesc[USBD_MAX_STR_DESC_SIZ] __ALIGN_END;
@@ -99,7 +99,7 @@ __ALIGN_BEGIN uint8_t USBD_StrDesc[USBD_MAX_STR_DESC_SIZ] __ALIGN_END;
  * 
  * @param  speed: Current device speed
  * @param  length: Pointer to data length variable
- * @retval Pointer to descriptor buffer
+ * @return Pointer to descriptor buffer
  */
 uint8_t *USBD_VCP_DeviceDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
 {
@@ -112,7 +112,7 @@ uint8_t *USBD_VCP_DeviceDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
  * 
  * @param  speed: Current device speed
  * @param  length: Pointer to data length variable
- * @retval Pointer to descriptor buffer
+ * @return Pointer to descriptor buffer
  */
 uint8_t *USBD_VCP_LangIDStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
 {
@@ -125,7 +125,7 @@ uint8_t *USBD_VCP_LangIDStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
  * 
  * @param  speed: Current device speed
  * @param  length: Pointer to data length variable
- * @retval Pointer to descriptor buffer
+ * @return Pointer to descriptor buffer
  */
 uint8_t *USBD_VCP_ProductStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
 {
@@ -145,7 +145,7 @@ uint8_t *USBD_VCP_ProductStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length
  * 
  * @param  speed: Current device speed
  * @param  length: Pointer to data length variable
- * @retval Pointer to descriptor buffer
+ * @return Pointer to descriptor buffer
  */
 uint8_t *USBD_VCP_ManufacturerStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
 {
@@ -158,7 +158,7 @@ uint8_t *USBD_VCP_ManufacturerStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *l
  * 
  * @param  speed: Current device speed
  * @param  length: Pointer to data length variable
- * @retval Pointer to descriptor buffer
+ * @return Pointer to descriptor buffer
  */
 uint8_t *USBD_VCP_SerialStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
 {
@@ -178,7 +178,7 @@ uint8_t *USBD_VCP_SerialStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
  * 
  * @param  speed: Current device speed
  * @param  length: Pointer to data length variable
- * @retval Pointer to descriptor buffer
+ * @return Pointer to descriptor buffer
  */
 uint8_t *USBD_VCP_ConfigStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
 {
@@ -198,7 +198,7 @@ uint8_t *USBD_VCP_ConfigStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
  * 
  * @param  speed: Current device speed
  * @param  length: Pointer to data length variable
- * @retval Pointer to descriptor buffer
+ * @return Pointer to descriptor buffer
  */
 uint8_t *USBD_VCP_InterfaceStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
 {

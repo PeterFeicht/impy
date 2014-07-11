@@ -12,6 +12,9 @@
 #include "main.h"
 
 // Private type definitions ---------------------------------------------------
+/**
+ * Specifies the possible AD5933 clock sources.
+ */
 typedef enum
 {
     AD_INTERNAL = 3,    //!< Internal clock
@@ -592,7 +595,7 @@ uint8_t AD5933_IsBusy(void)
  * 
  * @param i2c Pointer to an I2C handle structure that is to be used for communication with the AD5933
  * @param tim Pointer to a timer handle structure that is to be used for the external clock source
- * @return {@code AD_OK}
+ * @return `AD_OK`
  */
 AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c, TIM_HandleTypeDef *tim)
 {
@@ -637,7 +640,7 @@ AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c, TIM_HandleTypeDef *tim)
 /**
  * Resets the AD5933 and the driver to initialization state.
  * 
- * @return {@code AD_OK}
+ * @return `AD_OK`
  */
 AD5933_Error AD5933_Reset(void)
 {
@@ -659,8 +662,8 @@ AD5933_Error AD5933_Reset(void)
 /**
  * Initiates a frequency sweep over the specified range with the specified output buffer.
  * 
- * The number of frequency increments in {@code sweep} is the number of times the frequency is incremented, so one more
- * points than this value are measured. The minimum value is {@code 1} since the AD5933 insists on measuring at least
+ * The number of frequency increments in `sweep` is the number of times the frequency is incremented, so one more
+ * points than this value are measured. The minimum value is `1` since the AD5933 insists on measuring at least
  * two points.
  * 
  * @param sweep The specifications to use for the sweep
@@ -744,7 +747,7 @@ AD5933_Error AD5933_MeasureTemperature(float *destination)
  * Initiates an impedance measurement of one or two points in different clock ranges and saves the data to the
  * specified structure.
  * 
- * Note that the frequency values in {@code cal} determine which clock sources will be used for calibration. A gain
+ * Note that the frequency values in `cal` determine which clock sources will be used for calibration. A gain
  * factor obtained with one frequency range can only be used with measurements in this range.
  * 
  * @param cal The specifications for calibration impedance, frequency range and whether a two point calibration
@@ -1016,7 +1019,7 @@ void AD5933_ConvertPolarToCartesian(const AD5933_ImpedancePolar *polar, AD5933_I
  * Gets the corresponding voltage in mV for a voltage range register value (one of the {@link AD5933_VOLTAGE} values).
  * 
  * @param reg The voltage range register value
- * @return The corresponding output voltage in mV, or {@code 0} for invalid values
+ * @return The corresponding output voltage in mV, or `0` for invalid values
  */
 uint16_t AD5933_GetVoltageFromRegister(uint16_t reg)
 {

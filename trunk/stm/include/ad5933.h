@@ -13,6 +13,9 @@
 #include "stm32f4xx_hal.h"
 
 // Exported type definitions --------------------------------------------------
+/**
+ * The possible states the AD5933 driver can be in.
+ */
 typedef enum
 {
     AD_UNINIT = 0,                  //!< Driver has not been initialized
@@ -26,6 +29,9 @@ typedef enum
     AD_MEASURE_IMPEDANCE_AUTORANGE  //!< Driver is doing an impedance measurement with autoranging
 } AD5933_Status;
 
+/**
+ * The possible outcomes of an operation.
+ */
 typedef enum
 {
     AD_OK = 0,      //!< Indicates success
@@ -33,6 +39,9 @@ typedef enum
     AD_ERROR        //!< Indicates an error condition
 } AD5933_Error;
 
+/**
+ * Contains parameters of one sweep.
+ */
 typedef struct
 {
     uint32_t Start_Freq;        //!< Start frequency for the sweep in Hz
@@ -43,14 +52,21 @@ typedef struct
     uint16_t Averages;          //!< The number of averages for each frequency point
 } AD5933_Sweep;
 
+/**
+ * Contains settings for the voltage range of the AD5933.
+ */
 typedef struct
 {
     uint16_t  PGA_Gain;         //!< PGA gain setting (one of the {@link AD5933_GAIN} values)
     uint16_t  Voltage_Range;    //!< Voltage range setting (one of the {@link AD5933_VOLTAGE} values)
-    uint16_t  Attenuation;      //!< The output voltage attenuation (one of the {@link AD5933_ATTENUATION_PORT} values)
-    uint32_t  Feedback_Value;   //!< Value of the feedback resistor (one of the {@link AD5933_FEEDBACK_PORT} values)
+    uint16_t  Attenuation;      //!< The output voltage attenuation (one of the values in `board_config`)
+    uint32_t  Feedback_Value;   //!< Value of the feedback resistor (one of the values in `board_config`)
 } AD5933_RangeSettings;
 
+/**
+ * Contains raw impedance data as measured by the AD5933 (that is, the DFT values for the current flowing through the
+ * unknown impedance).
+ */
 typedef struct
 {
     uint32_t Frequency;     //!< Frequency of the data point in Hz
@@ -58,6 +74,9 @@ typedef struct
     int16_t  Imag;          //!< Raw imaginary data of the impedance
 } AD5933_ImpedanceData;
 
+/**
+ * Contains an impedance in polar format (magnitude and angle).
+ */
 typedef struct
 {
     uint32_t Frequency;     //!< Frequency of the data point in Hz
@@ -65,6 +84,9 @@ typedef struct
     float    Angle;         //!< Angle of the polar representation in rad
 } AD5933_ImpedancePolar;
 
+/**
+ * Contains an impedance in Cartesian format (real and imaginary part).
+ */
 typedef struct
 {
     uint32_t Frequency;     //!< Frequency of the data point in Hz
@@ -72,6 +94,9 @@ typedef struct
     float    Imag;          //!< Imaginary part of the impedance in Ohms
 } AD5933_ImpedanceCartesian;
 
+/**
+ * Contains specifications for the frequency range of a calibration measurement.
+ */
 typedef struct
 {
     uint32_t impedance;     //!< Impedance for the calibration
@@ -80,7 +105,11 @@ typedef struct
     uint8_t  is_2point;     //!< Whether a two point calibration should be performed
 } AD5933_CalibrationSpec;
 
-#define AD5933_NUM_CLOCKS   4
+#define AD5933_NUM_CLOCKS   4   //!< The number of different AD5933 clocks that can be used
+
+/**
+ * Contains raw measurement data at different frequencies used for calibration.
+ */
 typedef struct
 {
     uint32_t impedance;                             //!< Impedance used for the gain factor calibration
@@ -89,6 +118,10 @@ typedef struct
     uint8_t is_2point;                              //!< Whether this is single or two point calibration data
 } AD5933_GainFactorData;
 
+/**
+ * Contains conversion factors used to convert measured data in a {@link AD5933_ImpedanceData} structure to a
+ * {@link AD5933_ImpedancePolar} structure.
+ */
 typedef struct
 {
     struct {
@@ -191,7 +224,7 @@ typedef struct
 /**
  * @defgroup AD5933_LED Measurement Notification LED GPIO Definition
  * 
- * If {@code AD5933_LED_USE} is defined, the specified pin is set high when a sweep is started and reset when it
+ * If `AD5933_LED_USE` is defined, the specified pin is set high when a sweep is started and reset when it
  * finishes. It can be used to notify the user about a running measurement.
  * The GPIO pin needs to be configured externally.
  * @{ 

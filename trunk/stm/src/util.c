@@ -20,7 +20,7 @@ static uint8_t Util_ConvertHexDigit(char c);
  * Convert a single hexadecimal digit to an integer value.
  * 
  * @param c The digit to convert
- * @return The corresponding integer value, or {@code 0xFF} in case {@code c} is not a proper hex digit
+ * @return The corresponding integer value, or `0xFF` in case `c` is not a proper hex digit
  */
 static uint8_t Util_ConvertHexDigit(char c)
 {
@@ -50,22 +50,22 @@ static uint8_t Util_ConvertHexDigit(char c)
 // Exported functions ---------------------------------------------------------
 
 /**
- * Convert an integer value from a string with possible SI suffix (like {@code 100k}).
+ * Convert an integer value from a string with possible SI suffix (like `100k`).
  * 
  * The string supplied to this function may not contain space characters inside the number, leading white space and
  * zeros are ignored. Parsing of the value is stopped at the first space character, so the string need not be
  * terminated.
  * 
- * If not {@code NULL}, the variable pointed to by {@code end} will receive the address of the first character after
- * the converted number, or {@code NULL} in case of an error.
+ * If not `NULL`, the variable pointed to by `end` will receive the address of the first character after
+ * the converted number, or `NULL` in case of an error.
  * 
  * Possible SI suffixes for this function are:
- *  + {@code SI_PREFIX_KILO} = k
- *  + {@code SI_PREFIX_MEGA} = M
+ *  + `SI_PREFIX_KILO` = k
+ *  + `SI_PREFIX_MEGA` = M
  * 
  * @param str Pointer to a string containing a numeric value
- * @param end Pointer to a variable receiving the position of the first character after the number, or {@code NULL}
- * @return The converted numeric value, or {@code 0} in case of an error
+ * @param end Pointer to a variable receiving the position of the first character after the number, or `NULL`
+ * @return The converted numeric value, or `0` in case of an error
  */
 uint32_t IntFromSiString(const char *str, const char **end)
 {
@@ -131,12 +131,12 @@ uint32_t IntFromSiString(const char *str, const char **end)
 }
 
 /**
- * Convert an integer value to a string with possible SI suffix (like {@code 100k}).
+ * Convert an integer value to a string with possible SI suffix (like `100k`).
  * 
  * @param s Pointer to a buffer receiving the converted string
  * @param size Size of the buffer in bytes
  * @param value The value to convert
- * @return The number of characters that would have been written, if this value is greater or equal to {@code size}
+ * @return The number of characters that would have been written, if this value is greater or equal to `size`
  *         then not all characters have been written to the buffer
  */
 int SiStringFromInt(char *s, uint32_t size, uint32_t value)
@@ -171,11 +171,11 @@ int SiStringFromInt(char *s, uint32_t size, uint32_t value)
 }
 
 /**
- * Converts a MAC address from a string in the format {@code 12:34:56:78:9A:BC}.
+ * Converts a MAC address from a string in the format `12:34:56:78:9A:BC` or `12-34-56-78-9A-BC`.
  * 
  * @param str Pointer to a string containing a MAC address
  * @param result Pointer to array receiving the converted address, needs to be able to store at least 6 values
- * @return The number of characters read if successful (always 17), {@code -1} otherwise
+ * @return The number of characters read if successful (always 17), `-1` otherwise
  */
 int MacAddressFromString(const char *str, uint8_t *result)
 {
@@ -207,12 +207,12 @@ int MacAddressFromString(const char *str, uint8_t *result)
 }
 
 /**
- * Convert a MAC address (6 bytes) to a human readable string in the format {@code 12-34-56-78-9A-BC}.
+ * Convert a MAC address (6 bytes) to a human readable string in the format `12-34-56-78-9A-BC`.
  * 
  * @param s Pointer to a buffer receiving the converted string
  * @param size Size of the buffer in bytes
  * @param mac The MAC address to convert, needs to have 6 elements
- * @return {@code -1} if {@code size} is less than 18, the number of characters written (excluding terminating 0)
+ * @return `-1` if `size` is less than 18, the number of characters written (excluding terminating 0)
  *         otherwise (always 17)
  */
 int StringFromMacAddress(char *s, uint32_t size, const uint8_t *mac)

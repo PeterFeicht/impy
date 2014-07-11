@@ -16,18 +16,18 @@
 /**
  * Defines the interface used by the virtual console to send data back to the user.
  * Different back ends can supply their functions using this structure when calling {@link Console_ProcessLine}.
- * Functions may not be {@code NULL} unless explicitly specified.
+ * Functions may not be `NULL` unless explicitly specified.
  * 
  * Care has to be taken when multiple back ends want to communicate concurrently; only the last interface supplied to
- * {@code Console_ProcessLine} is used for communication.
+ * `Console_ProcessLine` is used for communication.
  */
 typedef struct
 {
     uint32_t (*SendString)(const char *str);    //!< Send a string unaltered
-    uint32_t (*SendLine)(const char *str);      //!< Send a string (possibly NULL) followed by a line break
+    uint32_t (*SendLine)(const char *str);      //!< Send a string (possibly `NULL`) followed by a line break
     uint32_t (*SendBuffer)(const uint8_t *buf, uint32_t len);   //!< Send a buffer with the specified length
     uint32_t (*SendChar)(uint8_t c);            //!< Send a single byte
-    void     (*Flush)(void);                    //!< Send buffered data if necessary (may be {@code NULL})
+    void     (*Flush)(void);                    //!< Send buffered data if necessary (may be `NULL`)
     void     (*CommandFinish)(void);            //!< Finish currently executing command and accept new input
     void     (*SetEcho)(uint8_t enable);        //!< Set whether received characters should be echoed back
     uint8_t  (*GetEcho)(void);                  //!< Get whether echoing received characters is enabled

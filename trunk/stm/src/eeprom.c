@@ -56,7 +56,7 @@ static HAL_StatusTypeDef EE_Read(uint16_t address, uint8_t *buffer, uint16_t len
 
 /**
  * Writes an amount of data to the EEPROM, if the write cannot be completed in one go, the first page is written and
- * {@code write_addr} and {@code write_len} are set.
+ * `write_addr` and `write_len` are set.
  * 
  * @param address The address to write to
  * @param buffer Pointer to buffer with data to write
@@ -152,7 +152,7 @@ uint8_t EE_IsBusy(void)
  * @param i2c Pointer to an I2C handle structure that is to be used for communication with the EEPROM
  * @param crc Pointer to a CRC handle structure used for CRC calculation
  * @param e2_set Indicates the state of the E2 pin of the device
- * @return {@code EE_OK} if EEPROM responds, {@code EE_ERROR} otherwise
+ * @return `EE_OK` if EEPROM responds, `EE_ERROR` otherwise
  */
 EEPROM_Error EE_Init(I2C_HandleTypeDef *i2c, CRC_HandleTypeDef *crc, uint8_t e2_set)
 {
@@ -177,7 +177,7 @@ EEPROM_Error EE_Init(I2C_HandleTypeDef *i2c, CRC_HandleTypeDef *crc, uint8_t e2_
 /**
  * Resets the driver to initialization state.
  * 
- * @return {@code EE_ERROR} if the driver has not been initialized, {@code EE_OK} otherwise
+ * @return `EE_ERROR` if the driver has not been initialized, `EE_OK` otherwise
  */
 EEPROM_Error EE_Reset(void)
 {
