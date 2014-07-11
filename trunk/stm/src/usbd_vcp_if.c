@@ -3,8 +3,6 @@
  * @author  Peter Feichtinger
  * @date    14.04.2014
  * @brief   This file implements the application specific interface for the USB VCP.
- * 
- * @todo detail usage
  */
 
 // Includes -------------------------------------------------------------------
