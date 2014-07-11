@@ -2298,7 +2298,7 @@ void Console_SetFormat(uint32_t spec)
 void Console_CalibrateCallback(void)
 {
     interface->SendLine(txtOK);
-    interface->Flush();
+    Console_Flush();
     interface->CommandFinish();
 }
 
