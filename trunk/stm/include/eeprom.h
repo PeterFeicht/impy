@@ -37,13 +37,6 @@ typedef enum
 
 typedef struct
 {
-    uint32_t Address;   //!< Address of the data on the EEPROM
-    uint32_t Length;    //!< Length of the buffer in bytes
-    uint8_t  *pData;    //!< Pointer to data buffer
-} EEPROM_Data;
-
-typedef struct
-{
     struct _peripherals
     {
         unsigned int sram : 1;              //!< Whether external SRAM is populated
