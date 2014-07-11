@@ -173,7 +173,7 @@ preceding them with an '@' character.
 If echo is disabled globally, the '@' character has no effect and is ignored.
 
 help setup:
-The EEPROM stores configuration information for the board, such a populated
+The EEPROM stores configuration information for the board, such as populated
 feedback or calibration resistors, Ethernet MAC address and populated
 peripherals. The setup command is used to set these configuration options when
 the board is used for the first time. If no EEPROM is fitted, this command has
