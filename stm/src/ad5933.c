@@ -924,9 +924,12 @@ void AD5933_CalculateGainFactor(const AD5933_GainFactorData *data, AD5933_GainFa
             gf->ranges[j].slope =
                     (gain2 - gf->ranges[j].offset) / (data->point2[j].Frequency - data->point1[j].Frequency);
             
-            phase = atan2f((float)data->point2[j].Imag, (float)data->point2[j].Real);
-            gf->ranges[j].phaseSlope =
-                    (phase - gf->ranges[j].phaseOffset) / (data->point2[j].Frequency - data->point1[j].Frequency);
+            phase = atan2f((float)data->point2[j].Imag, (float)data->point2[j].Real) - gf->ranges[j].phaseOffset;
+            if(phase > M_PI)
+                phase -= M_TWOPI;
+            else if(phase < -M_PI)
+                phase += M_TWOPI;
+            gf->ranges[j].phaseSlope = phase / (data->point2[j].Frequency - data->point1[j].Frequency);
         }
         else
         {
