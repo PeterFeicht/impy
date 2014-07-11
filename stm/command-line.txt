@@ -191,7 +191,7 @@ Commands:
                                 so, the size in bytes
   eth (on|off) [<mac-address>]  Whether the Ethernet interface is fitted and,
                                 if so, the MAC address to be used in the format
-                                "12:34:56:78:9A:BC"
+                                "12:34:56:78:9A:BC" or "12-34-56-78-9A-BC"
   usbh (on|off)                 Whether the USB host jack is fitted
 
 For attenuations and feedback and calibration resistors, the order on the
