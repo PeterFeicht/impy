@@ -38,7 +38,16 @@ typedef enum
     CON_ARG_SET_VOLTAGE,
     // eth set
     CON_ARG_SET_DHCP,
-    CON_ARG_SET_IP
+    CON_ARG_SET_IP,
+    // setup
+    CON_CMD_SETUP_ATTENUATIONS,
+    CON_CMD_SETUP_FEEDBACK,
+    CON_CMD_SETUP_CALIBRATION,
+    CON_CMD_SETUP_COUPL,
+    CON_CMD_SETUP_SRAM,
+    CON_CMD_SETUP_FLASH,
+    CON_CMD_SETUP_ETH,
+    CON_CMD_SETUP_USBH
 } Console_ArgID;
 
 typedef enum
@@ -1659,7 +1668,266 @@ static void Console_Help(uint32_t argc, char **argv)
  */
 static void Console_Setup(uint32_t argc, char **argv)
 {
-    interface->SendLine(txtNotImplemented);
+    static const Console_Arg cmds[] = {
+        { "attenuation", CON_CMD_SETUP_ATTENUATIONS, CON_STRING },
+        { "feedback", CON_CMD_SETUP_FEEDBACK, CON_STRING },
+        { "calibration", CON_CMD_SETUP_CALIBRATION, CON_STRING },
+        { "coupl", CON_CMD_SETUP_COUPL, CON_STRING },
+        { "sram", CON_CMD_SETUP_SRAM, CON_STRING },
+        { "flash", CON_CMD_SETUP_FLASH, CON_STRING },
+        { "eth", CON_CMD_SETUP_ETH, CON_STRING },
+        { "usbh", CON_CMD_SETUP_USBH, CON_STRING }
+    };
+    
+    Console_ArgID cmd = CON_ARG_INVALID;
+    const char *err = NULL;
+    Console_FlagValue flag;
+    uint32_t ints[8] = { 0 };
+    uint32_t intval = 0;
+    const char *end;
+    
+    // Every command has at least one argument
+    if(argc <= 2)
+    {
+        interface->SendLine(txtErrArgNum);
+        interface->CommandFinish();
+        return;
+    }
+    
+    for(uint32_t j = 0; j < NUMEL(cmds); j++)
+    {
+        if(strcmp(argv[1], cmds[j].arg) == 0)
+        {
+            cmd = cmds[j].id;
+            break;
+        }
+    }
+    
+    switch(cmd)
+    {
+        case CON_CMD_SETUP_ATTENUATIONS:
+            if(argc > 2 + NUMEL(board_config.attenuations))
+            {
+                err = txtErrArgNum;
+                break;
+            }
+            for(uint32_t j = 2; j < argc; j++)
+            {
+                ints[intval++] = IntFromSiString(argv[j], &end);
+                if(end == NULL)
+                {
+                    err = txtWrongNumber;
+                    break;
+                }
+            }
+            if(err == NULL)
+            {
+                for(uint32_t j = 0; j < NUMEL(board_config.attenuations); j++)
+                {
+                    board_config.attenuations[j] = ints[j];
+                }
+            }
+            break;
+            
+        case CON_CMD_SETUP_FEEDBACK:
+            if(argc > 2 + NUMEL(board_config.feedback_resistors))
+            {
+                err = txtErrArgNum;
+                break;
+            }
+            for(uint32_t j = 2; j < argc; j++)
+            {
+                ints[intval++] = IntFromSiString(argv[j], &end);
+                if(end == NULL)
+                {
+                    err = txtWrongNumber;
+                    break;
+                }
+            }
+            if(err == NULL)
+            {
+                for(uint32_t j = 0; j < NUMEL(board_config.feedback_resistors); j++)
+                {
+                    board_config.feedback_resistors[j] = ints[j];
+                }
+            }
+            break;
+            
+        case CON_CMD_SETUP_CALIBRATION:
+            if(argc > 2 + NUMEL(board_config.calibration_values))
+            {
+                err = txtErrArgNum;
+                break;
+            }
+            for(uint32_t j = 2; j < argc; j++)
+            {
+                ints[intval++] = IntFromSiString(argv[j], &end);
+                if(end == NULL)
+                {
+                    err = txtWrongNumber;
+                    break;
+                }
+            }
+            if(err == NULL)
+            {
+                for(uint32_t j = 0; j < NUMEL(board_config.calibration_values); j++)
+                {
+                    board_config.calibration_values[j] = ints[j];
+                }
+            }
+            break;
+            
+        case CON_CMD_SETUP_COUPL:
+            if(argc != 3)
+            {
+                err = txtErrArgNum;
+                break;
+            }
+            intval = IntFromSiString(argv[2], &end);
+            if(end == NULL || intval > 1000)
+            {
+                err = txtWrongTau;
+                break;
+            }
+            board_config.coupling_tau = intval;
+            break;
+            
+        case CON_CMD_SETUP_SRAM:
+            if(argc > 4)
+            {
+                err = txtErrArgNum;
+                break;
+            }
+            flag = Console_GetFlag(argv[2]);
+            switch(flag)
+            {
+                case CON_FLAG_ON:
+                    if(argc != 4)
+                    {
+                        err = txtErrArgNum;
+                        break;
+                    }
+                    intval = IntFromSiString(argv[3], &end);
+                    if(end == NULL)
+                    {
+                        err = txtWrongNumber;
+                        break;
+                    }
+                    board_config.peripherals.sram = 1;
+                    board_config.sram_size = intval;
+                    break;
+                    
+                case CON_FLAG_OFF:
+                    board_config.peripherals.sram = 0;
+                    board_config.sram_size = 0;
+                    break;
+                    
+                case CON_FLAG_INVALID:
+                    err = txtWrongFlag;
+                    break;
+            }
+            break;
+            
+        case CON_CMD_SETUP_FLASH:
+            if(argc > 4)
+            {
+                err = txtErrArgNum;
+                break;
+            }
+            flag = Console_GetFlag(argv[2]);
+            switch(flag)
+            {
+                case CON_FLAG_ON:
+                    if(argc != 4)
+                    {
+                        err = txtErrArgNum;
+                        break;
+                    }
+                    intval = IntFromSiString(argv[3], &end);
+                    if(end == NULL)
+                    {
+                        err = txtWrongNumber;
+                        break;
+                    }
+                    board_config.peripherals.flash = 1;
+                    board_config.flash_size = intval;
+                    break;
+                    
+                case CON_FLAG_OFF:
+                    board_config.peripherals.flash = 0;
+                    board_config.flash_size = 0;
+                    break;
+                    
+                case CON_FLAG_INVALID:
+                    err = txtWrongFlag;
+                    break;
+            }
+            break;
+            
+        case CON_CMD_SETUP_ETH:
+            if(argc > 4)
+            {
+                err = txtErrArgNum;
+                break;
+            }
+            flag = Console_GetFlag(argv[2]);
+            switch(flag)
+            {
+                case CON_FLAG_ON:
+                    if(argc != 4)
+                    {
+                        err = txtErrArgNum;
+                        break;
+                    }
+                    uint8_t mac[NUMEL(board_config.eth_mac)];
+                    if(MacAddressFromString(argv[3], &mac[0]) < 0)
+                    {
+                        err = txtWrongMac;
+                        break;
+                    }
+                    board_config.peripherals.eth = 1;
+                    memcpy(&board_config.eth_mac[0], mac, sizeof(mac));
+                    break;
+                    
+                case CON_FLAG_OFF:
+                    board_config.peripherals.eth = 0;
+                    break;
+                    
+                case CON_FLAG_INVALID:
+                    err = txtWrongFlag;
+                    break;
+            }
+            break;
+            
+        case CON_CMD_SETUP_USBH:
+            if(argc != 3)
+            {
+                err = txtErrArgNum;
+                break;
+            }
+            flag = Console_GetFlag(argv[2]);
+            if(flag == CON_FLAG_INVALID)
+            {
+                err = txtWrongFlag;
+                break;
+            }
+            board_config.peripherals.usbh = (flag == CON_FLAG_ON ? 1 : 0);
+            break;
+            
+        default:
+            err = txtUnknownConfig;
+            break;
+    }
+    
+    if(err == NULL)
+    {
+        WriteConfiguration();
+    }
+    else
+    {
+        interface->SendLine(err);
+    }
+    
     interface->CommandFinish();
 }
 
