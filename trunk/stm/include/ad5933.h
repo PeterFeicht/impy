@@ -496,7 +496,7 @@ typedef struct
 /**
  * @defgroup AD5933_CMD Command codes
  * 
- * These are the command codes that need to be sent for the respective transaction.
+ * These are the command codes that need to be sent for the respective I2C transaction
  * @{
  */
 #define AD5933_CMD_SET_ADDRESS              ((uint8_t)0xB0)     //!< Set address pointer command code
