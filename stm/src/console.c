@@ -1964,7 +1964,7 @@ static void Console_Debug(uint32_t argc __attribute__((unused)), char **argv __a
 #ifdef DEBUG
     if(argc == 1)
     {
-        interface->SendLine("echo, printf-float, malloc, leak, usb-paksize, heap, tim, mux, output, dump");
+        interface->SendLine("echo, malloc, leak, usb-paksize, heap, mux, output, dump");
         interface->CommandFinish();
         return;
     }
@@ -1975,32 +1975,6 @@ static void Console_Debug(uint32_t argc __attribute__((unused)), char **argv __a
         for(uint32_t j = 2; j < argc; j++)
         {
             interface->SendLine(argv[j]);
-        }
-    }
-    else if(strcmp(argv[1], "printf-float") == 0)
-    {
-        // Test the number format of floating point numbers
-        char *buf;
-        const uint32_t size = 100;
-        buf = malloc(size);
-        if(buf != NULL)
-        {
-            float f1 = 1.5378f;
-            float f2 = atan2f(0.5f, 0.5f);
-            snprintf(buf, size, "%g < %g", f1, f2);
-            interface->SendLine(buf);
-            for(uint32_t j = 0; j < 10; j++)
-            {
-                f1 *= 10.0f;
-                f2 /= 10.0f;
-                snprintf(buf, size, "%g < %g", f1, f2);
-                interface->SendLine(buf);
-            }
-            free(buf);
-        }
-        else
-        {
-            interface->SendLine("Pointer was NULL.");
         }
     }
     else if(strcmp(argv[1], "malloc") == 0)
