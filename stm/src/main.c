@@ -59,7 +59,7 @@ static uint32_t stopFreq;
 static uint8_t lastPort;
 static uint8_t autorange;       // Whether autoranging should be enabled for the next sweep
 
-// XXX should we allocate buffers dynamically?
+// Data
 static AD5933_ImpedanceData bufData[AD5933_MAX_NUM_INCREMENTS + 1];
 static uint8_t validData = 0;
 static AD5933_ImpedancePolar bufPolar[AD5933_MAX_NUM_INCREMENTS + 1];
