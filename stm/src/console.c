@@ -1959,25 +1959,17 @@ static void Console_Setup(uint32_t argc, char **argv)
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
+static void Console_Debug(uint32_t argc __attribute__((unused)), char **argv __attribute__((unused)))
 {
 #ifdef DEBUG
     if(argc == 1)
     {
-        interface->SendLine("send, echo, printf-float, malloc, leak, usb-paksize, heap, tim, mux, output,");
-        interface->SendLine("dump");
+        interface->SendLine("echo, printf-float, malloc, leak, usb-paksize, heap, tim, mux, output, dump");
         interface->CommandFinish();
         return;
     }
     
-    if(strcmp(argv[1], "send") == 0)
-    {
-        // Send some strings to test how the VCP copes with multiple calls in close succession
-        interface->SendString("this is a test string\r\n");
-        interface->SendString("second SendString call with a string that is longer than before.\r\n");
-        interface->SendString("short line\r\n");
-    }
-    else if(strcmp(argv[1], "echo") == 0)
+    if(strcmp(argv[1], "echo") == 0)
     {
         // Echo back all received arguments
         for(uint32_t j = 2; j < argc; j++)
@@ -2098,6 +2090,8 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
         // Print information about the heap
         extern char _Heap_Begin;
         extern char _Heap_Limit;
+        extern char _Main_Stack_Limit;
+        extern char _estack;
         char buf[80];
         void *brk = sbrk(0);
         
@@ -2107,6 +2101,12 @@ static void Console_Debug(uint32_t argc, char **argv __attribute__((unused)))
         snprintf(buf, NUMEL(buf), "Current break: %p\r\nFree bytes: %lu\r\n",
                 brk, (uint32_t)((void *)&_Heap_Limit - brk));
         interface->SendString(buf);
+        snprintf(buf, NUMEL(buf), "Stack begin: %p, Stack limit: %p (size = %lu)\r\n",
+                &_estack, &_Main_Stack_Limit, (uint32_t)(&_estack - &_Main_Stack_Limit));
+        interface->SendString(buf);
+        snprintf(buf, NUMEL(buf), "Approximate current stack position: %p (used = %lu)\r\n",
+                &argc, (uint32_t)(&_estack - (char *)&argc));
+        interface->SendString(buf); 
     }
     else if(strcmp(argv[1], "tim") == 0)
     {
