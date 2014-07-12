@@ -2108,37 +2108,6 @@ static void Console_Debug(uint32_t argc __attribute__((unused)), char **argv __a
                 &argc, (uint32_t)(&_estack - (char *)&argc));
         interface->SendString(buf); 
     }
-    else if(strcmp(argv[1], "tim") == 0)
-    {
-        const char *end;
-        uint32_t intval;
-        
-        // Enable or disable TIM10 OC output
-        if(argc != 3)
-        {
-            interface->SendLine(txtErrArgNum);
-        }
-        else
-        {
-            Console_FlagValue flag = Console_GetFlag(argv[2]);
-            switch (flag) {
-                case CON_FLAG_ON:
-                    HAL_TIM_OC_Start(&htim10, TIM_CHANNEL_1);
-                    break;
-                case CON_FLAG_OFF:
-                    HAL_TIM_OC_Stop(&htim10, TIM_CHANNEL_1);
-                    break;
-                default:
-                    intval = IntFromSiString(argv[2], &end);
-                    if(end != NULL && intval < 0xFFFF)
-                    {
-                        HAL_TIM_OC_Stop(&htim10, TIM_CHANNEL_1);
-                        htim10.Instance->PSC = intval;
-                    }
-                    break;
-            }
-        }
-    }
     else if(strcmp(argv[1], "mux") == 0)
     {
         // Set output mux port, or disable
