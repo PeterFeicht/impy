@@ -15,7 +15,7 @@ Commands:
   board read [--format=FMT] [( --raw | --gain)]
   eth set [--dhcp=(on|off)] [--ip=IP]
   eth (status | enable | disable)
-  usb (status | info | eject | write <file> | ls)
+  usb (status | info | eject | write <file> | delete <file> | ls)
   setup <cmd> [<args>...]
   help [<topic>]
 
@@ -100,6 +100,7 @@ Commands:
   info      Print USB device information, if a device is plugged in
   eject     Unmount a USB device before unplugging
   write     Write current measurement data to specified file on USB device
+  delete    Delete the specified file from the USB device
   ls        List files on USB device
 
 help format:
@@ -157,7 +158,7 @@ The AD5933 outputs a known voltage and measures the current through the unknown
 impedance by means of a current-to-voltage amplifier. The following procedure
 can be used to select the proper ranges:
  * Set the output voltage low enough, that the output current does not exceed
-   25mA with the lowest impedance expected.
+   10mA with the lowest impedance expected.
  * Set the current feedback resistor to a value low enough, that the input
    voltage stays below 3V for the highest output current expected.
  * If necessary, the PGA can be set to x5 gain to further amplify the input
