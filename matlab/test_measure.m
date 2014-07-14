@@ -30,12 +30,20 @@ port = 0;
 
 
 %% Open COM port
-impy = serial('COM6', 'BaudRate', 115200);
-% IMPORTANT: Set the Terminator property to either 'CR/LF' or { 'CR/LF', 'LF' } for proper operation
-% Timeout needs to be set high when low frequencies are used, because in this case calibration can take a long time
-% I think InputBufferSize needs to be large enough to hold all data sent by 'board read', so 128KB should be big enough
-set(impy, 'Terminator', { 'CR/LF', 'LF' }, 'Timeout', 120, 'InputBufferSize', 128*1024);
-fopen(impy);
+try
+    impy = serial('COM6', 'BaudRate', 115200);
+    % IMPORTANT: Set the Terminator property to either 'CR/LF' or { 'CR/LF', 'LF' } for proper operation
+    % Timeout needs to be set high when low frequencies are used, because in this case calibration can take a long time
+    % I think InputBufferSize needs to be large enough to hold all data sent by 'board read', so 128KB should be plenty
+    set(impy, 'Terminator', { 'CR/LF', 'LF' }, 'Timeout', 120, 'InputBufferSize', 128*1024);
+    fopen(impy);
+catch ex
+    % In case of an error (quite frequent with serial ports in MATLAB), close the port
+    fclose(impy);
+    delete(impy);
+    clear impy;
+    rethrow(ex);
+end
 
 
 %% Start sweep and wait for completion
@@ -60,6 +68,7 @@ clear impy;
 
 %% Plot data
 close all;
+clear file;
 scrsz = get(0, 'ScreenSize');
 
 % Set this variable to compare with data from Agilent 4294A impedance analyzer
