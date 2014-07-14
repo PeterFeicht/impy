@@ -1060,7 +1060,7 @@ AD5933_Error AD5933_Debug_OutputFreq(uint32_t freq, const AD5933_RangeSettings *
         return AD_BUSY;
     }
     
-    ret = AD5933_StartMeasurement(range, freq, 1, 1, 10);
+    ret = AD5933_StartMeasurement(range, freq, 1, 0, 10);
     HAL_Delay(10);
     HAL_GPIO_WritePin(AD5933_COUPLING_GPIO_PORT, AD5933_COUPLING_GPIO_PIN, GPIO_PIN_SET);
     
