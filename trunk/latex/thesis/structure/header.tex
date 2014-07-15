@@ -1,0 +1,116 @@
+\documentclass[a4paper,11pt,twoside]{book}
+
+\usepackage[ngerman,american]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage[babel]{csquotes}
+\usepackage{lmodern}
+
+\usepackage{setspace}               % Set line spacing
+\usepackage{emptypage}              % Don't put header/footer on empty pages
+\usepackage[
+  a4paper,
+  twoside,
+  bindingoffset=1cm,
+  bmargin=3cm,
+  hmargin=3cm
+]{geometry}
+
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{commath}
+
+\usepackage[pstricks,squaren,thinqspace,thinspace]{SIunits}
+\usepackage[tableposition=top]{caption}
+\usepackage{dcolumn}                % Align table columns on decimal point
+\usepackage{subcaption}             % Used for subfigures
+
+\usepackage{pdfpages}               % Include PDF pages without overfull boxes
+
+\usepackage{enumitem}               % Make enumerations a little more compact
+\setlist{topsep=0pt,itemsep=2pt}
+\setlist[1]{labelindent=6pt}
+
+\usepackage{graphicx}
+\usepackage{pstricks-add}
+\usepackage{pst-circ}
+%\usepackage{pst-plot}
+\usepackage[off]{auto-pst-pdf}
+
+% Links and PDF properties
+\usepackage[
+  pdftitle={mini Impedance Spectrometer based on the AD5933},
+  pdfauthor={Peter Feichtinger},
+  pdfsubject={Bachelorarbeit},
+  pdflang=en,
+  colorlinks=true,
+  unicode=true,
+  pdfstartview=,
+  % default red
+  linkcolor=black,
+  % default cyan
+  filecolor=black,
+  % default red
+  menucolor=black,
+  % default magenta
+  urlcolor=black
+]{hyperref}
+
+% Section X.X in \autoref instead of Subsection X.X
+\renewcommand{\subsectionautorefname}{\sectionautorefname}
+\renewcommand{\subsubsectionautorefname}{\sectionautorefname}
+% Begin numbering from 1 in each section
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+
+\usepackage{listings}
+\lstset{language=Matlab,
+  basicstyle=\footnotesize\ttfamily,
+  stringstyle=\slshape,
+  showstringspaces=false,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+%  firstnumber=auto,
+  frame=single,
+  morecomment=[l][\underbar]{\%\%}
+}
+
+\usepackage{lipsum}
+
+% Some geometry customization
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5ex}
+\setlength{\headheight}{15pt}
+\setlength{\tabcolsep}{8pt}
+%\renewcommand\floatpagefraction{.95}
+%\renewcommand\topfraction{.95}
+%\renewcommand\bottomfraction{.95}
+%\renewcommand\textfraction{.05}
+
+% Header and footer
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[ER]{\leftmark}
+\fancyhead[OL]{\rightmark}
+\fancyhead[OR,EL]{\thepage}
+\fancyfoot{}
+
+% Make plain pagestyle fancy
+\makeatletter
+  \let\ps@plain\ps@fancy
+\makeatother
+
+\usepackage{titlesec}
+\titleformat{\chapter}{\normalfont\huge\bfseries}{\thechapter}{1em}{}
+
+% Don't put "Chapter X" in the header
+\renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{\thechapter.\ #1}}{}}
+ 
+% Custom commands
+\newcommand{\todo}[1]{ \textbf{\color{red}\large #1} \vspace{-2ex} \addcontentsline{toc}{subsection}{\textcolor{red}{TODO: #1}} }
+\providecommand{\e}[1]{\ensuremath{\!\times\! 10^{#1}}}
+\newcolumntype{d}[1]{D{.}{.}{#1}}
+\newcommand{\head}[1]{ \multicolumn{1}{c|}{#1} }
+ 
