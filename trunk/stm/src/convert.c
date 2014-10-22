@@ -39,8 +39,7 @@ static const char *txtImaginary = "Imaginary";
  * @param count Number of elements in array
  * @return Buffer with converted data
  */
-static Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *data, uint32_t count)
-{
+static Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *data, uint32_t count) {
     uint32_t alloc = 0;
     void *buffer;
     uint32_t size = 0;
@@ -52,8 +51,7 @@ static Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *d
     };
     
     // Make a guess to the maximum amount of space needed
-    switch(format & FORMAT_MASK_NUMBERS)
-    {
+    switch(format & FORMAT_MASK_NUMBERS) {
         case FORMAT_FLAG_FLOAT:
             // ASCII format: int + char + float + char + float + newline
             alloc = count * (6 + 1 + 11 + 1 + 11 + 2) + 1;
@@ -66,10 +64,8 @@ static Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *d
     // Second line break at end of transmission
     alloc += 2;
     
-    if(format & FORMAT_FLAG_HEADER)
-    {
-        switch(format & FORMAT_MASK_COORDINATES)
-        {
+    if(format & FORMAT_FLAG_HEADER) {
+        switch(format & FORMAT_MASK_COORDINATES) {
             case FORMAT_FLAG_POLAR:
                 alloc += strlen(txtMagnitude);
                 alloc += strlen(txtAngle);
@@ -85,11 +81,11 @@ static Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *d
     }
     
     buffer = malloc(alloc);
-    if(buffer == NULL)
+    if(buffer == NULL) {
         return ret;
+    }
     
-    switch(format & FORMAT_MASK_SEPARATOR)
-    {
+    switch(format & FORMAT_MASK_SEPARATOR) {
         case FORMAT_FLAG_TAB:
             separator = '\t';
             break;
@@ -99,12 +95,10 @@ static Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *d
     }
     
 #define APPEND(X)   size = memccpy(buffer + size, (X), 0, alloc - size) - buffer - 1
-    if(format & FORMAT_FLAG_HEADER)
-    {
+    if(format & FORMAT_FLAG_HEADER) {
         APPEND(txtFrequency);
         *((char *)(buffer + size++)) = separator;
-        switch(format & FORMAT_MASK_COORDINATES)
-        {
+        switch(format & FORMAT_MASK_COORDINATES) {
             case FORMAT_FLAG_POLAR:
                 APPEND(txtMagnitude);
                 *((char *)(buffer + size++)) = separator;
@@ -121,22 +115,18 @@ static Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *d
         *((char *)(buffer + size++)) = '\n';
     }
     
-    switch(format & FORMAT_MASK_COORDINATES)
-    {
+    switch(format & FORMAT_MASK_COORDINATES) {
         case FORMAT_FLAG_POLAR:
-            switch(format & FORMAT_MASK_NUMBERS)
-            {
+            switch(format & FORMAT_MASK_NUMBERS) {
                 case FORMAT_FLAG_FLOAT:
-                    for(uint32_t j = 0; j < count; j++)
-                    {
+                    for(uint32_t j = 0; j < count; j++) {
                         size += snprintf(buffer + size, alloc - size, "%lu%c%g%c%g\r\n",
                                 data[j].Frequency, separator, data[j].Magnitude, separator, data[j].Angle);
                     }
                     break;
                     
                 case FORMAT_FLAG_HEX:
-                    for(uint32_t j = 0; j < count; j++)
-                    {
+                    for(uint32_t j = 0; j < count; j++) {
                         uint32_t magnitude = *((uint32_t *)(&data[j].Magnitude));
                         uint32_t angle = *((uint32_t *)(&data[j].Angle));
                         size += snprintf(buffer + size, alloc - size, "%.8lx%c%.8lx%c%.8lx\r\n",
@@ -147,11 +137,9 @@ static Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *d
             break;
             
         case FORMAT_FLAG_CARTESIAN:
-            switch(format & FORMAT_MASK_NUMBERS)
-            {
+            switch(format & FORMAT_MASK_NUMBERS) {
                 case FORMAT_FLAG_FLOAT:
-                    for(uint32_t j = 0; j < count; j++)
-                    {
+                    for(uint32_t j = 0; j < count; j++) {
                         AD5933_ImpedanceCartesian tmp;
                         AD5933_ConvertPolarToCartesian(&data[j], &tmp);
                         
@@ -161,8 +149,7 @@ static Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *d
                     break;
                     
                 case FORMAT_FLAG_HEX:
-                    for(uint32_t j = 0; j < count; j++)
-                    {
+                    for(uint32_t j = 0; j < count; j++) {
                         AD5933_ImpedanceCartesian tmp;
                         AD5933_ConvertPolarToCartesian(&data[j], &tmp);
                         
@@ -179,8 +166,7 @@ static Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *d
     *((char *)(buffer + size++)) = '\r';
     *((char *)(buffer + size++)) = '\n';
     
-    if(size < alloc - 100)
-    {
+    if(size < alloc - 100) {
         buffer = realloc(buffer, size);
     }
     
@@ -197,8 +183,7 @@ static Buffer Convert_PolarAscii(uint32_t format, const AD5933_ImpedancePolar *d
  * @param count Number of elements in array
  * @return Buffer with converted data
  */
-static Buffer Convert_PolarBinary(uint32_t format, const AD5933_ImpedancePolar *data, uint32_t count)
-{
+static Buffer Convert_PolarBinary(uint32_t format, const AD5933_ImpedancePolar *data, uint32_t count) {
     uint32_t alloc = 0;
     void *buffer;
     uint32_t size = 0;
@@ -208,8 +193,7 @@ static Buffer Convert_PolarBinary(uint32_t format, const AD5933_ImpedancePolar *
         .size = 0
     };
 
-    switch(format & FORMAT_MASK_COORDINATES)
-    {
+    switch(format & FORMAT_MASK_COORDINATES) {
         case FORMAT_FLAG_POLAR:
             alloc = count * sizeof(AD5933_ImpedancePolar);
             break;
@@ -220,11 +204,11 @@ static Buffer Convert_PolarBinary(uint32_t format, const AD5933_ImpedancePolar *
     alloc += (format & FORMAT_FLAG_HEADER ? 4 : 0);
     
     buffer = malloc(alloc);
-    if(buffer == NULL)
+    if(buffer == NULL) {
         return ret;
+    }
     
-    if(format & FORMAT_FLAG_HEADER)
-    {
+    if(format & FORMAT_FLAG_HEADER) {
 #ifdef __ARMEB__
         *((uint32_t *)buffer) = alloc - 4;
 #else
@@ -233,15 +217,13 @@ static Buffer Convert_PolarBinary(uint32_t format, const AD5933_ImpedancePolar *
         size += 4;
     }
     
-    switch(format & FORMAT_MASK_COORDINATES)
-    {
+    switch(format & FORMAT_MASK_COORDINATES) {
         case FORMAT_FLAG_POLAR:
 #ifdef __ARMEB__
             // If we need big endian polar data we can take a shortcut and just copy the data
             memcpy(buffer + size, data, count * sizeof(AD5933_ImpedancePolar));
 #else
-            for(uint32_t j = 0; j < count; j++)
-            {
+            for(uint32_t j = 0; j < count; j++) {
                 AD5933_ImpedancePolar *tmp = buffer + size;
                 tmp->Frequency = __REV(data[j].Frequency);
                 *((uint32_t *)&tmp->Magnitude) = __REV(*((uint32_t *)&data[j].Magnitude));
@@ -252,8 +234,7 @@ static Buffer Convert_PolarBinary(uint32_t format, const AD5933_ImpedancePolar *
             break;
             
         case FORMAT_FLAG_CARTESIAN:
-            for(uint32_t j = 0; j < count; j++)
-            {
+            for(uint32_t j = 0; j < count; j++) {
                 AD5933_ImpedanceCartesian *tmp = buffer + size;
                 AD5933_ConvertPolarToCartesian(&data[j], tmp);
 #ifndef __ARMEB__
@@ -279,8 +260,7 @@ static Buffer Convert_PolarBinary(uint32_t format, const AD5933_ImpedancePolar *
  * @param count Number of elements in array
  * @return Buffer with converted data
  */
-static Buffer Convert_RawAscii(uint32_t format, const AD5933_ImpedanceData *data, uint32_t count)
-{
+static Buffer Convert_RawAscii(uint32_t format, const AD5933_ImpedanceData *data, uint32_t count) {
     uint32_t alloc = 0;
     void *buffer;
     uint32_t size = 0;
@@ -292,8 +272,7 @@ static Buffer Convert_RawAscii(uint32_t format, const AD5933_ImpedanceData *data
     };
     
     // Make a guess to the maximum amount of space needed
-    switch(format & FORMAT_MASK_NUMBERS)
-    {
+    switch(format & FORMAT_MASK_NUMBERS) {
         case FORMAT_FLAG_FLOAT:
             // ASCII format: uint32 < 100k + char + int16 + char + int16 + newline
             alloc = count * (6 + 1 + 6 + 1 + 6 + 2) + 1;
@@ -306,8 +285,7 @@ static Buffer Convert_RawAscii(uint32_t format, const AD5933_ImpedanceData *data
     // Second line break at end of transmission
     alloc += 2;
     
-    if(format & FORMAT_FLAG_HEADER)
-    {
+    if(format & FORMAT_FLAG_HEADER) {
         alloc += strlen(txtReal);
         alloc += strlen(txtImaginary);
         alloc += strlen(txtFrequency);
@@ -316,11 +294,11 @@ static Buffer Convert_RawAscii(uint32_t format, const AD5933_ImpedanceData *data
     }
     
     buffer = malloc(alloc);
-    if(buffer == NULL)
+    if(buffer == NULL) {
         return ret;
+    }
     
-    switch(format & FORMAT_MASK_SEPARATOR)
-    {
+    switch(format & FORMAT_MASK_SEPARATOR) {
         case FORMAT_FLAG_TAB:
             separator = '\t';
             break;
@@ -330,8 +308,7 @@ static Buffer Convert_RawAscii(uint32_t format, const AD5933_ImpedanceData *data
     }
     
 #define APPEND(X)   size = memccpy(buffer + size, (X), 0, alloc - size) - buffer - 1
-    if(format & FORMAT_FLAG_HEADER)
-    {
+    if(format & FORMAT_FLAG_HEADER) {
         APPEND(txtFrequency);
         *((char *)(buffer + size++)) = separator;
         APPEND(txtReal);
@@ -341,19 +318,16 @@ static Buffer Convert_RawAscii(uint32_t format, const AD5933_ImpedanceData *data
         *((char *)(buffer + size++)) = '\n';
     }
     
-    switch(format & FORMAT_MASK_NUMBERS)
-    {
+    switch(format & FORMAT_MASK_NUMBERS) {
         case FORMAT_FLAG_FLOAT:
-            for(uint32_t j = 0; j < count; j++)
-            {
+            for(uint32_t j = 0; j < count; j++) {
                 size += snprintf(buffer + size, alloc - size, "%lu%c%hi%c%hi\r\n",
                         data[j].Frequency, separator, data[j].Real, separator, data[j].Imag);
             }
             break;
             
         case FORMAT_FLAG_HEX:
-            for(uint32_t j = 0; j < count; j++)
-            {
+            for(uint32_t j = 0; j < count; j++) {
                 uint16_t real = *((uint16_t *)&data[j].Real);
                 uint16_t imag = *((uint16_t *)&data[j].Imag);
                 size += snprintf(buffer + size, alloc - size, "%.8lx%c%.4hx%c%.4hx\r\n",
@@ -365,8 +339,7 @@ static Buffer Convert_RawAscii(uint32_t format, const AD5933_ImpedanceData *data
     *((char *)(buffer + size++)) = '\r';
     *((char *)(buffer + size++)) = '\n';
     
-    if(size < alloc - 100)
-    {
+    if(size < alloc - 100) {
         buffer = realloc(buffer, size);
     }
     
@@ -383,8 +356,7 @@ static Buffer Convert_RawAscii(uint32_t format, const AD5933_ImpedanceData *data
  * @param count Number of elements in array
  * @return Buffer with converted data
  */
-static Buffer Convert_RawBinary(uint32_t format, const AD5933_ImpedanceData *data, uint32_t count)
-{
+static Buffer Convert_RawBinary(uint32_t format, const AD5933_ImpedanceData *data, uint32_t count) {
     uint32_t alloc = 0;
     void *buffer;
     uint32_t size = 0;
@@ -393,15 +365,15 @@ static Buffer Convert_RawBinary(uint32_t format, const AD5933_ImpedanceData *dat
         .data = NULL,
         .size = 0
     };
-
+    
     alloc = count * sizeof(AD5933_ImpedanceData) + (format & FORMAT_FLAG_HEADER ? 4 : 0);
     
     buffer = malloc(alloc);
-    if(buffer == NULL)
+    if(buffer == NULL) {
         return ret;
+    }
     
-    if(format & FORMAT_FLAG_HEADER)
-    {
+    if(format & FORMAT_FLAG_HEADER) {
 #ifdef __ARMEB__
         *((uint32_t *)buffer) = alloc - 4;
 #else
@@ -414,8 +386,7 @@ static Buffer Convert_RawBinary(uint32_t format, const AD5933_ImpedanceData *dat
     // If we have big endian data we can just copy it over
     memcpy(buffer + size, data, count * sizeof(AD5933_ImpedanceData));
 #else
-    for(uint32_t j = 0; j < count; j++)
-    {
+    for(uint32_t j = 0; j < count; j++) {
         AD5933_ImpedanceData *tmp = buffer + size;
         tmp->Frequency = __REV(data[j].Frequency);
         tmp->Real = __REV16(data[j].Real);
@@ -440,48 +411,38 @@ static Buffer Convert_RawBinary(uint32_t format, const AD5933_ImpedanceData *dat
  * @param str Pointer to a zero terminated string
  * @return Format flags on success, `0` otherwise
  */
-uint32_t Convert_FormatSpecFromString(const char *str)
-{
+uint32_t Convert_FormatSpecFromString(const char *str) {
     uint32_t flags = 0;
     
     assert_param(str != NULL);
     
     // Set flags for all specified characters
-    for(const char *c = str; *c; c++)
-    {
-        if(!IS_FORMAT_FLAG(*c))
-        {
+    for(const char *c = str; *c; c++) {
+        if(!IS_FORMAT_FLAG(*c)) {
             flags = 0;
             break;
         }
         flags |= FORMAT_FLAG_FROM_CHAR(*c);
     }
     
-    if((flags & FORMAT_MASK_COORDINATES) == 0)
-    {
+    if((flags & FORMAT_MASK_COORDINATES) == 0) {
         flags |= FORMAT_DEFAULT_COORDINATES;
     }
     
-    if((flags & FORMAT_MASK_UNKNOWN) || !IS_POWER_OF_TWO(flags & FORMAT_MASK_COORDINATES))
-    {
+    if((flags & FORMAT_MASK_UNKNOWN) || !IS_POWER_OF_TWO(flags & FORMAT_MASK_COORDINATES)) {
         return 0;
     }
     
-    switch(flags & FORMAT_MASK_ENCODING)
-    {
+    switch(flags & FORMAT_MASK_ENCODING) {
         case FORMAT_FLAG_ASCII:
-            if((flags & FORMAT_MASK_NUMBERS) == 0)
-            {
+            if((flags & FORMAT_MASK_NUMBERS) == 0) {
                 flags |= FORMAT_DEFAULT_NUMBERS;
             }
-            if((flags & FORMAT_MASK_SEPARATOR) == 0)
-            {
+            if((flags & FORMAT_MASK_SEPARATOR) == 0) {
                 flags |= FORMAT_DEFAULT_SEPARATOR;
             }
             
-            if(IS_POWER_OF_TWO(flags & FORMAT_MASK_NUMBERS) &&
-                    IS_POWER_OF_TWO(flags & FORMAT_MASK_SEPARATOR))
-            {
+            if(IS_POWER_OF_TWO(flags & FORMAT_MASK_NUMBERS) && IS_POWER_OF_TWO(flags & FORMAT_MASK_SEPARATOR)) {
                 return flags;
             }
             break;
@@ -506,8 +467,7 @@ uint32_t Convert_FormatSpecFromString(const char *str)
  * @param format The format specifier to convert
  * @return The number of characters written, not including the terminating zero
  */
-uint32_t Convert_FormatSpecToString(char *buf, uint32_t length, uint32_t format)
-{
+uint32_t Convert_FormatSpecToString(char *buf, uint32_t length, uint32_t format) {
     // We only accept buffers of at least 10 bytes to keep the code simple and aid expansion with more flags
     assert_param(buf != NULL);
     assert_param(length >= 10);
@@ -518,8 +478,7 @@ uint32_t Convert_FormatSpecToString(char *buf, uint32_t length, uint32_t format)
     buf[pos++] = CHAR_FROM_FORMAT_FLAG(format & FORMAT_MASK_ENCODING);
     buf[pos++] = CHAR_FROM_FORMAT_FLAG(format & FORMAT_MASK_COORDINATES);
     
-    switch(format & FORMAT_MASK_ENCODING)
-    {
+    switch(format & FORMAT_MASK_ENCODING) {
         case FORMAT_FLAG_ASCII:
             buf[pos++] = CHAR_FROM_FORMAT_FLAG(format & FORMAT_MASK_NUMBERS);
             buf[pos++] = CHAR_FROM_FORMAT_FLAG(format & FORMAT_MASK_SEPARATOR);
@@ -530,8 +489,7 @@ uint32_t Convert_FormatSpecToString(char *buf, uint32_t length, uint32_t format)
             break;
     }
     
-    if(format & FORMAT_FLAG_HEADER)
-    {
+    if(format & FORMAT_FLAG_HEADER) {
         buf[pos++] = CHAR_FROM_FORMAT_FLAG(format & FORMAT_FLAG_HEADER);
     }
     
@@ -549,24 +507,21 @@ uint32_t Convert_FormatSpecToString(char *buf, uint32_t length, uint32_t format)
  * @param count Number of elements in data array
  * @return A buffer structure with the converted data
  */
-Buffer Convert_ConvertPolar(uint32_t format, const AD5933_ImpedancePolar *data, uint32_t count)
-{
+Buffer Convert_ConvertPolar(uint32_t format, const AD5933_ImpedancePolar *data, uint32_t count) {
     Buffer null = {
         .data = NULL,
         .size = 0
     };
     
-    if(data == NULL || count == 0)
-    {
+    if(data == NULL || count == 0) {
         return null;
     }
     
-    switch(format & FORMAT_MASK_ENCODING)
-    {
+    switch(format & FORMAT_MASK_ENCODING) {
         case FORMAT_FLAG_BINARY:
             return Convert_PolarBinary(format, data, count);
         case FORMAT_FLAG_ASCII:
-           return Convert_PolarAscii(format, data, count);
+            return Convert_PolarAscii(format, data, count);
         default:
             return null;
     }
@@ -583,24 +538,21 @@ Buffer Convert_ConvertPolar(uint32_t format, const AD5933_ImpedancePolar *data, 
  * @param count Number of elements in data array
  * @return A buffer structure with the converted data
  */
-Buffer Convert_ConvertRaw(uint32_t format, const AD5933_ImpedanceData *data, uint32_t count)
-{
+Buffer Convert_ConvertRaw(uint32_t format, const AD5933_ImpedanceData *data, uint32_t count) {
     Buffer null = {
         .data = NULL,
         .size = 0
     };
     
-    if(data == NULL || count == 0)
-    {
+    if(data == NULL || count == 0) {
         return null;
     }
     
-    switch(format & FORMAT_MASK_ENCODING)
-    {
+    switch(format & FORMAT_MASK_ENCODING) {
         case FORMAT_FLAG_BINARY:
             return Convert_RawBinary(format, data, count);
         case FORMAT_FLAG_ASCII:
-           return Convert_RawAscii(format, data, count);
+            return Convert_RawAscii(format, data, count);
         default:
             return null;
     }
@@ -615,8 +567,7 @@ Buffer Convert_ConvertRaw(uint32_t format, const AD5933_ImpedanceData *data, uin
  * @param gain Pointer to the gain factor to convert
  * @return A buffer structure with the converted gain factor
  */
-Buffer Convert_ConvertGainFactor(const AD5933_GainFactor *gain)
-{
+Buffer Convert_ConvertGainFactor(const AD5933_GainFactor *gain) {
     static const char* const point = "%s point gain factor\r\n";
     static const char* const freq1 = "freq1={%g";
     static const char* const offset = "}\r\noffset={%g";
@@ -637,71 +588,60 @@ Buffer Convert_ConvertGainFactor(const AD5933_GainFactor *gain)
     assert_param(gain != NULL);
     
     alloc += strlen(point) + strlen(freq1) + strlen(offset) + strlen(phaseOffset) + strlen(end);
-    if(gain->is_2point)
-    {
+    if(gain->is_2point) {
         alloc += strlen(slope) + strlen(phaseSlope);
         alloc += AD5933_NUM_CLOCKS * 60 /* 5 floats */;
-    }
-    else
-    {
+    } else {
         alloc += AD5933_NUM_CLOCKS * 36 /* 3 floats */;
     }
     // Word space + terminating 0
     alloc += 2 + 1;
     
     buffer = malloc(alloc);
-    if(buffer == NULL)
-        return ret;
+    if(buffer == NULL) return ret;
     
     size += snprintf(buffer + size, alloc - size, point, (gain->is_2point ? "Two" : "One"));
     
     size += snprintf(buffer + size, alloc - size, freq1, gain->ranges[0].freq1);
-    for(uint32_t j = 1; j < AD5933_NUM_CLOCKS; j++)
-    {
-        size+= snprintf(buffer + size, alloc - size, next, gain->ranges[j].freq1);
+    for(uint32_t j = 1; j < AD5933_NUM_CLOCKS; j++) {
+        size += snprintf(buffer + size, alloc - size, next, gain->ranges[j].freq1);
     }
     
     size += snprintf(buffer + size, alloc - size, offset,
             (isnan(gain->ranges[0].freq1) ? NAN : gain->ranges[0].offset));
-    for(uint32_t j = 1; j < AD5933_NUM_CLOCKS; j++)
-    {
-        size+= snprintf(buffer + size, alloc - size, next,
+    for(uint32_t j = 1; j < AD5933_NUM_CLOCKS; j++) {
+        size += snprintf(buffer + size, alloc - size, next,
                 (isnan(gain->ranges[j].freq1) ? NAN : gain->ranges[j].offset));
     }
     
-    if(gain->is_2point)
-    {
+    if(gain->is_2point) {
         size += snprintf(buffer + size, alloc - size, slope,
                 (isnan(gain->ranges[0].freq1) ? NAN : gain->ranges[0].slope));
-        for(uint32_t j = 1; j < AD5933_NUM_CLOCKS; j++)
-        {
-            size+= snprintf(buffer + size, alloc - size, next,
+        for(uint32_t j = 1; j < AD5933_NUM_CLOCKS; j++) {
+            size += snprintf(buffer + size, alloc - size, next,
                     (isnan(gain->ranges[j].freq1) ? NAN : gain->ranges[j].slope));
         }
     }
     
     size += snprintf(buffer + size, alloc - size, phaseOffset,
             (isnan(gain->ranges[0].freq1) ? NAN : gain->ranges[0].phaseOffset));
-    for(uint32_t j = 1; j < AD5933_NUM_CLOCKS; j++)
-    {
-        size+= snprintf(buffer + size, alloc - size, next,
+    for(uint32_t j = 1; j < AD5933_NUM_CLOCKS; j++) {
+        size += snprintf(buffer + size, alloc - size, next,
                 (isnan(gain->ranges[j].freq1) ? NAN : gain->ranges[j].phaseOffset));
     }
     
-    if(gain->is_2point)
-    {
+    if(gain->is_2point) {
         size += snprintf(buffer + size, alloc - size, phaseSlope,
                 (isnan(gain->ranges[0].freq1) ? NAN : gain->ranges[0].phaseSlope));
-        for(uint32_t j = 1; j < AD5933_NUM_CLOCKS; j++)
-        {
-            size+= snprintf(buffer + size, alloc - size, next,
+        for(uint32_t j = 1; j < AD5933_NUM_CLOCKS; j++) {
+            size += snprintf(buffer + size, alloc - size, next,
                     (isnan(gain->ranges[j].freq1) ? NAN : gain->ranges[j].phaseSlope));
         }
     }
     
     // Copy termination
     size = memccpy(buffer + size, end, 0, alloc - size) - buffer - 1;
-
+    
     ret.data = buffer;
     ret.size = size;
     return ret;
@@ -712,10 +652,10 @@ Buffer Convert_ConvertGainFactor(const AD5933_GainFactor *gain)
  * 
  * @param buffer Pointer to the buffer to free
  */
-void FreeBuffer(Buffer *buffer)
-{
-    if(buffer == NULL)
+void FreeBuffer(Buffer *buffer) {
+    if(buffer == NULL) {
         return;
+    }
     
     free(buffer->data);
     buffer->data = NULL;

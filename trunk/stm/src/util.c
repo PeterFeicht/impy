@@ -22,23 +22,19 @@ static uint8_t Util_ConvertHexDigit(char c);
  * @param c The digit to convert
  * @return The corresponding integer value, or `0xFF` in case `c` is not a proper hex digit
  */
-static uint8_t Util_ConvertHexDigit(char c)
-{
+static uint8_t Util_ConvertHexDigit(char c) {
     char low = c & 0x0F;
     
-    switch((c & 0xF0) >> 4)
-    {
+    switch((c & 0xF0) >> 4) {
         case 3: /* 0 .. 9 */
-            if(c <= '9')
-            {
+            if(c <= '9') {
                 return low;
             }
             break;
             
         case 4: /* A .. F */
         case 6: /* a .. f */
-            if(low && low <= 6)
-            {
+            if(low && low <= 6) {
                 return low + 9;
             }
             break;
@@ -67,42 +63,34 @@ static uint8_t Util_ConvertHexDigit(char c)
  * @param end Pointer to a variable receiving the position of the first character after the number, or `NULL`
  * @return The converted numeric value, or `0` in case of an error
  */
-uint32_t IntFromSiString(const char *str, const char **end)
-{
+uint32_t IntFromSiString(const char *str, const char **end) {
     uint32_t val = 0;
     const char *pos = str;
     
-    if(str == NULL)
-    {
-        if(end != NULL)
-            *end = NULL;
+    if(str == NULL) {
+        if(end != NULL) *end = NULL;
         return 0;
-    } 
+    }
     
     // Ignore leading white space and zeros
-    while(isspace((unsigned char)*pos) || *pos == '0')
-    {
+    while(isspace((unsigned char)*pos) || *pos == '0') {
         pos++;
     }
     
     // Convert numeric part
-    while(isdigit((unsigned char)*pos))
-    {
+    while(isdigit((unsigned char )*pos)) {
         val = val * 10 + (*pos - '0');
         pos++;
     }
     
     // No suffix
-    if(isspace((unsigned char)*pos) || *pos == 0)
-    {
-        if(end != NULL)
-            *end = pos;
+    if(isspace((unsigned char)*pos) || *pos == 0) {
+        if(end != NULL) *end = pos;
         return val;
     }
     
     // Check for valid suffix
-    switch(*pos)
-    {
+    switch(*pos) {
         case SI_PREFIX_KILO:
             val *= 1000;
             break;
@@ -110,22 +98,16 @@ uint32_t IntFromSiString(const char *str, const char **end)
             val *= 1000000;
             break;
         default:
-            if(end != NULL)
-                *end = NULL;
+            if(end != NULL) *end = NULL;
             return 0;
     }
     
     pos++;
-    if(isspace((unsigned char)*pos) || *pos == 0)
-    {
-        if(end != NULL)
-            *end = pos;
+    if(isspace((unsigned char)*pos) || *pos == 0) {
+        if(end != NULL) *end = pos;
         return val;
-    }
-    else
-    {
-        if(end != NULL)
-            *end = NULL;
+    } else {
+        if(end != NULL) *end = NULL;
         return 0;
     }
 }
@@ -139,33 +121,26 @@ uint32_t IntFromSiString(const char *str, const char **end)
  * @return The number of characters that would have been written, if this value is greater or equal to `size`
  *         then not all characters have been written to the buffer
  */
-int SiStringFromInt(char *s, uint32_t size, uint32_t value)
-{
+int SiStringFromInt(char *s, uint32_t size, uint32_t value) {
     char c = ' ';
     
-    if(s == NULL)
-    {
+    if(s == NULL) {
         return 0;
     }
     
-    if(value % 1000 == 0)
-    {
+    if(value % 1000 == 0) {
         value /= 1000;
         c = SI_PREFIX_KILO;
         
-        if(value % 1000 == 0)
-        {
+        if(value % 1000 == 0) {
             value /= 1000;
             c = SI_PREFIX_MEGA;
         }
     }
     
-    if(c == ' ')
-    {
+    if(c == ' ') {
         return snprintf(s, size, "%lu", value);
-    }
-    else
-    {
+    } else {
         return snprintf(s, size, "%lu%c", value, c);
     }
 }
@@ -177,27 +152,22 @@ int SiStringFromInt(char *s, uint32_t size, uint32_t value)
  * @param result Pointer to array receiving the converted address, needs to be able to store at least 6 values
  * @return The number of characters read if successful (always 17), `-1` otherwise
  */
-int MacAddressFromString(const char *str, uint8_t *result)
-{
-    if(str == NULL || strlen(str) < 17 || result == NULL)
-    {
+int MacAddressFromString(const char *str, uint8_t *result) {
+    if(str == NULL || strlen(str) < 17 || result == NULL) {
         return -1;
     }
     
     char sep = str[2];
     
-    if(sep != ':' && sep != '-' && sep != ' ')
-    {
+    if(sep != ':' && sep != '-' && sep != ' ') {
         return -1;
     }
     
-    for(uint32_t j = 0; j < 6; j++)
-    {
+    for(uint32_t j = 0; j < 6; j++) {
         uint8_t hi = Util_ConvertHexDigit(*str++);
         uint8_t lo = Util_ConvertHexDigit(*str++);
         char s = *str++;
-        if(hi == 0xFF || lo == 0xFF || (s && s != sep))
-        {
+        if(hi == 0xFF || lo == 0xFF || (s && s != sep)) {
             return -1;
         }
         result[j] = (hi << 4) | lo;
@@ -215,17 +185,14 @@ int MacAddressFromString(const char *str, uint8_t *result)
  * @return `-1` if `size` is less than 18, the number of characters written (excluding terminating 0)
  *         otherwise (always 17)
  */
-int StringFromMacAddress(char *s, uint32_t size, const uint8_t *mac)
-{
+int StringFromMacAddress(char *s, uint32_t size, const uint8_t *mac) {
     static const char digits[16] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
     
-    if(s == NULL || size < 18)
-    {
+    if(s == NULL || size < 18) {
         return -1;
     }
     
-    for(uint32_t j = 0; j < 6; j++)
-    {
+    for(uint32_t j = 0; j < 6; j++) {
         *s++ = digits[(mac[j] >> 4) & 0x0F];
         *s++ = digits[mac[j] & 0x0F];
         *s++ = '-';

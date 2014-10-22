@@ -37,7 +37,7 @@ static uint16_t write_addr;                     //!< The next address to write t
 static uint16_t write_len;                      //!< The number of bytes remaining
 
 // Private functions ----------------------------------------------------------
- 
+
 /**
  * Reads an amount of data from the EEPROM.
  * 
@@ -46,8 +46,7 @@ static uint16_t write_len;                      //!< The number of bytes remaini
  * @param length Number of bytes to read
  * @return HAL status code
  */
-static HAL_StatusTypeDef EE_Read(uint16_t address, uint8_t *buffer, uint16_t length)
-{
+static HAL_StatusTypeDef EE_Read(uint16_t address, uint8_t *buffer, uint16_t length) {
     assert_param(length > 0 && address + length <= EEPROM_SIZE);
     
     uint8_t dev_addr = MAKE_ADDRESS(address, e2_state);
@@ -63,13 +62,11 @@ static HAL_StatusTypeDef EE_Read(uint16_t address, uint8_t *buffer, uint16_t len
  * @param length Number of bytes to write
  * @return HAL status code
  */
-static HAL_StatusTypeDef EE_Write(uint16_t address, uint8_t *buffer, uint16_t length)
-{
+static HAL_StatusTypeDef EE_Write(uint16_t address, uint8_t *buffer, uint16_t length) {
     assert_param(length > 0 && address + length <= EEPROM_SIZE);
     
     uint16_t len = (length <= EEPROM_PAGE_SIZE ? length : EEPROM_PAGE_SIZE);
-    if((address & EEPROM_PAGE_MASK) != ((address + len - 1) & EEPROM_PAGE_MASK))
-    {
+    if((address & EEPROM_PAGE_MASK) != ((address + len - 1) & EEPROM_PAGE_MASK)) {
         // Write spans multiple pages, only write bytes in first page
         len = ((address + len) & EEPROM_PAGE_MASK) - address;
     }
@@ -77,8 +74,7 @@ static HAL_StatusTypeDef EE_Write(uint16_t address, uint8_t *buffer, uint16_t le
     HAL_StatusTypeDef ret =
             HAL_I2C_Mem_Write(i2cHandle, MAKE_ADDRESS(address, e2_state), address, 1, buffer, len, EEPROM_I2C_TIMEOUT);
     
-    if(ret == HAL_OK)
-    {
+    if(ret == HAL_OK) {
         write_buf = buffer + len;
         write_addr = address + len;
         write_len = length - len;
@@ -92,29 +88,24 @@ static HAL_StatusTypeDef EE_Write(uint16_t address, uint8_t *buffer, uint16_t le
  * @param result Pointer to variable receiving the address
  * @return HAL status code
  */
-static HAL_StatusTypeDef EE_FindLatestSettings(uint16_t *result)
-{
+static HAL_StatusTypeDef EE_FindLatestSettings(uint16_t *result) {
     HAL_StatusTypeDef ret;
     uint16_t addr = EEPROM_DATA_OFFSET;
     uint16_t serial;
     
     ret = EE_Read(addr + offsetof(EEPROM_SettingsBuffer, serial), (uint8_t *)&serial, 2);
-    if(ret != HAL_OK)
-    {
+    if(ret != HAL_OK) {
         return ret;
     }
     
     // Look for latest buffer
-    while(addr + 2 * EEPROM_SETTINGS_SIZE <= EEPROM_DATA_OFFSET + EEPROM_DATA_SIZE)
-    {
+    while(addr + 2 * EEPROM_SETTINGS_SIZE <= EEPROM_DATA_OFFSET + EEPROM_DATA_SIZE) {
         uint16_t tmp;
         ret = EE_Read(addr + EEPROM_SETTINGS_SIZE + offsetof(EEPROM_SettingsBuffer, serial), (uint8_t *)&tmp, 2);
-        if(ret != HAL_OK)
-        {
+        if(ret != HAL_OK) {
             return ret;
         }
-        if(tmp != (uint16_t)(serial + 1))
-        {
+        if(tmp != (uint16_t)(serial + 1)) {
             break;
         }
         serial = tmp;
@@ -130,16 +121,14 @@ static HAL_StatusTypeDef EE_FindLatestSettings(uint16_t *result)
 /**
  * Gets the current driver status.
  */
-EEPROM_Status EE_GetStatus(void)
-{
+EEPROM_Status EE_GetStatus(void) {
     return status;
 }
 
 /**
  * Gets a value indicating whether the driver is busy or can start a new transfer.
  */
-uint8_t EE_IsBusy(void)
-{
+uint8_t EE_IsBusy(void) {
     EEPROM_Status tmp = status;
     return (tmp != EE_FINISH &&
             tmp != EE_IDLE);
@@ -154,8 +143,7 @@ uint8_t EE_IsBusy(void)
  * @param e2_set Indicates the state of the E2 pin of the device
  * @return `EE_OK` if EEPROM responds, `EE_ERROR` otherwise
  */
-EEPROM_Error EE_Init(I2C_HandleTypeDef *i2c, CRC_HandleTypeDef *crc, uint8_t e2_set)
-{
+EEPROM_Error EE_Init(I2C_HandleTypeDef *i2c, CRC_HandleTypeDef *crc, uint8_t e2_set) {
     assert_param(i2c != NULL);
     assert_param(crc != NULL);
     
@@ -163,15 +151,12 @@ EEPROM_Error EE_Init(I2C_HandleTypeDef *i2c, CRC_HandleTypeDef *crc, uint8_t e2_
     crcHandle = crc;
     e2_state = (e2_set ? EEPROM_M24C08_ADDR_E2 : 0);
     
-    if(HAL_I2C_IsDeviceReady(i2c, MAKE_ADDRESS(0, e2_state), 10, EEPROM_I2C_TIMEOUT) == HAL_OK)
-    {
+    if(HAL_I2C_IsDeviceReady(i2c, MAKE_ADDRESS(0, e2_state), 10, EEPROM_I2C_TIMEOUT) == HAL_OK) {
         status = EE_IDLE;
         return EE_OK;
     }
-    else
-    {
-        return EE_ERROR;
-    }
+    
+    return EE_ERROR;
 }
 
 /**
@@ -179,10 +164,8 @@ EEPROM_Error EE_Init(I2C_HandleTypeDef *i2c, CRC_HandleTypeDef *crc, uint8_t e2_
  * 
  * @return `EE_ERROR` if the driver has not been initialized, `EE_OK` otherwise
  */
-EEPROM_Error EE_Reset(void)
-{
-    if(status == EE_UNINIT)
-    {
+EEPROM_Error EE_Reset(void) {
+    if(status == EE_UNINIT) {
         return EE_ERROR;
     }
     
@@ -196,35 +179,29 @@ EEPROM_Error EE_Reset(void)
  * @param buffer Structure pointer receiving the data, the buffer is not altered if the read fails
  * @return {@link EEPROM_Error} code
  */
-EEPROM_Error EE_ReadConfiguration(EEPROM_ConfigurationBuffer *buffer)
-{
+EEPROM_Error EE_ReadConfiguration(EEPROM_ConfigurationBuffer *buffer) {
     assert_param(buffer != NULL);
     assert(status != EE_UNINIT);
     
-    if(EE_IsBusy())
-    {
+    if(EE_IsBusy()) {
         return EE_BUSY;
     }
     status = EE_READ;
     
     // Read buffer from EEPROM
     HAL_StatusTypeDef ret = EE_Read(EEPROM_CONFIG_OFFSET, (uint8_t *)&buf_config, sizeof(EEPROM_ConfigurationBuffer));
-    if(ret != HAL_OK)
-    {
+    if(ret != HAL_OK) {
         status = EE_IDLE;
         return EE_ERROR;
     }
     
     // Check integrity
     uint32_t crc = HAL_CRC_Calculate(crcHandle, (uint32_t *)&buf_config, CRC_SIZE(EEPROM_ConfigurationBuffer));
-    if(crc == buf_config.checksum)
-    {
+    if(crc == buf_config.checksum) {
         *buffer = buf_config;
         status = EE_FINISH;
         return EE_OK;
-    }
-    else
-    {
+    } else {
         status = EE_IDLE;
         return EE_ERROR;
     }
@@ -236,13 +213,11 @@ EEPROM_Error EE_ReadConfiguration(EEPROM_ConfigurationBuffer *buffer)
  * @param buffer Structure pointer to data to write, the checksum is set before writing
  * @return {@link EEPROM_Error} code
  */
-EEPROM_Error EE_WriteConfiguration(EEPROM_ConfigurationBuffer *buffer)
-{
+EEPROM_Error EE_WriteConfiguration(EEPROM_ConfigurationBuffer *buffer) {
     assert_param(buffer != NULL);
     assert(status != EE_UNINIT);
     
-    if(EE_IsBusy())
-    {
+    if(EE_IsBusy()) {
         return EE_BUSY;
     }
     status = EE_WRITE_SEND;
@@ -251,13 +226,10 @@ EEPROM_Error EE_WriteConfiguration(EEPROM_ConfigurationBuffer *buffer)
     buf_config = *buffer;
     HAL_StatusTypeDef ret = EE_Write(EEPROM_CONFIG_OFFSET, (uint8_t *)&buf_config, sizeof(EEPROM_ConfigurationBuffer));
     
-    if(ret == HAL_OK)
-    {
+    if(ret == HAL_OK) {
         status = EE_WRITE_WAIT;
         return EE_OK;
-    }
-    else
-    {
+    } else {
         status = EE_IDLE;
         return EE_ERROR;
     }
@@ -269,39 +241,33 @@ EEPROM_Error EE_WriteConfiguration(EEPROM_ConfigurationBuffer *buffer)
  * @param buffer Structure pointer receiving the data, the buffer is not altered if the read fails
  * @return {@link EEPROM_Error} code
  */
-EEPROM_Error EE_ReadSettings(EEPROM_SettingsBuffer *buffer)
-{
+EEPROM_Error EE_ReadSettings(EEPROM_SettingsBuffer *buffer) {
     assert_param(buffer != NULL);
     assert(status != EE_UNINIT);
     
-    if(EE_IsBusy())
-    {
+    if(EE_IsBusy()) {
         return EE_BUSY;
     }
     status = EE_READ;
-
+    
     uint16_t addr;
     HAL_StatusTypeDef ret = EE_FindLatestSettings(&addr);
-    if(ret != HAL_OK)
-    {
+    if(ret != HAL_OK) {
         status = EE_IDLE;
         return EE_ERROR;
     }
     
-    do
-    {
+    do {
         // Read current buffer
         ret = EE_Read(addr, (uint8_t *)&buf_settings, sizeof(EEPROM_SettingsBuffer));
-        if(ret != HAL_OK)
-        {
+        if(ret != HAL_OK) {
             status = EE_IDLE;
             return EE_ERROR;
         }
         
         // Check integrity
         uint32_t crc = HAL_CRC_Calculate(crcHandle, (uint32_t *)&buf_settings, CRC_SIZE(EEPROM_SettingsBuffer));
-        if(crc == buf_settings.checksum)
-        {
+        if(crc == buf_settings.checksum) {
             *buffer = buf_settings;
             status = EE_FINISH;
             return EE_OK;
@@ -321,27 +287,23 @@ EEPROM_Error EE_ReadSettings(EEPROM_SettingsBuffer *buffer)
  * @param buffer Structure pointer to data to write, the checksum is set before writing
  * @return {@link EEPROM_Error} code
  */
-EEPROM_Error EE_WriteSettings(EEPROM_SettingsBuffer *buffer)
-{
+EEPROM_Error EE_WriteSettings(EEPROM_SettingsBuffer *buffer) {
     assert_param(buffer != NULL);
     assert(status != EE_UNINIT);
     
-    if(EE_IsBusy())
-    {
+    if(EE_IsBusy()) {
         return EE_BUSY;
     }
     status = EE_WRITE_SEND;
     
     uint16_t addr;
     HAL_StatusTypeDef ret = EE_FindLatestSettings(&addr);
-    if(ret != HAL_OK)
-    {
+    if(ret != HAL_OK) {
         status = EE_IDLE;
         return EE_ERROR;
     }
     addr += EEPROM_SETTINGS_SIZE;
-    if(addr + EEPROM_SETTINGS_SIZE > EEPROM_DATA_OFFSET + EEPROM_DATA_SIZE)
-    {
+    if(addr + EEPROM_SETTINGS_SIZE > EEPROM_DATA_OFFSET + EEPROM_DATA_SIZE) {
         addr = EEPROM_DATA_OFFSET;
     }
     
@@ -350,13 +312,10 @@ EEPROM_Error EE_WriteSettings(EEPROM_SettingsBuffer *buffer)
     buf_settings = *buffer;
     ret = EE_Write(addr, (uint8_t *)&buf_settings, sizeof(EEPROM_SettingsBuffer));
     
-    if(ret == HAL_OK)
-    {
+    if(ret == HAL_OK) {
         status = EE_WRITE_WAIT;
         return EE_OK;
-    }
-    else
-    {
+    } else {
         status = EE_IDLE;
         return EE_ERROR;
     }
@@ -367,10 +326,8 @@ EEPROM_Error EE_WriteSettings(EEPROM_SettingsBuffer *buffer)
  * 
  * @return The (new) EEPROM status
  */
-EEPROM_Status EE_TimerCallback(void)
-{
-    switch(status)
-    {
+EEPROM_Status EE_TimerCallback(void) {
+    switch(status) {
         case EE_UNINIT:
         case EE_IDLE:
         case EE_FINISH:
@@ -382,18 +339,14 @@ EEPROM_Status EE_TimerCallback(void)
             break;
             
         case EE_WRITE_WAIT:
-            if(write_len > 0)
-            {
+            if(write_len > 0) {
                 // Not finished, try to write
                 status = EE_WRITE_SEND;
                 EE_Write(write_addr, write_buf, write_len);
                 status = EE_WRITE_WAIT;
-            }
-            else
-            {
+            } else {
                 // Finished writing, wait for EEPROM to complete write cycle
-                if(HAL_I2C_IsDeviceReady(i2cHandle, MAKE_ADDRESS(0, e2_state), 1, EEPROM_I2C_TIMEOUT) == HAL_OK)
-                {
+                if(HAL_I2C_IsDeviceReady(i2cHandle, MAKE_ADDRESS(0, e2_state), 1, EEPROM_I2C_TIMEOUT) == HAL_OK) {
                     status = EE_FINISH;
                 }
             }

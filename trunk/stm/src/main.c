@@ -75,15 +75,13 @@ static float temp;                          // Result from temperature measureme
 // main and Interrupt handlers ------------------------------------------------
 
 __attribute__((noreturn))
-int main(int argc __attribute__((unused)), char* argv[] __attribute__((unused)))
-{
+int main(int argc __attribute__((unused)), char* argv[] __attribute__((unused))) {
     // At this stage the system clock should have already been configured at high speed.
     MX_Init();
     Console_Init();
     SetDefaults();
     
-    if(EE_Init(&hi2c1, &hcrc, EEPROM_E2_PIN_SET) == EE_OK)
-    {
+    if(EE_Init(&hi2c1, &hcrc, EEPROM_E2_PIN_SET) == EE_OK) {
         board_has_eeprom = 1;
         InitFromEEPROM();
     }
@@ -91,16 +89,14 @@ int main(int argc __attribute__((unused)), char* argv[] __attribute__((unused)))
     AD5933_Init(&hi2c1, &htim10);
     
     // Call configuration dependent initialization functions
-    if(board_config.peripherals.eth)
-    {
+    if(board_config.peripherals.eth) {
         MX_Init_Ethernet();
     }
     
     // Start timer for periodic interrupt generation
     HAL_TIM_Base_Start_IT(&htim3);
     
-    while(1)
-    {
+    while(1) {
         // Do stuff.
         HAL_GPIO_TogglePin(LED_PORT, LED_BLUE);
         HAL_Delay(600);
@@ -112,10 +108,8 @@ int main(int argc __attribute__((unused)), char* argv[] __attribute__((unused)))
  * 
  * @param htim Timer handle
  */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-    if(htim->Instance == TIM3)
-    {
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+    if(htim->Instance == TIM3) {
         Handle_TIM3_AD5933();
         Handle_TIM3_EEPROM();
     }
@@ -124,29 +118,23 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 /**
  * Handles TIM3 period elapsed event for the AD5933 driver.
  */
-static void Handle_TIM3_AD5933(void)
-{
+static void Handle_TIM3_AD5933(void) {
     static AD5933_Status prevStatus = AD_UNINIT;
-
+    
     AD5933_Status status = AD5933_TimerCallback();
-    if(prevStatus == status)
-    {
+    if(prevStatus == status) {
         return;
     }
-    switch(status)
-    {
+    switch(status) {
         case AD_FINISH_IMPEDANCE:
             pointCount = AD5933_GetSweepCount();
             interrupted = 0;
             
-            if(prevStatus == AD_MEASURE_IMPEDANCE)
-            {
+            if(prevStatus == AD_MEASURE_IMPEDANCE) {
                 validData = 1;
                 validPolar = 0;
                 dataGainFactor = gainFactor;
-            }
-            else if(prevStatus == AD_MEASURE_IMPEDANCE_AUTORANGE)
-            {
+            } else if(prevStatus == AD_MEASURE_IMPEDANCE_AUTORANGE) {
                 validData = 0;
                 validPolar = 1;
             }
@@ -171,24 +159,19 @@ static void Handle_TIM3_AD5933(void)
 /**
  * Handles TIM3 period elapsed event for the EEPROM driver.
  */
-static void Handle_TIM3_EEPROM(void)
-{
-    if(!board_has_eeprom)
-        return;
+static void Handle_TIM3_EEPROM(void) {
+    if(!board_has_eeprom) return;
     
     EE_TimerCallback();
-    if(EE_IsBusy())
-    {
+    if(EE_IsBusy()) {
         return;
     }
-    if(config_dirty)
-    {
+    if(config_dirty) {
         EE_WriteConfiguration(&board_config);
         config_dirty = 0;
         return;
     }
-    if(settings_dirty && HAL_GetTick() - settings_dirty_tick > EEPROM_WRITE_INTERVAL)
-    {
+    if(settings_dirty && HAL_GetTick() - settings_dirty_tick > EEPROM_WRITE_INTERVAL) {
         UpdateSettings();
         EE_WriteSettings(&settings);
         settings_dirty = 0;
@@ -198,8 +181,7 @@ static void Handle_TIM3_EEPROM(void)
 
 // Private functions ----------------------------------------------------------
 
-static void SetDefaults(void)
-{
+static void SetDefaults(void) {
     sweep.Num_Increments = 50;
     sweep.Start_Freq = 10000;
     stopFreq = 100000;
@@ -226,8 +208,7 @@ static void SetDefaults(void)
 /**
  * Update settings structure from sweep values.
  */
-static void UpdateSettings(void)
-{
+static void UpdateSettings(void) {
     settings.num_steps = sweep.Num_Increments;
     settings.start_freq = sweep.Start_Freq;
     settings.stop_freq = stopFreq;
@@ -246,16 +227,13 @@ static void UpdateSettings(void)
 /**
  * Read configuration and settings from EEPROM.
  */
-static void InitFromEEPROM(void)
-{
-    if(EE_ReadConfiguration(&board_config) != EE_OK)
-    {
+static void InitFromEEPROM(void) {
+    if(EE_ReadConfiguration(&board_config) != EE_OK) {
         // Bad configuration, write default values to EEPROM
         config_dirty = 1;
     }
     
-    if(EE_ReadSettings(&settings) == EE_OK)
-    {
+    if(EE_ReadSettings(&settings) == EE_OK) {
         // Populate the various variables with settings read from EEPROM, the opposite of what UpdateSettings does
         sweep.Num_Increments = settings.num_steps;
         sweep.Start_Freq = settings.start_freq;
@@ -271,9 +249,7 @@ static void InitFromEEPROM(void)
         
         autorange = settings.flags.autorange;
         Console_SetFormat(settings.format_spec);
-    }
-    else
-    {
+    } else {
         // Settings could not be read, write default settings to EEPROM
         MarkSettingsDirty();
     }
@@ -288,14 +264,11 @@ static void InitFromEEPROM(void)
  * @param freq the frequency in Hz
  * @return {@link Board_Error} code
  */
-Board_Error Board_SetStartFreq(uint32_t freq)
-{
-    if(AD5933_IsBusy())
-    {
+Board_Error Board_SetStartFreq(uint32_t freq) {
+    if(AD5933_IsBusy()) {
         return BOARD_BUSY;
     }
-    if(freq < AD5933_FREQ_MIN || freq > AD5933_FREQ_MAX || freq >= stopFreq)
-    {
+    if(freq < AD5933_FREQ_MIN || freq > AD5933_FREQ_MAX || freq >= stopFreq) {
         return BOARD_ERROR;
     }
     
@@ -313,14 +286,11 @@ Board_Error Board_SetStartFreq(uint32_t freq)
  * @param freq the frequency in Hz
  * @return {@link Board_Error} code
  */
-Board_Error Board_SetStopFreq(uint32_t freq)
-{
-    if(AD5933_IsBusy())
-    {
+Board_Error Board_SetStopFreq(uint32_t freq) {
+    if(AD5933_IsBusy()) {
         return BOARD_BUSY;
     }
-    if(freq < AD5933_FREQ_MIN || freq > AD5933_FREQ_MAX || freq <= sweep.Start_Freq)
-    {
+    if(freq < AD5933_FREQ_MIN || freq > AD5933_FREQ_MAX || freq <= sweep.Start_Freq) {
         return BOARD_ERROR;
     }
     
@@ -338,14 +308,11 @@ Board_Error Board_SetStopFreq(uint32_t freq)
  * @param steps the number of points to measure
  * @return {@link Board_Error} code
  */
-Board_Error Board_SetFreqSteps(uint16_t steps)
-{
-    if(AD5933_IsBusy())
-    {
+Board_Error Board_SetFreqSteps(uint16_t steps) {
+    if(AD5933_IsBusy()) {
         return BOARD_BUSY;
     }
-    if((stopFreq - sweep.Start_Freq) < steps || steps > AD5933_MAX_NUM_INCREMENTS)
-    {
+    if((stopFreq - sweep.Start_Freq) < steps || steps > AD5933_MAX_NUM_INCREMENTS) {
         return BOARD_ERROR;
     }
     
@@ -363,19 +330,15 @@ Board_Error Board_SetFreqSteps(uint16_t steps)
  * @param multiplier Multiplier for the cycle number
  * @return {@link Board_Error} code
  */
-Board_Error Board_SetSettlingCycles(uint16_t cycles, uint8_t multiplier)
-{
-    if(AD5933_IsBusy())
-    {
+Board_Error Board_SetSettlingCycles(uint16_t cycles, uint8_t multiplier) {
+    if(AD5933_IsBusy()) {
         return BOARD_BUSY;
     }
-    if(cycles > AD5933_MAX_SETTL)
-    {
+    if(cycles > AD5933_MAX_SETTL) {
         return BOARD_ERROR;
     }
     
-    switch(multiplier)
-    {
+    switch(multiplier) {
         case 1:
             sweep.Settling_Mult = AD5933_SETTL_MULT_1;
             break;
@@ -401,10 +364,8 @@ Board_Error Board_SetSettlingCycles(uint16_t cycles, uint8_t multiplier)
  * @param voltage The output voltage in mV
  * @return {@link Board_Error} code
  */
-Board_Error Board_SetVoltageRange(uint16_t voltage)
-{
-    if(AD5933_IsBusy())
-    {
+Board_Error Board_SetVoltageRange(uint16_t voltage) {
+    if(AD5933_IsBusy()) {
         return BOARD_BUSY;
     }
     
@@ -416,12 +377,9 @@ Board_Error Board_SetVoltageRange(uint16_t voltage)
         AD5933_VOLTAGE_2
     };
     
-    for(uint32_t j = 0; j < NUMEL(board_config.attenuations) && board_config.attenuations[j]; j++)
-    {
-        for(uint32_t k = 0; k < NUMEL(voltages); k++)
-        {
-            if(voltage == voltages[k] / board_config.attenuations[j])
-            {
+    for(uint32_t j = 0; j < NUMEL(board_config.attenuations) && board_config.attenuations[j]; j++) {
+        for(uint32_t k = 0; k < NUMEL(voltages); k++) {
+            if(voltage == voltages[k] / board_config.attenuations[j]) {
                 range.Attenuation = board_config.attenuations[j];
                 range.Voltage_Range = voltage_values[k];
                 validGain = 0;
@@ -440,15 +398,12 @@ Board_Error Board_SetVoltageRange(uint16_t voltage)
  * @param enable `0` to disable the gain stage, nonzero value to enable
  * @return {@link Board_Error} code
  */
-Board_Error Board_SetPGA(uint8_t enable)
-{
-    if(AD5933_IsBusy())
-    {
+Board_Error Board_SetPGA(uint8_t enable) {
+    if(AD5933_IsBusy()) {
         return BOARD_BUSY;
     }
     
-    if(!autorange)
-    {
+    if(!autorange) {
         range.PGA_Gain = (enable ? AD5933_GAIN_5 : AD5933_GAIN_1);
         validGain = 0;
     }
@@ -463,8 +418,7 @@ Board_Error Board_SetPGA(uint8_t enable)
  * @param enable `0` to disable autoranging, nonzero value to enable
  * @return `BOARD_OK`
  */
-Board_Error Board_SetAutorange(uint8_t enable)
-{
+Board_Error Board_SetAutorange(uint8_t enable) {
     autorange = enable;
     MarkSettingsDirty();
     return BOARD_OK;
@@ -476,26 +430,20 @@ Board_Error Board_SetAutorange(uint8_t enable)
  * @param ohms the value of the resistor in Ohms
  * @return {@link Board_Error} code
  */
-Board_Error Board_SetFeedback(uint32_t ohms)
-{
-    if(AD5933_IsBusy())
-    {
+Board_Error Board_SetFeedback(uint32_t ohms) {
+    if(AD5933_IsBusy()) {
         return BOARD_BUSY;
     }
     
-    if(!autorange)
-    {
+    if(!autorange) {
         uint32_t fb = 0;
-        for(uint32_t j = 0; j < NUMEL(board_config.feedback_resistors) && board_config.feedback_resistors[j]; j++)
-        {
-            if(ohms == board_config.feedback_resistors[j])
-            {
+        for(uint32_t j = 0; j < NUMEL(board_config.feedback_resistors) && board_config.feedback_resistors[j]; j++) {
+            if(ohms == board_config.feedback_resistors[j]) {
                 fb = board_config.feedback_resistors[j];
                 break;
             }
         }
-        if(!fb)
-        {
+        if(!fb) {
             return BOARD_ERROR;
         }
         range.Feedback_Value = fb;
@@ -512,14 +460,11 @@ Board_Error Board_SetFeedback(uint32_t ohms)
  * @param value the number of averages, a value of `1` means no averaging is performed
  * @return {@link Board_Error} code
  */
-Board_Error Board_SetAverages(uint16_t value)
-{
-    if(AD5933_IsBusy())
-    {
+Board_Error Board_SetAverages(uint16_t value) {
+    if(AD5933_IsBusy()) {
         return BOARD_BUSY;
     }
-    if(value == 0)
-    {
+    if(value == 0) {
         return BOARD_ERROR;
     }
     
@@ -531,42 +476,36 @@ Board_Error Board_SetAverages(uint16_t value)
 /**
  * Gets the current start frequency used for a sweep.
  */
-uint32_t Board_GetStartFreq(void)
-{
+uint32_t Board_GetStartFreq(void) {
     return sweep.Start_Freq;
 }
 
 /**
  * Gets the current stop frequency used for a sweep.
  */
-uint32_t Board_GetStopFreq(void)
-{
+uint32_t Board_GetStopFreq(void) {
     return stopFreq;
 }
 
 /**
  * Gets the current number of frequency increments used for a sweep.
  */
-uint16_t Board_GetFreqSteps(void)
-{
+uint16_t Board_GetFreqSteps(void) {
     return sweep.Num_Increments;
 }
 
 /**
  * Gets the current range settings.
  */
-const AD5933_RangeSettings* Board_GetRangeSettings(void)
-{
+const AD5933_RangeSettings* Board_GetRangeSettings(void) {
     return &range;
 }
 
 /**
  * Gets the current number of settling cycles.
  */
-uint16_t Board_GetSettlingCycles(void)
-{
-    switch(sweep.Settling_Mult)
-    {
+uint16_t Board_GetSettlingCycles(void) {
+    switch(sweep.Settling_Mult) {
         case AD5933_SETTL_MULT_2:
             return sweep.Settling_Cycles << 1;
         case AD5933_SETTL_MULT_4:
@@ -584,16 +523,14 @@ uint16_t Board_GetSettlingCycles(void)
  * 
  * @return `0` if autoranging is disabled, a nonzero value otherwise
  */
-uint8_t Board_GetAutorange(void)
-{
+uint8_t Board_GetAutorange(void) {
     return autorange;
 }
 
 /**
  * Gets the current number of averages for each frequency point.
  */
-uint16_t Board_GetAverages(void)
-{
+uint16_t Board_GetAverages(void) {
     return sweep.Averages;
 }
 
@@ -602,8 +539,7 @@ uint16_t Board_GetAverages(void)
  * 
  * @param result Pointer to a status structure to be populated
  */
-void Board_GetStatus(Board_Status *result)
-{
+void Board_GetStatus(Board_Status *result) {
     result->ad_status = AD5933_GetStatus();
     result->point = AD5933_GetSweepCount();
     result->totalPoints = sweep.Num_Increments;
@@ -611,8 +547,7 @@ void Board_GetStatus(Board_Status *result)
     result->validGainFactor = validGain;
     result->validData = validData || validPolar;
     
-    switch(result->ad_status)
-    {
+    switch(result->ad_status) {
         case AD_MEASURE_IMPEDANCE:
             result->autorange = 0;
             break;
@@ -633,8 +568,7 @@ void Board_GetStatus(Board_Status *result)
  *  + Saved configuration in the EEPROM is ignored
  *  + Running measurements are stopped, AD5933 is reset
  */
-void Board_Reset(void)
-{
+void Board_Reset(void) {
     SetDefaults();
     Console_Init();
     Board_Standby();
@@ -644,8 +578,7 @@ void Board_Reset(void)
 /**
  * Puts the AD5933 in standby mode, switches off the low speed clock and disconnects the output ports.
  */
-void Board_Standby(void)
-{
+void Board_Standby(void) {
     uint8_t data = ADG725_CHIP_ENABLE_NOT;
     HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_RESET);
     HAL_SPI_Transmit(&hspi3, &data, 1, BOARD_SPI_TIMEOUT);
@@ -661,25 +594,19 @@ void Board_Standby(void)
  * @param count Pointer to a variable receiving the number of points in the buffer
  * @return Pointer to the data buffer, or `NULL` if no data is available
  */
-const AD5933_ImpedancePolar* Board_GetDataPolar(uint32_t *count)
-{
-    if(!validPolar)
-    {
-        if(validData)
-        {
-            for(uint32_t j = 0; j < pointCount; j++)
-            {
+const AD5933_ImpedancePolar* Board_GetDataPolar(uint32_t *count) {
+    if(!validPolar) {
+        if(validData) {
+            for(uint32_t j = 0; j < pointCount; j++) {
                 bufPolar[j].Frequency = bufData[j].Frequency;
                 bufPolar[j].Magnitude = AD5933_GetMagnitude(&bufData[j], &dataGainFactor);
                 bufPolar[j].Angle = AD5933_GetPhase(&bufData[j], &dataGainFactor);
             }
             validPolar = 1;
-        }
-        else
-        {
+        } else {
             // Neither raw nor polar data, nothing to return
             *count = 0;
-            return NULL;
+            return NULL ;
         }
     }
     
@@ -693,17 +620,13 @@ const AD5933_ImpedancePolar* Board_GetDataPolar(uint32_t *count)
  * @param count Pointer to a variable receiving the number of points in the buffer
  * @return Pointer to the data buffer, or `NULL` if no raw data is available
  */
-const AD5933_ImpedanceData* Board_GetDataRaw(uint32_t *count)
-{
-    if(validData)
-    {
+const AD5933_ImpedanceData* Board_GetDataRaw(uint32_t *count) {
+    if(validData) {
         *count = pointCount;
         return &bufData[0];
-    }
-    else
-    {
+    } else {
         *count = 0;
-        return NULL;
+        return NULL ;
     }
 }
 
@@ -715,15 +638,11 @@ const AD5933_ImpedanceData* Board_GetDataRaw(uint32_t *count)
  * 
  * @return Pointer to gain factor, or `NULL` if calibration has not been performed
  */
-const AD5933_GainFactor* Board_GetGainFactor(void)
-{
-    if(validGain)
-    {
+const AD5933_GainFactor* Board_GetGainFactor(void) {
+    if(validGain) {
         return &gainFactor;
-    }
-    else
-    {
-        return NULL;
+    } else {
+        return NULL ;
     }
 }
 
@@ -733,17 +652,14 @@ const AD5933_GainFactor* Board_GetGainFactor(void)
  * @param port Port number for the sweep, needs to be in the range 0 to {@link PORT_MAX}
  * @return {@link Board_Error} code
  */
-Board_Error Board_StartSweep(uint8_t port)
-{
-    if(AD5933_IsBusy())
-    {
+Board_Error Board_StartSweep(uint8_t port) {
+    if(AD5933_IsBusy()) {
         return BOARD_BUSY;
     }
-    if(port > PORT_MAX || (!validGain && !autorange))
-    {
+    if(port > PORT_MAX || (!validGain && !autorange)) {
         return BOARD_ERROR;
     }
-
+    
     // Set output mux
     HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_RESET);
     HAL_SPI_Transmit(&hspi3, &port, 1, BOARD_SPI_TIMEOUT);
@@ -752,16 +668,13 @@ Board_Error Board_StartSweep(uint8_t port)
     // TODO implement autorange
     sweep.Freq_Increment = (stopFreq - sweep.Start_Freq) / (sweep.Num_Increments != 0 ? sweep.Num_Increments : 1);
     
-    if(AD5933_MeasureImpedance(&sweep, &range, &bufData[0]) == AD_OK)
-    {
+    if(AD5933_MeasureImpedance(&sweep, &range, &bufData[0]) == AD_OK) {
         validPolar = 0;
         validData = 0;
         interrupted = 0;
         lastPort = port;
         return BOARD_OK;
-    }
-    else
-    {
+    } else {
         return BOARD_ERROR;
     }
 }
@@ -773,17 +686,13 @@ Board_Error Board_StartSweep(uint8_t port)
  * 
  * @return {@link BOARD_OK}
  */
-Board_Error Board_StopSweep(void)
-{
+Board_Error Board_StopSweep(void) {
     AD5933_Status status = AD5933_GetStatus();
-    if(status == AD_MEASURE_IMPEDANCE)
-    {
+    if(status == AD_MEASURE_IMPEDANCE) {
         interrupted = 1;
         validData = 1;
         dataGainFactor = gainFactor;
-    }
-    else if(status == AD_MEASURE_IMPEDANCE_AUTORANGE)
-    {
+    } else if(status == AD_MEASURE_IMPEDANCE_AUTORANGE) {
         interrupted = 1;
         validPolar = 1;
     }
@@ -795,8 +704,7 @@ Board_Error Board_StopSweep(void)
 /**
  * Gets the port of the active (or last) sweep.
  */
-uint8_t Board_GetPort(void)
-{
+uint8_t Board_GetPort(void) {
     return lastPort;
 }
 
@@ -808,21 +716,17 @@ uint8_t Board_GetPort(void)
  * @param result Pointer to a structure receiving the converted impedance value
  * @return {@link Board_Error} code
  */
-Board_Error Board_MeasureSingleFrequency(uint8_t port, uint32_t freq, AD5933_ImpedancePolar *result)
-{
+Board_Error Board_MeasureSingleFrequency(uint8_t port, uint32_t freq, AD5933_ImpedancePolar *result) {
     assert_param(result != NULL);
     
-    if(AD5933_IsBusy())
-    {
+    if(AD5933_IsBusy()) {
         return BOARD_BUSY;
     }
-    if(freq < AD5933_FREQ_MIN || freq > AD5933_FREQ_MAX || port > PORT_MAX || (!validGain && !autorange))
-    {
+    if(freq < AD5933_FREQ_MIN || freq > AD5933_FREQ_MAX || port > PORT_MAX || (!validGain && !autorange)) {
         return BOARD_ERROR;
     }
     // Calibration is only valid in the current frequency range
-    if(freq < sweep.Start_Freq || freq > stopFreq)
-    {
+    if(freq < sweep.Start_Freq || freq > stopFreq) {
         return BOARD_ERROR;
     }
     
@@ -835,8 +739,7 @@ Board_Error Board_MeasureSingleFrequency(uint8_t port, uint32_t freq, AD5933_Imp
     
     // TODO implement autorange
     AD5933_MeasureImpedance(&sw, &range, &buffer[0]);
-    while(AD5933_GetStatus() != AD_FINISH_IMPEDANCE)
-    {
+    while(AD5933_GetStatus() != AD_FINISH_IMPEDANCE) {
         HAL_Delay(2);
     }
     
@@ -854,13 +757,10 @@ Board_Error Board_MeasureSingleFrequency(uint8_t port, uint32_t freq, AD5933_Imp
  * @param what Which temperature to measure
  * @return {@link Board_Error} code
  */
-Board_Error Board_MeasureTemperature(Board_TemperatureSource what)
-{
-    switch(what)
-    {
+Board_Error Board_MeasureTemperature(Board_TemperatureSource what) {
+    switch(what) {
         case TEMP_AD5933:
-            if(AD5933_MeasureTemperature(&temp) != AD_OK)
-            {
+            if(AD5933_MeasureTemperature(&temp) != AD_OK) {
                 return BOARD_ERROR;
             }
             break;
@@ -878,26 +778,21 @@ Board_Error Board_MeasureTemperature(Board_TemperatureSource what)
  * @param ohms Calibration resistor value in Ohms, must be one of the values in `board_config`.
  * @return {@link Board_Error} code
  */
-Board_Error Board_Calibrate(uint32_t ohms)
-{
-    if(AD5933_IsBusy())
-    {
+Board_Error Board_Calibrate(uint32_t ohms) {
+    if(AD5933_IsBusy()) {
         return BOARD_BUSY;
     }
     
     AD5933_CalibrationSpec spec;
     uint8_t cal = 0;
-    for(uint32_t j = 0; j < NUMEL(board_config.calibration_values) && board_config.calibration_values[j]; j++)
-    {
-        if(ohms == board_config.calibration_values[j])
-        {
+    for(uint32_t j = 0; j < NUMEL(board_config.calibration_values) && board_config.calibration_values[j]; j++) {
+        if(ohms == board_config.calibration_values[j]) {
             cal = CAL_PORT_MIN + j;
             spec.impedance = board_config.calibration_values[j];
             break;
         }
     }
-    if(!cal)
-    {
+    if(!cal) {
         return BOARD_ERROR;
     }
     
@@ -919,8 +814,7 @@ Board_Error Board_Calibrate(uint32_t ohms)
 /**
  * Mark settings as dirty and schedule a write to the EEPROM.
  */
-void MarkSettingsDirty(void)
-{
+void MarkSettingsDirty(void) {
     settings_dirty = 1;
     settings_dirty_tick = HAL_GetTick();
 }
@@ -928,8 +822,7 @@ void MarkSettingsDirty(void)
 /**
  * Schedule a write of the configuration data to the EEPROM.
  */
-void WriteConfiguration(void)
-{
+void WriteConfiguration(void) {
     config_dirty = 1;
 }
 

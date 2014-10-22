@@ -76,8 +76,7 @@ static Console_Interface console_interface =
  * 
  * @return `USBD_Status` code
  */
-static int8_t VCP_Init(void)
-{
+static int8_t VCP_Init(void) {
     USBD_VCP_SetTxBuffer(&hUsbDevice, VCPTxBuffer, 0);
     USBD_VCP_SetRxBuffer(&hUsbDevice, VCPRxBuffer);
     VCP_cmdline[0] = 0;
@@ -90,8 +89,7 @@ static int8_t VCP_Init(void)
  * 
  * @return `USBD_Status` code
  */
-static int8_t VCP_DeInit(void)
-{
+static int8_t VCP_DeInit(void) {
     return USBD_OK;
 }
 
@@ -103,10 +101,8 @@ static int8_t VCP_DeInit(void)
  * @param  length Number of bytes to be sent
  * @return `USBD_Status` code
  */
-static int8_t VCP_Control(uint8_t cmd, uint8_t* pbuf, uint16_t length __attribute__((unused)))
-{
-    switch(cmd)
-    {
+static int8_t VCP_Control(uint8_t cmd, uint8_t* pbuf, uint16_t length __attribute__((unused))) {
+    switch(cmd) {
         case CDC_SEND_ENCAPSULATED_COMMAND:
             break;
             
@@ -164,8 +160,7 @@ static int8_t VCP_Control(uint8_t cmd, uint8_t* pbuf, uint16_t length __attribut
  * @param  Len Number of bytes received
  * @return `USBD_Status` code
  */
-static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
-{
+static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len) {
     // Whether the character received is the first in a new line
     static uint8_t cmd_newline = 1;
     // Current length of received command
@@ -173,50 +168,40 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
     // Whether to disable echo for the current line (when preceded with '@')
     static uint8_t echo_suppress = 0;
     
-    uint8_t *const rxend = Buf + Len;
+    uint8_t * const rxend = Buf + Len;
     uint8_t *txbuf = VCPTxBuffer + VCPTxBufEnd;
     uint32_t txlen = 0;
     uint8_t call = 0;
     
     // If previous command is busy, ignore input
-    for(uint8_t *rxbuf = Buf; rxbuf < rxend && !cmd_busy; rxbuf++)
-    {
-        if(cmd_newline && *rxbuf == '@')
-        {
+    for(uint8_t *rxbuf = Buf; rxbuf < rxend && !cmd_busy; rxbuf++) {
+        if(cmd_newline && *rxbuf == '@') {
             echo_suppress = 1;
             continue;
         }
         
-        if(echo_enabled && !echo_suppress)
-        {
-            if(txbuf == (VCPTxBuffer + APP_TX_BUFFER_SIZE))
-            {
+        if(echo_enabled && !echo_suppress) {
+            if(txbuf == (VCPTxBuffer + APP_TX_BUFFER_SIZE)) {
                 txbuf = VCPTxBuffer;
             }
             *txbuf++ = *rxbuf;
             txlen++;
         }
         
-        if(*rxbuf == '\r' || *rxbuf == '\n' || cmd_len == MAX_CMDLINE_LENGTH)
-        {
+        if(*rxbuf == '\r' || *rxbuf == '\n' || cmd_len == MAX_CMDLINE_LENGTH) {
             // Don't call console with empty command
-            if(cmd_newline || cmd_len == 0)
-            {
+            if(cmd_newline || cmd_len == 0) {
                 continue;
             }
             
             // If we receive either CR or LF we echo both for compatibility reasons
-            if(echo_enabled && !echo_suppress)
-            {
-                if(*rxbuf == '\n')
-                {
+            if(echo_enabled && !echo_suppress) {
+                if(*rxbuf == '\n') {
                     *(txbuf - 1) = '\r';
                 }
                 
-                if(*rxbuf == '\r' || *rxbuf == '\n')
-                {
-                    if(txbuf == (VCPTxBuffer + APP_TX_BUFFER_SIZE))
-                    {
+                if(*rxbuf == '\r' || *rxbuf == '\n') {
+                    if(txbuf == (VCPTxBuffer + APP_TX_BUFFER_SIZE)) {
                         txbuf = VCPTxBuffer;
                     }
                     *txbuf++ = '\n';
@@ -233,18 +218,14 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
             
             // We only process one command  at a time so skip remaining characters
             break;
-        }
-        else
-        {
+        } else {
             // Process special characters (e.g. backspace)
-            switch(*rxbuf)
-            {
+            switch(*rxbuf) {
                 case '\b':
                 case 0x7f:
                     // Backspace (Ctrl+H) or Delete (Ctrl+?)
                     // PuTTY, for example, sends Ctrl+? on backspace by default
-                    if(cmd_len > 0)
-                    {
+                    if(cmd_len > 0) {
                         cmd_len--;
                     }
                     break;
@@ -258,17 +239,14 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
         }
     }
     
-    if(txlen > 0)
-    {
+    if(txlen > 0) {
         VCPTxBufEnd += txlen;
-        if(VCPTxBufEnd >= APP_TX_BUFFER_SIZE)
-        {
+        if(VCPTxBufEnd >= APP_TX_BUFFER_SIZE) {
             VCPTxBufEnd -= APP_TX_BUFFER_SIZE;
         }
     }
     
-    if(call)
-    {
+    if(call) {
         Console_ProcessLine(&console_interface, (char *)VCP_cmdline);
     }
     
@@ -282,8 +260,7 @@ static int8_t VCP_Receive(uint8_t* Buf, uint32_t Len)
  * 
  * @return `USBD_Status` code
  */
-static int8_t VCP_Transmit(void)
-{
+static int8_t VCP_Transmit(void) {
     VCP_Flush();
     return USBD_OK;
 }
@@ -295,8 +272,7 @@ static int8_t VCP_Transmit(void)
  * 
  * @param enable `0` to disable echo, nonzero value otherwise
  */
-void VCP_SetEcho(uint8_t enable)
-{
+void VCP_SetEcho(uint8_t enable) {
     echo_enabled = enable;
 }
 
@@ -305,8 +281,7 @@ void VCP_SetEcho(uint8_t enable)
  * 
  * @return `0` if echo is disabled, nonzero value otherwise
  */
-uint8_t VCP_GetEcho(void)
-{
+uint8_t VCP_GetEcho(void) {
     return echo_enabled;
 }
 
@@ -314,8 +289,7 @@ uint8_t VCP_GetEcho(void)
  * This function should be called by the command line processor when it is finished with processing the current command
  * and new console input should be possible.
  */
-void VCP_CommandFinish(void)
-{
+void VCP_CommandFinish(void) {
     cmd_busy = 0;
 }
 
@@ -328,19 +302,14 @@ void VCP_CommandFinish(void)
  * @param c The value to send
  * @return `1` if the character was buffered, `0` if the buffer is full
  */
-uint32_t VCP_SendChar(uint8_t c)
-{
-    if((VCPTxBufEnd != VCPTxBufStart - 1) && (VCPTxBufEnd != APP_TX_BUFFER_SIZE - 1 || VCPTxBufStart != 0))
-    {
+uint32_t VCP_SendChar(uint8_t c) {
+    if((VCPTxBufEnd != VCPTxBufStart - 1) && (VCPTxBufEnd != APP_TX_BUFFER_SIZE - 1 || VCPTxBufStart != 0)) {
         VCPTxBuffer[VCPTxBufEnd++] = c;
         
-        if(VCPTxBufEnd == APP_TX_BUFFER_SIZE)
-        {
+        if(VCPTxBufEnd == APP_TX_BUFFER_SIZE) {
             VCPTxBufEnd = 0;
         }
-    }
-    else
-    {
+    } else {
         return 0;
     }
     
@@ -361,8 +330,7 @@ uint32_t VCP_SendChar(uint8_t c)
  * @return The number of bytes buffered. This can be less than the string length, if the string is longer than the
  *         free space in the transmit buffer.
  */
-uint32_t VCP_SendString(const char *str)
-{
+uint32_t VCP_SendString(const char *str) {
     uint32_t buffered = 0;
     uint32_t len;
     uint32_t sent;
@@ -371,25 +339,20 @@ uint32_t VCP_SendString(const char *str)
     
     len = strlen(str);
     
-    if(VCPTxBufEnd >= VCPTxBufStart)
-    {
+    if(VCPTxBufEnd >= VCPTxBufStart) {
         buffered = VCPTxBufEnd - VCPTxBufStart;
         sent = (len < APP_TX_BUFFER_SIZE - buffered ? len : APP_TX_BUFFER_SIZE - buffered - 1);
         
-        if(VCPTxBufEnd + sent >= APP_TX_BUFFER_SIZE)
-        {
+        if(VCPTxBufEnd + sent >= APP_TX_BUFFER_SIZE) {
             uint32_t tmp = APP_TX_BUFFER_SIZE - VCPTxBufEnd;
             memcpy(VCPTxBuffer + VCPTxBufEnd, str, tmp);
             memcpy(VCPTxBuffer, str + tmp, sent - tmp);
             VCPTxBufEnd = sent - tmp;
-        }
-        else
-        {
+        } else {
             memcpy(VCPTxBuffer + VCPTxBufEnd, str, sent);
             VCPTxBufEnd += sent;
         }
-    }
-    else // VCPTxBufEnd < VCPTxBufStart
+    } else // VCPTxBufEnd < VCPTxBufStart
     {
         buffered = VCPTxBufEnd + APP_TX_BUFFER_SIZE - VCPTxBufStart;
         sent = (len < APP_TX_BUFFER_SIZE - buffered ? len : APP_TX_BUFFER_SIZE - buffered - 1);
@@ -408,11 +371,9 @@ uint32_t VCP_SendString(const char *str)
  * @return The number of bytes buffered. This can be less than the string length, if the string is longer than the
  *         free space in the transmit buffer, or 2 more if the whole string plus the line break was buffered.
  */
-uint32_t VCP_SendLine(const char *str)
-{
+uint32_t VCP_SendLine(const char *str) {
     uint32_t sent = 0;
-    if(str != NULL)
-    {
+    if(str != NULL) {
         sent += VCP_SendString(str);
     }
     sent += VCP_SendString("\r\n");
@@ -432,15 +393,12 @@ uint32_t VCP_SendLine(const char *str)
  * @param len Number of bytes to be sent
  * @return `1` on success, `0` otherwise
  */
-uint32_t VCP_SendBuffer(const uint8_t *buf, uint32_t len)
-{
-    if(buf == NULL)
-    {
+uint32_t VCP_SendBuffer(const uint8_t *buf, uint32_t len) {
+    if(buf == NULL) {
         return 0;
     }
     
-    if(len == 0)
-    {
+    if(len == 0) {
         return 1;
     }
     
@@ -458,51 +416,39 @@ uint32_t VCP_SendBuffer(const uint8_t *buf, uint32_t len)
  * the same time while one has not finished yet. If you want to transmit multiple strings at once, first call the
  * appropriate functions with your data to buffer it and then call this function to start the transmission.
  */
-void VCP_Flush(void)
-{
+void VCP_Flush(void) {
     uint32_t buffsize;
     
     // Don't do anything if transfer in progress
-    if(((USBD_VCP_HandleTypeDef *)hUsbDevice.pClassData)->TxState)
-    {
+    if(((USBD_VCP_HandleTypeDef *)hUsbDevice.pClassData)->TxState) {
         return;
     }
     
     // Send buffered data before external buffer
-    if(VCPTxBufStart != VCPTxBufEnd)
-    {
+    if(VCPTxBufStart != VCPTxBufEnd) {
         if(VCPTxBufStart > VCPTxBufEnd) /* rollback */
         {
             buffsize = APP_TX_BUFFER_SIZE - VCPTxBufStart;
-        }
-        else
-        {
+        } else {
             buffsize = VCPTxBufEnd - VCPTxBufStart;
         }
         
         USBD_VCP_SetTxBuffer(&hUsbDevice, VCPTxBuffer + VCPTxBufStart, buffsize);
-        if(USBD_VCP_TransmitPacket(&hUsbDevice) == USBD_OK)
-        {
+        if(USBD_VCP_TransmitPacket(&hUsbDevice) == USBD_OK) {
             VCPTxBufStart += buffsize;
-            if(VCPTxBufStart == APP_TX_BUFFER_SIZE)
-            {
+            if(VCPTxBufStart == APP_TX_BUFFER_SIZE) {
                 VCPTxBufStart = 0;
             }
         }
-    }
-    else if(VCPTxExternalBuf != NULL)
-    {
+        
+    } else if(VCPTxExternalBuf != NULL) {
         USBD_VCP_SetTxBuffer(&hUsbDevice, (uint8_t *)VCPTxExternalBuf, (uint16_t)(VCPTxExternalLen & 0xFFFF));
-        if(USBD_VCP_TransmitPacket(&hUsbDevice) == USBD_OK)
-        {
-            if(VCPTxExternalLen & ~0xFFFF)
-            {
+        if(USBD_VCP_TransmitPacket(&hUsbDevice) == USBD_OK) {
+            if(VCPTxExternalLen & ~0xFFFF) {
                 // Buffer is larger than 64KB and needs to be sent using multiple transmissions
                 VCPTxExternalLen -= 0xFFFF;
                 VCPTxExternalBuf += 0xFFFF;
-            }
-            else
-            {
+            } else {
                 VCPTxExternalBuf = NULL;
             }
         }
@@ -514,9 +460,8 @@ void VCP_Flush(void)
 /**
  * Gets whether an external buffer is waiting to be transmitted.
  */
-uint8_t VCP_IsExternalBufferPending(void)
-{
-    return VCPTxExternalBuf != NULL;
+uint8_t VCP_IsExternalBufferPending(void) {
+    return VCPTxExternalBuf != NULL ;
 }
 
 // ----------------------------------------------------------------------------
