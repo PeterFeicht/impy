@@ -2,18 +2,19 @@
 
 This part will describe the firmware of the device and the MATLAB functions.
 
-As mentioned in \autoref{sec:hardware}, the spectrometer is based on the \enquote{STM32F4 Discovery} board, which has
+As mentioned in \autoref{sec:hardware}, the spectrometer is based on the \emph{STM32F4 Discovery} board, which has
 an STM32F407 microcontroller and a programmer on board. On the PC side, besides an ordinary command line interface,
 MATLAB can be used to control the device using some functions that are part of the provided software.
 
 
 \section{Firmware}
 
-The firmware is written in C and uses the \enquote{STM32CubeF4}
-HAL\footnote{\textbf{H}ardware \textbf{A}bstraction \textbf{L}ayer, makes it easier to switch microcontrollers
+The firmware (codename \emph{impy}) is written in C (C11) and uses the \enquote{STM32CubeF4} HAL\footnotemark{} drivers
+to configure the microcontroller and control the peripherals.
+\footnotetext{\textbf{H}ardware \textbf{A}bstraction \textbf{L}ayer, makes it easier to switch microcontrollers
 without having to rewrite the device specific code.}
-drivers to configure the microcontroller and control the peripherals.
 It consists of four loosely coupled modules along with some support modules:
+%
 \begin{itemize}
 	\item \verb!ad5933.c!: The AD5933 driver which takes care of communication with the AD5933 via \iic{} and collects
         the measured data.
@@ -30,6 +31,7 @@ It consists of four loosely coupled modules along with some support modules:
 \end{itemize}
 
 Among the support modules are:
+%
 \begin{itemize}
 	\item \verb!convert.c!: Converts measurement data to the different formats used for transfer via the USB connection.
   
@@ -37,4 +39,161 @@ Among the support modules are:
         structures used for storing the device configuration.
   
   \item \verb!util.c!: Provides functions for converting values (integers, IP addresses) to strings and vice versa.
+  
+  \item \verb!mx_init.c!: Handles the hardware initialization.
 \end{itemize}
+
+
+\subsection{AD5933 Driver Module}
+
+The AD5933 driver module provides functions for managing the AD5933 and for converting raw measurement data to
+meaningful values. The header files also declares the data structures used for storing mesaurement data and converted
+values.
+
+Since the AD5933 doesn't support interrupts, the driver has a timer callback function \verb!AD5933_TimerCallback(void)!
+that is called by a timer interrupt handler every few milliseconds to update the driver status and collect measured
+data from the AD5933. This function returns the new driver status, so appropriate action can be taken when the status
+changes.
+
+Because the AD5933 needs an external clock source to be able to measure below about \unit{10}{\kilo\hertz},
+a clock signal can be output by the STM32F4 for use by the AD5933. The driver takes care of selecting the appropriate
+external clock frequency to the AD5933, and of switching the external clock frequency when it needs to be changed
+during a measurement.
+
+The calibration process, needed before measurements can be made, is taken care of by the driver as well.
+
+Besides measuring an impedance spectrum, the driver can also use the AD5933's internal temperature sensor and make a
+temperature measurement. This is not terribly accurate (the AD5933 temperature sensor has a typical accuracy of
+\unit{\pm 2}{\celsius}), but can be useful nonetheless.
+
+
+\subsection{USB VCP Module}
+
+The USB VCP interface pieces together a command line from characters received over the USB port and sends it to the
+console module when a whole line has been received. It can be configured to echo received characters, which is useful
+when typing commands by hand (otherwise one would have to type blindly), or to not echo them, which is useful when
+the device is controlled by a program or script.
+
+When a complete command is received (terminated by a newline), further input is ignored until a callback is received,
+informing the interface that the command has been processed and new input should be possible.
+
+The interface also provides functions to send single characters, strings or data buffers to the host PC.
+Those are used by the console interface for feedback and for transferring measurement values.
+
+
+\subsection{Console Module}
+
+The console module takes commands assembled by the VCP interface and processes them. This is the most complicated
+module, since a lot of error handling happens here.
+
+The module has a command processing function for each top level command (see \autoref{sec:manual} for a complete
+user manual), which either delegates to processing functions for sub-commands (like \texttt{board info}), or
+handles the command directly (\texttt{help}, for example).
+
+All possible commands and their arguments are defined in this file. The help text in \verb!command-line.txt!, which
+is included in binary form by \verb!helptext.asm!, is processed when the console module is initialized. This makes
+the help text very convenient to edit, since no C strings have to be changed but a plain text file.
+
+All the different strings sent by the console module to the user are declared in \verb!strings_en.h!, making it easy
+to change them and, if required, translate them to other languages. The language, however, can then not be changed
+at run time but the firmware has to be recompiled.
+
+
+\subsection{Main Module}
+
+The main module has access to the different data buffers, keeps track of configuration changes and provides functions
+to manage the commands defined by the console interface. The commands from the console interface are not handled
+directly by the console module, in case other interfaces (Ethernet, for example) are also added. The different
+interfaces then access the functions provided by the main module to execute the commands received.
+
+The main module also declares the HAL handles of all microcontroller peripherals used (timers, SPI, USB, \iic{}, CRC).
+The global configuration buffer that holds the hardware configuration of the board is also declared to be globally
+available, so different modules can access their respective configuration data.
+
+Hardware initialization after reset and initializing the different modules is also handled by the main module, although
+the hardware part is delegated to \verb!mx_init.c!.
+
+\subsubsection{MX Init}
+
+\verb!mx_init.c! is less of a module on its own, but used to keep hardware initialization code out of the main file.
+The code is mostly copied from files generated by \emph{STM32CubeMX}, the initialization code generation tool for the
+STM32 series microcontrollers provided by ST.
+
+The file provides a single function that handles all peripheral initialization.
+
+
+\subsection{Convert Module}
+
+The convert module provides functions to convert an array of measurement values (either raw data or polar
+impedance values) to a different format for transfer either binary or ASCII text.
+
+The format is specified as an integer with different bits set for the desired format options.
+%
+\begin{description}
+  \item[Binary] The only configuration options for binary transfer are whether the number of bytes to follow should
+    be sent as a header and the coordinate format (polar or Cartesian), the data format is otherwise fixed:
+    \begin{itemize}
+      \item Frequency: 32-bit unsigned integer
+      \item Magnitude or real part: 32-bit single precision floating point
+      \item Phase or imaginary part: 32-bit single precision floating point
+    \end{itemize}
+  
+  \item[ASCII] The ASCII format has configuration options for the coordinate format, number format, whether a header
+    should be printed and how the values should be separated. Otherwise the format is similar to binary, frequency
+    followed by magnitude and angle, or real and imaginary part.
+\end{description}
+
+The flags for each option are detailed in the user's manual in \autoref{sec:manual}.
+
+
+\subsection{EEPROM Module}
+
+The EEPROM module declares structures used to store the board configuration (what components are populated, values of
+resistors and the like) and the current settings (frequency range, transfer format and the like). It also manages
+writing and reading those structures from the EEPROM.
+
+Since the EEPROM, like the AD5933, doesn't support interrupts, the driver also has a timer callback that is used when
+writing data to the EEPROM. When reading data, no extra time is needed for memory access, so the timer callback is not
+used then.
+
+To prevent corruption of configuration data and settings, the EEPROM driver calculates a CRC32 checksum that is written
+with the structures and verified when data is read. In addition to that, a simple algorithm for wear leveling\footnotemark{}
+is implemented for the settings buffer, which is written every time settings are changed.
+
+\footnotetext{An EEPROM degrades when written and can therefore only be written a finite number of times. When small
+amounts of data are written frequently to the same address, this address will wear out quickly and make the whole
+memory unusable. This can be compensated by distributing the data across the whole available memory space, thereby
+reducing the number of times each address is written, a technique that is called wear leveling.}
+
+
+\subsection{Util Module}
+
+This is less of a module and more a collection of useful functions. At the moment it contains functions for parsing
+MAC addresses and SI integers (numbers with an SI suffix, like 10k, for resistor or frequency values). Functions
+are also provided for converting them back to string representations.
+
+
+\clearpage
+\section{MATLAB}
+
+A set of MATLAB functions is provided to make it easier for the board to be used in automated measurement setups.
+The functions use the virtual console interface by sending command strings and parsing the response.
+%
+\begin{itemize}
+	\item \verb!impy_getall!: Reads the current settings from the board and creates a MATLAB struct which can be used to
+    change them.
+  \item \verb!impy_setsweep!: Writes the board settings from a settings struct.
+  \item \verb!impy_calibrate!: Performs a calibration with the specified resistor value, waiting for the calibration to
+    complete before returning.
+  \item \verb!impy_start!: Starts an impedance sweep on a specified port.
+  \item \verb!impy_poll!: Used while a sweep is running to poll the board and determine when the sweep has finished.
+    Returns the number of points measured when the sweep is complete.
+  \item \verb!impy_read!: Reads measurement data from the board, either in polar, Cartesian or raw format.
+  \item \verb!impy_help!: Sends a help command to the board and outputs the response to the MATLAB console.
+\end{itemize}
+
+All these functions expect a COMPORT handle object that has been opened.
+
+A sample implementation of a complete measurement cycle is provided in the file \verb!test_measure.m!, this can be used
+as a starting point when using the MATLAB functions.
+
