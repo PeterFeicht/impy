@@ -1,2 +1,40 @@
-\chapter{Software}
+\chapter{Software} \label{sec:software}
 
+This part will describe the firmware of the device and the MATLAB functions.
+
+As mentioned in \autoref{sec:hardware}, the spectrometer is based on the \enquote{STM32F4 Discovery} board, which has
+an STM32F407 microcontroller and a programmer on board. On the PC side, besides an ordinary command line interface,
+MATLAB can be used to control the device using some functions that are part of the provided software.
+
+
+\section{Firmware}
+
+The firmware is written in C and uses the \enquote{STM32CubeF4}
+HAL\footnote{\textbf{H}ardware \textbf{A}bstraction \textbf{L}ayer, makes it easier to switch microcontrollers
+without having to rewrite the device specific code.}
+drivers to configure the microcontroller and control the peripherals.
+It consists of four loosely coupled modules along with some support modules:
+\begin{itemize}
+	\item \verb!ad5933.c!: The AD5933 driver which takes care of communication with the AD5933 via \iic{} and collects
+        the measured data.
+  
+  \item \verb!usbd_vcp_if.c!: The USB Virtual COM Port (VCP) interface definition, provides communication with the
+        host computer.
+  
+  \item \verb!console.c!: Implements the virtual console that is used to control the device using a terminal
+        program like \href{http://www.chiark.greenend.org.uk/~sgtatham/putty/}{PuTTY}.
+  
+  \item \verb!main.c!: The main module that holds the current configuration and provides an interface that is used
+        by \verb!console.c! to control the basic functions of the device (e.g.\ starting a measurement, getting the
+        current status, converting measured data).
+\end{itemize}
+
+Among the support modules are:
+\begin{itemize}
+	\item \verb!convert.c!: Converts measurement data to the different formats used for transfer via the USB connection.
+  
+  \item \verb!eeprom.c!: Used for communication with the on-board EEPROM, \verb!eeprom.h! declares the data
+        structures used for storing the device configuration.
+  
+  \item \verb!util.c!: Provides functions for converting values (integers, IP addresses) to strings and vice versa.
+\end{itemize}
