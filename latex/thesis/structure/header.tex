@@ -107,10 +107,3 @@
 
 % Don't put "Chapter X" in the header
 \renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{\thechapter.\ #1}}{}}
- 
-% Custom commands
-\newcommand{\todo}[1]{ \textbf{\color{red}\large #1} \vspace{-2ex} \addcontentsline{toc}{subsection}{\textcolor{red}{TODO: #1}} }
-\providecommand{\e}[1]{\ensuremath{\!\times\! 10^{#1}}}
-\newcolumntype{d}[1]{D{.}{.}{#1}}
-\newcommand{\head}[1]{ \multicolumn{1}{c|}{#1} }
- 
