@@ -47,8 +47,7 @@ extern void SystemClock_Config(void);
 // After Reset the Cortex-M processor is in Thread mode,
 // priority is Privileged, and the Stack is set to Main.
 
-void __initialize_hardware(void)
-{
+void __initialize_hardware(void) {
     // Call the CSMSIS system initialisation routine.
     SystemInit();
     
@@ -59,7 +58,7 @@ void __initialize_hardware(void)
     
     // Set bits 20-23 to enable CP10 and CP11 coprocessor
     SCB->CPACR |= (0xF << 20);
-
+    
 #endif // (__VFP_FP__) && !(__SOFTFP__)
     
     // Initialise the HAL Library; it must be the first

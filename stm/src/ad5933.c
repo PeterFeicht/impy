@@ -82,8 +82,7 @@ static AD5933_ImpedanceData *pBuffer;
  * @param MemAddress The address to set
  * @return HAL status code
  */
-static HAL_StatusTypeDef AD5933_SetAddress(uint8_t MemAddress)
-{
+static HAL_StatusTypeDef AD5933_SetAddress(uint8_t MemAddress) {
     return HAL_I2C_Mem_Write(i2cHandle, AD5933_ADDR, AD5933_CMD_SET_ADDRESS, 1, &MemAddress, 1, AD5933_I2C_TIMEOUT);
 }
 
@@ -94,8 +93,7 @@ static HAL_StatusTypeDef AD5933_SetAddress(uint8_t MemAddress)
  * @param value Value to write
  * @return HAL status code
  */
-static HAL_StatusTypeDef AD5933_Write8(uint8_t MemAddress, uint8_t value)
-{
+static HAL_StatusTypeDef AD5933_Write8(uint8_t MemAddress, uint8_t value) {
     return HAL_I2C_Mem_Write(i2cHandle, AD5933_ADDR, MemAddress, 1, &value, 1, AD5933_I2C_TIMEOUT);
 }
 
@@ -106,11 +104,9 @@ static HAL_StatusTypeDef AD5933_Write8(uint8_t MemAddress, uint8_t value)
  * @param value Value to write
  * @return HAL status code
  */
-static HAL_StatusTypeDef AD5933_Write16(uint8_t MemAddress, uint16_t value)
-{
+static HAL_StatusTypeDef AD5933_Write16(uint8_t MemAddress, uint16_t value) {
     HAL_StatusTypeDef ret = AD5933_SetAddress(MemAddress);
-    if(ret != HAL_OK)
-    {
+    if(ret != HAL_OK) {
         return ret;
     }
     
@@ -131,11 +127,9 @@ static HAL_StatusTypeDef AD5933_Write16(uint8_t MemAddress, uint16_t value)
  * @param value Value to write
  * @return HAL status code
  */
-static HAL_StatusTypeDef AD5933_Write24(uint8_t MemAddress, uint32_t value)
-{
+static HAL_StatusTypeDef AD5933_Write24(uint8_t MemAddress, uint32_t value) {
     HAL_StatusTypeDef ret = AD5933_SetAddress(MemAddress);
-    if(ret != HAL_OK)
-    {
+    if(ret != HAL_OK) {
         return ret;
     }
     
@@ -157,11 +151,9 @@ static HAL_StatusTypeDef AD5933_Write24(uint8_t MemAddress, uint32_t value)
  * @param destination The address where the value is written to
  * @return HAL status code
  */
-static HAL_StatusTypeDef AD5933_Read16(uint8_t MemAddress, uint16_t *destination)
-{
+static HAL_StatusTypeDef AD5933_Read16(uint8_t MemAddress, uint16_t *destination) {
     HAL_StatusTypeDef ret = AD5933_SetAddress(MemAddress);
-    if(ret != HAL_OK)
-    {
+    if(ret != HAL_OK) {
         return ret;
     }
     
@@ -183,8 +175,7 @@ static HAL_StatusTypeDef AD5933_Read16(uint8_t MemAddress, uint16_t *destination
  * @param code One of the {@link AD5933_FUNCTION} codes
  * @return HAL status code
  */
-static HAL_StatusTypeDef AD5933_WriteFunction(uint16_t code)
-{
+static HAL_StatusTypeDef AD5933_WriteFunction(uint16_t code) {
     uint16_t data = code | range_spec.Voltage_Range | range_spec.PGA_Gain;
     return AD5933_Write8(AD5933_CTRL_H_ADDR, HIBYTE(data));
 }
@@ -194,8 +185,7 @@ static HAL_StatusTypeDef AD5933_WriteFunction(uint16_t code)
  * 
  * @return Contents of the status register
  */
-static uint8_t AD5933_ReadStatus()
-{
+static uint8_t AD5933_ReadStatus() {
     uint8_t data = 0;
     
     AD5933_SetAddress(AD5933_STATUS_ADDR);
@@ -210,8 +200,7 @@ static uint8_t AD5933_ReadStatus()
  * @param clock The clock frequency used for the AD5933
  * @return The value that can be written to the device register
  */
-static uint32_t AD5933_CalcFrequencyReg(uint32_t freq, uint32_t clock)
-{
+static uint32_t AD5933_CalcFrequencyReg(uint32_t freq, uint32_t clock) {
     uint64_t tmp = (1 << 27) * 4 * (uint64_t)freq;
     return (uint32_t)(tmp / clock);
 }
@@ -227,8 +216,7 @@ static uint32_t AD5933_CalcFrequencyReg(uint32_t freq, uint32_t clock)
  * @return {@link AD5933_Error} code
  */
 static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, uint32_t freq_start, uint32_t freq_step,
-        uint16_t num_incr, uint16_t settl)
-{
+        uint16_t num_incr, uint16_t settl) {
     uint8_t portAtt = 0;
     uint8_t portFb = 0;
     uint8_t j;
@@ -237,35 +225,28 @@ static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, u
     static const GPIO_PinState RESET = GPIO_PIN_RESET;
     
     // Find attenuation port with desired value
-    for(j = 0; j < NUMEL(board_config.attenuations); j++)
-    {
-        if(board_config.attenuations[j] == range->Attenuation)
-        {
+    for(j = 0; j < NUMEL(board_config.attenuations); j++) {
+        if(board_config.attenuations[j] == range->Attenuation) {
             portAtt = j;
             break;
         }
     }
-    if(j == NUMEL(board_config.attenuations) || board_config.attenuations[j] == 0)
-    {
+    if(j == NUMEL(board_config.attenuations) || board_config.attenuations[j] == 0) {
         return AD_ERROR;
     }
     
     // Find feedback port with desired value
-    for(j = 0; j < NUMEL(board_config.feedback_resistors); j++)
-    {
-        if(board_config.feedback_resistors[j] == range->Feedback_Value)
-        {
+    for(j = 0; j < NUMEL(board_config.feedback_resistors); j++) {
+        if(board_config.feedback_resistors[j] == range->Feedback_Value) {
             portFb = j;
             break;
         }
     }
-    if(j == NUMEL(board_config.feedback_resistors) || board_config.feedback_resistors[j] == 0)
-    {
+    if(j == NUMEL(board_config.feedback_resistors) || board_config.feedback_resistors[j] == 0) {
         return AD_ERROR;
     }
     
-    if(freq_start < AD5933_FREQ_MIN || (freq_start + freq_step * num_incr) > AD5933_FREQ_MAX)
-    {
+    if(freq_start < AD5933_FREQ_MIN || (freq_start + freq_step * num_incr) > AD5933_FREQ_MAX) {
         return AD_ERROR;
     }
     
@@ -296,7 +277,7 @@ static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, u
     HAL_GPIO_WritePin(AD5933_COUPLING_GPIO_PORT, AD5933_COUPLING_GPIO_PIN, GPIO_PIN_RESET);
     wait_coupl = board_config.coupling_tau * 4;
     wait_tick = HAL_GetTick();
-
+    
     return AD_OK;
 }
 
@@ -306,38 +287,32 @@ static AD5933_Error AD5933_StartMeasurement(const AD5933_RangeSettings *range, u
  * @param freq_start The start frequency, this will determine the clock range needed
  * @param freq_step The frequency step
  */
-static void AD5933_SetClock(uint32_t freq_start, uint32_t freq_step)
-{
+static void AD5933_SetClock(uint32_t freq_start, uint32_t freq_step) {
     uint32_t clk;
     uint8_t ctrl;
     
     assert_param(freq_start >= AD5933_FREQ_MIN);
     
-    if(freq_start >= AD5933_CLK_LIM_INT)
-    {
+    if(freq_start >= AD5933_CLK_LIM_INT) {
         // Internal clock can be used
         HAL_TIM_OC_Stop(timHandle, AD5933_CLK_TIM_CHANNEL);
         clk = AD5933_CLK_FREQ_INT;
         ctrl = AD5933_CLOCK_INTERNAL;
         clk_source = AD_INTERNAL;
-    }
-    else
-    {
+        
+    } else {
         uint16_t psc;
-        if(freq_start >= AD5933_CLK_LIM_EXT_H)
-        {
+        if(freq_start >= AD5933_CLK_LIM_EXT_H) {
             psc = AD5933_CLK_PSC_H;
             clk = AD5933_CLK_FREQ_EXT_H;
             clk_source = AD_EXT_H;
-        }
-        else if(freq_start >= AD5933_CLK_LIM_EXT_M)
-        {
+            
+        } else if(freq_start >= AD5933_CLK_LIM_EXT_M) {
             psc = AD5933_CLK_PSC_M;
             clk = AD5933_CLK_FREQ_EXT_M;
             clk_source = AD_EXT_M;
-        }
-        else
-        {
+            
+        } else {
             psc = AD5933_CLK_PSC_L;
             clk = AD5933_CLK_FREQ_EXT_L;
             clk_source = AD_EXT_L;
@@ -360,24 +335,19 @@ static void AD5933_SetClock(uint32_t freq_start, uint32_t freq_step)
  * @param freq The frequency
  * @return The clock source needed to measure the frequency
  */
-static AD5933_ClockSource AD5933_GetClockSource(uint32_t freq)
-{
+static AD5933_ClockSource AD5933_GetClockSource(uint32_t freq) {
     assert_param(freq >= AD5933_FREQ_MIN);
     
-    if(freq >= AD5933_CLK_LIM_INT)
-    {
+    if(freq >= AD5933_CLK_LIM_INT) {
         return AD_INTERNAL;
-    }
-    else if(freq >= AD5933_CLK_LIM_EXT_H)
-    {
+        
+    } else if(freq >= AD5933_CLK_LIM_EXT_H) {
         return AD_EXT_H;
-    }
-    else if(freq >= AD5933_CLK_LIM_EXT_M)
-    {
+        
+    } else if(freq >= AD5933_CLK_LIM_EXT_M) {
         return AD_EXT_M;
-    }
-    else // freq >= AD5933_CLK_LIM_EXT_L
-    {
+        
+    } else { // freq >= AD5933_CLK_LIM_EXT_L
         return AD_EXT_L;
     }
 }
@@ -392,8 +362,7 @@ static AD5933_ClockSource AD5933_GetClockSource(uint32_t freq)
  * @param freq_step The frequency step
  * @param increments The new number of increments, this is the total number less the number of already measured steps
  */
-static void AD5933_DoClockChange(uint32_t freq_start, uint32_t freq_step, uint32_t increments)
-{
+static void AD5933_DoClockChange(uint32_t freq_start, uint32_t freq_step, uint32_t increments) {
     /*
      * For a clock change we need to set new values for almost everything, but we don't need to charge
      * the coupling capacitor, so that's a plus:
@@ -415,19 +384,14 @@ static void AD5933_DoClockChange(uint32_t freq_start, uint32_t freq_step, uint32
  * 
  * @return The (new) AD5933 status
  */
-static AD5933_Status AD5933_CallbackTemp(void)
-{
-    if(AD5933_ReadStatus() & AD5933_STATUS_VALID_TEMP)
-    {
+static AD5933_Status AD5933_CallbackTemp(void) {
+    if(AD5933_ReadStatus() & AD5933_STATUS_VALID_TEMP) {
         uint16_t data;
         AD5933_Read16(AD5933_TEMP_H_ADDR, &data);
         // Convert data to temperature value
-        if(data & AD5933_TEMP_SIGN_BIT)
-        {
+        if(data & AD5933_TEMP_SIGN_BIT) {
             *pTemperature = ((int16_t)data - (1 << 14)) / 32.0f;
-        }
-        else
-        {
+        } else {
             *pTemperature = data / 32.0f;
         }
         status = AD_FINISH_TEMP;
@@ -441,12 +405,10 @@ static AD5933_Status AD5933_CallbackTemp(void)
  * 
  * @return The (new) AD5933 status
  */
-static AD5933_Status AD5933_CallbackImpedance(void)
-{
+static AD5933_Status AD5933_CallbackImpedance(void) {
     uint8_t dev_status = AD5933_ReadStatus();
     
-    if(dev_status & AD5933_STATUS_VALID_IMPEDANCE)
-    {
+    if(dev_status & AD5933_STATUS_VALID_IMPEDANCE) {
         int16_t tmp_real, tmp_imag;
         AD5933_Read16(AD5933_REAL_H_ADDR, (uint16_t *)&tmp_real);
         AD5933_Read16(AD5933_IMAG_H_ADDR, (uint16_t *)&tmp_imag);
@@ -454,8 +416,7 @@ static AD5933_Status AD5933_CallbackImpedance(void)
         sum_imag += tmp_imag;
         avg_count++;
         
-        if(avg_count == sweep_spec.Averages)
-        {
+        if(avg_count == sweep_spec.Averages) {
             // Finished with frequency point, save average to result buffer
             AD5933_ImpedanceData *buf = pBuffer + sweep_count;
             buf->Real = sum_real / sweep_spec.Averages;
@@ -465,31 +426,23 @@ static AD5933_Status AD5933_CallbackImpedance(void)
             sweep_freq += sweep_spec.Freq_Increment;
             
             // Finish or measure next step
-            if(dev_status & AD5933_STATUS_SWEEP_COMPLETE)
-            {
+            if(dev_status & AD5933_STATUS_SWEEP_COMPLETE) {
                 status = AD_FINISH_IMPEDANCE;
 #ifdef AD5933_LED_USE
                 HAL_GPIO_WritePin(AD5933_LED_GPIO_PORT, AD5933_LED_GPIO_PIN, GPIO_PIN_RESET);
 #endif
-            }
-            else
-            {
-                if(clk_source != AD5933_GetClockSource(sweep_freq))
-                {
+            } else {
+                if(clk_source != AD5933_GetClockSource(sweep_freq)) {
                     AD5933_DoClockChange(sweep_freq, sweep_spec.Freq_Increment,
                             sweep_spec.Num_Increments - sweep_count);
-                }
-                else
-                {
+                } else {
                     AD5933_WriteFunction(AD5933_FUNCTION_INCREMENT_FREQ);
                 }
                 avg_count = 0;
                 sum_real = 0;
                 sum_imag = 0;
             }
-        }
-        else
-        {
+        } else {
             AD5933_WriteFunction(AD5933_FUNCTION_REPEAT_FREQ);
         }
     }
@@ -502,12 +455,10 @@ static AD5933_Status AD5933_CallbackImpedance(void)
  * 
  * @return The (new) AD5933 status
  */
-static AD5933_Status AD5933_CallbackCalibrate(void)
-{
+static AD5933_Status AD5933_CallbackCalibrate(void) {
     uint8_t dev_status = AD5933_ReadStatus();
     
-    if(dev_status & AD5933_STATUS_VALID_IMPEDANCE)
-    {
+    if(dev_status & AD5933_STATUS_VALID_IMPEDANCE) {
         int16_t tmp_real, tmp_imag;
         AD5933_Read16(AD5933_REAL_H_ADDR, (uint16_t *)&tmp_real);
         AD5933_Read16(AD5933_IMAG_H_ADDR, (uint16_t *)&tmp_imag);
@@ -515,23 +466,18 @@ static AD5933_Status AD5933_CallbackCalibrate(void)
         sum_imag += tmp_imag;
         avg_count++;
         
-        if(avg_count == AD5933_CALIB_AVERAGES)
-        {
+        if(avg_count == AD5933_CALIB_AVERAGES) {
             uint32_t range = sweep_count;
-            if(dev_status & AD5933_STATUS_SWEEP_COMPLETE)
-            {
+            if(dev_status & AD5933_STATUS_SWEEP_COMPLETE) {
                 // Second point measured
                 pGainData->point2[range].Real = sum_real / AD5933_CALIB_AVERAGES;
                 pGainData->point2[range].Imag = sum_imag / AD5933_CALIB_AVERAGES;
-            }
-            else
-            {
+            } else {
                 // First point measured
                 pGainData->point1[range].Real = sum_real / AD5933_CALIB_AVERAGES;
                 pGainData->point1[range].Imag = sum_imag / AD5933_CALIB_AVERAGES;
                 
-                if(pGainData->is_2point)
-                {
+                if(pGainData->is_2point) {
                     AD5933_WriteFunction(AD5933_FUNCTION_INCREMENT_FREQ);
                     avg_count = 0;
                     sum_real = 0;
@@ -542,25 +488,19 @@ static AD5933_Status AD5933_CallbackCalibrate(void)
             
             // Current clock range finished, check for next one
             sweep_count = ++range;
-            if(range < AD5933_NUM_CLOCKS && pGainData->point1[range].Frequency != 0)
-            {
+            if(range < AD5933_NUM_CLOCKS && pGainData->point1[range].Frequency != 0) {
                 uint32_t step = 10;
-                if(pGainData->is_2point)
-                {
+                if(pGainData->is_2point) {
                     step = pGainData->point2[range].Frequency - pGainData->point1[range].Frequency;
                 }
                 AD5933_DoClockChange(pGainData->point1[range].Frequency, step, 1);
                 avg_count = 0;
                 sum_real = 0;
                 sum_imag = 0;
-            }
-            else
-            {
+            } else {
                 status = AD_FINISH_CALIB;
             }
-        }
-        else
-        {
+        } else {
             AD5933_WriteFunction(AD5933_FUNCTION_REPEAT_FREQ);
         }
     }
@@ -573,16 +513,14 @@ static AD5933_Status AD5933_CallbackCalibrate(void)
 /**
  * Gets the current driver status.
  */
-AD5933_Status AD5933_GetStatus(void)
-{
+AD5933_Status AD5933_GetStatus(void) {
     return status;
 }
 
 /**
  * Gets a value indicating whether the driver is busy or can start a new measurement.
  */
-uint8_t AD5933_IsBusy(void)
-{
+uint8_t AD5933_IsBusy(void) {
     AD5933_Status tmp = status;
     return (tmp != AD_FINISH_CALIB &&
             tmp != AD_FINISH_TEMP &&
@@ -597,8 +535,7 @@ uint8_t AD5933_IsBusy(void)
  * @param tim Pointer to a timer handle structure that is to be used for the external clock source
  * @return `AD_OK`
  */
-AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c, TIM_HandleTypeDef *tim)
-{
+AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c, TIM_HandleTypeDef *tim) {
     GPIO_InitTypeDef init;
     
     assert_param(i2c != NULL);
@@ -642,8 +579,7 @@ AD5933_Error AD5933_Init(I2C_HandleTypeDef *i2c, TIM_HandleTypeDef *tim)
  * 
  * @return `AD_OK`
  */
-AD5933_Error AD5933_Reset(void)
-{
+AD5933_Error AD5933_Reset(void) {
     assert(status != AD_UNINIT);
     
     // Reset first (low byte) and then put in standby mode
@@ -673,8 +609,7 @@ AD5933_Error AD5933_Reset(void)
  * @return {@link AD5933_Error} code
  */
 AD5933_Error AD5933_MeasureImpedance(const AD5933_Sweep *sweep, const AD5933_RangeSettings *range,
-        AD5933_ImpedanceData *buffer)
-{
+        AD5933_ImpedanceData *buffer) {
     uint16_t data;
     AD5933_Error ret;
     
@@ -683,14 +618,12 @@ AD5933_Error AD5933_MeasureImpedance(const AD5933_Sweep *sweep, const AD5933_Ran
     assert_param(range != NULL);
     assert(status != AD_UNINIT);
     
-    if(AD5933_IsBusy())
-    {
+    if(AD5933_IsBusy()) {
         return AD_BUSY;
     }
     
     // Although a frequency increment of 0 would be valid for the AD5933, it doesn't make much sense
-    if(sweep->Freq_Increment == 0 || sweep->Num_Increments > AD5933_MAX_NUM_INCREMENTS)
-    {
+    if(sweep->Freq_Increment == 0 || sweep->Num_Increments > AD5933_MAX_NUM_INCREMENTS) {
         return AD_ERROR;
     }
     
@@ -700,8 +633,7 @@ AD5933_Error AD5933_MeasureImpedance(const AD5933_Sweep *sweep, const AD5933_Ran
     data = sweep->Settling_Cycles | sweep->Settling_Mult;
     ret = AD5933_StartMeasurement(range, sweep->Start_Freq, sweep->Freq_Increment, sweep->Num_Increments, data);
     
-    if(ret != AD_ERROR)
-    {
+    if(ret != AD_ERROR) {
         status = AD_MEASURE_IMPEDANCE;
         
 #ifdef AD5933_LED_USE
@@ -714,8 +646,7 @@ AD5933_Error AD5933_MeasureImpedance(const AD5933_Sweep *sweep, const AD5933_Ran
 /**
  * Gets the number of data points already measured. This value only has meaning if a sweep is running.
  */
-uint16_t AD5933_GetSweepCount(void)
-{
+uint16_t AD5933_GetSweepCount(void) {
     return sweep_count;
 }
 
@@ -725,13 +656,11 @@ uint16_t AD5933_GetSweepCount(void)
  * @param destination The address where the temperature is written to
  * @return {@link AD5933_Error} code
  */
-AD5933_Error AD5933_MeasureTemperature(float *destination)
-{
+AD5933_Error AD5933_MeasureTemperature(float *destination) {
     assert_param(destination != NULL);
     assert(status != AD_UNINIT);
     
-    if(AD5933_IsBusy())
-    {
+    if(AD5933_IsBusy()) {
         return AD_BUSY;
     }
     
@@ -757,8 +686,7 @@ AD5933_Error AD5933_MeasureTemperature(float *destination)
  * @return {@link AD5933_Error} code
  */
 AD5933_Error AD5933_Calibrate(const AD5933_CalibrationSpec *cal, const AD5933_RangeSettings *range,
-        AD5933_GainFactorData *data)
-{
+        AD5933_GainFactorData *data) {
     AD5933_Error ret = AD_ERROR;
     // Frequency limits for the different clock ranges, from low to high
     const uint32_t limits[AD5933_NUM_CLOCKS + 1] = {
@@ -774,12 +702,10 @@ AD5933_Error AD5933_Calibrate(const AD5933_CalibrationSpec *cal, const AD5933_Ra
     assert_param(data != NULL);
     assert(status != AD_UNINIT);
     
-    if(AD5933_IsBusy())
-    {
+    if(AD5933_IsBusy()) {
         return AD_BUSY;
     }
-    if(cal->is_2point && cal->freq2 <= cal->freq1)
-    {
+    if(cal->is_2point && cal->freq2 <= cal->freq1) {
         return AD_ERROR;
     }
     
@@ -787,36 +713,27 @@ AD5933_Error AD5933_Calibrate(const AD5933_CalibrationSpec *cal, const AD5933_Ra
     data->impedance = cal->impedance;
     data->is_2point = cal->is_2point;
     
-    for(uint32_t j = 0; j < AD5933_NUM_CLOCKS; j++)
-    {
+    for(uint32_t j = 0; j < AD5933_NUM_CLOCKS; j++) {
         // Check if clock range and sweep range intersect
-        if(cal->freq1 < limits[j + 1] && cal->freq2 >= limits[j])
-        {
+        if(cal->freq1 < limits[j + 1] && cal->freq2 >= limits[j]) {
             // limits[j] is the lower, limits[j + 1] the upper limit of the current range
             uint32_t lower = (cal->freq1 < limits[j] ? limits[j] : cal->freq1);
             uint32_t upper = (cal->freq2 >= limits[j + 1] ? limits[j + 1] - 1 : cal->freq2);
-            if(cal->is_2point)
-            {
+            if(cal->is_2point) {
                 data->point1[j].Frequency = lower + ((upper - lower) >> 2);
                 data->point2[j].Frequency = upper - ((upper - lower) >> 2);
-            }
-            else
-            {
+            } else {
                 data->point1[j].Frequency = (upper + lower) >> 1;
                 data->point2[j].Frequency = 0;
             }
-        }
-        else
-        {
+        } else {
             data->point1[j].Frequency = 0;
             data->point2[j].Frequency = 0;
         }
     }
     
-    for(uint32_t j = 0; j < AD5933_NUM_CLOCKS; j++)
-    {
-        if(data->point1[j].Frequency)
-        {
+    for(uint32_t j = 0; j < AD5933_NUM_CLOCKS; j++) {
+        if(data->point1[j].Frequency) {
             ret = AD5933_StartMeasurement(range, data->point1[j].Frequency,
                     (data->is_2point ? data->point2[j].Frequency - data->point1[j].Frequency : 10), 1, 10);
             sweep_count = j;
@@ -824,8 +741,7 @@ AD5933_Error AD5933_Calibrate(const AD5933_CalibrationSpec *cal, const AD5933_Ra
         }
     }
     
-    if(ret != AD_ERROR)
-    {
+    if(ret != AD_ERROR) {
         status = AD_CALIBRATE;
     }
     return ret;
@@ -836,17 +752,13 @@ AD5933_Error AD5933_Calibrate(const AD5933_CalibrationSpec *cal, const AD5933_Ra
  * 
  * @return The (new) AD5933 status
  */
-AD5933_Status AD5933_TimerCallback(void)
-{
-    switch(status)
-    {
+AD5933_Status AD5933_TimerCallback(void) {
+    switch(status) {
         case AD_MEASURE_IMPEDANCE:
         case AD_MEASURE_IMPEDANCE_AUTORANGE:
         case AD_CALIBRATE:
-            if(wait_coupl)
-            {
-                if(HAL_GetTick() - wait_tick > wait_coupl)
-                {
+            if(wait_coupl) {
+                if(HAL_GetTick() - wait_tick > wait_coupl) {
                     wait_coupl = 0;
                     HAL_GPIO_WritePin(AD5933_COUPLING_GPIO_PORT, AD5933_COUPLING_GPIO_PIN, GPIO_PIN_SET);
                     
@@ -861,8 +773,7 @@ AD5933_Status AD5933_TimerCallback(void)
     }
     
     // TODO handle autoranging
-    switch(status)
-    {
+    switch(status) {
         case AD_UNINIT:
         case AD_IDLE:
         case AD_FINISH_CALIB:
@@ -898,18 +809,15 @@ AD5933_Status AD5933_TimerCallback(void)
  * @param data The measurement data to calculate the gain factor from
  * @param gf Pointer to a gain factor structure to be populated
  */
-void AD5933_CalculateGainFactor(const AD5933_GainFactorData *data, AD5933_GainFactor *gf)
-{
+void AD5933_CalculateGainFactor(const AD5933_GainFactorData *data, AD5933_GainFactor *gf) {
     gf->is_2point = data->is_2point;
     
-    for(uint32_t j = 0; j < AD5933_NUM_CLOCKS; j++)
-    {
-        if(data->point1[j].Frequency == 0)
-        {
+    for(uint32_t j = 0; j < AD5933_NUM_CLOCKS; j++) {
+        if(data->point1[j].Frequency == 0) {
             gf->ranges[j].freq1 = NAN;
             continue;
         }
-
+        
         // Gain factor is calculated by (Magnitude * Impedance), with Magnitude being sqrt(Real^2 + Imag^2)
         float magnitude = hypotf(data->point1[j].Real, data->point1[j].Imag);
         float gain2;
@@ -920,8 +828,7 @@ void AD5933_CalculateGainFactor(const AD5933_GainFactorData *data, AD5933_GainFa
         gf->ranges[j].offset = magnitude * (float)data->impedance;
         gf->ranges[j].phaseOffset = phase;
         
-        if(data->is_2point)
-        {
+        if(data->is_2point) {
             magnitude = hypotf(data->point2[j].Real, data->point2[j].Imag);
             gain2 = magnitude * (float)data->impedance;
             gf->ranges[j].slope =
@@ -933,9 +840,7 @@ void AD5933_CalculateGainFactor(const AD5933_GainFactorData *data, AD5933_GainFa
             else if(phase < -M_PI)
                 phase += M_TWOPI;
             gf->ranges[j].phaseSlope = phase / (data->point2[j].Frequency - data->point1[j].Frequency);
-        }
-        else
-        {
+        } else {
             gf->ranges[j].slope = 0.0f;
             gf->ranges[j].phaseSlope = 0.0f;
         }
@@ -949,15 +854,13 @@ void AD5933_CalculateGainFactor(const AD5933_GainFactorData *data, AD5933_GainFa
  * @param gain Gain factor structure to use
  * @return The magnitude of the impedance in Ohms
  */
-float AD5933_GetMagnitude(const AD5933_ImpedanceData *data, const AD5933_GainFactor *gain)
-{
+float AD5933_GetMagnitude(const AD5933_ImpedanceData *data, const AD5933_GainFactor *gain) {
     uint32_t range = AD5933_GetClockSource(data->Frequency);
     // Actual impedance is calculated by (Gain Factor / Magnitude), with Magnitude being sqrt(Real^2 + Imag^2)
     float magnitude = hypotf(data->Real, data->Imag);
     float gain_2point = gain->ranges[range].offset;
     
-    if(gain->is_2point)
-    {
+    if(gain->is_2point) {
         gain_2point += gain->ranges[range].slope * (data->Frequency - gain->ranges[range].freq1);
     }
     
@@ -971,14 +874,12 @@ float AD5933_GetMagnitude(const AD5933_ImpedanceData *data, const AD5933_GainFac
  * @param gain Gain factor structure to use
  * @return The phase in radians (in the range of -pi to +pi)
  */
-float AD5933_GetPhase(const AD5933_ImpedanceData *data, const AD5933_GainFactor *gain)
-{
+float AD5933_GetPhase(const AD5933_ImpedanceData *data, const AD5933_GainFactor *gain) {
     uint32_t range = AD5933_GetClockSource(data->Frequency);
     float phase = atan2f(data->Imag, data->Real);
     float phase_2point = gain->ranges[range].phaseOffset;
     
-    if(gain->is_2point)
-    {
+    if(gain->is_2point) {
         phase_2point += gain->ranges[range].phaseSlope * (data->Frequency - gain->ranges[range].freq1);
     }
     
@@ -999,8 +900,7 @@ float AD5933_GetPhase(const AD5933_ImpedanceData *data, const AD5933_GainFactor 
  * @param polar Pointer to a polar impedance structure
  * @param cart Pointer to a Cartesian structure to be populated
  */
-void AD5933_ConvertPolarToCartesian(const AD5933_ImpedancePolar *polar, AD5933_ImpedanceCartesian *cart)
-{
+void AD5933_ConvertPolarToCartesian(const AD5933_ImpedancePolar *polar, AD5933_ImpedanceCartesian *cart) {
     float real;
     float imag;
 #ifdef __GNUC__
@@ -1021,10 +921,8 @@ void AD5933_ConvertPolarToCartesian(const AD5933_ImpedancePolar *polar, AD5933_I
  * @param reg The voltage range register value
  * @return The corresponding output voltage in mV, or `0` for invalid values
  */
-uint16_t AD5933_GetVoltageFromRegister(uint16_t reg)
-{
-    switch(reg)
-    {
+uint16_t AD5933_GetVoltageFromRegister(uint16_t reg) {
+    switch(reg) {
         case AD5933_VOLTAGE_0_2:
             return 200;
         case AD5933_VOLTAGE_0_4:
@@ -1048,15 +946,13 @@ uint16_t AD5933_GetVoltageFromRegister(uint16_t reg)
  * @param range The specifications for PGA gain, voltage range, external attenuation and feedback resistor
  * @return {@link AD5933_Error} code
  */
-AD5933_Error AD5933_Debug_OutputFreq(uint32_t freq, const AD5933_RangeSettings *range)
-{
+AD5933_Error AD5933_Debug_OutputFreq(uint32_t freq, const AD5933_RangeSettings *range) {
     AD5933_Error ret;
     
     assert_param(range != NULL);
     assert(status != AD_UNINIT);
     
-    if(AD5933_IsBusy())
-    {
+    if(AD5933_IsBusy()) {
         return AD_BUSY;
     }
     

@@ -294,18 +294,14 @@ __ALIGN_BEGIN uint8_t USBD_VCP_CfgFSDesc[USB_VCP_CONFIG_DESC_SIZ] __ALIGN_END =
  * @param  cfgidx Configuration index (unused, VCP only has one configuration)
  * @return {@link USBD_Status} code
  */
-static uint8_t USBD_VCP_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx __attribute__((unused)))
-{
+static uint8_t USBD_VCP_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx __attribute__((unused))) {
     USBD_VCP_HandleTypeDef *hcdc;
     
     // Open IN and OUT endpoints
-    if(pdev->dev_speed == USBD_SPEED_HIGH)
-    {
+    if(pdev->dev_speed == USBD_SPEED_HIGH) {
         USBD_LL_OpenEP(pdev, VCP_IN_EP, USBD_EP_TYPE_BULK, VCP_DATA_HS_IN_PACKET_SIZE);
         USBD_LL_OpenEP(pdev, VCP_OUT_EP, USBD_EP_TYPE_BULK, VCP_DATA_HS_OUT_PACKET_SIZE);
-    }
-    else
-    {
+    } else {
         USBD_LL_OpenEP(pdev, VCP_IN_EP, USBD_EP_TYPE_BULK, VCP_DATA_FS_IN_PACKET_SIZE);
         USBD_LL_OpenEP(pdev, VCP_OUT_EP, USBD_EP_TYPE_BULK, VCP_DATA_FS_OUT_PACKET_SIZE);
     }
@@ -315,8 +311,7 @@ static uint8_t USBD_VCP_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx __attribut
     
     pdev->pClassData = USBD_malloc(sizeof(USBD_VCP_HandleTypeDef));
     
-    if(pdev->pClassData == NULL)
-    {
+    if(pdev->pClassData == NULL) {
         return USBD_FAIL;
     }
     
@@ -328,14 +323,11 @@ static uint8_t USBD_VCP_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx __attribut
     // Init Xfer states
     hcdc->TxState = 0;
     hcdc->RxState = 0;
-
+    
     // Prepare OUT endpoint to receive next packet
-    if(pdev->dev_speed == USBD_SPEED_HIGH)
-    {
+    if(pdev->dev_speed == USBD_SPEED_HIGH) {
         USBD_LL_PrepareReceive(pdev, VCP_OUT_EP, hcdc->RxBuffer, VCP_DATA_HS_OUT_PACKET_SIZE);
-    }
-    else
-    {
+    } else {
         USBD_LL_PrepareReceive(pdev, VCP_OUT_EP, hcdc->RxBuffer, VCP_DATA_FS_OUT_PACKET_SIZE);
     }
     
@@ -349,16 +341,14 @@ static uint8_t USBD_VCP_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx __attribut
  * @param  cfgidx Configuration index (unused, VCP only has one configuration)
  * @return {@link USBD_Status} code
  */
-static uint8_t USBD_VCP_DeInit(USBD_HandleTypeDef *pdev, uint8_t cfgidx __attribute__((unused)))
-{
+static uint8_t USBD_VCP_DeInit(USBD_HandleTypeDef *pdev, uint8_t cfgidx __attribute__((unused))) {
     // Close endpoints
     USBD_LL_CloseEP(pdev, VCP_IN_EP);
     USBD_LL_CloseEP(pdev, VCP_OUT_EP);
     USBD_LL_CloseEP(pdev, VCP_CMD_EP);
     
     // DeInit physical interface components
-    if(pdev->pClassData != NULL)
-    {
+    if(pdev->pClassData != NULL) {
         ((USBD_VCP_ItfTypeDef *)pdev->pUserData)->DeInit();
         USBD_free(pdev->pClassData);
         pdev->pClassData = NULL;
@@ -374,31 +364,23 @@ static uint8_t USBD_VCP_DeInit(USBD_HandleTypeDef *pdev, uint8_t cfgidx __attrib
  * @param  req USB requests
  * @return {@link USBD_Status} code
  */
-static uint8_t USBD_VCP_Setup(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req)
-{
+static uint8_t USBD_VCP_Setup(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req) {
     USBD_VCP_HandleTypeDef *hcdc = pdev->pClassData;
     
-    switch(req->bmRequest & USB_REQ_TYPE_MASK)
-    {
+    switch(req->bmRequest & USB_REQ_TYPE_MASK) {
         case USB_REQ_TYPE_CLASS:
-            if(req->wLength)
-            {
-                if(req->bmRequest & 0x80)
-                {
+            if(req->wLength) {
+                if(req->bmRequest & 0x80) {
                     ((USBD_VCP_ItfTypeDef *)pdev->pUserData)->
                             Control(req->bRequest, (uint8_t *)hcdc->data, req->wLength);
                     USBD_CtlSendData(pdev, (uint8_t *)hcdc->data, req->wLength);
-                }
-                else
-                {
+                } else {
                     hcdc->CmdOpCode = req->bRequest;
                     hcdc->CmdLength = req->wLength;
                     
                     USBD_CtlPrepareRx(pdev, (uint8_t *)hcdc->data, req->wLength);
                 }
-            }
-            else
-            {
+            } else {
                 ((USBD_VCP_ItfTypeDef *)pdev->pUserData)->Control(req->bRequest, NULL, 0);
             }
             break;
@@ -417,23 +399,18 @@ static uint8_t USBD_VCP_Setup(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *re
  * @param  epnum endpoint number
  * @return {@link USBD_Status} code
  */
-static uint8_t USBD_VCP_DataIn(USBD_HandleTypeDef *pdev, uint8_t epnum)
-{
+static uint8_t USBD_VCP_DataIn(USBD_HandleTypeDef *pdev, uint8_t epnum) {
     USBD_VCP_HandleTypeDef *hcdc = pdev->pClassData;
     
-    if(hcdc != NULL)
-    {
+    if(hcdc != NULL) {
         PCD_HandleTypeDef *hpcd = pdev->pData;
-        PCD_EPTypeDef *ep = &hpcd->IN_ep[epnum]; 
+        PCD_EPTypeDef *ep = &hpcd->IN_ep[epnum];
         
         // For transfers exactly a multiple of the packet size, we need to send a zero length packet to complete
-        if(ep->xfer_len && (ep->xfer_len / ep->maxpacket) * ep->maxpacket == ep->xfer_len)
-        {
+        if(ep->xfer_len && (ep->xfer_len / ep->maxpacket) * ep->maxpacket == ep->xfer_len) {
             ep->xfer_len = 0;
             USB_EPStartXfer(hpcd->Instance, ep, 0);
-        }
-        else
-        {
+        } else {
             hcdc->TxState = 0;
             
             // Call interface callback
@@ -441,9 +418,7 @@ static uint8_t USBD_VCP_DataIn(USBD_HandleTypeDef *pdev, uint8_t epnum)
         }
         
         return USBD_OK;
-    }
-    else
-    {
+    } else {
         return USBD_FAIL;
     }
 }
@@ -455,14 +430,12 @@ static uint8_t USBD_VCP_DataIn(USBD_HandleTypeDef *pdev, uint8_t epnum)
  * @param  epnum endpoint number
  * @return {@link USBD_Status} code
  */
-static uint8_t USBD_VCP_DataOut(USBD_HandleTypeDef *pdev, uint8_t epnum)
-{
+static uint8_t USBD_VCP_DataOut(USBD_HandleTypeDef *pdev, uint8_t epnum) {
     USBD_VCP_HandleTypeDef *hcdc = pdev->pClassData;
     
     // USB data will be immediately processed, this allow next USB traffic being NAKed till
     // the end of the application Xfer
-    if(hcdc != NULL)
-    {
+    if(hcdc != NULL) {
         hcdc->RxLength = USBD_LL_GetRxDataSize(pdev, epnum);
         
         // Call interface callback
@@ -470,10 +443,8 @@ static uint8_t USBD_VCP_DataOut(USBD_HandleTypeDef *pdev, uint8_t epnum)
         
         return USBD_OK;
     }
-    else
-    {
-        return USBD_FAIL;
-    }
+    
+    return USBD_FAIL;
 }
 
 /**
@@ -482,12 +453,10 @@ static uint8_t USBD_VCP_DataOut(USBD_HandleTypeDef *pdev, uint8_t epnum)
  * @param  pdev device instance
  * @return {@link USBD_Status} code
  */
-static uint8_t USBD_VCP_EP0_RxReady(USBD_HandleTypeDef *pdev)
-{
+static uint8_t USBD_VCP_EP0_RxReady(USBD_HandleTypeDef *pdev) {
     USBD_VCP_HandleTypeDef *hcdc = pdev->pClassData;
     
-    if((pdev->pUserData != NULL) && (hcdc->CmdOpCode != 0xFF))
-    {
+    if((pdev->pUserData != NULL ) && (hcdc->CmdOpCode != 0xFF)) {
         ((USBD_VCP_ItfTypeDef *)pdev->pUserData)->Control(hcdc->CmdOpCode, (uint8_t *)hcdc->data, hcdc->CmdLength);
         hcdc->CmdOpCode = 0xFF;
     }
@@ -500,8 +469,7 @@ static uint8_t USBD_VCP_EP0_RxReady(USBD_HandleTypeDef *pdev)
  * @param  length pointer data length
  * @return pointer to descriptor buffer
  */
-static uint8_t *USBD_VCP_GetFSCfgDesc(uint16_t *length)
-{
+static uint8_t *USBD_VCP_GetFSCfgDesc(uint16_t *length) {
     *length = sizeof(USBD_VCP_CfgFSDesc);
     return USBD_VCP_CfgFSDesc;
 }
@@ -512,8 +480,7 @@ static uint8_t *USBD_VCP_GetFSCfgDesc(uint16_t *length)
  * @param  length pointer data length
  * @return pointer to descriptor buffer
  */
-static uint8_t *USBD_VCP_GetHSCfgDesc(uint16_t *length)
-{
+static uint8_t *USBD_VCP_GetHSCfgDesc(uint16_t *length) {
     *length = sizeof(USBD_VCP_CfgHSDesc);
     return USBD_VCP_CfgHSDesc;
 }
@@ -524,8 +491,7 @@ static uint8_t *USBD_VCP_GetHSCfgDesc(uint16_t *length)
  * @param  length pointer data length
  * @return pointer to descriptor buffer
  */
-static uint8_t *USBD_VCP_GetDeviceQualifierDescriptor(uint16_t *length)
-{
+static uint8_t *USBD_VCP_GetDeviceQualifierDescriptor(uint16_t *length) {
     *length = sizeof(USBD_VCP_DeviceQualifierDesc);
     return USBD_VCP_DeviceQualifierDesc;
 }
@@ -537,10 +503,8 @@ static uint8_t *USBD_VCP_GetDeviceQualifierDescriptor(uint16_t *length)
  * @param  fops CD  Interface callback
  * @return `USBD_Status` code
  */
-uint8_t USBD_VCP_RegisterInterface(USBD_HandleTypeDef *pdev, USBD_VCP_ItfTypeDef *fops)
-{
-    if(fops != NULL)
-    {
+uint8_t USBD_VCP_RegisterInterface(USBD_HandleTypeDef *pdev, USBD_VCP_ItfTypeDef *fops) {
+    if(fops != NULL) {
         pdev->pUserData = fops;
         return USBD_OK;
     }
@@ -556,8 +520,7 @@ uint8_t USBD_VCP_RegisterInterface(USBD_HandleTypeDef *pdev, USBD_VCP_ItfTypeDef
  * @param  length Tx buffer length
  * @return `USBD_Status` code
  */
-uint8_t USBD_VCP_SetTxBuffer(USBD_HandleTypeDef *pdev, uint8_t *pbuff, uint16_t length)
-{
+uint8_t USBD_VCP_SetTxBuffer(USBD_HandleTypeDef *pdev, uint8_t *pbuff, uint16_t length) {
     USBD_VCP_HandleTypeDef *hcdc = pdev->pClassData;
     
     hcdc->TxBuffer = pbuff;
@@ -573,8 +536,7 @@ uint8_t USBD_VCP_SetTxBuffer(USBD_HandleTypeDef *pdev, uint8_t *pbuff, uint16_t 
  * @param  pbuff Rx Buffer
  * @return `USBD_Status` code
  */
-uint8_t USBD_VCP_SetRxBuffer(USBD_HandleTypeDef *pdev, uint8_t *pbuff)
-{
+uint8_t USBD_VCP_SetRxBuffer(USBD_HandleTypeDef *pdev, uint8_t *pbuff) {
     USBD_VCP_HandleTypeDef *hcdc = pdev->pClassData;
     
     hcdc->RxBuffer = pbuff;
@@ -588,17 +550,14 @@ uint8_t USBD_VCP_SetRxBuffer(USBD_HandleTypeDef *pdev, uint8_t *pbuff)
  * @param  pdev device instance
  * @return `USBD_Status` code
  */
-uint8_t USBD_VCP_TransmitPacket(USBD_HandleTypeDef *pdev)
-{
+uint8_t USBD_VCP_TransmitPacket(USBD_HandleTypeDef *pdev) {
     USBD_VCP_HandleTypeDef *hcdc = pdev->pClassData;
     
-    if(hcdc == NULL)
-    {
+    if(hcdc == NULL) {
         return USBD_FAIL;
     }
     
-    if(hcdc->TxState == 0)
-    {
+    if(hcdc->TxState == 0) {
         // Transmit next packet
         USBD_LL_Transmit(pdev, VCP_IN_EP, hcdc->TxBuffer, hcdc->TxLength);
         
@@ -606,10 +565,8 @@ uint8_t USBD_VCP_TransmitPacket(USBD_HandleTypeDef *pdev)
         hcdc->TxState = 1;
         return USBD_OK;
     }
-    else
-    {
-        return USBD_BUSY;
-    }
+    
+    return USBD_BUSY;
 }
 
 /**
@@ -618,22 +575,17 @@ uint8_t USBD_VCP_TransmitPacket(USBD_HandleTypeDef *pdev)
  * @param  pdev device instance
  * @return `USBD_Status` code
  */
-uint8_t USBD_VCP_ReceivePacket(USBD_HandleTypeDef *pdev)
-{
+uint8_t USBD_VCP_ReceivePacket(USBD_HandleTypeDef *pdev) {
     USBD_VCP_HandleTypeDef *hcdc = pdev->pClassData;
     
-    if(hcdc == NULL)
-    {
+    if(hcdc == NULL) {
         return USBD_FAIL;
     }
-
+    
     // Prepare OUT endpoint to receive next packet
-    if(pdev->dev_speed == USBD_SPEED_HIGH)
-    {
+    if(pdev->dev_speed == USBD_SPEED_HIGH) {
         USBD_LL_PrepareReceive(pdev, VCP_OUT_EP, hcdc->RxBuffer, VCP_DATA_HS_OUT_PACKET_SIZE);
-    }
-    else
-    {
+    } else {
         USBD_LL_PrepareReceive(pdev, VCP_OUT_EP, hcdc->RxBuffer, VCP_DATA_FS_OUT_PACKET_SIZE);
     }
     

@@ -51,8 +51,7 @@ void Console_ProcessLine(Console_Interface *itf, char *str);
 uint32_t Console_GetFormat(void);
 void Console_SetFormat(uint32_t spec);
 
-__STATIC_INLINE uint32_t max(uint32_t left, uint32_t right)
-{
+__STATIC_INLINE uint32_t max(uint32_t left, uint32_t right) {
     return (left > right ? left : right);
 }
 

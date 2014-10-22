@@ -15,11 +15,9 @@
  * 
  * @param hi2c I2C handle
  */
-void HAL_I2C_MspInit(I2C_HandleTypeDef* hi2c)
-{
+void HAL_I2C_MspInit(I2C_HandleTypeDef* hi2c) {
     GPIO_InitTypeDef GPIO_InitStruct;
-    if(hi2c->Instance == I2C1)
-    {
+    if(hi2c->Instance == I2C1) {
         __I2C1_CLK_ENABLE();
         
         /*
@@ -45,10 +43,8 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* hi2c)
  * 
  * @param hi2c I2C handle
  */
-void HAL_I2C_MspDeInit(I2C_HandleTypeDef* hi2c)
-{
-    if(hi2c->Instance == I2C1)
-    {
+void HAL_I2C_MspDeInit(I2C_HandleTypeDef* hi2c) {
+    if(hi2c->Instance == I2C1) {
         __I2C1_CLK_DISABLE();
         HAL_GPIO_DeInit(GPIOB, GPIO_PIN_6 | GPIO_PIN_9);
         NVIC_DisableIRQ(I2C1_EV_IRQn);
@@ -60,11 +56,9 @@ void HAL_I2C_MspDeInit(I2C_HandleTypeDef* hi2c)
  * 
  * @param hspi SPI handle
  */
-void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
-{
+void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi) {
     GPIO_InitTypeDef GPIO_InitStruct;
-    if(hspi->Instance == SPI3)
-    {
+    if(hspi->Instance == SPI3) {
         __SPI3_CLK_ENABLE();
         
         /*
@@ -91,10 +85,8 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
  * 
  * @param hspi SPI handle
  */
-void HAL_SPI_MspDeInit(SPI_HandleTypeDef* hspi)
-{
-    if(hspi->Instance == SPI3)
-    {
+void HAL_SPI_MspDeInit(SPI_HandleTypeDef* hspi) {
+    if(hspi->Instance == SPI3) {
         __SPI3_CLK_DISABLE();
         HAL_GPIO_DeInit(GPIOD, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2);
         HAL_GPIO_DeInit(GPIOC, GPIO_PIN_10 | GPIO_PIN_11 | GPIO_PIN_12);
@@ -107,17 +99,14 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef* hspi)
  * 
  * @param htim TIM handle
  */
-void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim)
-{
+void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim) {
     GPIO_InitTypeDef GPIO_InitStruct;
-    if(htim->Instance == TIM3)
-    {
+    if(htim->Instance == TIM3) {
         __TIM3_CLK_ENABLE();
         HAL_NVIC_SetPriority(TIM3_IRQn, 7, 0);
         NVIC_EnableIRQ(TIM3_IRQn);
-    }
-    else if(htim->Instance == TIM10)
-    {
+        
+    } else if(htim->Instance == TIM10) {
         __TIM10_CLK_ENABLE();
         
         /*
@@ -138,15 +127,12 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim)
  * 
  * @param htim TIM handle
  */
-void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* htim)
-{
-    if(htim->Instance == TIM3)
-    {
+void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* htim) {
+    if(htim->Instance == TIM3) {
         __TIM3_CLK_DISABLE();
         NVIC_DisableIRQ(TIM3_IRQn);
-    }
-    else if(htim->Instance == TIM10)
-    {
+        
+    } else if(htim->Instance == TIM10) {
         __TIM10_CLK_DISABLE();
         HAL_GPIO_DeInit(GPIOB, GPIO_PIN_8);
     }

@@ -155,6 +155,7 @@ static Buffer board_read_data = {
 static Console_Interface *interface = NULL;
 
 // Console definition
+//! This is the main help text
 static String strHelp = {
     .data = NULL,
     .length = 0
@@ -206,8 +207,7 @@ static const Console_Arg argsBoardSet[] = {
 /**
  * Sets the main help string and fills the help topics array.
  */
-static void Console_InitHelp(void)
-{
+static void Console_InitHelp(void) {
     // Defined in helptext.asm
     extern const char helptext_start;
     extern const char helptext_end;
@@ -218,8 +218,7 @@ static void Console_InitHelp(void)
     const char *help;
     String *prev = NULL;
     
-    if(strHelp.data != NULL)
-    {
+    if(strHelp.data != NULL) {
         // If Console_Init is called repeatedly, just do nothing.
         return;
     }
@@ -230,24 +229,21 @@ static void Console_InitHelp(void)
     strHelp.length = help - strHelp.data;
     
     // Look for specific help messages
-    while((help = strstr(help, topic)) != NULL)
-    {
-        if(prev != NULL)
-        {
+    while((help = strstr(help, topic)) != NULL ) {
+        if(prev != NULL) {
             prev->length = help - prev->data + 2;
             prev = NULL;
         }
         
         help += topicLen;
         const char *tmp = strchr(help, ':');
-        if(tmp == NULL)
+        if(tmp == NULL) {
             break;
+        }
         
-        for(uint32_t j = 0; j < NUMEL(txtHelpTopics); j++)
-        {
+        for(uint32_t j = 0; j < NUMEL(txtHelpTopics); j++) {
             uint32_t len = max(strlen(txtHelpTopics[j].cmd), tmp - help);
-            if(strncmp(help, txtHelpTopics[j].cmd, len) == 0)
-            {
+            if(strncmp(help, txtHelpTopics[j].cmd, len) == 0) {
                 prev = &txtHelpTopics[j].text;
                 prev->data = tmp + 3 /* ':' + line break */;
                 break;
@@ -256,8 +252,7 @@ static void Console_InitHelp(void)
         // Here we could check for prev == NULL and warn about help topics without declaration in txtHelpTopics
     }
     // Terminate the last topic found
-    if(prev != NULL)
-    {
+    if(prev != NULL) {
         prev->length = &helptext_end - prev->data;
     }
 }
@@ -268,27 +263,22 @@ static void Console_InitHelp(void)
  * @param cmdline Pointer to the command line string
  * @return The number of arguments in the command line
  */
-static uint32_t Console_GetArguments(char *cmdline)
-{
+static uint32_t Console_GetArguments(char *cmdline) {
     uint32_t argc = 0;
     char *tmp;
     
-    if(*cmdline != ' ')
-    {
+    if(*cmdline != ' ') {
         argc = 1;
         arguments[0] = cmdline++;
     }
     
     // If we need support for quoted strings and escaping for spaces, this is the place to add it
-    while((tmp = strchr(cmdline, ' ')) != NULL)
-    {
+    while((tmp = strchr(cmdline, ' ')) != NULL ) {
         *tmp++ = 0;
-        while(*tmp == ' ')
-        {
+        while(*tmp == ' ') {
             tmp++;
         }
-        if(*tmp == 0)
-        {
+        if(*tmp == 0) {
             break;
         }
         cmdline = tmp;
@@ -308,12 +298,9 @@ static uint32_t Console_GetArguments(char *cmdline)
  * @param count The number of commands in the array
  * @return `1` if a processing function was called, `0` otherwise
  */
-static uint8_t Console_CallProcessor(uint32_t argc, char **argv, const Console_Command *cmds, uint32_t count)
-{
-    for(uint32_t j = 0; j < count; j++)
-    {
-        if(strcmp(argv[0], cmds[j].cmd) == 0)
-        {
+static uint8_t Console_CallProcessor(uint32_t argc, char **argv, const Console_Command *cmds, uint32_t count) {
+    for(uint32_t j = 0; j < count; j++) {
+        if(strcmp(argv[0], cmds[j].cmd) == 0) {
             cmds[j].handler(argc, argv);
             return 1;
         }
@@ -329,20 +316,16 @@ static uint8_t Console_CallProcessor(uint32_t argc, char **argv, const Console_C
  * @param count The number of arguments in the array
  * @return Pointer to the argument structure, or `NULL` if none was found
  */
-static const Console_Arg* Console_GetArg(const char *arg, const Console_Arg *args, uint32_t count)
-{
+static const Console_Arg* Console_GetArg(const char *arg, const Console_Arg *args, uint32_t count) {
     // If we need support for single letter arguments, this is the place to add it
-    if(arg[0] != '-' || arg[1] != '-')
-    {
-        return NULL;
+    if(arg[0] != '-' || arg[1] != '-') {
+        return NULL ;
     }
     arg += 2;
     
-    for(uint32_t j = 0; j < count; j++)
-    {
+    for(uint32_t j = 0; j < count; j++) {
         uint32_t len = max(strlen(args[j].arg), strchrnul(arg, '=') - arg);
-        if(strncmp(arg, args[j].arg, len) == 0)
-        {
+        if(strncmp(arg, args[j].arg, len) == 0) {
             return &args[j];
         }
     }
@@ -356,10 +339,8 @@ static const Console_Arg* Console_GetArg(const char *arg, const Console_Arg *arg
  * @param arg The argument to get the value from
  * @return Pointer to the substring containing the value (can be empty), or `NULL` in case there is no value
  */
-static const char* Console_GetArgValue(const char *arg)
-{
-    if(arg[0] != '-' || arg[0] != '-')
-    {
+static const char* Console_GetArgValue(const char *arg) {
+    if(arg[0] != '-' || arg[0] != '-') {
         return NULL;
     }
     
@@ -376,22 +357,17 @@ static const char* Console_GetArgValue(const char *arg)
  * @param str A string containing 'on', 'off' or some other, invalid value
  * @return a {@link Console_FlagValue}
  */
-static Console_FlagValue Console_GetFlag(const char *str)
-{
-    if(str == NULL)
-    {
+static Console_FlagValue Console_GetFlag(const char *str) {
+    if(str == NULL) {
         return CON_FLAG_INVALID;
-    }
-    else if(strcmp(str, txtOn) == 0)
-    {
+        
+    } else if(strcmp(str, txtOn) == 0) {
         return CON_FLAG_ON;
-    }
-    else if(strcmp(str, txtOff) == 0)
-    {
+        
+    } else if(strcmp(str, txtOff) == 0) {
         return CON_FLAG_OFF;
-    }
-    else
-    {
+        
+    } else {
         return CON_FLAG_INVALID;
     }
 }
@@ -400,10 +376,10 @@ static Console_FlagValue Console_GetFlag(const char *str)
  * Inline wrapper for {@link Console_Interface#Flush() interface->Flush()} to allow NULL pointer for back ends that
  * don't support it.
  */
-__STATIC_INLINE void Console_Flush(void)
-{
-    if(interface->Flush != NULL)
+__STATIC_INLINE void Console_Flush(void) {
+    if(interface->Flush != NULL) {
         interface->Flush();
+    }
 }
 
 // Command processing functions -----------------------------------------------
@@ -414,8 +390,7 @@ __STATIC_INLINE void Console_Flush(void)
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_Board(uint32_t argc, char **argv)
-{
+static void Console_Board(uint32_t argc, char **argv) {
     static const Console_Command cmds[] = {
         { "set", Console_BoardSet },
         { "get", Console_BoardGet },
@@ -430,13 +405,11 @@ static void Console_Board(uint32_t argc, char **argv)
         { "read", Console_BoardRead }
     };
     
-    if(argc == 1)
-    {
+    if(argc == 1) {
         interface->SendLine(txtErrNoSubcommand);
         interface->CommandFinish();
-    }
-    else if(!Console_CallProcessor(argc - 1, argv + 1, cmds, NUMEL(cmds)))
-    {
+        
+    } else if(!Console_CallProcessor(argc - 1, argv + 1, cmds, NUMEL(cmds))) {
         interface->SendLine(txtUnknownSubcommand);
         interface->CommandFinish();
     }
@@ -448,30 +421,26 @@ static void Console_Board(uint32_t argc, char **argv)
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_BoardCalibrate(uint32_t argc, char **argv)
-{
+static void Console_BoardCalibrate(uint32_t argc, char **argv) {
     // Arguments: ohms
     Board_Error err;
     const char *end;
     uint32_t ohms;
     
-    if(argc != 2)
-    {
+    if(argc != 2) {
         interface->SendLine(txtErrArgNum);
         interface->CommandFinish();
         return;
     }
     
     ohms = IntFromSiString(argv[1], &end);
-    if(end == NULL)
-    {
+    if(end == NULL) {
         interface->SendString(txtInvalidValue);
         interface->SendLine("ohms");
     }
-
+    
     err = Board_Calibrate(ohms);
-    switch(err)
-    {
+    switch(err) {
         case BOARD_OK:
             break;
         case BOARD_BUSY:
@@ -491,31 +460,26 @@ static void Console_BoardCalibrate(uint32_t argc, char **argv)
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_BoardGet(uint32_t argc, char **argv)
-{
+static void Console_BoardGet(uint32_t argc, char **argv) {
     // Arguments: option
     Console_ArgID option = CON_ARG_INVALID;
     char buf[16];
     
-    if(argc != 2)
-    {
+    if(argc != 2) {
         interface->SendLine(txtErrArgNum);
         interface->CommandFinish();
         return;
     }
     
-    for(uint32_t j = 0; j < NUMEL(argsBoardSet); j++)
-    {
-        if(strcmp(argsBoardSet[j].arg, argv[1]) == 0)
-        {
+    for(uint32_t j = 0; j < NUMEL(argsBoardSet); j++) {
+        if(strcmp(argsBoardSet[j].arg, argv[1]) == 0) {
             option = argsBoardSet[j].id;
             break;
         }
     }
     
     uint8_t autorange = Board_GetAutorange();
-    switch(option)
-    {
+    switch(option) {
         case CON_ARG_SET_AUTORANGE:
             interface->SendLine(autorange ? txtEnabled : txtDisabled);
             break;
@@ -531,12 +495,9 @@ static void Console_BoardGet(uint32_t argc, char **argv)
             break;
             
         case CON_ARG_SET_FEEDBACK:
-            if(autorange)
-            {
+            if(autorange) {
                 interface->SendLine(txtGetOnlyWhenAutorangeDisabled);
-            }
-            else
-            {
+            } else {
                 const AD5933_RangeSettings *range = Board_GetRangeSettings();
                 SiStringFromInt(buf, NUMEL(buf), range->Feedback_Value);
                 interface->SendLine(buf);
@@ -549,12 +510,9 @@ static void Console_BoardGet(uint32_t argc, char **argv)
             break;
             
         case CON_ARG_SET_GAIN:
-            if(autorange)
-            {
+            if(autorange) {
                 interface->SendLine(txtGetOnlyWhenAutorangeDisabled);
-            }
-            else
-            {
+            } else {
                 interface->SendLine(Board_GetRangeSettings()->PGA_Gain == AD5933_GAIN_1 ? txtDisabled : txtEnabled);
             }
             break;
@@ -580,12 +538,9 @@ static void Console_BoardGet(uint32_t argc, char **argv)
             break;
             
         case CON_ARG_SET_VOLTAGE:
-            if(autorange)
-            {
+            if(autorange) {
                 interface->SendLine(txtGetOnlyWhenAutorangeDisabled);
-            }
-            else
-            {
+            } else {
                 const AD5933_RangeSettings *range = Board_GetRangeSettings();
                 uint16_t voltage = AD5933_GetVoltageFromRegister(range->Voltage_Range);
                 snprintf(buf, NUMEL(buf), "%u", voltage / range->Attenuation);
@@ -594,8 +549,7 @@ static void Console_BoardGet(uint32_t argc, char **argv)
             break;
             
         default:
-            if(strcmp(argv[1], "all") == 0)
-            {
+            if(strcmp(argv[1], "all") == 0) {
                 // Send all relevant options, suitable for parsing
                 interface->SendString("start=");
                 snprintf(buf, NUMEL(buf), "%lu", Board_GetStartFreq());
@@ -620,8 +574,7 @@ static void Console_BoardGet(uint32_t argc, char **argv)
                 interface->SendString("autorange=");
                 interface->SendLine(autorange ? txtEnabled : txtDisabled);
                 
-                if(!autorange)
-                {
+                if(!autorange) {
                     const AD5933_RangeSettings *range = Board_GetRangeSettings();
                     
                     interface->SendString("gain=");
@@ -638,9 +591,7 @@ static void Console_BoardGet(uint32_t argc, char **argv)
                 }
                 
                 interface->SendLine(NULL);
-            }
-            else
-            {
+            } else {
                 interface->SendString(txtUnknownOption);
                 interface->SendLine(argv[1]);
             }
@@ -664,13 +615,11 @@ static void Console_BoardGet(uint32_t argc, char **argv)
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused)))
-{
+static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))) {
     const char *temp;
     char buf[32];
     
-    if(argc != 1)
-    {
+    if(argc != 1) {
         interface->SendLine(txtErrNoArgs);
         interface->CommandFinish();
         return;
@@ -679,8 +628,7 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     // Board info and AD5933 status
     interface->SendLine(THIS_IS_IMPY BOARD_VERSION BUILT_ON __DATE__ ", " __TIME__ ".\r\n");
     interface->SendString(txtAdStatus);
-    switch(AD5933_GetStatus())
-    {
+    switch(AD5933_GetStatus()) {
         case AD_IDLE:
         case AD_FINISH_CALIB:
         case AD_FINISH_TEMP:
@@ -726,8 +674,7 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     
     interface->SendString(txtAttenuationsAvailable);
     interface->SendString("(att) ");
-    for(uint32_t j = 0; j < NUMEL(board_config.attenuations) && board_config.attenuations[j]; j++)
-    {
+    for(uint32_t j = 0; j < NUMEL(board_config.attenuations) && board_config.attenuations[j]; j++) {
         SiStringFromInt(buf, NUMEL(buf), board_config.attenuations[j]);
         interface->SendString(buf);
         interface->SendString(" ");
@@ -736,8 +683,7 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     
     interface->SendString(txtFeedbackResistorValues);
     interface->SendString("(rfb) ");
-    for(uint32_t j = 0; j < NUMEL(board_config.feedback_resistors) && board_config.feedback_resistors[j]; j++)
-    {
+    for(uint32_t j = 0; j < NUMEL(board_config.feedback_resistors) && board_config.feedback_resistors[j]; j++) {
         SiStringFromInt(buf, NUMEL(buf), board_config.feedback_resistors[j]);
         interface->SendString(buf);
         interface->SendString(" ");
@@ -746,8 +692,7 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     
     interface->SendString(txtCalibrationValues);
     interface->SendString("(rca) ");
-    for(uint32_t j = 0; j < NUMEL(board_config.calibration_values) && board_config.calibration_values[j]; j++)
-    {
+    for(uint32_t j = 0; j < NUMEL(board_config.calibration_values) && board_config.calibration_values[j]; j++) {
         SiStringFromInt(buf, NUMEL(buf), board_config.calibration_values[j]);
         interface->SendString(buf);
         interface->SendString(" ");
@@ -755,31 +700,25 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     interface->SendLine(NULL);
     
     // USB info
-    if(board_config.peripherals.usbh)
-    {
+    if(board_config.peripherals.usbh) {
         interface->SendLine(NULL);
         // TODO print USB info
         interface->SendString(txtUSB);
         interface->SendString(": ");
         interface->SendLine(txtNotImplemented);
-    }
-    else
-    {
+    } else {
         interface->SendLine(NULL);
         interface->SendString(txtUSB);
         interface->SendLine(txtNotInstalled);
     }
     
     // Ethernet info
-    if(board_config.peripherals.eth)
-    {
+    if(board_config.peripherals.eth) {
         interface->SendLine(NULL);
         interface->SendString(txtEthernetInstalledMacAddr);
         StringFromMacAddress(buf, NUMEL(buf), &board_config.eth_mac[0]);
         interface->SendLine(buf);
-    }
-    else
-    {
+    } else {
         interface->SendLine(NULL);
         interface->SendString(txtEthernet);
         interface->SendLine(txtNotInstalled);
@@ -789,47 +728,40 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
     uint8_t memory_flag = board_config.peripherals.sram || board_config.peripherals.flash || board_has_eeprom;
     interface->SendLine(NULL);
     
-    if(board_has_eeprom)
-    {
+    if(board_has_eeprom) {
         interface->SendString(txtEEPROM);
         interface->SendString(txtInstalledSize);
         snprintf(buf, NUMEL(buf), "%d", EEPROM_SIZE);
         interface->SendLine(buf);
-    }
-    else if(memory_flag)
-    {
+        
+    } else if(memory_flag) {
         interface->SendString(txtEEPROM);
         interface->SendLine(txtNotInstalled);
     }
     
-    if(board_config.peripherals.sram)
-    {
+    if(board_config.peripherals.sram) {
         interface->SendString(txtSRAM);
         interface->SendString(txtInstalledSize);
         snprintf(buf, NUMEL(buf), "%lu", board_config.sram_size);
         interface->SendLine(buf);
-    }
-    else if(memory_flag)
-    {
+        
+    } else if(memory_flag) {
         interface->SendString(txtSRAM);
         interface->SendLine(txtNotInstalled);
     }
     
-    if(board_config.peripherals.flash)
-    {
+    if(board_config.peripherals.flash) {
         interface->SendString(txtFlash);
         interface->SendString(txtInstalledSize);
         snprintf(buf, NUMEL(buf), "%lu", board_config.flash_size);
         interface->SendLine(buf);
-    }
-    else if(memory_flag)
-    {
+        
+    } else if(memory_flag) {
         interface->SendString(txtFlash);
         interface->SendLine(txtNotInstalled);
     }
     
-    if(!memory_flag)
-    {
+    if(!memory_flag) {
         interface->SendLine(txtNoMemory);
     }
     
@@ -843,8 +775,7 @@ static void Console_BoardInfo(uint32_t argc, char **argv __attribute__((unused))
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_BoardMeasure(uint32_t argc, char **argv)
-{
+static void Console_BoardMeasure(uint32_t argc, char **argv) {
     // Arguments: port, freq
     AD5933_ImpedancePolar result;
     Board_Error ok;
@@ -854,16 +785,14 @@ static void Console_BoardMeasure(uint32_t argc, char **argv)
     char *buf;
     const uint32_t buflen = 64;
     
-    if(argc != 3)
-    {
+    if(argc != 3) {
         interface->SendLine(txtErrArgNum);
         interface->CommandFinish();
         return;
     }
     
     port = IntFromSiString(argv[1], &end);
-    if(end == NULL || port > PORT_MAX)
-    {
+    if(end == NULL || port > PORT_MAX) {
         interface->SendString(txtInvalidValue);
         interface->SendLine("port");
         interface->CommandFinish();
@@ -871,8 +800,7 @@ static void Console_BoardMeasure(uint32_t argc, char **argv)
     }
     
     freq = IntFromSiString(argv[2], &end);
-    if(end == NULL || freq < AD5933_FREQ_MIN || freq > AD5933_FREQ_MAX)
-    {
+    if(end == NULL || freq < AD5933_FREQ_MIN || freq > AD5933_FREQ_MAX) {
         interface->SendString(txtInvalidValue);
         interface->SendLine("freq");
         interface->CommandFinish();
@@ -881,19 +809,15 @@ static void Console_BoardMeasure(uint32_t argc, char **argv)
     
     ok = Board_MeasureSingleFrequency((uint8_t)port, freq, &result);
     
-    switch(ok)
-    {
+    switch(ok) {
         case BOARD_OK:
             interface->SendString(txtImpedance);
             buf = malloc(buflen);
-            if(buf != NULL)
-            {
+            if(buf != NULL) {
                 snprintf(buf, buflen, "%g < %g", result.Magnitude, result.Angle);
                 interface->SendLine(buf);
                 free(buf);
-            }
-            else
-            {
+            } else {
                 interface->SendLine("PANIC!");
             }
             break;
@@ -916,8 +840,7 @@ static void Console_BoardMeasure(uint32_t argc, char **argv)
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_BoardRead(uint32_t argc, char **argv)
-{
+static void Console_BoardRead(uint32_t argc, char **argv) {
     static const Console_Arg args[] = {
         { "format", CON_ARG_READ_FORMAT, CON_STRING },
         { "raw", CON_ARG_READ_RAW, CON_FLAG },
@@ -936,23 +859,20 @@ static void Console_BoardRead(uint32_t argc, char **argv)
     FreeBuffer(&board_read_data);
     
     // Check status, we also allow for incomplete data to be retrieved (status == AD_IDLE)
-    if(AD5933_IsBusy())
-    {
+    if(AD5933_IsBusy()) {
         interface->SendLine(txtNoReadWhileBusy);
         interface->CommandFinish();
         return;
     }
     
     // Process additional arguments, if any
-    for(uint32_t j = 1; j < argc; j++)
-    {
+    for(uint32_t j = 1; j < argc; j++) {
         const Console_Arg *arg = Console_GetArg(argv[j], args, NUMEL(args));
         const char *value = Console_GetArgValue(argv[j]);
         
         uint32_t intval = 0;
         
-        if(arg == NULL)
-        {
+        if(arg == NULL) {
             // Complain about unknown arguments and bail out
             interface->SendString(txtUnknownOption);
             interface->SendLine(argv[j]);
@@ -960,16 +880,12 @@ static void Console_BoardRead(uint32_t argc, char **argv)
             return;
         }
         
-        switch(arg->id)
-        {
+        switch(arg->id) {
             case CON_ARG_READ_FORMAT:
                 intval = Convert_FormatSpecFromString(value);
-                if(intval != 0)
-                {
+                if(intval != 0) {
                     format = intval;
-                }
-                else
-                {
+                } else {
                     interface->SendString(txtInvalidValue);
                     interface->SendLine(arg->arg);
                     interface->CommandFinish();
@@ -979,8 +895,7 @@ static void Console_BoardRead(uint32_t argc, char **argv)
                 
             case CON_ARG_READ_GAIN:
             case CON_ARG_READ_RAW:
-                if(mode != CON_ARG_INVALID)
-                {
+                if(mode != CON_ARG_INVALID) {
                     interface->SendLine(txtOnlyOneArg);
                     interface->CommandFinish();
                     return;
@@ -997,80 +912,63 @@ static void Console_BoardRead(uint32_t argc, char **argv)
         }
     }
     
-    switch(mode)
-    {
+    switch(mode) {
         default:
             // Get and assemble data to be sent
             data = Board_GetDataPolar(&count);
-            if(data == NULL)
-            {
+            if(data == NULL) {
                 err = txtNoData;
                 break;
             }
             
             board_read_data = Convert_ConvertPolar(format, data, count);
-            if(board_read_data.data != NULL)
-            {
+            if(board_read_data.data != NULL) {
                 interface->SendBuffer((uint8_t *)board_read_data.data, board_read_data.size);
-            }
-            else
-            {
+            } else {
                 err = txtOutOfMemory;
             }
             break;
             
         case CON_ARG_READ_GAIN:
             gain = Board_GetGainFactor();
-            if(gain == NULL)
-            {
+            if(gain == NULL) {
                 interface->SendLine(txtNotCalibrated);
                 break;
             }
-
+            
             board_read_data = Convert_ConvertGainFactor(gain);
-            if(board_read_data.data != NULL)
-            {
+            if(board_read_data.data != NULL) {
                 interface->SendBuffer((uint8_t *)board_read_data.data, board_read_data.size);
-            }
-            else
-            {
+            } else {
                 interface->SendLine(txtOutOfMemory);
             }
             break;
             
         case CON_ARG_READ_RAW:
             raw = Board_GetDataRaw(&count);
-            if(raw == NULL)
-            {
+            if(raw == NULL) {
                 err = txtNoRawData;
                 break;
             }
-
+            
             board_read_data = Convert_ConvertRaw(format, raw, count);
-            if(board_read_data.data != NULL)
-            {
+            if(board_read_data.data != NULL) {
                 interface->SendBuffer((uint8_t *)board_read_data.data, board_read_data.size);
-            }
-            else
-            {
+            } else {
                 err = txtOutOfMemory;
             }
             break;
     }
     
-    if(err != NULL)
-    {
-        if(format & FORMAT_FLAG_ASCII)
-        {
+    if(err != NULL) {
+        if(format & FORMAT_FLAG_ASCII) {
             interface->SendLine(err);
-        }
-        else
-        {
+        } else {
             count = 0;
             interface->SendBuffer((uint8_t *)&count, 4);
         }
     }
-
+    
     interface->CommandFinish();
 }
 
@@ -1083,38 +981,32 @@ static void Console_BoardRead(uint32_t argc, char **argv)
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_BoardSet(uint32_t argc, char **argv)
-{
-    if(argc == 1)
-    {
+static void Console_BoardSet(uint32_t argc, char **argv) {
+    if(argc == 1) {
         interface->SendLine(txtErrArgNum);
         interface->CommandFinish();
         return;
     }
     
-    for(uint32_t j = 1; j < argc; j++)
-    {
+    for(uint32_t j = 1; j < argc; j++) {
         const Console_Arg *arg = Console_GetArg(argv[j], argsBoardSet, NUMEL(argsBoardSet));
         const char *value = Console_GetArgValue(argv[j]);
         
         Console_FlagValue flag = CON_FLAG_INVALID;
         uint32_t intval = 0;
         
-        if(arg == NULL)
-        {
+        if(arg == NULL) {
             // Complain about unknown arguments but ignore otherwise
             interface->SendString(txtUnknownOption);
             interface->SendLine(argv[j]);
             continue;
         }
-
+        
         const char *end;
-        switch(arg->type)
-        {
+        switch(arg->type) {
             case CON_FLAG:
                 flag = Console_GetFlag(value);
-                if(flag == CON_FLAG_INVALID)
-                {
+                if(flag == CON_FLAG_INVALID) {
                     interface->SendString(txtInvalidValue);
                     interface->SendLine(arg->arg);
                     continue;
@@ -1123,8 +1015,7 @@ static void Console_BoardSet(uint32_t argc, char **argv)
                 
             case CON_INT:
                 intval = IntFromSiString(value, &end);
-                if(end == NULL)
-                {
+                if(end == NULL) {
                     interface->SendString(txtInvalidValue);
                     interface->SendLine(arg->arg);
                     continue;
@@ -1138,23 +1029,18 @@ static void Console_BoardSet(uint32_t argc, char **argv)
         
         const uint8_t autorange = Board_GetAutorange();
         Board_Error ok = BOARD_OK;
-        switch(arg->id)
-        {
+        switch(arg->id) {
             case CON_ARG_SET_AUTORANGE:
                 Board_SetAutorange(flag == CON_FLAG_ON);
-                if(AD5933_IsBusy())
-                {
+                if(AD5933_IsBusy()) {
                     interface->SendLine(txtEffectiveNextSweep);
                 }
                 break;
                 
             case CON_ARG_SET_AVG:
-                if((intval & ~0xFFFF) == 0)
-                {
+                if((intval & ~0xFFFF) == 0) {
                     ok = Board_SetAverages(intval);
-                }
-                else
-                {
+                } else {
                     ok = BOARD_ERROR;
                 }
                 break;
@@ -1164,38 +1050,29 @@ static void Console_BoardSet(uint32_t argc, char **argv)
                 break;
                 
             case CON_ARG_SET_FEEDBACK:
-                if(autorange)
-                {
+                if(autorange) {
                     interface->SendString(txtSetOnlyWhenAutorangeDisabled);
                     interface->SendLine(arg->arg);
-                }
-                else
-                {
+                } else {
                     ok = Board_SetFeedback(intval);
                 }
                 break;
                 
             case CON_ARG_SET_FORMAT:
                 intval = Convert_FormatSpecFromString(value);
-                if(intval != 0)
-                {
+                if(intval != 0) {
                     format_spec = intval;
                     MarkSettingsDirty();
-                }
-                else
-                {
+                } else {
                     ok = BOARD_ERROR;
                 }
                 break;
                 
             case CON_ARG_SET_GAIN:
-                if(autorange)
-                {
+                if(autorange) {
                     interface->SendString(txtSetOnlyWhenAutorangeDisabled);
                     interface->SendLine(arg->arg);
-                }
-                else
-                {
+                } else {
                     ok = Board_SetPGA(flag == CON_FLAG_ON);
                 }
                 break;
@@ -1203,8 +1080,7 @@ static void Console_BoardSet(uint32_t argc, char **argv)
             case CON_ARG_SET_SETTL:
                 intval = 1;
                 char *mult = strchr(value, 'x');
-                if(mult != NULL)
-                {
+                if(mult != NULL) {
                     *mult++ = 0;
                     intval = strtoul(mult, NULL, 10);
                 }
@@ -1224,13 +1100,10 @@ static void Console_BoardSet(uint32_t argc, char **argv)
                 break;
                 
             case CON_ARG_SET_VOLTAGE:
-                if(autorange)
-                {
+                if(autorange) {
                     interface->SendString(txtSetOnlyWhenAutorangeDisabled);
                     interface->SendLine(arg->arg);
-                }
-                else
-                {
+                } else {
                     ok = Board_SetVoltageRange(intval);
                 }
                 break;
@@ -1241,13 +1114,11 @@ static void Console_BoardSet(uint32_t argc, char **argv)
                 break;
         }
         
-        if(ok == BOARD_BUSY)
-        {
+        if(ok == BOARD_BUSY) {
             interface->SendString(txtSetOnlyWhenIdle);
             interface->SendLine(arg->arg);
-        }
-        else if(ok == BOARD_ERROR)
-        {
+            
+        } else if(ok == BOARD_ERROR) {
             interface->SendString(txtInvalidValue);
             interface->SendLine(arg->arg);
         }
@@ -1262,14 +1133,10 @@ static void Console_BoardSet(uint32_t argc, char **argv)
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_BoardStandby(uint32_t argc, char **argv __attribute__((unused)))
-{
-    if(argc == 1)
-    {
+static void Console_BoardStandby(uint32_t argc, char **argv __attribute__((unused))) {
+    if(argc == 1) {
         Board_Standby();
-    }
-    else
-    {
+    } else {
         interface->SendLine(txtErrNoArgs);
     }
     
@@ -1282,32 +1149,28 @@ static void Console_BoardStandby(uint32_t argc, char **argv __attribute__((unuse
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_BoardStart(uint32_t argc, char **argv)
-{
+static void Console_BoardStart(uint32_t argc, char **argv) {
     // Arguments: port
     Board_Error ok;
     uint32_t port;
     const char *end;
     
-    if(argc != 2)
-    {
+    if(argc != 2) {
         interface->SendLine(txtErrArgNum);
         interface->CommandFinish();
         return;
     }
     
     port = IntFromSiString(argv[1], &end);
-    if(end == NULL || port > PORT_MAX)
-    {
+    if(end == NULL || port > PORT_MAX) {
         interface->SendString(txtInvalidValue);
         interface->SendLine("port");
         interface->CommandFinish();
         return;
     }
-
+    
     ok = Board_StartSweep(port);
-    switch(ok)
-    {
+    switch(ok) {
         case BOARD_OK:
             interface->SendLine(txtOK);
             break;
@@ -1331,21 +1194,18 @@ static void Console_BoardStart(uint32_t argc, char **argv)
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_BoardStatus(uint32_t argc, char **argv __attribute__((unused)))
-{
+static void Console_BoardStatus(uint32_t argc, char **argv __attribute__((unused))) {
     Board_Status status;
     char buf[16];
     
-    if(argc != 1)
-    {
+    if(argc != 1) {
         interface->SendLine(txtErrNoArgs);
         interface->CommandFinish();
         return;
     }
     
     Board_GetStatus(&status);
-    switch(status.ad_status)
-    {
+    switch(status.ad_status) {
         case AD_MEASURE_IMPEDANCE:
         case AD_MEASURE_IMPEDANCE_AUTORANGE:
             // Point count
@@ -1365,8 +1225,7 @@ static void Console_BoardStatus(uint32_t argc, char **argv __attribute__((unused
         case AD_FINISH_TEMP:
         case AD_FINISH_CALIB:
             interface->SendLine(txtAdStatusIdle);
-            if(status.interrupted)
-            {
+            if(status.interrupted) {
                 interface->SendLine(txtLastInterrupted);
             }
             interface->SendLine(status.validData ? txtValidData : txtNoData);
@@ -1404,23 +1263,16 @@ static void Console_BoardStatus(uint32_t argc, char **argv __attribute__((unused
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_BoardStop(uint32_t argc, char **argv __attribute__((unused)))
-{
-    if(argc == 1)
-    {
+static void Console_BoardStop(uint32_t argc, char **argv __attribute__((unused))) {
+    if(argc == 1) {
         AD5933_Status status = AD5933_GetStatus();
-        if(status == AD_MEASURE_IMPEDANCE || status == AD_MEASURE_IMPEDANCE_AUTORANGE)
-        {
+        if(status == AD_MEASURE_IMPEDANCE || status == AD_MEASURE_IMPEDANCE_AUTORANGE) {
             Board_StopSweep();
             interface->SendLine(txtOK);
-        }
-        else
-        {
+        } else {
             interface->SendLine(txtAdStatusIdle);
         }
-    }
-    else
-    {
+    } else {
         interface->SendLine(txtErrNoArgs);
     }
     interface->CommandFinish();
@@ -1432,17 +1284,14 @@ static void Console_BoardStop(uint32_t argc, char **argv __attribute__((unused))
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_BoardTemp(uint32_t argc, char **argv __attribute__((unused)))
-{
-    if(argc != 1)
-    {
+static void Console_BoardTemp(uint32_t argc, char **argv __attribute__((unused))) {
+    if(argc != 1) {
         interface->SendLine(txtErrNoArgs);
         interface->CommandFinish();
         return;
     }
     
-    if(Board_MeasureTemperature(TEMP_AD5933) != BOARD_OK)
-    {
+    if(Board_MeasureTemperature(TEMP_AD5933) != BOARD_OK) {
         interface->SendLine(txtTempFail);
         interface->CommandFinish();
     }
@@ -1454,40 +1303,28 @@ static void Console_BoardTemp(uint32_t argc, char **argv __attribute__((unused))
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_Eth(uint32_t argc __attribute__((unused)), char **argv __attribute__((unused)))
-{
-    static const Console_Command cmds[] = {
-        { "set", Console_EthSet },
-        { "status", Console_EthStatus },
-        { "enable", Console_EthEnable },
-        { "disable", Console_EthDisable }
-    };
+static void Console_Eth(uint32_t argc __attribute__((unused)), char **argv __attribute__((unused))) {
+    static const Console_Command cmds[] = { { "set", Console_EthSet }, { "status", Console_EthStatus }, { "enable",
+            Console_EthEnable }, { "disable", Console_EthDisable } };
     
-    if(board_config.peripherals.eth)
-    {
-        if(argc == 1)
-        {
+    if(board_config.peripherals.eth) {
+        if(argc == 1) {
             interface->SendLine(txtErrNoSubcommand);
             interface->CommandFinish();
-        }
-        else if(!Console_CallProcessor(argc - 1, argv + 1, cmds, NUMEL(cmds)))
-        {
+            
+        } else if(!Console_CallProcessor(argc - 1, argv + 1, cmds, NUMEL(cmds))) {
             interface->SendLine(txtUnknownSubcommand);
             interface->CommandFinish();
         }
-    }
-    else
-    {
+    } else {
         interface->SendString(txtEthernet);
         interface->SendLine(txtNotInstalled);
         interface->CommandFinish();
     }
 }
 
-static void Console_EthDisable(uint32_t argc, char **argv __attribute__((unused)))
-{
-    if(argc != 1)
-    {
+static void Console_EthDisable(uint32_t argc, char **argv __attribute__((unused))) {
+    if(argc != 1) {
         interface->SendLine(txtErrNoArgs);
         interface->CommandFinish();
         return;
@@ -1497,10 +1334,8 @@ static void Console_EthDisable(uint32_t argc, char **argv __attribute__((unused)
     interface->CommandFinish();
 }
 
-static void Console_EthEnable(uint32_t argc, char **argv __attribute__((unused)))
-{
-    if(argc != 1)
-    {
+static void Console_EthEnable(uint32_t argc, char **argv __attribute__((unused))) {
+    if(argc != 1) {
         interface->SendLine(txtErrNoArgs);
         interface->CommandFinish();
         return;
@@ -1510,21 +1345,18 @@ static void Console_EthEnable(uint32_t argc, char **argv __attribute__((unused))
     interface->CommandFinish();
 }
 
-static void Console_EthSet(uint32_t argc, char **argv)
-{
+static void Console_EthSet(uint32_t argc, char **argv) {
     static const Console_Arg args[] = {
         { "dhcp", CON_ARG_SET_DHCP, CON_FLAG },
         { "ip", CON_ARG_SET_IP, CON_STRING }
     };
-
+    
     interface->SendLine(txtNotImplemented);
     interface->CommandFinish();
 }
 
-static void Console_EthStatus(uint32_t argc, char **argv __attribute__((unused)))
-{
-    if(argc != 1)
-    {
+static void Console_EthStatus(uint32_t argc, char **argv __attribute__((unused))) {
+    if(argc != 1) {
         interface->SendLine(txtErrNoArgs);
         interface->CommandFinish();
         return;
@@ -1540,8 +1372,7 @@ static void Console_EthStatus(uint32_t argc, char **argv __attribute__((unused))
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_Usb(uint32_t argc __attribute__((unused)), char **argv __attribute__((unused)))
-{
+static void Console_Usb(uint32_t argc __attribute__((unused)), char **argv __attribute__((unused))) {
     static const Console_Command cmds[] = {
         { "status", Console_UsbStatus },
         { "info", Console_UsbInfo },
@@ -1550,31 +1381,24 @@ static void Console_Usb(uint32_t argc __attribute__((unused)), char **argv __att
         { "ls", Console_UsbLs }
     };
     
-    if(board_config.peripherals.usbh)
-    {
-        if(argc == 1)
-        {
+    if(board_config.peripherals.usbh) {
+        if(argc == 1) {
             interface->SendLine(txtErrNoSubcommand);
             interface->CommandFinish();
-        }
-        else if(!Console_CallProcessor(argc - 1, argv + 1, cmds, NUMEL(cmds)))
-        {
+            
+        } else if(!Console_CallProcessor(argc - 1, argv + 1, cmds, NUMEL(cmds))) {
             interface->SendLine(txtUnknownSubcommand);
             interface->CommandFinish();
         }
-    }
-    else
-    {
+    } else {
         interface->SendString(txtUSB);
         interface->SendLine(txtNotInstalled);
         interface->CommandFinish();
     }
 }
 
-static void Console_UsbEject(uint32_t argc, char **argv __attribute__((unused)))
-{
-    if(argc != 1)
-    {
+static void Console_UsbEject(uint32_t argc, char **argv __attribute__((unused))) {
+    if(argc != 1) {
         interface->SendLine(txtErrNoArgs);
         interface->CommandFinish();
         return;
@@ -1584,10 +1408,8 @@ static void Console_UsbEject(uint32_t argc, char **argv __attribute__((unused)))
     interface->CommandFinish();
 }
 
-static void Console_UsbInfo(uint32_t argc, char **argv __attribute__((unused)))
-{
-    if(argc != 1)
-    {
+static void Console_UsbInfo(uint32_t argc, char **argv __attribute__((unused))) {
+    if(argc != 1) {
         interface->SendLine(txtErrNoArgs);
         interface->CommandFinish();
         return;
@@ -1597,10 +1419,8 @@ static void Console_UsbInfo(uint32_t argc, char **argv __attribute__((unused)))
     interface->CommandFinish();
 }
 
-static void Console_UsbLs(uint32_t argc, char **argv __attribute__((unused)))
-{
-    if(argc != 1)
-    {
+static void Console_UsbLs(uint32_t argc, char **argv __attribute__((unused))) {
+    if(argc != 1) {
         interface->SendLine(txtErrNoArgs);
         interface->CommandFinish();
         return;
@@ -1610,10 +1430,8 @@ static void Console_UsbLs(uint32_t argc, char **argv __attribute__((unused)))
     interface->CommandFinish();
 }
 
-static void Console_UsbStatus(uint32_t argc, char **argv __attribute__((unused)))
-{
-    if(argc != 1)
-    {
+static void Console_UsbStatus(uint32_t argc, char **argv __attribute__((unused))) {
+    if(argc != 1) {
         interface->SendLine(txtErrNoArgs);
         interface->CommandFinish();
         return;
@@ -1623,17 +1441,15 @@ static void Console_UsbStatus(uint32_t argc, char **argv __attribute__((unused))
     interface->CommandFinish();
 }
 
-static void Console_UsbWrite(uint32_t argc, char **argv)
-{
+static void Console_UsbWrite(uint32_t argc, char **argv) {
     // Arguments: file
     
-    if(argc != 2)
-    {
+    if(argc != 2) {
         interface->SendLine(txtErrArgNum);
         interface->CommandFinish();
         return;
     }
-
+    
     interface->SendLine(txtNotImplemented);
     interface->CommandFinish();
 }
@@ -1644,32 +1460,25 @@ static void Console_UsbWrite(uint32_t argc, char **argv)
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_Help(uint32_t argc, char **argv)
-{
+static void Console_Help(uint32_t argc, char **argv) {
     Console_HelpEntry *topic = NULL;
     
-    switch(argc)
-    {
+    switch(argc) {
         case 1:
             // Command without arguments, print usage
             interface->SendBuffer((uint8_t *)strHelp.data, strHelp.length);
             break;
         case 2:
             // Command with topic, look for help message
-            for(uint32_t j = 0; j < NUMEL(txtHelpTopics); j++)
-            {
-                if(strcmp(argv[1], txtHelpTopics[j].cmd) == 0)
-                {
+            for(uint32_t j = 0; j < NUMEL(txtHelpTopics); j++) {
+                if(strcmp(argv[1], txtHelpTopics[j].cmd) == 0) {
                     topic = &txtHelpTopics[j];
                     break;
                 }
             }
-            if(topic != NULL)
-            {
+            if(topic != NULL) {
                 interface->SendBuffer((const uint8_t *)topic->text.data, topic->text.length);
-            }
-            else
-            {
+            } else {
                 interface->SendLine(txtUnknownTopic);
             }
             break;
@@ -1688,8 +1497,7 @@ static void Console_Help(uint32_t argc, char **argv)
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_Setup(uint32_t argc, char **argv)
-{
+static void Console_Setup(uint32_t argc, char **argv) {
     static const Console_Arg cmds[] = {
         { "attenuation", CON_CMD_SETUP_ATTENUATIONS, CON_STRING },
         { "feedback", CON_CMD_SETUP_FEEDBACK, CON_STRING },
@@ -1709,105 +1517,84 @@ static void Console_Setup(uint32_t argc, char **argv)
     const char *end;
     
     // Every command has at least one argument
-    if(argc <= 2)
-    {
+    if(argc <= 2) {
         interface->SendLine(txtErrArgNum);
         interface->CommandFinish();
         return;
     }
     
-    for(uint32_t j = 0; j < NUMEL(cmds); j++)
-    {
-        if(strcmp(argv[1], cmds[j].arg) == 0)
-        {
+    for(uint32_t j = 0; j < NUMEL(cmds); j++) {
+        if(strcmp(argv[1], cmds[j].arg) == 0) {
             cmd = cmds[j].id;
             break;
         }
     }
     
-    switch(cmd)
-    {
+    switch(cmd) {
         case CON_CMD_SETUP_ATTENUATIONS:
-            if(argc > 2 + NUMEL(board_config.attenuations))
-            {
+            if(argc > 2 + NUMEL(board_config.attenuations)) {
                 err = txtErrArgNum;
                 break;
             }
-            for(uint32_t j = 2; j < argc; j++)
-            {
+            for(uint32_t j = 2; j < argc; j++) {
                 ints[intval++] = IntFromSiString(argv[j], &end);
-                if(end == NULL)
-                {
+                if(end == NULL) {
                     err = txtWrongNumber;
                     break;
                 }
             }
-            if(err == NULL)
-            {
-                for(uint32_t j = 0; j < NUMEL(board_config.attenuations); j++)
-                {
+            if(err == NULL) {
+                for(uint32_t j = 0; j < NUMEL(board_config.attenuations); j++) {
                     board_config.attenuations[j] = ints[j];
                 }
             }
             break;
             
         case CON_CMD_SETUP_FEEDBACK:
-            if(argc > 2 + NUMEL(board_config.feedback_resistors))
-            {
+            if(argc > 2 + NUMEL(board_config.feedback_resistors)) {
                 err = txtErrArgNum;
                 break;
             }
-            for(uint32_t j = 2; j < argc; j++)
-            {
+            for(uint32_t j = 2; j < argc; j++) {
                 ints[intval++] = IntFromSiString(argv[j], &end);
-                if(end == NULL)
-                {
+                if(end == NULL) {
                     err = txtWrongNumber;
                     break;
                 }
             }
-            if(err == NULL)
-            {
-                for(uint32_t j = 0; j < NUMEL(board_config.feedback_resistors); j++)
-                {
+            if(err == NULL) {
+                for(uint32_t j = 0; j < NUMEL(board_config.feedback_resistors); j++) {
                     board_config.feedback_resistors[j] = ints[j];
                 }
             }
             break;
             
         case CON_CMD_SETUP_CALIBRATION:
-            if(argc > 2 + NUMEL(board_config.calibration_values))
-            {
+            if(argc > 2 + NUMEL(board_config.calibration_values)) {
                 err = txtErrArgNum;
                 break;
             }
-            for(uint32_t j = 2; j < argc; j++)
-            {
+            for(uint32_t j = 2; j < argc; j++) {
                 ints[intval++] = IntFromSiString(argv[j], &end);
-                if(end == NULL)
-                {
+                if(end == NULL) {
                     err = txtWrongNumber;
                     break;
                 }
             }
-            if(err == NULL)
-            {
-                for(uint32_t j = 0; j < NUMEL(board_config.calibration_values); j++)
-                {
+            if(err == NULL) {
+                for(uint32_t j = 0; j < NUMEL(board_config.calibration_values); j++) {
                     board_config.calibration_values[j] = ints[j];
                 }
             }
             break;
             
         case CON_CMD_SETUP_COUPL:
-            if(argc != 3)
-            {
+            if(argc != 3) {
                 err = txtErrArgNum;
                 break;
             }
             intval = IntFromSiString(argv[2], &end);
-            if(end == NULL || intval > 1000)
-            {
+            if(end == NULL || intval > 1000) {
                 err = txtWrongTau;
                 break;
             }
@@ -1815,23 +1602,19 @@ static void Console_Setup(uint32_t argc, char **argv)
             break;
             
         case CON_CMD_SETUP_SRAM:
-            if(argc > 4)
-            {
+            if(argc > 4) {
                 err = txtErrArgNum;
                 break;
             }
             flag = Console_GetFlag(argv[2]);
-            switch(flag)
-            {
+            switch(flag) {
                 case CON_FLAG_ON:
-                    if(argc != 4)
-                    {
+                    if(argc != 4) {
                         err = txtErrArgNum;
                         break;
                     }
                     intval = IntFromSiString(argv[3], &end);
-                    if(end == NULL)
-                    {
+                    if(end == NULL) {
                         err = txtWrongNumber;
                         break;
                     }
@@ -1851,23 +1634,19 @@ static void Console_Setup(uint32_t argc, char **argv)
             break;
             
         case CON_CMD_SETUP_FLASH:
-            if(argc > 4)
-            {
+            if(argc > 4) {
                 err = txtErrArgNum;
                 break;
             }
             flag = Console_GetFlag(argv[2]);
-            switch(flag)
-            {
+            switch(flag) {
                 case CON_FLAG_ON:
-                    if(argc != 4)
-                    {
+                    if(argc != 4) {
                         err = txtErrArgNum;
                         break;
                     }
                     intval = IntFromSiString(argv[3], &end);
-                    if(end == NULL)
-                    {
+                    if(end == NULL) {
                         err = txtWrongNumber;
                         break;
                     }
@@ -1887,23 +1666,19 @@ static void Console_Setup(uint32_t argc, char **argv)
             break;
             
         case CON_CMD_SETUP_ETH:
-            if(argc > 4)
-            {
+            if(argc > 4) {
                 err = txtErrArgNum;
                 break;
             }
             flag = Console_GetFlag(argv[2]);
-            switch(flag)
-            {
+            switch(flag) {
                 case CON_FLAG_ON:
-                    if(argc != 4)
-                    {
+                    if(argc != 4) {
                         err = txtErrArgNum;
                         break;
                     }
                     uint8_t mac[NUMEL(board_config.eth_mac)];
-                    if(MacAddressFromString(argv[3], &mac[0]) < 0)
-                    {
+                    if(MacAddressFromString(argv[3], &mac[0]) < 0) {
                         err = txtWrongMac;
                         break;
                     }
@@ -1922,14 +1697,12 @@ static void Console_Setup(uint32_t argc, char **argv)
             break;
             
         case CON_CMD_SETUP_USBH:
-            if(argc != 3)
-            {
+            if(argc != 3) {
                 err = txtErrArgNum;
                 break;
             }
             flag = Console_GetFlag(argv[2]);
-            if(flag == CON_FLAG_INVALID)
-            {
+            if(flag == CON_FLAG_INVALID) {
                 err = txtWrongFlag;
                 break;
             }
@@ -1941,12 +1714,9 @@ static void Console_Setup(uint32_t argc, char **argv)
             break;
     }
     
-    if(err == NULL)
-    {
+    if(err == NULL) {
         WriteConfiguration();
-    }
-    else
-    {
+    } else {
         interface->SendLine(err);
     }
     
@@ -1959,26 +1729,21 @@ static void Console_Setup(uint32_t argc, char **argv)
  * @param argc Number of arguments
  * @param argv Array of arguments
  */
-static void Console_Debug(uint32_t argc __attribute__((unused)), char **argv __attribute__((unused)))
-{
+static void Console_Debug(uint32_t argc __attribute__((unused)), char **argv __attribute__((unused))) {
 #ifdef DEBUG
-    if(argc == 1)
-    {
+    if(argc == 1) {
         interface->SendLine("echo, malloc, leak, usb-paksize, heap, mux, output, dump");
         interface->CommandFinish();
         return;
     }
     
-    if(strcmp(argv[1], "echo") == 0)
-    {
+    if(strcmp(argv[1], "echo") == 0) {
         // Echo back all received arguments
-        for(uint32_t j = 2; j < argc; j++)
-        {
+        for(uint32_t j = 2; j < argc; j++) {
             interface->SendLine(argv[j]);
         }
-    }
-    else if(strcmp(argv[1], "malloc") == 0)
-    {
+        
+    } else if(strcmp(argv[1], "malloc") == 0) {
         // Test how much memory can be allocated and whether an out of memory error is handled by malloc
         const uint32_t len = 81;        // String buffer length
         const uint32_t length = 400;    // Length of buffer pointer array
@@ -1989,23 +1754,17 @@ static void Console_Debug(uint32_t argc __attribute__((unused)), char **argv __a
         
         buf = malloc(len);
         allocs = calloc(length, sizeof(char*));
-        if(buf == NULL || allocs == NULL)
-        {
+        if(buf == NULL || allocs == NULL) {
             interface->SendLine("Could not allocate string buffer and pointer buffer.");
-        }
-        else
-        {
+        } else {
             interface->SendLine("Trying to allocate some buffers...");
             Console_Flush();
-            for(uint32_t j = 0; j < length; j++)
-            {
+            for(uint32_t j = 0; j < length; j++) {
                 allocs[j] = malloc(size);
-                if(allocs[j] == NULL)
-                {
+                if(allocs[j] == NULL) {
                     break;
                 }
-                if(j % 10 == 0)
-                {
+                if(j % 10 == 0) {
                     snprintf(buf, len, "%lu ", j);
                     interface->SendString(buf);
                     Console_Flush();
@@ -2018,49 +1777,37 @@ static void Console_Debug(uint32_t argc __attribute__((unused)), char **argv __a
             interface->SendLine(buf);
             interface->SendLine("Now freeing...");
             Console_Flush();
-            for(uint32_t j = 0; j < buffers; j++)
-            {
+            for(uint32_t j = 0; j < buffers; j++) {
                 free(allocs[j]);
             }
             interface->SendLine("Finished.");
         }
         free(buf);
         free(allocs);
-    }
-    else if(strcmp(argv[1], "leak") == 0)
-    {
+        
+    } else if(strcmp(argv[1], "leak") == 0) {
         // Leak a specified amount of memory
-        if(argc == 3)
-        {
+        if(argc == 3) {
             const char *end;
             uint32_t bytes = IntFromSiString(argv[2], &end);
-            if(end == NULL)
-            {
+            if(end == NULL) {
                 interface->SendLine("Don't be silly.");
-            }
-            else if(malloc(bytes) != NULL)
-            {
+            } else if(malloc(bytes) != NULL) {
                 interface->SendLine("Allocation successful, memory leaked.");
-            }
-            else
-            {
+            } else {
                 interface->SendLine("Allocation failed.");
             }
-        }
-        else
-        {
+        } else {
             interface->SendLine(txtErrArgNum);
         }
-    }
-    else if(strcmp(argv[1], "usb-paksize") == 0)
-    {
+        
+    } else if(strcmp(argv[1], "usb-paksize") == 0) {
         // Test VCP with multiples of USB packet size
         static const char *txtTest = "This is a string with 64 bytes of data to be sent over the VCP..";
         static const char *txtTest2 = "This is an even longer text that should hold 128 bytes, which is exactly two packet sizes, to test the failure with two packets.";
         interface->SendBuffer((uint8_t *)(argc == 2 ? txtTest : txtTest2), strlen(argc == 2 ? txtTest : txtTest2));
-    }
-    else if(strcmp(argv[1], "heap") == 0)
-    {
+        
+    } else if(strcmp(argv[1], "heap") == 0) {
         // Print information about the heap
         extern char _Heap_Begin;
         extern char _Heap_Limit;
@@ -2078,67 +1825,50 @@ static void Console_Debug(uint32_t argc __attribute__((unused)), char **argv __a
         snprintf(buf, NUMEL(buf), "Stack begin: %p, Stack limit: %p (size = %lu)\r\n",
                 &_estack, &_Main_Stack_Limit, (uint32_t)(&_estack - &_Main_Stack_Limit));
         interface->SendString(buf);
-        snprintf(buf, NUMEL(buf), "Approximate current stack position: %p (used = %lu)\r\n",
-                &argc, (uint32_t)(&_estack - (char *)&argc));
-        interface->SendString(buf); 
-    }
-    else if(strcmp(argv[1], "mux") == 0)
-    {
+        
+    } else if(strcmp(argv[1], "mux") == 0) {
         // Set output mux port, or disable
-        if(argc != 3)
-        {
+        if(argc != 3) {
             interface->SendLine(txtErrArgNum);
-        }
-        else
-        {
+        } else {
             const char *end;
             uint8_t port = IntFromSiString(argv[2], &end);
             
-            if(strcmp(argv[2], "off") == 0)
-            {
+            if(strcmp(argv[2], "off") == 0) {
                 port = ADG725_CHIP_ENABLE_NOT;
                 HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_RESET);
                 HAL_SPI_Transmit(&hspi3, &port, 1, BOARD_SPI_TIMEOUT);
                 HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_SET);
                 interface->SendLine("Switched off.");
-            }
-            else if(end != NULL && port <= 15)
-            {
+                
+            } else if(end != NULL && port <= 15) {
                 port &= ADG725_MASK_PORT;
                 HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_RESET);
                 HAL_SPI_Transmit(&hspi3, &port, 1, BOARD_SPI_TIMEOUT);
                 HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_SET);
                 interface->SendLine("Port set.");
-            }
-            else
-            {
+                
+            } else {
                 interface->SendLine("Unknown port.");
             }
         }
-    }
-    else if(strcmp(argv[1], "output") == 0)
-    {
+        
+    } else if(strcmp(argv[1], "output") == 0) {
         // Output a single frequency on specified port (arguments: freq port)
-        if(argc != 4)
-        {
+        if(argc != 4) {
             interface->SendLine(txtErrArgNum);
-        }
-        else
-        {
+        } else {
             const char *end1, *end2;
             uint32_t freq = IntFromSiString(argv[2], &end1);
             uint8_t port = IntFromSiString(argv[3], &end2);
             
-            if(end1 == NULL)
-            {
+            if(end1 == NULL) {
                 interface->SendLine("Bad frequency.");
-            }
-            else if(end2 == NULL || port > 15)
-            {
+                
+            } else if(end2 == NULL || port > 15) {
                 interface->SendLine("Unknown port.");
-            }
-            else
-            {
+                
+            } else {
                 // Set mux
                 port &= ADG725_MASK_PORT;
                 HAL_GPIO_WritePin(BOARD_SPI_SS_GPIO_PORT, BOARD_SPI_SS_GPIO_MUX, GPIO_PIN_RESET);
@@ -2148,26 +1878,20 @@ static void Console_Debug(uint32_t argc __attribute__((unused)), char **argv __a
                 AD5933_Debug_OutputFreq(freq, Board_GetRangeSettings());
             }
         }
-    }
-    else if(strcmp(argv[1], "dump") == 0)
-    {
+        
+    } else if(strcmp(argv[1], "dump") == 0) {
         // Dump contents of the EEPROM in binary format to the console
         const size_t size = 1024;
         const uint8_t addr = 0xA0;
         
         uint8_t *buffer = malloc(size);
-        if(buffer == NULL)
-        {
+        if(buffer == NULL) {
             interface->SendLine("Failed to allocate memory.");
-        }
-        else
-        {
+        } else {
             HAL_StatusTypeDef ret = HAL_I2C_Mem_Read(&hi2c1, addr, 0, 1, buffer, size, 200);
-            switch(ret)
-            {
+            switch(ret) {
                 case HAL_OK:
-                    for(uint32_t j = 0; j < size; j++)
-                    {
+                    for(uint32_t j = 0; j < size; j++) {
                         interface->SendChar(buffer[j]);
                     }
                     break;
@@ -2179,15 +1903,13 @@ static void Console_Debug(uint32_t argc __attribute__((unused)), char **argv __a
             }
             free(buffer);
         }
-    }
-    else
-    {
+    } else {
         interface->SendLine(txtUnknownSubcommand);
     }
 #else
     interface->SendLine("This is a release build, no debug code compiled in.");
 #endif
-
+    
     interface->CommandFinish();
 }
 
@@ -2196,8 +1918,7 @@ static void Console_Debug(uint32_t argc __attribute__((unused)), char **argv __a
 /**
  * This function sets up the console and should be called before any other console functions.
  */
-void Console_Init(void)
-{
+void Console_Init(void) {
     Console_InitHelp();
     
     format_spec = FORMAT_DEFAULT;
@@ -2209,8 +1930,7 @@ void Console_Init(void)
  * @param itf Pointer to an interface structure with functions to use for communication
  * @param str Pointer to a command line string
  */
-void Console_ProcessLine(Console_Interface *itf, char *str)
-{
+void Console_ProcessLine(Console_Interface *itf, char *str) {
     uint32_t argc;
     
     assert_param(str != NULL);
@@ -2219,13 +1939,10 @@ void Console_ProcessLine(Console_Interface *itf, char *str)
     interface = itf;
     argc = Console_GetArguments(str);
     
-    if(argc == 0)
-    {
+    if(argc == 0) {
         // Command line is empty, do nothing
         interface->CommandFinish();
-    }
-    else if(!Console_CallProcessor(argc, arguments, commands, NUMEL(commands)))
-    {
+    } else if(!Console_CallProcessor(argc, arguments, commands, NUMEL(commands))) {
         interface->SendLine(txtUnknownCommand);
         interface->CommandFinish();
     }
@@ -2234,17 +1951,15 @@ void Console_ProcessLine(Console_Interface *itf, char *str)
 /**
  * Gets the current format specification.
  */
-uint32_t Console_GetFormat(void)
-{
-   return format_spec; 
+uint32_t Console_GetFormat(void) {
+    return format_spec;
 }
 
 /**
  * Sets the format specification to the specified value.
  * @param spec Format specification
  */
-void Console_SetFormat(uint32_t spec)
-{
+void Console_SetFormat(uint32_t spec) {
     format_spec = spec;
 }
 
@@ -2253,8 +1968,7 @@ void Console_SetFormat(uint32_t spec)
 /**
  * Called when a calibration is finished.
  */
-void Console_CalibrateCallback(void)
-{
+void Console_CalibrateCallback(void) {
     interface->SendLine(txtOK);
     Console_Flush();
     interface->CommandFinish();
@@ -2265,10 +1979,9 @@ void Console_CalibrateCallback(void)
  * 
  * @param temp The measured temperature
  */
-void Console_TempCallback(float temp)
-{
+void Console_TempCallback(float temp) {
     char buf[16];
-    snprintf(buf, NUMEL(buf), "%.1f %cC", temp, '\xB0' /* Degree symbol in ISO 8859-1 and -15 */); 
+    snprintf(buf, NUMEL(buf), "%.1f %cC", temp, '\xB0' /* Degree symbol in ISO 8859-1 and -15 */);
     interface->SendLine(buf);
     Console_Flush();
     interface->CommandFinish();
