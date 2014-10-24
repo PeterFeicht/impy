@@ -13,7 +13,7 @@ The firmware (codename \emph{impy}) is written in C (C11) and uses the \enquote{
 to configure the microcontroller and control the peripherals.
 \footnotetext{\textbf{H}ardware \textbf{A}bstraction \textbf{L}ayer, makes it easier to switch microcontrollers
 without having to rewrite the device specific code.}
-It consists of four loosely coupled modules along with some support modules:
+\\ It consists of four loosely coupled modules along with some support modules:
 %
 \begin{itemize}
 	\item \verb!ad5933.c!: The AD5933 driver which takes care of communication with the AD5933 via \iic{} and collects
@@ -47,7 +47,7 @@ Among the support modules are:
 \subsection{AD5933 Driver Module}
 
 The AD5933 driver module provides functions for managing the AD5933 and for converting raw measurement data to
-meaningful values. The header files also declares the data structures used for storing mesaurement data and converted
+meaningful values. The header files also declares the data structures used for storing measurement data and converted
 values.
 
 Since the AD5933 doesn't support interrupts, the driver has a timer callback function \verb!AD5933_TimerCallback(void)!
