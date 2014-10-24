@@ -4,11 +4,11 @@ can be transferred in a binary fashion as well.
 Below you will find all commands currently understood, they are all case
 sensitive. Most settings will be saved in memory on-board.
 
-Commands:
+Usage:
   board set [--start=FREQ] [--stop=FREQ] [--steps=NUM] [--settl=CYCLES]
-  board set [--voltage=RANGE] [--gain=(on|off)] [--feedback=OHMS]
-  board set [--avg=NUM]
-  board set [--format=FMT] [--autorange=(on|off)] [--echo=(on|off)]
+            [--voltage=RANGE] [--gain=(on|off)] [--feedback=OHMS]
+            [--avg=NUM]
+            [--format=FMT] [--autorange=(on|off)] [--echo=(on|off)]
   board get (<option> | all)
   board (info | temp | calibrate <ohms>)
   board (start <port> | stop | status | measure <port> <freq> | standby)
