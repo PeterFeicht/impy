@@ -204,6 +204,10 @@ static const Console_Arg argsBoardSet[] = {
 
 // Private functions ----------------------------------------------------------
 
+__STATIC_INLINE uint32_t max(uint32_t left, uint32_t right) {
+    return (left > right ? left : right);
+}
+
 /**
  * Sets the main help string and fills the help topics array.
  */
@@ -1928,7 +1932,7 @@ void Console_Init(void) {
  * Processes the specified 0-terminated string to extract commands and arguments and calls the appropriate functions.
  * 
  * @param itf Pointer to an interface structure with functions to use for communication
- * @param str Pointer to a command line string
+ * @param str Pointer to a command line string, note that the string will be altered
  */
 void Console_ProcessLine(Console_Interface *itf, char *str) {
     uint32_t argc;
@@ -1942,6 +1946,7 @@ void Console_ProcessLine(Console_Interface *itf, char *str) {
     if(argc == 0) {
         // Command line is empty, do nothing
         interface->CommandFinish();
+        
     } else if(!Console_CallProcessor(argc, arguments, commands, NUMEL(commands))) {
         interface->SendLine(txtUnknownCommand);
         interface->CommandFinish();
