@@ -136,3 +136,21 @@ whole input voltage range can be used.
 In this configuration, the impedance range is limited by the maximum output current of the
 op-amps and their closed-loop output impedance, which either needs to be small enough so it can be ignored compared
 to the unknown impedance, or characterized over the whole frequency range so it can be taken into account properly.
+
+
+\section{Power Supply and Memory}
+
+Although the STM32F4 Discovery board already has a \unit{3.3}{\volt} voltage regulator that could be used, a
+switching regulator (LTC3406 by Linear Technology) is included on the board. This has mainly two reasons:
+\begin{itemize}
+	\item for the excitation voltage of the unknown impedance to be well known, the power supply needs to be
+    reasonably accurate and
+  \item it should be possible to power the device from a standard USB 2.0 port, which can supply a maximum current of
+    \unit{500}{\milli\ampere}. Considering that a USB host port can be added, which should in turn be able to power
+    a standard USB flash drive, power conversion efficiency needs to be as high as possible. 
+\end{itemize}
+
+Since the STM32F407 doesn't have any non-volatile memory, an EEPROM is added to store some static configuration
+options (e.g.\ fitted feedback resistors, possible output voltage attenuations or the Ethernet MAC address) as well as
+dynamic settings such as the frequency range and output voltage used last. Like the AD5933, this memory is connected
+via \iic{} to the microcontroller.
