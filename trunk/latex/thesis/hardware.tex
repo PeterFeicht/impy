@@ -109,14 +109,17 @@ To measure lower frequencies, an external clock source has to be used.
 
 The AD5933 has some severe limitations concerning its output and the load that can be placed there. Without additional
 circuitry, the range is limited to at least a few \unit{100}{\kilo\ohm} up to \unit{10}{\mega\ohm}.
-Since the desired range is down to about \unit{10}{\ohm}, and more than one impedance should be measured at once,
-an external analog front end needs to be used.
+This limitation is caused by the significant output resistance of the output amplifier, which can be as high as
+\unit{2.4}{\kilo\ohm}, as well as the output offset voltage, which limits the dynamic range of the input amplifier.
 
+Since the desired range is down to about \unit{10}{\ohm}, and more than one impedance should be measured at once,
+an external analog front end is used.
 A block diagram of the external AFE can be seen in \autoref{fig:schem_afe} (\autopageref{fig:schem_afe}).
 There are four analog multiplexers (dual ADG725 by Analog Devices, M1 in the schematic) that connect multiple unknown
 and calibration impedances in a four-wire arrangement, to cancel out the on-resistance of the multiplexers.
 Multiplexer M2 is used to attenuate the output voltage of the AD5933, this is needed when measuring small impedances,
 so the output current is kept small.
+Multiplexer M3 switches between different feedback resistors to change the I-U conversion ratio.
 
 \begin{figure}[hpb]
   \centering
@@ -124,3 +127,12 @@ so the output current is kept small.
   \caption{Block diagram of the AD5933 output stage with external analog front end and calibration impedance.}
   \label{fig:schem_afe}
 \end{figure}
+
+The two op-amps are AD8656 by Analog Devices, the one in the output stage is configured as an inverting amplifier,
+the one on the input as a current-to-voltage converter, with the AD5933-internal input amplifier acting as an inverting
+voltage follower. The coupling capacitor between AD5933 output and the output amplifier filters the DC offset so the
+whole input voltage range can be used.
+
+In this configuration, the impedance range is limited by the maximum output current of the
+op-amps and their closed-loop output impedance, which either needs to be small enough so it can be ignored compared
+to the unknown impedance, or characterized over the whole frequency range so it can be taken into account properly.
