@@ -154,3 +154,19 @@ Since the STM32F407 doesn't have any non-volatile memory, an EEPROM is added to 
 options (e.g.\ fitted feedback resistors, possible output voltage attenuations or the Ethernet MAC address) as well as
 dynamic settings such as the frequency range and output voltage used last. Like the AD5933, this memory is connected
 via \iic{} to the microcontroller.
+
+
+\section{Unpopulated Peripherals}
+
+During the hardware design, some interesting peripherals were included in the board schematic, as well as the PCB
+layout. Since programming the firmware to use these would have been beyond the scope of this thesis, they are not
+populated on the final board.
+
+These peripherals include
+\begin{itemize}
+  \item external SRAM and flash memory,
+	\item an Ethernet jack and PHY,
+  \item a USB host plug.
+\end{itemize}
+To populate and use them, only the respective modules need to be added to the firmware, aside from the necessary
+changes, should the PCB layout be bad.
