@@ -97,6 +97,13 @@ The number of settling cycles mentioned earlier determines, how long the AD5933 
 in the output frequency and the start of the analog-to-digital conversion, giving the measured impedance time to
 settle to the new frequency.
 
+Because of the limited number of 1024 sampling points used when calculating the Fourier transform of the input signal,
+the frequency range with any one clock frequency is limited. Using the internal oscillator with
+\unit{16.667}{\mega\hertz}, the ADC samples with \unit{1}{\mega{}S\per\second}, which limits the upper frequency to
+about \unit{100}{\kilo\hertz} (above which the phase error increases significantly) and the lower frequency to about
+\unit{10}{\kilo\hertz} to \unit{1}{\kilo\hertz} (depending on the desired accuracy).
+To measure lower frequencies, an external clock source has to be used.
+
 
 \subsection{Analog Front End (AFE)}
 
