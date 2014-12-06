@@ -4,7 +4,8 @@ This chapter will describe the hardware design of the device.
 
 Starting point is the \emph{AD5933} by Analog Devices, an impedance converter IC that includes digital-to-analog and
 analog-to-digital converters, a DSP engine for discrete time Fourier transform, and an internal clock source. It can
-output frequencies in the range of \unit{10}{\hertz} to \unit{100}{\kilo\hertz} with the use of external clock sources.
+output frequencies in the desired range of \unit{10}{\hertz} to \unit{100}{\kilo\hertz} with the use of external
+clock sources.
 
 For controlling the chip and interfacing with the PC, the \emph{STM32F4 Discovery} board by ST (see \autoref{fig:stm32})
 is used. This is built around an STM32F407 microcontroller, includes two USB ports (one for programming and one for use
@@ -21,17 +22,17 @@ which are not used for this project.
 \end{figure}
 
 The whole device consists of a single PCB onto which the STM32F4 Discovery board is mounted. This board has connections
-for the impedances to be measured, a power supply jack as well as a header where calibration resistors are mounted.
+for the impedances to be measured, a power supply jack, as well as a header where calibration resistors are mounted.
 A picture of the front and back side of the finished board can be seen in \autoref{fig:pcb_frontback}
 (\autopageref{fig:pcb_frontback}). Aside from the fitted components described later, there are footprints and traces
-for a USB host connector (to save measured data onto a USB flash drive), an Ethernet jack (for remote control over
+for a USB host connector (to save measurements onto a USB flash drive), an Ethernet jack (for remote control over
 an IP network) and two additional memory chips. These features are not yet implemented in the firmware.
 
 \begin{figure}[htpb]
   \centering
     \includegraphics[width=\textwidth]{bilder/pcb_frontback.jpg}
   \caption{Front and back side of the populated PCB, the STM32F4 Discovery board is mounted on the left, unknown
-    impedances are connected on the right. A board with calibration resistors is connected left of the measurement
+    impedances are connected on the right. A board with calibration resistors can be seen left of the measurement
     connectors.}
   \label{fig:pcb_frontback}
 \end{figure}
@@ -48,7 +49,7 @@ A block diagram of the AD5933 can be seen in \autoref{fig:ad_block} (\autopagere
 \begin{figure}[htpb]
   \centering
     \includegraphics[width=\textwidth]{bilder/ad_block.pdf}
-  \caption{Block diagram of the AD5933 showing the digital and analog parts connected to a micrcontroller
+  \caption{Block diagram of the AD5933 showing the digital and analog parts, connected to a micrcontroller
     and an impedance that is measured, respectively.}
   \label{fig:ad_block}
 \end{figure}
@@ -89,7 +90,7 @@ On the controlling side of things, the AD5933 is programmed with a starting freq
 number of increments in a sweep and the number of settling cycles.
 A sweep is then started by writing two commands to the control register, \emph{initialize with start frequency} and
 \emph{start frequency sweep}. Unfortunately, the AD5933 has no interrupt capability, so the status register needs to
-be queried periodically to determine when a frequency point has been measured. The raw values are then read and an
+be queried periodically, to determine when a frequency point has been measured. The raw values are then read and an
 \emph{increment frequency} or \emph{repeat frequency} command is programmed. When all points have been measured
 (that is, the frequency has been incremented the set number of times), a bit in the status register is set to signal a
 complete sweep.
@@ -97,12 +98,12 @@ The number of settling cycles mentioned earlier determines, how long the AD5933 
 in the output frequency and the start of the analog-to-digital conversion, giving the measured impedance time to
 settle to the new frequency.
 
-Because of the limited number of 1024 sampling points used when calculating the Fourier transform of the input signal,
+Because of the limited number of 1024 sampling points used when calculating the Fourier transform,
 the frequency range with any one clock frequency is limited. Using the internal oscillator with
 \unit{16.667}{\mega\hertz}, the ADC samples with \unit{1}{\mega{}S\per\second}, which limits the upper frequency to
 about \unit{100}{\kilo\hertz} (above which the phase error increases significantly) and the lower frequency to about
 \unit{10}{\kilo\hertz} to \unit{1}{\kilo\hertz} (depending on the desired accuracy).
-To measure lower frequencies, an external clock source has to be used.
+To measure lower frequencies, an external clock source has to be used, which is supplied by an STM32F407 timer output.
 
 
 \subsection{Analog Front End (AFE)}
@@ -114,7 +115,7 @@ This limitation is caused by the significant output resistance of the output amp
 
 Since the desired range is down to about \unit{10}{\ohm}, and more than one impedance should be measured at once,
 an external analog front end is used.
-A block diagram of the external AFE can be seen in \autoref{fig:schem_afe} (\autopageref{fig:schem_afe}).
+A block diagram of the external AFE can be seen in \autoref{fig:afe_block}.
 There are four analog multiplexers (dual ADG725 by Analog Devices, M1 in the schematic) that connect multiple unknown
 and calibration impedances in a four-wire arrangement, to cancel out the on-resistance of the multiplexers.
 Multiplexer M2 is used to attenuate the output voltage of the AD5933, this is needed when measuring small impedances,
@@ -123,9 +124,9 @@ Multiplexer M3 switches between different feedback resistors to change the I-U c
 
 \begin{figure}[hpb]
   \centering
-    \includegraphics[width=\textwidth]{bilder/schem_afe.pdf}
+    \includegraphics[width=\textwidth]{bilder/afe_block.pdf}
   \caption{Block diagram of the AD5933 output stage with external analog front end and calibration impedance.}
-  \label{fig:schem_afe}
+  \label{fig:afe_block}
 \end{figure}
 
 The two op-amps are AD8656 by Analog Devices, the one in the output stage is configured as an inverting amplifier,
