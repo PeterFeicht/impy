@@ -69,3 +69,30 @@ Before powering up the device for the first time, the following things should be
     (or a current meter of course),
   \item the $ V_\text{BUS} $ jumper \ref{itm:jump_vbus} is connected when no external power supply is used.
 \end{itemize}
+
+After connecting the device to a PC, any application that can access a serial port can be used to communicate with it.
+Settings such as baud rate or parity don't matter.
+When not using the MATLAB functions (see \autoref{sec:matlab}), the device is configured via a simple virtual console
+interface using human readable commands. Using the \command{help} command, a list of possible commands and their
+explanations can be displayed.
+
+The following steps assume the device is fitted with an EEPROM for configuration storage.
+The first thing to do after assembling the device is to configure the fitted calibration and feedback resistors, as well
+as possible attenuations and the coupling capacitor time constant using the \command{setup} command:
+\begin{itemize}
+	\item enter possible output voltage attenuations in the order they are selected with the attenuation multiplexer:
+    \command{setup attenuation <values>...}
+  \item enter feedback resistor values in the order they are connected to the feedback multiplexer in ohms:
+    \command{setup feedback <values>...}
+  \item enter calibration resistor values in the order they are soldered on the little resistor board (right to left):
+    \command{setup calibration <values>...}
+  \item enter the coupling capacitor time constant in ms (calculated by $ C_\text{coupl} \cdot \unit{1.1}{\kilo\ohm} $):
+    \command{setup coupl <milliseconds>}
+\end{itemize}
+Typing \command{help setup} shows other options for the \command{setup} command, however none of them are currently
+used since the respective peripherals are not yet implemented.
+
+
+\section{Making Measurements}
+
+After the first steps have been completed, measurements can be performed.
