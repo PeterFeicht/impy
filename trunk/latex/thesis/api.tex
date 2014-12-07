@@ -6,6 +6,22 @@ The main parts of the firmware have already been discussed in \autoref{sec:softw
 the extensible parts will be highlighted in a little more detail.
 
 
+\section{Using the Virtual Console}
+
+When writing an application that interfaces with the device (like the MATLAB scripts from \autoref{sec:matlab}),
+the virtual console interface still needs to be used for device configuration.
+To make non-interactive communication easier, there are two means by which the echoing of sent characters can be turned
+off.
+
+Each line that is sent can be preceded by an \texttt{@} character, thereby suppressing the echo of sent characters
+for each line. This is the preferred method, since no permanent configuration is changed (which may lead to users
+trying to use the device manually not seeing what they type).
+
+The other method is to send the command \command{board set --echo=off} to turn echo off permanently. After sending
+this command, no line prefix is needed (it is ignored if sent), however to turn echo on the command has to be sent
+again with \command{--echo=on}.
+
+
 \section{\texttt{main.h}}
 
 This file declares the functions provided by the main module, some of the compile-time configuration options and the
