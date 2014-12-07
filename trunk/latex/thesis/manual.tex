@@ -49,12 +49,13 @@ one on the STM32F4 Discovery board and one on the board, and care should be take
 
 There are four status LEDs \ref{itm:leds}, three of which are used at this time:
 \begin{itemize}
-	\item the \emph{blue} one will blink when the device is powered on, indicating that the firmware hasn't locked up,
-  \item the \emph{green} one will light up while a measurement is in progress, allowing the user to see when it has
-    finished,
-  \item the \emph{red} one will be turned on in case of an error in the firmware, this means the device should be reset
-    using the reset button \ref{itm:button_rst} and the steps leading up to the error should be documented to allow
-    the programmer to fix it.
+	\item \textbf{\color{blue} blue} will blink when the device is powered on, indicating that the firmware
+    hasn't locked up,
+  \item \textbf{\color{OliveGreen} green} will light up while a measurement is in progress, allowing the user
+    to see when it has finished,
+  \item \textbf{\color{red} red} will be turned on in case of an error in the firmware, this means the device
+    should be reset using the reset button \ref{itm:btn_rst} and the steps leading up to the error should be
+    documented, allowing the programmer to fix it.
 \end{itemize}
 
 \subsection{First Steps}
