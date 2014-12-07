@@ -9,7 +9,7 @@ An overview of the device connections can be seen in Figure \ref{fig:device_conn
 unimplemented features are not labeled, the push buttons on the board are the same as those on the
 STM32F4 Discovery board.
 
-\begin{figure}[htpb]
+\begin{figure}[htb]
   \centering
     \includegraphics[width=\textwidth]{bilder/device_connections.jpg}
   \caption[Interface on the assembled impedance spectrometer]{
@@ -20,13 +20,15 @@ STM32F4 Discovery board.
       \item status LEDs   \label{itm:leds}
       \item reset button   \label{itm:button_rst}
       \item DC power jack   \label{itm:dc_jack}
-      \item board with calibration resistors   \label{itm:cal}
+      \item board with calibration resistors   \label{itm:r_cal}
       \item measurement output connections, sense (left) and force (right)   \label{itm:meas_out}
       \item measurement input connections (same as output)   \label{itm:meas_in}
       \item ground connections   \label{itm:meas_gnd}
       \item $ I_\text{DD} $ measurement jumper   \label{itm:jump_idd}
       \item $ I_\text{CC} $ measurement jumper   \label{itm:jump_icc}
       \item $ V_\text{BUS} $ jumper   \label{itm:jump_vbus}
+      \item feedback resistors   \label{itm:r_fb}
+      \item attenuation resistors   \label{itm:r_att}
     \end{enumerate*} }
   \label{fig:device_connections}
 \end{figure}
@@ -53,4 +55,16 @@ There are four status LEDs \ref{itm:leds}, three of which are used at this time:
   \item the \emph{red} one will be turned on in case of an error in the firmware, this means the device should be reset
     using the reset button \ref{itm:button_rst} and the steps leading up to the error should be documented to allow
     the programmer to fix it.
+\end{itemize}
+
+\subsection{First Steps}
+
+Before powering up the device for the first time, the following things should be checked:
+\begin{itemize}
+	\item the STM32F4 discovery board is properly connected,
+  \item a board with calibration resistors is connected to the calibration pins \ref{itm:r_cal},
+  \item the necessary feedback and attenuation resistors \ref{itm:r_fb} and \ref{itm:r_att} are soldered on,
+  \item the current measurement jumpers \ref{itm:jump_idd} and \ref{itm:jump_icc} are connected
+    (or a current meter of course),
+  \item the $ V_\text{BUS} $ jumper \ref{itm:jump_vbus} is connected when no external power supply is used.
 \end{itemize}
