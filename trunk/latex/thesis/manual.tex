@@ -73,7 +73,7 @@ Before powering up the device for the first time, the following things should be
 After connecting the device to a PC, any application that can access a serial port can be used to communicate with it.
 Settings such as baud rate or parity don't matter.
 When not using the MATLAB functions (see \autoref{sec:matlab}), the device is configured via a simple virtual console
-interface using human readable commands. Using the \command{help} command, a list of possible commands and their
+interface using human readable commands. By typing \command{help}, a list of possible commands and their
 explanations can be displayed.
 
 The following steps assume the device is fitted with an EEPROM for configuration storage.
@@ -92,7 +92,53 @@ as possible attenuations and the coupling capacitor time constant using the \com
 Typing \command{help setup} shows other options for the \command{setup} command, however none of them are currently
 used since the respective peripherals are not yet implemented.
 
+By typing \command{board info}, general information for the whole board is displayed, which includes the configured
+resistors and attenuation values.
+
 
 \section{Making Measurements}
 
 After the first steps have been completed, measurements can be performed.
+
+First, the unknown impedance(s) need to be connected to the output and input connectors \ref{itm:meas_out} and
+\ref{itm:meas_in}. When a four-wire connection is not used, the two output and input pins, respectively, need to be
+connected nonetheless for proper operation.
+
+\subsection{Sweep Configuration}
+
+Then, the sweep parameters need to be configured. This is done using the \command{board set} command with the following
+parameters (only those that should be changed need to be sent):
+\begin{itemize}
+	\item \command{--start=FREQ} and \command{--stop=FREQ} set the start and stop frequency of the sweep in \hertz.
+    Note that when setting start and stop frequency in a single command, an error can occur when the new start
+    frequency is equal to or higher than the previous stop frequency. In this case you need to change the order in
+    which start and stop options appear on the command line.
+  \item \command{--steps=NUM} sets the number of frequency steps in a sweep, that is the number of times the frequency
+    is incremented.
+  \item \command{--settl=NUM} sets the number of settling cycles (see \autoref{sec:ad5933_proc}). The valid range is
+    0--511 and can be extended 2 or 4 times by specifying a multiplier like \command{x2}. For example, valid values
+    would be \command{20} or \command{40x2}, but not \command{512} (use \command{256x2} instead).
+  \item \command{--voltage=RANGE} sets the output voltage range in \milli\volt. The possible ranges are determined by
+    the configured attenuation values, they are one of the AD5933 output voltages (\unit{200}{\milli\volt},
+    \unit{400}{\milli\volt}, \unit{1}{\volt} or \unit{2}{\volt}) divided by one of the attenuation values. For example,
+    if attenuation values of 1 and 100 were configured, the possible voltage ranges would be 2000, 1000, 400, 200, 20,
+    10, 4 and 2.
+  \item \command{--gain=(on|off)} sets whether the input gain stage (PGA) is enabled. When enabled, the input signal is
+    amplified by a factor of 5 prior to sampling.
+  \item \command{--feedback=OHMS} sets the used feedback resistor, this needs to be one of the configured values.
+\end{itemize}
+The current value for any parameter can be displayed with the \command{board get} command, which accepts one of the
+parameters and displays its value (for example \command{board get start} would display the start frequency in \hertz).
+A quick overview of the current values can be displayed by typing \command{board get all}, which displays all sweep
+parameters in a format suitable for parsing by PC software.
+
+When selecting range settings, the following procedure should be used:
+\begin{itemize}
+	\item Set the output voltage low enough so the output current does not exceed \unit{10}{\milli\ampere} with the
+    lowest impedance expected.
+  \item Set the current feedback resistor to a value low enough so the input voltage stays below 3V for the highest
+    output current expected.
+  \item If necessary, the PGA can be enabled to further amplify the input voltage when high impedances are to be
+    measured. For accurate results, the input signal should be close to 3V for the lowest impedance expected.
+\end{itemize}
+
