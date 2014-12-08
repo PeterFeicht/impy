@@ -209,3 +209,27 @@ first record.
   \end{tabular}
   \label{tab:format_flags}
 \end{table}
+
+
+\section{Additional Commands}
+
+There are some additional commands and options which are not necessarily useful for normal operation, those are
+explained in this section.
+
+The \command{board temp} command can be used to make a temperature measurement using the AD5933's internal temperature
+sensor. The value is reasonably accurate to \unit{\pm 2}{\celsius}, but usually higher than the ambient temperature due
+to the power dissipation of the AD5933.
+
+The \command{board set} command accepts the \command{--avg=NUM} parameter, which sets the number of averages for each
+frequency point and can be in the range from 1 to 65535.
+It also accepts the \command{--autorange=(on|off)} parameter, however this currently has no effect since autoranging is
+not yet implemented.
+
+The \command{board measure} command accepts a port and frequency and can be used to measure the impedance at a port at
+one specific frequency. The result is printed as a polar value in ASCII format when the measurement is finished.
+
+The \command{board read} command accepts the additional options \command{--raw} and \command{--gain}, one of which may
+be specified at a time. Using these options, the raw measurement data (as received from the AD5933) or the gain factor,
+respectively, can be transferred. The raw measurement data is always transferred in Cartesian coordinate format, all
+other format flags have the usual effect. The gain factor is always transferred in the same format, as a list of
+floating point values.
