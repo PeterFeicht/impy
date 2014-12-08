@@ -188,7 +188,8 @@ angle, or real and imaginary parts) as single precision \unit{32}{bit} floating 
 When using ASCII format, at least one of the \texttt{P} and \texttt{C} flags, one of the \texttt{F} and \texttt{X}
 flags, as well as one of three separator flags have to be specified. The data is transferred in human readable form,
 one line per record, with values separated by the specified separator character. After the last record, two line breaks
-are sent to signal the end of the transmission.
+are sent to signal the end of the transmission. The \texttt{H} flag causes a header line to be transferred before the
+first record.
 
 \begin{table}[htpb]
   \caption{Possible format flags for transferring measurement data.}
