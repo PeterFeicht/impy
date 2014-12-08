@@ -147,8 +147,7 @@ When selecting range settings, the following procedure should be used:
 Before measurements can be made the system has to be calibrated with a known impedance (see \autoref{sec:ad5933_proc}
 on why this is necessary). After the range settings (start and stop frequency, output voltage, feedback resistor or
 PGA gain) are changed, the \command{board calibrate} command is used to do that. The calibration impedance, specified
-as the only parameter to the \command{board calibrate} command, should be in the same range as the impedance to be
-measured for accurate results.
+as the only parameter to the command, should be in the same range as the impedance to be measured for accurate results.
 
 A recalibration is also necessary when the ambient temperature changes significantly.
 
@@ -157,3 +156,55 @@ calibration connectors. However, these connectors are just measurement connector
 \ref{itm:meas_in}, so calibration resistors can also be connected without a dedicated calibration resistor board.
 \emph{Note that resistors should always be used for calibration, because the calibration impedance must not introduce
   a phase shift of its own.}
+
+\subsection{Starting a Sweep}
+
+Once the sweep parameters are set and a calibration has been performed, a sweep can be started.
+Typing \command{board start} with the desired port number as the only parameter will initiate a sweep, indicated by
+the green LED \ref{itm:leds} lighting up. The port number determines which pair of pins will be used, with the topmost
+pins having the number 0 and the bottom pins the number 9. The valid range can also be displayed with the
+\command{board info} command.
+
+While a sweep is running, the status can be displayed by typing \command{board status}. This will print whether or not
+the sweep is still running and the number of points measured.
+
+A running measurement can be stopped by typing \command{board stop}, which also resets the AD5933 and disconnects the
+output and input pins. To disconnect the outputs when no measurement is running \command{board standby} can be used.
+
+\subsection{Reading Results}
+
+After a sweep is finished, the measurement results can be read with the \command{board read} command.
+The format in which measurement data is transferred can either be set permanently with the
+\command{board set --format=FMT} command, or specified to the \command{board read} command for a single transfer.
+
+The format specification is a set of flags, represented by uppercase letters. There are two modes for data transfer,
+ASCII and binary. All possible flags can be found in \autoref{tab:format_flags}.
+
+When using binary format, at least one of the \texttt{P} and \texttt{C} flags has to be specified. The \texttt{H} flag
+causes the number of bytes to follow to be transferred at the start of the transmission as an unsigned \unit{32}{bit}
+integer. The frequency is also transferred as an unsigned \unit{32}{bit} integer, the impedance values (magnitude and
+angle, or real and imaginary parts) as single precision \unit{32}{bit} floating point values.
+
+When using ASCII format, at least one of the \texttt{P} and \texttt{C} flags, one of the \texttt{F} and \texttt{X}
+flags, as well as one of three separator flags have to be specified. The data is transferred in human readable form,
+one line per record, with values separated by the specified separator character. After the last record, two line breaks
+are sent to signal the end of the transmission.
+
+\begin{table}[htpb]
+  \caption{Possible format flags for transferring measurement data.}
+  \centering
+  \begin{tabular}{>{\ttfamily\bgroup}l<{\egroup}|p{10cm}}
+    Flag  & Function \\ \hline
+    A     & Selects ASCII transfer format \\
+    B     & Selects binary transfer format \\ \hline
+    P     & Selects polar number format (magnitude in ohms and angle in radians) \\
+    C     & Selects Cartesian number format (real and imaginary parts in ohms) \\ \hline
+    H     & When present, a header is printed for ASCII format, or the byte count is transferred for binary format \\ \hline
+    F     & ASCII only: impedance values are printed as formatted floating point values, the frequency as an unsigned integer \\
+    X     & ASCII only: frequency and impedance values are printed as hexadecimal values \\ \hline
+    S     & ASCII only: Selects a space character as the separator \\
+    T     & ASCII only: Selects a tab character as the separator \\
+    D     & ASCII only: Selects a comma character as the separator
+  \end{tabular}
+  \label{tab:format_flags}
+\end{table}
