@@ -142,3 +142,18 @@ When selecting range settings, the following procedure should be used:
     measured. For accurate results, the input signal should be close to 3V for the lowest impedance expected.
 \end{itemize}
 
+\subsection{Calibration}
+
+Before measurements can be made the system has to be calibrated with a known impedance (see \autoref{sec:ad5933_proc}
+on why this is necessary). After the range settings (start and stop frequency, output voltage, feedback resistor or
+PGA gain) are changed, the \command{board calibrate} command is used to do that. The calibration impedance, specified
+as the only parameter to the \command{board calibrate} command, should be in the same range as the impedance to be
+measured for accurate results.
+
+A recalibration is also necessary when the ambient temperature changes significantly.
+
+Normally, calibration resistors are connected to the device with the small PCB \ref{itm:r_cal} mounted on the
+calibration connectors. However, these connectors are just measurement connectors like \ref{itm:meas_out} and
+\ref{itm:meas_in}, so calibration resistors can also be connected without a dedicated calibration resistor board.
+\emph{Note that resistors should always be used for calibration, because the calibration impedance must not introduce
+  a phase shift of its own.}
