@@ -194,8 +194,9 @@ first record.
 \begin{table}[htpb]
   \caption{Possible format flags for transferring measurement data.}
   \centering
-  \begin{tabular}{>{\ttfamily\bgroup}l<{\egroup}|p{10cm}}
-    Flag  & Function \\ \hline
+  \begin{tabular}{>{\ttfamily\bgroup}l<{\egroup} !{\color{MidnightBlue}\vline} p{10cm}}
+    \arrayrulecolor{MidnightBlue}
+    Flag  & Function \\ \hline \hline
     A     & Selects ASCII transfer format \\
     B     & Selects binary transfer format \\ \hline
     P     & Selects polar number format (magnitude in ohms and angle in radians) \\
