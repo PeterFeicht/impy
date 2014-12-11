@@ -37,10 +37,9 @@ line = fgetl(comport);
 if isempty(line)
     error('Error reading from serial device, check connection.');
 elseif isempty(strfind(line, 'Frequency'))
-    error(line);
     freq = [];
     out = [];
-    return;
+    error(line);
 end
 
 %% Parse received data
