@@ -234,3 +234,47 @@ be specified at a time. Using these options, the raw measurement data (as receiv
 respectively, can be transferred. The raw measurement data is always transferred in Cartesian coordinate format, all
 other format flags have the usual effect. The gain factor is always transferred in the same format, as a list of
 floating point values.
+
+
+\section{Using the MATLAB Interface}
+
+To use the device with MATLAB (e.g.\ for automated measurements) a set of functions is provided that utilize the
+virtual console interface of the device. \autoref{lst:test_measure} shows a demo script that makes a measurement and
+plots the results.
+
+All functions take a MATLAB serial port object as their first parameter, which needs to be \texttt{fopen}ed beforehand.
+The \texttt{Timeout} property on the serial port object needs to be set quite high when low frequencies should be
+measured (\unit{120}{\second} should be high enough), the \texttt{Terminator} property should be set to
+\matlab{'CR/LF'} or \matlab{\{'CR/LF','LF'\}} for proper operation.
+
+The basic procedure is not very complicated:
+\begin{itemize}
+	\item After creating a structure with sweep parameters (see lines 6--14) they are sent to the device using the
+    \matlab{impy_setsweep} function. A parameter structure can also be obtained with the \matlab{impy_getall} function,
+    which reads the current sweep parameters from the device and returns one.
+  \item Then a calibration is performed using the \matlab{impy_calibrate} function, which takes the calibration resistor
+    value as the second parameter. Note that this function does not return until the calibration is complete, which
+    can take some time when low frequencies are to be measured. This is the reason a large timeout value needs to be
+    set on the serial port object.
+  \item The measurement can then be started with the \matlab{impy_start} function, which takes the port as the second
+    parameter. Note that this function returns immediately after starting a measurement.
+  \item After the measurement has been started, the \matlab{impy_poll} function is used to check when it has finished.
+    This function returns whether the measurement has finished or not and, in case it has, the number of points that
+    have been measured.
+  \item The last step is to read the measurement data using the \matlab{impy_read} function, which accepts and optional
+    second parameter for the desired format, which can be \emph{polar}, \emph{cartesian} or \emph{raw}. This function
+    returns a frequency vector and, depending on the format, either an array with magnitude and angle, a vector with
+    complex impedance values, or an array with raw real and imaginary values.
+\end{itemize}
+
+All functions throw errors when the serial connection is interrupted or the board responds with some unrecognized
+output. This can happen when the firmware is changed and the MATLAB functions are not updated accordingly.
+
+There is also a function to display the output of the \command{help} command, \matlab{impy_help}, which takes an
+optional help topic as the second parameter.
+
+\lstinputlisting[columns=flexible,
+  float=htpb,
+  caption={MATLAB demo script using the interface functions to control the device.},
+  label=lst:test_measure]
+  {code/test_measure.m}
