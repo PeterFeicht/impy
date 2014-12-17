@@ -1,3 +1,36 @@
 \chapter{Introduction}
 
+The goal is to develop a compact and affordable way of measuring impedance spectra. Commercially available impedance
+analyzers, like the Agilent 4294A, are bulky and rather expensive devices which are ofter overkill for simple
+tasks, such as monitoring biological samples over many days or weeks. When the requirements for accuracy or the covered
+frequency range are not very strict, such an instrument can be replaced by the simple device presented here.
 
+The finished device is small, it fits on a single \unit{100 \times 160}{\milli\meter} Eurocard, and the part costs
+should be somewhere around \EUR{100}.
+
+In \autoref{sec:hardware} the hardware design as well as the AD5933 are discussed.
+\hyperref[sec:software]{Chapter \ref*{sec:software}} will describe the device firmware and the MATLAB interface
+functions.
+\hyperref[sec:results]{Chapter \ref*{sec:results}} will cover the results from measurements with the device.
+A user's manual that shows the configuration and use of the device can be found in \autoref{sec:manual}.
+Finally, in \autoref{sec:api} the extensible aspects of the firmware are described in detail, to give programmers an
+idea of where they need to look when developing new features.
+
+The PCB is designed using EAGLE\footnotemark{}. The layout is somewhat convoluted because it is manufactured in-house
+and holes cannot be plated through, so each connection to a through-hole pin has to be made on the bottom side.
+The device can easily be assembled by hand, a soldering microscope is useful though, particularly when soldering the
+TQFP48 and LQFP48 packages.
+
+\footnotetext{EAGLE PCB Design Software available from \url{http://www.cadsoft.de/}.}
+
+The firmware for the device is written in C using the Eclipse C Development Tools\footnotemark{}, the MATLAB interface
+functions are written in MATLAB.
+
+\footnotetext{The code is standard C11 however, so any development environment can be used.}
+
+
+\section{Getting the Files}
+
+The complete source code, the EAGLE project files, as well as the \LaTeX{} documentation are available from the project
+homepage at \url{http://feichti.net/impy/}. The project can be checked out of the Subversion repository, zipped source
+code packages or compiled firmware images are available on request.
