@@ -61,6 +61,11 @@ external clock frequency to the AD5933, and of switching the external clock freq
 during a measurement.
 
 The calibration process, needed before measurements can be made, is taken care of by the driver as well.
+It is implemented to support both single-point and two-point calibration. The former only calculates an offset for one
+particular frequency, whereas the latter can compensate for linear changes in the system gain and phase, by using two
+frequencies and calculating an offset and a slope.
+Currently, two-point calibration is always used and there is no setting to deactivate it, since the overhead is
+negligible but the benefits are clear.
 
 Besides measuring an impedance spectrum, the driver can also use the AD5933's internal temperature sensor and make a
 temperature measurement. This is not terribly accurate (the AD5933 temperature sensor has a typical accuracy of
