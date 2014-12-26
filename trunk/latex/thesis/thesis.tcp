@@ -4,7 +4,7 @@ Version=4
 
 [ProjectInfo]
 MainFile=thesis.tex
-UseBibTeX=1
+UseBibTeX=0
 UseMakeIndex=0
 ActiveProfile=LaTeX ⇨ PDF
 ProjectLanguage=en
