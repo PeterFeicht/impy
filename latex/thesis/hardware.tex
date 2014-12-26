@@ -4,7 +4,7 @@ This chapter will describe the hardware design of the device.
 
 Starting point is the \emph{AD5933} by Analog Devices, an impedance converter IC that includes digital-to-analog and
 analog-to-digital converters, a DSP engine for discrete time Fourier transform, and an internal clock source. It can
-output frequencies in the desired range of \unit{10}{\hertz} to \unit{100}{\kilo\hertz} with the use of external
+output frequencies in the desired range from \unit{10}{\hertz} to \unit{100}{\kilo\hertz} with the use of external
 clock sources.
 
 For controlling the chip and interfacing with the PC, the \emph{STM32F4 Discovery} board by ST (see \autoref{fig:stm32})
@@ -16,10 +16,12 @@ which are not used for this project.
 \begin{figure}[htpb]
   \centering
     \includegraphics[width=0.6\textwidth]{bilder/stm32.jpg}
-  \caption{STM32F4 Discovery board, USB port for debugging and programming on the left, USB port connected to the
-    STM32F407 on the right.}
+  \caption[STM32F4 Discovery board.]{STM32F4 Discovery board\footnotemark{}, USB port for debugging and programming
+    on the left, USB port connected to the STM32F407 on the right.}
   \label{fig:stm32}
 \end{figure}
+\footnotetext{Image taken from \url{http://www.st.com/web/catalog/tools/FM116/SC959/SS1532/LN1848/PF252419}, last
+  accessed 2014-12-26.}
 
 The whole device consists of a single PCB onto which the STM32F4 Discovery board is mounted. This board has connections
 for the impedances to be measured, a power supply jack, as well as a header where calibration resistors are mounted.
@@ -31,8 +33,8 @@ an IP network) and two additional memory chips. These features are not yet imple
 \begin{figure}[htpb]
   \centering
     \includegraphics[width=\textwidth]{bilder/pcb_frontback.jpg}
-  \caption{Front and back side of the populated PCB, the STM32F4 Discovery board is mounted on the left, unknown
-    impedances are connected on the right. A board with calibration resistors can be connected left of the measurement
+  \caption{Front (top) and back side (bottom) of the populated PCB, the STM32F4 Discovery board is mounted on the left,
+    unknown impedances are connected on the right. Calibration resistors can be connected left of the measurement
     connectors.}
   \label{fig:pcb_frontback}
 \end{figure}
@@ -103,9 +105,13 @@ settle to the new frequency.
 Because of the limited number of 1024 sampling points used when calculating the Fourier transform,
 the frequency range with any one clock frequency is limited. Using the internal oscillator with
 \unit{16.667}{\mega\hertz}, the ADC samples with \unit{1}{\mega{}S\per\second}, which limits the upper frequency to
-about \unit{100}{\kilo\hertz} (above which the phase error increases significantly) and the lower frequency to about
-\unit{10}{\kilo\hertz} to \unit{1}{\kilo\hertz} (depending on the desired accuracy).
+about \unit{100}{\kilo\hertz} and the lower frequency to about \unit{1}{\kilo\hertz} to \unit{10}{\kilo\hertz}
+(depending on the desired accuracy). Above \unit{100}{\kilo\hertz} the phase error increases significantly.
 To measure lower frequencies, an external clock source has to be used, which is supplied by an STM32F407 timer output.
+The internal clock source is used because the STM32F407 timer can only divide the \unit{120}{\mega\hertz} system clock
+by integer values. This would result in either a \unit{15}{\mega\hertz} clock, which would lead to an increase in phase
+error near the upper frequency limit, or a \unit{17.1}{\mega\hertz} clock, which is outside the specified range for
+the AD5933 clock input.
 
 
 \subsection{Analog Front End (AFE)}
@@ -119,7 +125,9 @@ Since the desired range is down to about \unit{10}{\ohm}, and more than one impe
 an external analog front end is used.
 A block diagram of the external AFE can be seen in \autoref{fig:afe_block}.
 There are four analog multiplexers (dual ADG725 by Analog Devices, M1 in the schematic) that connect multiple unknown
-and calibration impedances in a four-wire arrangement, to cancel out the on-resistance of the multiplexers.
+and calibration impedances in a four-wire arrangement. This allows the on-resistance of the multiplexers (which is
+quite high) to be canceled out, but could also lead to signal pickup from the environment due to the high impedance
+feedback path.
 Multiplexer M2 is used to attenuate the output voltage of the AD5933, this is needed when measuring small impedances,
 so the output current is kept small.
 Multiplexer M3 switches between different feedback resistors to change the I-U conversion ratio.
