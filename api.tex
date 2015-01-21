@@ -1,0 +1,81 @@
+\chapter{Programmer's Manual} \label{sec:api}
+
+This part will be a short one, describing where programmers can start to extend the features of the device or
+change the hardware configuration.
+The main parts of the firmware have already been discussed in \autoref{sec:software}, so in this section
+the extensible parts will be highlighted in a little more detail.
+
+
+\section{Using the Virtual Console}
+
+When writing an application that interfaces with the device (like the MATLAB scripts from \autoref{sec:matlab}),
+the virtual console interface still needs to be used for device configuration.
+To make non-interactive communication easier, there are two means by which the echoing of sent characters can be turned
+off.
+
+Each line that is sent can be preceded by an \texttt{@} character, thereby suppressing the echo of sent characters
+for each line. This is the preferred method, since no permanent configuration is changed (which may lead to users
+trying to use the device manually not seeing what they type).
+
+The other method is to send the command \command{board set --echo=off} to turn echo off permanently. After sending
+this command, no line prefix is needed (it is ignored if sent), however to turn echo on the command has to be sent
+again with \command{--echo=on}.
+
+
+\section{\texttt{main.h}}
+
+This file declares the functions provided by the main module, some of the compile-time configuration options and the
+HAL peripheral handles. This is most useful when writing additional interfaces, the console module for instance uses
+the functions provided by the main module to configure the sweep parameters and board settings, get the board status
+or start a sweep.
+
+The main module provides functions directly reflecting the possible commands, like
+\verb!Board_SetStartFreq(uint32_t freq)!, with a function for every command the virtual console interface accepts.
+These functions also verify their arguments, so verification doesn't need to be implemented in every interface module.
+
+The header file declares preprocessor constants for the GPIO ports used for the SPI peripheral.
+
+
+\section{\texttt{mx\_init.c}}
+
+This file contains the hardware initialization code. If additional peripherals need to be configured, this is the
+place to add the initialization code. When additional modules are to be used, their respective HAL module needs
+to be activated in \verb!stm32f4xx_hal_conf.h! as well and, when using Eclipse, the corresponding source file in
+\verb!system/src/stm32f4-hal/! included in the build configuration.
+
+The module-specific hardware configuration options (used GPIO pins, clock frequencies and the like) are mostly declared
+in the header files of the modules using them.
+
+
+\section{\texttt{console.h}}
+
+This file declares the functions for the virtual console interface. It also declares a console interface structure
+that is passed to the \verb!Console_ProcessLine! function, which holds pointers to functions used for communication.
+This makes the console module reusable for different types of back end.
+
+For example, both the USB VCP interface and a newly added Ethernet interface can use the virtual console module by
+passing pointers to their respective communication functions. The console module then uses these pointers when it wants
+to send a string or a data buffer, or when it wants to tell the back end that the current command has finished.
+
+Currently, the callback functions for commands that don't finish immediately (calibration and temperature measurement)
+are directly called from the main module. When interfaces other than the virtual console are to be added, these
+calls need to be changed in order for the right interface to get a callback.
+
+
+\section{Private API}
+
+There are modules that are not supposed to be used directly by new types of interface or other extensions to the board.
+
+The AD5933 driver module and EEPROM module header files declare the data structures used by these modules, but their
+functions should not be called directly as these drivers are managed by the main module.
+
+\subsection{EEPROM Data Structures}
+
+However, the data structures declared in \verb!eeprom.h! may be extended when additional configuration data or settings
+need to be stored on the EEPROM. The board configuration can be accessed directly by including \verb!main.h!.
+For storing settings, the private functions \verb!UpdateSettings! and \verb!InitFromEEPROM! in \verb!main.c! should
+be extended. A write of settings to the EEPROM can then be scheduled by calling the function \verb!MarkSettingsDirty!.
+
+When adding additional data to the configuration and settings structures, care must be taken to adjust the size of the
+\verb!reserved! fields, so the overall size of the structures doesn't change.
+
