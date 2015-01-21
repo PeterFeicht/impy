@@ -18,20 +18,20 @@ for each line. This is the preferred method, since no permanent configuration is
 trying to use the device manually not seeing what they type).
 
 The other method is to send the command \command{board set --echo=off} to turn echo off permanently. After sending
-this command, no line prefix is needed (it is ignored if sent), however to turn echo on the command has to be sent
+this command, no line prefix is needed (it is ignored if sent); however, to turn echo on the command has to be sent
 again with \command{--echo=on}.
 
 
 \section{\texttt{main.h}}
 
 This file declares the functions provided by the main module, some of the compile-time configuration options and the
-HAL peripheral handles. This is most useful when writing additional interfaces, the console module for instance uses
-the functions provided by the main module to configure the sweep parameters and board settings, get the board status
+HAL peripheral handles. This is most useful when writing additional interfaces. The console module for instance uses
+the functions provided by the main module to configure the sweep parameters and board settings, get the board status,
 or start a sweep.
 
 The main module provides functions directly reflecting the possible commands, like
 \verb!Board_SetStartFreq(uint32_t freq)!, with a function for every command the virtual console interface accepts.
-These functions also verify their arguments, so verification doesn't need to be implemented in every interface module.
+These functions also verify their arguments, so verification does not need to be implemented in every interface module.
 
 The header file declares preprocessor constants for the GPIO ports used for the SPI peripheral.
 
@@ -57,7 +57,7 @@ For example, both the USB VCP interface and a newly added Ethernet interface can
 passing pointers to their respective communication functions. The console module then uses these pointers when it wants
 to send a string or a data buffer, or when it wants to tell the back end that the current command has finished.
 
-Currently, the callback functions for commands that don't finish immediately (calibration and temperature measurement)
+Currently, the callback functions for commands that do not finish immediately (calibration and temperature measurement)
 are directly called from the main module. When interfaces other than the virtual console are to be added, these
 calls need to be changed in order for the right interface to get a callback.
 
@@ -77,5 +77,5 @@ For storing settings, the private functions \verb!UpdateSettings! and \verb!Init
 be extended. A write of settings to the EEPROM can then be scheduled by calling the function \verb!MarkSettingsDirty!.
 
 When adding additional data to the configuration and settings structures, care must be taken to adjust the size of the
-\verb!reserved! fields, so the overall size of the structures doesn't change.
+\verb!reserved! fields, so the overall size of the structures does not change.
 

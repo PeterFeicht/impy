@@ -50,7 +50,7 @@ The AD5933 driver module provides functions for managing the AD5933 and for conv
 meaningful values. The header files also declares the data structures used for storing measurement data and converted
 values.
 
-Since the AD5933 doesn't support interrupts, the driver has a timer callback function \verb!AD5933_TimerCallback(void)!
+Since the AD5933 does not support interrupts, the driver has a timer callback function \verb!AD5933_TimerCallback(void)!
 that is called by a timer interrupt handler every few milliseconds to update the driver status and collect measured
 data from the AD5933. This function returns the new driver status, so appropriate action can be taken when the status
 changes.
@@ -130,13 +130,13 @@ The file provides a single function that handles all peripheral initialization.
 \subsection{Convert Module}
 
 The convert module provides functions to convert an array of measurement values (either raw data or polar
-impedance values) to a different format for transfer either binary or ASCII text.
+impedance values) to a different format for transfer; either binary or ASCII text.
 
 The format is specified as an integer with different bits set for the desired format options.
 %
 \begin{description}
-  \item[Binary] The only configuration options for binary transfer are whether the number of bytes to follow should
-    be sent as a header and the coordinate format (polar or Cartesian), the data format is otherwise fixed:
+  \item[Binary] The only configuration options for binary transfer are the coordinate format (polar or Cartesian) and
+    whether the number of bytes to follow should be sent as a header. The data format is otherwise fixed:
     \begin{itemize}
       \item Frequency: 32-bit unsigned integer
       \item Magnitude or real part: 32-bit single precision floating point
@@ -144,7 +144,7 @@ The format is specified as an integer with different bits set for the desired fo
     \end{itemize}
   
   \item[ASCII] The ASCII format has configuration options for the coordinate format, number format, whether a header
-    should be printed and how the values should be separated. Otherwise the format is similar to binary, frequency
+    should be printed, and how the values should be separated. Otherwise the format is similar to binary, frequency
     followed by magnitude and angle, or real and imaginary part.
 \end{description}
 
@@ -153,11 +153,11 @@ The flags for each option are detailed in the user's manual in \autoref{sec:manu
 
 \subsection{EEPROM Module}
 
-The EEPROM module declares structures used to store the board configuration (what components are populated, values of
-resistors and the like) and the current settings (frequency range, transfer format and the like). It also manages
+The EEPROM module declares structures used to store the board configuration (which components are populated, values of
+resistors and the like) and the current settings (frequency range, transfer format and so on). It also manages
 writing and reading those structures from the EEPROM.
 
-Since the EEPROM, like the AD5933, doesn't support interrupts, the driver also has a timer callback that is used when
+Since the EEPROM, like the AD5933, does not support interrupts, the driver also has a timer callback that is used when
 writing data to the EEPROM. When reading data, no extra time is needed for memory access, so the timer callback is not
 used then.
 
@@ -166,7 +166,7 @@ with the structures and verified when data is read. In addition to that, a simpl
 is implemented for the settings buffer, which is written every time settings are changed.
 
 \footnotetext{An EEPROM degrades when written and can therefore only be written a finite number of times. When small
-amounts of data are written frequently to the same address, this address will wear out quickly and make the whole
+amounts of data are written frequently to the same address, that address will wear out quickly and make the whole
 memory unusable. This can be compensated by distributing the data across the whole available memory space, thereby
 reducing the number of times each address is written, a technique that is called wear leveling.}
 
@@ -193,12 +193,12 @@ The functions use the virtual console interface by sending command strings and p
   \item \verb!impy_start!: Starts an impedance sweep on a specified port.
   \item \verb!impy_poll!: Used while a sweep is running to poll the board and determine when the sweep has finished.
     Returns the number of points measured when the sweep is complete.
-  \item \verb!impy_read!: Reads measurement data from the board, either in polar, Cartesian or raw format.
+  \item \verb!impy_read!: Reads measurement data from the board, either in polar, Cartesian, or raw format.
   \item \verb!impy_help!: Sends a help command to the board and outputs the response to the MATLAB console.
 \end{itemize}
 
 All these functions expect a COMPORT handle object that has been opened.
 
-A sample implementation of a complete measurement cycle is provided in the file \verb!test_measure.m!, this can be used
+A sample implementation of a complete measurement cycle is provided in the file \verb!test_measure.m!; this can be used
 as a starting point when using the MATLAB functions.
 
