@@ -33,8 +33,8 @@ STM32F4 Discovery board.
   \label{fig:device_connections}
 \end{figure}
 
-The USB programming connector \ref{itm:usb_prog} is used to program and debug the device, it can also be used to power
-the device from a standard phone charger or similar supply with a Mini-B USB plug.
+The USB programming connector \ref{itm:usb_prog} is used to program and debug the device, but it can also be used to
+power the device from a standard phone charger or similar supply with a Mini-B USB plug.
 The device USB connector \ref{itm:usb_dev} is used to connect the device to a PC and control it.
 The DC jack \ref{itm:dc_jack} is a standard \unit{2.5}{\milli\meter} jack (center positive) and can be used to
 power the device with a \unit{5}{\volt} DC supply.
@@ -50,10 +50,10 @@ one on the STM32F4 Discovery board and one on the board, and care should be take
 There are four status LEDs \ref{itm:leds}, three of which are used at this time:
 \begin{itemize}
 	\item \textbf{\color{blue} blue} (bottom) will blink when the device is powered on, indicating that the firmware
-    hasn't locked up,
+    has not locked up,
   \item \textbf{\color{OliveGreen} green} (left) will light up while a measurement is in progress, allowing the user
     to see when it has finished,
-  \item \textbf{\color{red} red} (right) will be turned on in case of an error in the firmware, this means the device
+  \item \textbf{\color{red} red} (right) will be turned on in case of an error in the firmware, which means the device
     should be reset using the reset button \ref{itm:btn_rst} and the steps leading up to the error should be
     documented, allowing the programmer to fix it.
 \end{itemize}
@@ -71,7 +71,7 @@ Before powering up the device for the first time, the following things should be
 \end{itemize}
 
 After connecting the device to a PC, any application that can access a serial port can be used to communicate with it.
-Settings such as baud rate or parity don't matter.
+Settings such as baud rate or parity do not matter.
 When not using the MATLAB functions (see \autoref{sec:matlab}), the device is configured via a simple virtual console
 interface using human readable commands. By typing \command{help}, a list of possible commands and their
 explanations can be displayed.
@@ -89,7 +89,7 @@ as possible attenuations and the coupling capacitor time constant using the \com
   \item enter the coupling capacitor time constant in ms (calculated by $ C_\text{coupl} \cdot \unit{1.1}{\kilo\ohm} $):
     \command{setup coupl <milliseconds>}
 \end{itemize}
-Typing \command{help setup} shows other options for the \command{setup} command, however none of them are currently
+Typing \command{help setup} shows other options for the \command{setup} command; however, none of them are currently
 used since the respective peripherals are not yet implemented.
 
 By typing \command{board info}, general information for the whole board is displayed, which includes the configured
@@ -145,14 +145,14 @@ When selecting range settings, the following procedure should be used:
 \subsection{Calibration}
 
 Before measurements can be made the system has to be calibrated with a known impedance (see \autoref{sec:ad5933_proc}
-on why this is necessary). After the range settings (start and stop frequency, output voltage, feedback resistor or
+on why this is necessary). After the range settings (start and stop frequency, output voltage, feedback resistor, or
 PGA gain) are changed, the \command{board calibrate} command is used to do that. The calibration impedance, specified
 as the only parameter to the command, should be in the same range as the impedance to be measured for accurate results.
 
 A recalibration is also necessary when the ambient temperature changes significantly.
 
 Normally, calibration resistors are connected to the device with the small PCB \ref{itm:r_cal} mounted on the
-calibration connectors. However, these connectors are just measurement connectors like \ref{itm:meas_out} and
+calibration connectors. However, those connectors are just measurement connectors like \ref{itm:meas_out} and
 \ref{itm:meas_in}, so calibration resistors can also be connected without a dedicated calibration resistor board.
 \emph{Note that resistors should always be used for calibration, because the calibration impedance must not introduce
   a phase shift of its own.}
@@ -165,8 +165,8 @@ the green LED \ref{itm:leds} lighting up. The port number determines which pair 
 pins having the number 0 and the bottom pins the number 9. The valid range can also be displayed with the
 \command{board info} command.
 
-While a sweep is running, the status can be displayed by typing \command{board status}. This will print whether or not
-the sweep is still running and the number of points measured.
+While a sweep is running, the status can be displayed by typing \command{board status}. This will print the number of
+points already measured, and whether the sweep is still running or has finished.
 
 A running measurement can be stopped by typing \command{board stop}, which also resets the AD5933 and disconnects the
 output and input pins. To disconnect the outputs when no measurement is running \command{board standby} can be used.
@@ -214,7 +214,7 @@ first record.
 
 \section{Additional Commands}
 
-There are some additional commands and options which are not necessarily useful for normal operation, those are
+There are some additional commands and options which are not necessarily useful for normal operation; those are
 explained in this section.
 
 The \command{board temp} command can be used to make a temperature measurement using the AD5933's internal temperature
@@ -223,7 +223,7 @@ to the power dissipation of the AD5933.
 
 The \command{board set} command accepts the \command{--avg=NUM} parameter, which sets the number of averages for each
 frequency point and can be in the range from 1 to 65535.
-It also accepts the \command{--autorange=(on|off)} parameter, however this currently has no effect since autoranging is
+It also accepts the \command{--autorange=(on|off)} parameter, however, this currently has no effect since autoranging is
 not yet implemented.
 
 The \command{board measure} command accepts a port and frequency and can be used to measure the impedance at a port at
@@ -239,7 +239,7 @@ floating point values.
 \section{Using the MATLAB Interface}
 
 To use the device with MATLAB (e.g.\ for automated measurements) a set of functions is provided that utilize the
-virtual console interface of the device. \autoref{lst:test_measure} shows a demo script that makes a measurement and
+virtual console interface of the device. \autoref{lst:test_measure} shows a demo script that performs a measurement and
 plots the results.
 
 All functions take a MATLAB serial port object as their first parameter, which needs to be \texttt{fopen}ed beforehand.

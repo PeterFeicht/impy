@@ -2,14 +2,14 @@
 
 This chapter will describe the hardware design of the device.
 
-Starting point is the \emph{AD5933} by Analog Devices, an impedance converter IC that includes digital-to-analog and
+Starting point is the \emph{AD5933} by Analog Devices, an impedance converter IC, that includes digital-to-analog and
 analog-to-digital converters, a DSP engine for discrete time Fourier transform, and an internal clock source. It can
 output frequencies in the desired range from \unit{10}{\hertz} to \unit{100}{\kilo\hertz} with the use of external
 clock sources.
 
 For controlling the chip and interfacing with the PC, the \emph{STM32F4 Discovery} board by ST (see \autoref{fig:stm32})
 is used. This is built around an STM32F407 microcontroller, includes two USB ports (one for programming and one for use
-by the microcontroller), a programmer with debugging features and a clock source and exposes most of the microcontroller
+by the microcontroller), a programmer with debugging features and a clock source, and exposes most of the microcontroller
 pins on two $ 2 \times 25 $ pin headers. There are also four user programmable LEDs, as well as some other peripherals
 which are not used for this project.
 
@@ -48,7 +48,7 @@ This section will describe the AD5933 and the impedance measurement procedure in
 from the datasheet\footnotemark{} in a digested form.
 A block diagram of the AD5933 can be seen in \autoref{fig:ad_block} (\autopageref{fig:ad_block}).
 \footnotetext{Analog Devices, \enquote{1 MSPS, 12-Bit Impedance Converter, Network Analyzer,} AD5933 datasheet,
-  May 2013 [Rev.\ E]: \url{http://www.analog.com/static/imported-files/data_sheets/AD5933.pdf}}
+  May 2013 [Rev.\ E]: \url{http://www.analog.com/static/imported-files/data_sheets/AD5933.pdf}.}
 
 \begin{figure}[htpb]
   \centering
@@ -76,9 +76,9 @@ after low-pass filtering and windowed for the FFT computation.
 The DSP engine then calculates a Fourier transform of the input signal in relation to the output signal,
 which results in the raw real and imaginary impedance values that can be read from the AD5933 registers.
 
-Since the phase shift introduced by the system and the overall gain of the amplifiers are unknown, these values can't
+Since the phase shift introduced by the system and the overall gain of the amplifiers are unknown, these values cannot
 be used directly, but a calibration measurement with a known resistor needs to be made. A resistor is used because
-it doesn't introduce a phase shift of its own.
+it does not introduce a phase shift of its own.
 From the calibration measurement data $ Z_\text{RAW} $, gain factor and system phase are calculated by
 \begin{align}
   GF &= \left| Z_\text{RAW} \right| \cdot Z_\text{CAL} , \\
@@ -90,8 +90,8 @@ For an unknown impedance, the actual magnitude and phase are then calculated by
   \angle\, Z &= \angle\, Z_\text{RAW} - \varphi_\text{SYS}.
 \end{align}
 
-On the controlling side of things, the AD5933 is programmed with a starting frequency, a frequency increment, the
-number of increments in a sweep and the number of settling cycles.
+Before starting a sweep, the AD5933 is programmed with a starting frequency, a frequency increment, the
+number of increments in a sweep, and the number of settling cycles.
 A sweep is then started by writing two commands to the control register, \emph{initialize with start frequency} and
 \emph{start frequency sweep}. Unfortunately, the AD5933 has no interrupt capability, so the status register needs to
 be queried periodically, to determine when a frequency point has been measured. The raw values are then read and an
@@ -128,7 +128,7 @@ There are four analog multiplexers (dual ADG725 by Analog Devices, M1 in the sch
 and calibration impedances in a four-wire arrangement. This allows the on-resistance of the multiplexers (which is
 quite high) to be canceled out, but could also lead to signal pickup from the environment due to the high impedance
 feedback path.
-Multiplexer M2 is used to attenuate the output voltage of the AD5933, this is needed when measuring small impedances,
+Multiplexer M2 is used to attenuate the output voltage of the AD5933; this is needed when measuring small impedances,
 so the output current is kept small.
 Multiplexer M3 switches between different feedback resistors to change the I-U conversion ratio.
 
@@ -139,7 +139,7 @@ Multiplexer M3 switches between different feedback resistors to change the I-U c
   \label{fig:afe_block}
 \end{figure}
 
-The two op-amps are AD8656 by Analog Devices, the one in the output stage is configured as an inverting amplifier,
+The two op-amps are AD8656 by Analog Devices; the one in the output stage is configured as an inverting amplifier,
 the one on the input as a current-to-voltage converter, with the AD5933-internal input amplifier acting as an inverting
 voltage follower. The coupling capacitor between AD5933 output and the output amplifier filters the DC offset so the
 whole input voltage range can be used.
@@ -161,7 +161,7 @@ switching regulator (LTC3406 by Linear Technology) is included on the board. Thi
     a standard USB flash drive, power conversion efficiency needs to be as high as possible. 
 \end{itemize}
 
-Since the STM32F407 doesn't have any non-volatile memory, an EEPROM is added to store some static configuration
+Since the STM32F407 does not have any non-volatile memory, an EEPROM is added to store some static configuration
 options (e.g.\ fitted feedback resistors, possible output voltage attenuations or the Ethernet MAC address) as well as
 dynamic settings such as the frequency range and output voltage used last. Like the AD5933, this memory is connected
 via \iic{} to the microcontroller.
@@ -180,4 +180,4 @@ These peripherals include
   \item a USB host plug.
 \end{itemize}
 To populate and use them, only the respective modules need to be added to the firmware, aside from the necessary
-changes, should the PCB layout be bad.
+changes, should the PCB layout turn out to be faulty.
