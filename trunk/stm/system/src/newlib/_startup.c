@@ -227,7 +227,7 @@ _start(void)
   __initialize_data(&_sidata, &_sdata, &_edata);
 
 #if defined(DEBUG) && defined(OS_INCLUDE_STARTUP_GUARD_CHECKS)
-  if ((__data_begin_guard != DATA_BEGIN_GUARD_VALUE) || (__data_end_guard != __data_end_guard))
+  if ((__data_begin_guard != DATA_BEGIN_GUARD_VALUE) || (__data_end_guard != DATA_END_GUARD_VALUE))
     {
       for (;;)
         ;
