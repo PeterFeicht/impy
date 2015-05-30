@@ -886,12 +886,13 @@ float AD5933_GetPhase(const AD5933_ImpedanceData *data, const AD5933_GainFactor 
     phase -= phase_2point;
     
     // Make sure the corrected result is in the range of -pi to pi
-    if(phase > M_PI)
+    if(phase > M_PI) {
         return phase - M_TWOPI;
-    else if(phase < -M_PI)
+    } else if(phase < -M_PI) {
         return phase + M_TWOPI;
-    else
+    } else {
         return phase;
+    }
 }
 
 /**
