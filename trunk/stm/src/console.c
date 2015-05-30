@@ -177,26 +177,26 @@ static Console_HelpEntry txtHelpTopics[] = {
 };
 //! Those are the top level commands, subcommands are called from their respective processing functions
 static const Console_Command commands[] = {
-    { "board", Console_Board },
-    { "eth", Console_Eth },
-    { "usb", Console_Usb },
-    { "help", Console_Help },
-    { "setup", Console_Setup },
-    { "debug", Console_Debug }
+    { "board",  Console_Board },
+    { "eth",    Console_Eth },
+    { "usb",    Console_Usb },
+    { "help",   Console_Help },
+    { "setup",  Console_Setup },
+    { "debug",  Console_Debug }
 };
 //! Those are the values that can be set with `board set` and read with `board get`
 static const Console_Arg argsBoardSet[] = {
-    { "start", CON_ARG_SET_START, CON_INT },
-    { "stop", CON_ARG_SET_STOP, CON_INT },
-    { "steps", CON_ARG_SET_STEPS, CON_INT },
-    { "settl", CON_ARG_SET_SETTL, CON_STRING },
-    { "voltage", CON_ARG_SET_VOLTAGE, CON_INT },
-    { "gain", CON_ARG_SET_GAIN, CON_FLAG },
-    { "feedback", CON_ARG_SET_FEEDBACK, CON_INT },
-    { "avg", CON_ARG_SET_AVG, CON_INT },
-    { "format", CON_ARG_SET_FORMAT, CON_STRING },
-    { "autorange", CON_ARG_SET_AUTORANGE, CON_FLAG },
-    { "echo", CON_ARG_SET_ECHO, CON_FLAG }
+    { "start",      CON_ARG_SET_START,      CON_INT },
+    { "stop",       CON_ARG_SET_STOP,       CON_INT },
+    { "steps",      CON_ARG_SET_STEPS,      CON_INT },
+    { "settl",      CON_ARG_SET_SETTL,      CON_STRING },
+    { "voltage",    CON_ARG_SET_VOLTAGE,    CON_INT },
+    { "gain",       CON_ARG_SET_GAIN,       CON_FLAG },
+    { "feedback",   CON_ARG_SET_FEEDBACK,   CON_INT },
+    { "avg",        CON_ARG_SET_AVG,        CON_INT },
+    { "format",     CON_ARG_SET_FORMAT,     CON_STRING },
+    { "autorange",  CON_ARG_SET_AUTORANGE,  CON_FLAG },
+    { "echo",       CON_ARG_SET_ECHO,       CON_FLAG }
 };
 
 // Include string definitions in the desired language
@@ -233,7 +233,7 @@ static void Console_InitHelp(void) {
     strHelp.length = help - strHelp.data;
     
     // Look for specific help messages
-    while((help = strstr(help, topic)) != NULL ) {
+    while((help = strstr(help, topic)) != NULL) {
         if(prev != NULL) {
             prev->length = help - prev->data + 2;
             prev = NULL;
@@ -277,7 +277,7 @@ static uint32_t Console_GetArguments(char *cmdline) {
     }
     
     // If we need support for quoted strings and escaping for spaces, this is the place to add it
-    while((tmp = strchr(cmdline, ' ')) != NULL ) {
+    while((tmp = strchr(cmdline, ' ')) != NULL) {
         *tmp++ = 0;
         while(*tmp == ' ') {
             tmp++;
@@ -323,7 +323,7 @@ static uint8_t Console_CallProcessor(uint32_t argc, char **argv, const Console_C
 static const Console_Arg* Console_GetArg(const char *arg, const Console_Arg *args, uint32_t count) {
     // If we need support for single letter arguments, this is the place to add it
     if(arg[0] != '-' || arg[1] != '-') {
-        return NULL ;
+        return NULL;
     }
     arg += 2;
     
@@ -396,17 +396,17 @@ __STATIC_INLINE void Console_Flush(void) {
  */
 static void Console_Board(uint32_t argc, char **argv) {
     static const Console_Command cmds[] = {
-        { "set", Console_BoardSet },
-        { "get", Console_BoardGet },
-        { "info", Console_BoardInfo },
-        { "calibrate", Console_BoardCalibrate },
-        { "start", Console_BoardStart },
-        { "stop", Console_BoardStop },
-        { "status", Console_BoardStatus },
-        { "temp", Console_BoardTemp },
-        { "measure", Console_BoardMeasure },
-        { "standby", Console_BoardStandby },
-        { "read", Console_BoardRead }
+        { "set",        Console_BoardSet },
+        { "get",        Console_BoardGet },
+        { "info",       Console_BoardInfo },
+        { "calibrate",  Console_BoardCalibrate },
+        { "start",      Console_BoardStart },
+        { "stop",       Console_BoardStop },
+        { "status",     Console_BoardStatus },
+        { "temp",       Console_BoardTemp },
+        { "measure",    Console_BoardMeasure },
+        { "standby",    Console_BoardStandby },
+        { "read",       Console_BoardRead }
     };
     
     if(argc == 1) {
@@ -846,9 +846,9 @@ static void Console_BoardMeasure(uint32_t argc, char **argv) {
  */
 static void Console_BoardRead(uint32_t argc, char **argv) {
     static const Console_Arg args[] = {
-        { "format", CON_ARG_READ_FORMAT, CON_STRING },
-        { "raw", CON_ARG_READ_RAW, CON_FLAG },
-        { "gain", CON_ARG_READ_GAIN, CON_FLAG }
+        { "format", CON_ARG_READ_FORMAT,    CON_STRING },
+        { "raw",    CON_ARG_READ_RAW,       CON_FLAG },
+        { "gain",   CON_ARG_READ_GAIN,      CON_FLAG }
     };
     
     uint32_t format = format_spec;
@@ -1308,8 +1308,12 @@ static void Console_BoardTemp(uint32_t argc, char **argv __attribute__((unused))
  * @param argv Array of arguments
  */
 static void Console_Eth(uint32_t argc __attribute__((unused)), char **argv __attribute__((unused))) {
-    static const Console_Command cmds[] = { { "set", Console_EthSet }, { "status", Console_EthStatus }, { "enable",
-            Console_EthEnable }, { "disable", Console_EthDisable } };
+    static const Console_Command cmds[] = {
+        { "set",        Console_EthSet },
+        { "status",     Console_EthStatus },
+        { "enable",     Console_EthEnable },
+        { "disable",    Console_EthDisable }
+    };
     
     if(board_config.peripherals.eth) {
         if(argc == 1) {
@@ -1351,8 +1355,8 @@ static void Console_EthEnable(uint32_t argc, char **argv __attribute__((unused))
 
 static void Console_EthSet(uint32_t argc, char **argv) {
     static const Console_Arg args[] = {
-        { "dhcp", CON_ARG_SET_DHCP, CON_FLAG },
-        { "ip", CON_ARG_SET_IP, CON_STRING }
+        { "dhcp",   CON_ARG_SET_DHCP,   CON_FLAG },
+        { "ip",     CON_ARG_SET_IP,     CON_STRING }
     };
     
     interface->SendLine(txtNotImplemented);
@@ -1379,10 +1383,10 @@ static void Console_EthStatus(uint32_t argc, char **argv __attribute__((unused))
 static void Console_Usb(uint32_t argc __attribute__((unused)), char **argv __attribute__((unused))) {
     static const Console_Command cmds[] = {
         { "status", Console_UsbStatus },
-        { "info", Console_UsbInfo },
-        { "eject", Console_UsbEject },
-        { "write", Console_UsbWrite },
-        { "ls", Console_UsbLs }
+        { "info",   Console_UsbInfo },
+        { "eject",  Console_UsbEject },
+        { "write",  Console_UsbWrite },
+        { "ls",     Console_UsbLs }
     };
     
     if(board_config.peripherals.usbh) {
@@ -1503,14 +1507,14 @@ static void Console_Help(uint32_t argc, char **argv) {
  */
 static void Console_Setup(uint32_t argc, char **argv) {
     static const Console_Arg cmds[] = {
-        { "attenuation", CON_CMD_SETUP_ATTENUATIONS, CON_STRING },
-        { "feedback", CON_CMD_SETUP_FEEDBACK, CON_STRING },
-        { "calibration", CON_CMD_SETUP_CALIBRATION, CON_STRING },
-        { "coupl", CON_CMD_SETUP_COUPL, CON_STRING },
-        { "sram", CON_CMD_SETUP_SRAM, CON_STRING },
-        { "flash", CON_CMD_SETUP_FLASH, CON_STRING },
-        { "eth", CON_CMD_SETUP_ETH, CON_STRING },
-        { "usbh", CON_CMD_SETUP_USBH, CON_STRING }
+        { "attenuation",    CON_CMD_SETUP_ATTENUATIONS, CON_STRING },
+        { "feedback",       CON_CMD_SETUP_FEEDBACK,     CON_STRING },
+        { "calibration",    CON_CMD_SETUP_CALIBRATION,  CON_STRING },
+        { "coupl",          CON_CMD_SETUP_COUPL,        CON_STRING },
+        { "sram",           CON_CMD_SETUP_SRAM,         CON_STRING },
+        { "flash",          CON_CMD_SETUP_FLASH,        CON_STRING },
+        { "eth",            CON_CMD_SETUP_ETH,          CON_STRING },
+        { "usbh",           CON_CMD_SETUP_USBH,         CON_STRING }
     };
     
     Console_ArgID cmd = CON_ARG_INVALID;

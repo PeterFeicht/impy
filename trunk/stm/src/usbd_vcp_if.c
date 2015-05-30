@@ -352,8 +352,7 @@ uint32_t VCP_SendString(const char *str) {
             memcpy(VCPTxBuffer + VCPTxBufEnd, str, sent);
             VCPTxBufEnd += sent;
         }
-    } else // VCPTxBufEnd < VCPTxBufStart
-    {
+    } else { // VCPTxBufEnd < VCPTxBufStart
         buffered = VCPTxBufEnd + APP_TX_BUFFER_SIZE - VCPTxBufStart;
         sent = (len < APP_TX_BUFFER_SIZE - buffered ? len : APP_TX_BUFFER_SIZE - buffered - 1);
         memcpy(VCPTxBuffer + VCPTxBufEnd, str, sent);
@@ -426,8 +425,7 @@ void VCP_Flush(void) {
     
     // Send buffered data before external buffer
     if(VCPTxBufStart != VCPTxBufEnd) {
-        if(VCPTxBufStart > VCPTxBufEnd) /* rollback */
-        {
+        if(VCPTxBufStart > VCPTxBufEnd) {
             buffsize = APP_TX_BUFFER_SIZE - VCPTxBufStart;
         } else {
             buffsize = VCPTxBufEnd - VCPTxBufStart;

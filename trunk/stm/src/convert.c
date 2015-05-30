@@ -598,7 +598,9 @@ Buffer Convert_ConvertGainFactor(const AD5933_GainFactor *gain) {
     alloc += 2 + 1;
     
     buffer = malloc(alloc);
-    if(buffer == NULL) return ret;
+    if(buffer == NULL) {
+        return ret;
+    }
     
     size += snprintf(buffer + size, alloc - size, point, (gain->is_2point ? "Two" : "One"));
     
