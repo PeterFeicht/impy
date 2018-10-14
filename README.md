@@ -1,7 +1,7 @@
 Bachelor's Thesis
 =================
 
-This project contains all of the stuff from my bachelor's thesis.
+This project contains all of the stuff from my [bachelor's thesis](thesis.pdf).
 
 The goal is to create an impedance spectrometer based on the
 *Impedance Converter Network Analyzer* chip [AD5933][1] from Analog Devices.
