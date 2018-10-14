@@ -1,0 +1,15 @@
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.synctex
+*.synctex.gz
+*.toc
+*.tps
+*.bbl
+*.blg
+*.idx
+
+presentations/pr?.pdf
+thesis/thesis.pdf
